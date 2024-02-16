@@ -25,7 +25,7 @@
 
 <div class="card custom-card">
     <div class="card-body">
-      <h5 class="card-title">Registrar Usuario</h5>
+      <h5 class="card-title">Editar Usuario</h5>
 
       <!-- Vertical Form -->
       <form class="row g-3" action="{{route('usuarios.update',$user->id)}}" method="POST">
@@ -61,7 +61,7 @@
 
                
                 <div class="text-center">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" class="btn btn-primary">Aceptar</button>
                  
                 </div>
               </form><!-- Vertical Form -->

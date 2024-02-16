@@ -60,7 +60,7 @@
 
                
                 <div class="text-center">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" class="btn btn-primary">Registrar</button>
                  
                 </div>
               </form><!-- Vertical Form -->
