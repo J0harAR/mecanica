@@ -15,8 +15,8 @@
     <h1>Roles</h1>
     <nav>
      <ol class="breadcrumb">
-     <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-        <li class="breadcrumb-item active"><a href="/roles">Roles</a></li>
+     <li class="breadcrumb-item"><a href="{{route('home')}}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="/roles">Roles</a></li>
         <li class="breadcrumb-item active">Crear</li>
     </ol>
     </nav>
