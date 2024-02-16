@@ -15,7 +15,7 @@
                     <h2 class="text-right"><i class="bi bi-people"></i></h2>
                     <div class="d-flex flex-column justify-content-between align-items-center"> 
                         <h2><span>{{$cant_usuarios}}</span></h2>
-                        <p class="m-b-o text-right"><a href="/usuarios">Ver mas...</a></p>
+                        <p class="m-b-o text-right"><a href="/usuarios">Ver mas....</a></p>
                     </div>
                 </div> 
             </div>
