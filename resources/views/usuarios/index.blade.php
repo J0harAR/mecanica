@@ -36,7 +36,7 @@
                     <td>
                     @if(!empty($usuario->getRoleNames()))
                         @foreach($usuario->getRoleNames() as $rolName)
-                                <h5><span>{{$rolName}}</span></h5>
+                                <h6><span>{{$rolName}}</span></h6>
                         @endforeach
                     @endif
                     </td>
