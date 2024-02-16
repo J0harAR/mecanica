@@ -18,9 +18,9 @@
 
 @endcan
 
-
-
-<div class="card mt-4">
+<div class="row">
+<div class="col-lg-4">
+  <div class="card mt-4">
             <div class="card-body">
             
               <!-- Table with hoverable rows -->
@@ -35,7 +35,7 @@
                     <td>{{$role->name}}</td>
                     <td>
                         @can('editar-rol')
-                            <a href="{{ route('roles.edit',$role->id) }}" class="btn btn-primary">Editar</a>
+                            <a href="{{ route('roles.edit',$role->id) }}" class="btn btn-warning">Editar</a>
                         @endcan
 
                         @can('borrar-rol')
@@ -58,8 +58,8 @@
        
 
             </div>
-          </div>
-
-
+    </div>
+  </div>
+</div>
 
 @endsection

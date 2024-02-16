@@ -41,7 +41,7 @@
                     @endif
                     </td>
                     <td>
-                        <a href="{{ route('usuarios.edit',$usuario->id) }}" class="btn btn-info">Editar</a>
+                        <a href="{{ route('usuarios.edit',$usuario->id) }}" class="btn btn-warning">Editar</a>
                         <form method="POST" action="{{ route('usuarios.destroy', $usuario->id) }}" style="display: inline;">
                             @csrf
                             @method('DELETE')
