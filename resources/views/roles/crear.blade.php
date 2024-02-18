@@ -10,7 +10,8 @@
 </style>
 
 
-
+@can('crear-role')
+  
   <div class="pagetitle">
     <h1>Roles</h1>
     <nav>
@@ -49,13 +50,14 @@
                 </div>
                
 
-
+            @can('crear-rol')
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Registrar</button>
             </div>
+            @endcan
         </form><!-- End Vertical Form -->
-
+        </div>
 </div><!-- End card custom -->
-
+@endcan
 
 @endsection

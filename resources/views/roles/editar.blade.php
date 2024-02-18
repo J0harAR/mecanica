@@ -10,6 +10,8 @@
 </style>
 
 
+@can('editar-rol')
+  
 
   <div class="pagetitle">
     <h1>Roles</h1>
@@ -49,14 +51,15 @@
                     </div>
                 </div>     
     </div><!-- End Card body -->
-
+            @can('editar-rol')        
             <div class="text-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
             </div>
+            @endcan
         </form><!-- End Vertical Form -->
 
 </div><!-- End card custom -->
 
-
+@endcan
 @endsection
 

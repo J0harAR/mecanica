@@ -267,20 +267,24 @@
  
 
   <li class="nav-heading">Pages</li>
+ 
+  @can('ver-usuarios')
   <li class="nav-item">
     <a class="nav-link collapsed" href="{{ route('usuarios.index') }}">
       <i class="bi bi-people"></i>
       <span>Usuarios</span>
     </a>
   </li><!-- End Users Page Nav -->
+  @endcan
 
+  @can('ver-roles')
   <li class="nav-item">
     <a class="nav-link collapsed" href="{{ route('roles.index') }}">
       <i class="bi bi-person-lock"></i>
       <span>Roles</span>
     </a>
   </li><!-- End Role Page Nav -->
-
+  @endcan
 
 
 </ul>

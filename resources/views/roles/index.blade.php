@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@can('ver-rol')
 <div class="pagetitle">
       <h1>Roles</h1>
       <nav>
@@ -10,13 +11,14 @@
 
         </ol>
       </nav>
-    </div>
+</div>
 
 
 @can('crear-rol')
     <a href="{{ route('roles.create') }}" class="btn btn-primary">Nuevo</a>
 
 @endcan
+
 
 <div class="row">
 <div class="col-lg-4">
@@ -55,11 +57,10 @@
                 </tbody>
               </table>
        
-       
-
+      
             </div>
     </div>
   </div>
 </div>
-
+@endcan
 @endsection
