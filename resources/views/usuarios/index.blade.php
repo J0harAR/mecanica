@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@can('ver-usuarios')
 <div class="pagetitle">
       <h1>Usuarios</h1>
       <nav>
@@ -12,8 +13,10 @@
       </nav>
 </div>
 
-<a href="{{ route('usuarios.create') }}" class="btn btn-primary">Nuevo</a>
 
+@can('crear-usuarios')
+<a href="{{ route('usuarios.create') }}" class="btn btn-primary">Nuevo</a>
+@endcan
 <div class="card mt-4">
             <div class="card-body ">
             
@@ -41,12 +44,17 @@
                     @endif
                     </td>
                     <td>
+                        @can('editar-usuarios')                                               
                         <a href="{{ route('usuarios.edit',$usuario->id) }}" class="btn btn-warning">Editar</a>
+                        @endcan
+
+                        @can('borrar-usuarios')
                         <form method="POST" action="{{ route('usuarios.destroy', $usuario->id) }}" style="display: inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Eliminar</button>
                         </form>
+                        @endcan
                     </td>
 
                   </tr>
@@ -65,5 +73,5 @@
           </div>
 
 
-
+          @endcan
 @endsection

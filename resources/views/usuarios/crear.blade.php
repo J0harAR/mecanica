@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@can('crear-usuarios')
+  
+
 <style>
     .custom-card {
       max-width: 700px;
@@ -70,5 +73,5 @@
 
 
 
-
+  @endcan
 @endsection
