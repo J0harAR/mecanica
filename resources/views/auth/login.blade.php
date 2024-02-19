@@ -20,18 +20,20 @@
                   <p class="text-center small">Ingresa tu correo electrónico y contraseña para iniciar sesión</p>
                 </div>
 
+                @if($errors->has('email') || $errors->has('password'))
+                  <p class="text-danger mb-0">Algo salió mal.</p>
+                  <ul><li class="text-danger mb-0 small mt-3">Estas credenciales no coinciden con nuestros registros.</li></ul>
+                  
+                @endif
+
                 <form class="row g-3 needs-validation" method="POST" action="{{ route('login') }}">
                   @csrf
                   <div class="col-12 mb-3">
+                    
                     <label for="email" class="form-label">Correo electrónico</label>
                     <div class="input-group has-validation">
                       <span class="input-group-text" id="email-addon"><i class="bi bi-envelope-fill"></i></span>
                       <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                      @error('email')
-                        <div class="invalid-feedback">
-                          {{ $message }}
-                        </div>
-                      @enderror
                     </div>
                   </div>
 
@@ -40,11 +42,6 @@
                     <div class="input-group has-validation">
                       <span class="input-group-text" id="password-addon"><i class="bi bi-lock-fill"></i></span>
                       <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-                      @error('password')
-                        <div class="invalid-feedback">
-                          {{ $message }}
-                        </div>
-                      @enderror
                     </div>
                   </div>
 
