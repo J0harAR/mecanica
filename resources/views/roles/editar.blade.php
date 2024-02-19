@@ -34,7 +34,7 @@
         @csrf
                 <div class="col-12">
                   <label for="inputNanme4" class="form-label">Nombre del rol  </label>
-                  <input type="text" class="form-control" name="name" value="{{$role->name}}">
+                  <input type="text" class="form-control" name="name" value="{{$role->name}}" required>
                 </div>
                
                 <div class="col-12">
