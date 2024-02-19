@@ -31,23 +31,31 @@
       <h5 class="card-title">Registrar Usuario</h5>
 
       <!-- Vertical Form -->
-      <form class="row g-3" action="{{route('usuarios.store')}}" method="POST">
+      <form class="row g-3 needs-validation" action="{{route('usuarios.store')}}" method="POST">
         @csrf
                 <div class="col-12">
                   <label for="inputNanme4" class="form-label">Nombre completo </label>
-                  <input type="text" class="form-control" name="name">
+                  <input type="text" class="form-control" name="name" required novalidate autocomplete="name" value="{{ old('name') }}">
+
                 </div>
                 <div class="col-12">
                   <label for="inputEmail4" class="form-label">Email</label>
-                  <input type="email" class="form-control" name="email">
+                  <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" required novalidate  autocomplete="email" value="{{ old('email') }}">
+                   @error('email')
+                   <div class="invalid-feedback">El correo proporcionado ya pertenece a una cuenta</div>
+                   @enderror
                 </div>
                 <div class="col-12">
                   <label for="inputPassword4" class="form-label">Contraseña</label>
-                  <input type="password" class="form-control" name="password">
+                  <input type="password" class="form-control  @error('password') is-invalid @enderror" name="password" required novalidate>
+
+                  @error('password')
+                  <div class="invalid-feedback">Contraseña no valida</div>
+                  @enderror
                 </div>
                 <div class="col-12">
                   <label for="inputPassword4" class="form-label">Confirmar contraseña</label>
-                  <input type="password" class="form-control" name="confirm-password">
+                  <input type="password" class="form-control" name="confirm-password" required novalidate >
                 </div>
 
                 <div class="col-12">

@@ -49,7 +49,7 @@ class UsuarioController extends Controller
         $this->validate($request,[
             'name'=>'required',
             'email'=>'required | email |unique:users,email',
-            'password'=>'required | same:confirm-password',
+            'password'=>'required | same:confirm-password' ,
             'roles'=>'required'
         
         ]);
