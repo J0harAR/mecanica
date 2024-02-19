@@ -36,15 +36,22 @@
         @csrf
                 <div class="col-12">
                   <label for="inputNanme4" class="form-label">Nombre completo </label>
-                  <input type="text" class="form-control" name="name" value="{{$user->name}}">
+                  <input type="text" class="form-control" name="name" value="{{$user->name}}" required novalidate>
                 </div>
                 <div class="col-12">
                   <label for="inputEmail4" class="form-label">Email</label>
-                  <input type="email" class="form-control" name="email" value="{{$user->email}}">
+                  <input type="email" class="form-control  @error('email') is-invalid @enderror" name="email" value="{{$user->email}}" required novalidate>
+                  @error('email')
+                   <div class="invalid-feedback">El correo proporcionado ya pertenece a una cuenta</div>
+                   @enderror
+
                 </div>
                 <div class="col-12">
                   <label for="inputPassword4" class="form-label">Contraseña</label>
-                  <input type="password" class="form-control" name="password">
+                  <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"   novalidate>
+                  @error('password')
+                  <div class="invalid-feedback">Contraseña no valida</div>
+                  @enderror
                 </div>
                 <div class="col-12">
                   <label for="inputPassword4" class="form-label">Confirmar contraseña</label>
