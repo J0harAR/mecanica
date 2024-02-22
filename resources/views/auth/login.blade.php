@@ -22,7 +22,9 @@
 
                 @if($errors->has('email') || $errors->has('password'))
                   <p class="text-danger mb-0">Algo salió mal.</p>
-                  <ul><li class="text-danger mb-0 small mt-3">Estas credenciales no coinciden con nuestros registros.</li></ul>
+                  <ul><li class="text-danger mb-0 small mt-3">Estas credenciales no coinciden con nuestros registros.
+                
+                  </li></ul>
                   
                 @endif
 
