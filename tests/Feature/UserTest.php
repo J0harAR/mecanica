@@ -9,6 +9,7 @@ use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 class UserTest extends TestCase
 {
     
@@ -116,9 +117,94 @@ class UserTest extends TestCase
         }else{
             $accesoIncorrecto->assertRedirect(route('home'));
         }
+
+    }
+
+    /**
+    * Test para la creacion de usuarios manualmente(Dashboard)
+    */
+    public function test_view_users(){
+
+        Artisan::call('migrate');
+        
+        User::create([
+            "name" =>"Test",
+            "email" => 'test@gmail.com',
+            "password" => Hash::make('password22'),
+        ]);
+
+
+        $acceso = $this->post(route('login'), [
+            'email' => 'test@gmail.com',
+            'password' => 'password22',
+        
+        ]);
+        $acceso->assertStatus(302)->assertRedirect(route('home'));
+
+        $acceso = $this->get(route('usuarios.index'))
+        ->assertStatus(200)
+        ->assertViewIs('usuarios.index');
+    }
+    public function test_create_user(){
+        
+        Artisan::call('migrate');
+        
+        $user = User::factory()->create([
+            "name" => "Test",
+            "email" => 'test@gmail.com',
+            "password" => Hash::make('password22'),
+        ]);
+        $roleAdministrador = Role::firstOrCreate(['name' => 'Administrador']);
+        $roleServicioSocial = Role::firstOrCreate(['name' => 'Servicio Social']);
+        $user->assignRole($roleAdministrador);
        
+
+        $this->post(route('login'), [
+            'email' => 'test@gmail.com',
+            'password' => 'password22',
+        ]);
+        //Ver formulario de crear usuario
+        $this->get(route('usuarios.create'))
+        ->assertStatus(200)
+        ->assertViewIs('usuarios.crear');
+
+       
+        //Creacion correcta de un usuario
+        $this->post(route('usuarios.store'), [
+            'name' => 'Johan',
+            'email' => 'prueba@gmail.com',
+            'password' => 'password23232',
+            'confirm-password' => 'password23232', // Aseguramos que la confirmación de contraseña sea correcta
+            'roles' => 'Servicio Social', // Asignamos el rol de Servicio Social al nuevo usuario
+        ])->assertRedirect(route('usuarios.index'));
+
+            
+        //Creacion incorrecta de un usuario
+
+        $registroMal = $this->post(route('register'), [
+            'email' => 'prueba2@gmail.com',
+            'name' => '',
+            'password' => 'johan12342',
+            'password_confirmation' => 'johan1234',
+            'roles' => 'Servicio Social',
+        ]);
+        
+        if (session('errors')) {           
+            $registroMal->assertRedirect(route('usuarios.create'))
+                ->assertSessionHasErrors([
+                    'email' => __('validation.unique', ['attribute' => 'email']),
+                    'password' => __('validation.same', ['attribute' => 'password']),
+                    'name' => __('validation.required', ['attribute' => 'name']),
+                ]);
+        } else {          
+            $registroMal->assertRedirect(route('home'));
+        }
 
 
     }
+
+
+
+   
 }
 
