@@ -133,14 +133,13 @@ class UserTest extends TestCase
             "password" => Hash::make('password22'),
         ]);
 
-
         $acceso = $this->post(route('login'), [
             'email' => 'test@gmail.com',
             'password' => 'password22',
         
         ]);
         $acceso->assertStatus(302)->assertRedirect(route('home'));
-
+        //Ver la tabla de usuarios
         $acceso = $this->get(route('usuarios.index'))
         ->assertStatus(200)
         ->assertViewIs('usuarios.index');
@@ -174,13 +173,12 @@ class UserTest extends TestCase
             'name' => 'Johan',
             'email' => 'prueba@gmail.com',
             'password' => 'password23232',
-            'confirm-password' => 'password23232', // Aseguramos que la confirmación de contraseña sea correcta
-            'roles' => 'Servicio Social', // Asignamos el rol de Servicio Social al nuevo usuario
+            'confirm-password' => 'password23232', 
+            'roles' => 'Servicio Social',
         ])->assertRedirect(route('usuarios.index'));
 
             
         //Creacion incorrecta de un usuario
-
         $registroMal = $this->post(route('register'), [
             'email' => 'prueba2@gmail.com',
             'name' => '',
@@ -195,6 +193,7 @@ class UserTest extends TestCase
                     'email' => __('validation.unique', ['attribute' => 'email']),
                     'password' => __('validation.same', ['attribute' => 'password']),
                     'name' => __('validation.required', ['attribute' => 'name']),
+                    'role' => __('validation.required', ['attribute' => 'role']),
                 ]);
         } else {          
             $registroMal->assertRedirect(route('home'));
@@ -203,7 +202,73 @@ class UserTest extends TestCase
 
     }
 
+    public function test_edit_user(){
+        Artisan::call('migrate');
+        
+        $user = User::factory()->create([
+            "name" => "Test",
+            "email" => 'test@gmail.com',
+            "password" => Hash::make('password22'),
+        ]);
+        $roleAdministrador = Role::firstOrCreate(['name' => 'Administrador']);
+        $roleServicioSocial = Role::firstOrCreate(['name' => 'Servicio Social']);
+        $user->assignRole($roleAdministrador);
+       
 
+        $this->post(route('login'), [
+            'email' => 'test@gmail.com',
+            'password' => 'password22',
+        ]);
+        //Ver formulario de editar usuario
+        $this->get(route('usuarios.edit',$user->id))
+        ->assertStatus(200)
+        ->assertViewIs('usuarios.editar');
+
+        //Update de forma correcta de un usuario
+        $updateCorrecto = $this->patch(route('usuarios.update',$user->id), [
+            'email' => 'prueba2@gmail.com',
+            'name' => 'Pedro',
+            'password' => '',
+            'password_confirmation' => '',
+            'roles' => 'Servicio Social',
+        ])->assertRedirect(route('usuarios.index'));
+
+        //Update de forma incorrecta de un usuario(Contraseñas mal)
+        $registroMal = $this->patch(route('usuarios.update',$user->id), [
+            'email' => 'prueba2@gmail.com',
+            'name' => 'Pedro',
+            'password' => 'asdasd',
+            'password_confirmation' => '', 
+            'roles' => 'Servicio Social',
+        ]);
+
+        $registroMal->assertRedirect(route('usuarios.edit',$user->id))
+        ->assertSessionHasErrors([
+            'password' => __('validation.same', ['attribute' => 'password']),
+        ]);
+
+    }
+    public function test_delete_user(){
+        Artisan::call('migrate');
+        
+        $user = User::factory()->create([
+            "name" => "Test",
+            "email" => 'test@gmail.com',
+            "password" => Hash::make('password22'),
+        ]);
+        $roleAdministrador = Role::firstOrCreate(['name' => 'Administrador']);
+        $user->assignRole($roleAdministrador);
+        $this->post(route('login'), [
+            'email' => 'test@gmail.com',
+            'password' => 'password22',
+        ]);
+        //Eliminar registro
+        $userEliminar = User::factory()->create();
+        $this->delete(route('usuarios.destroy', $userEliminar->id))
+        ->assertRedirect(route('usuarios.index'));
+        $this->assertDatabaseMissing('users', ['id' => $userEliminar->id]);
+
+    }
 
    
 }
