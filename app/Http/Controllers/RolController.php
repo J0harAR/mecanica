@@ -42,14 +42,18 @@ class RolController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $this->validate($request,['name'=>'required','permission'=>'required']);
-        $role=Role::create(['name'=>$request->input('name')]);
-        $role->syncPermissions($request->input('permission'));
-        
-        return redirect()->route('roles.index');
-    }
+   public function store(Request $request)
+{
+    $this->validate($request, ['name'=>'required', 'permission'=>'required']);
+    $role = Role::create(['name' => $request->input('name')]);
+    $role->syncPermissions($request->input('permission'));
+
+    // Agrega un mensaje flash a la sesión
+    //$request->session()->flash('success', 'El rol ha sido registrado exitosamente:.' .$role->name);
+    return redirect()->route('roles.index')->with('success', 'El rol ha sido registrado exitosamente: ' . $role->name);
+
+    //return redirect()->route('roles.index');
+}
 
     /**
      * Display the specified resource.
