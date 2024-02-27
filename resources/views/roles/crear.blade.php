@@ -23,6 +23,15 @@
     </nav>
   </div><!-- End Page Title -->
 
+  @if(Session::has('duplicado'))
+  <div class="alert alert-danger alert-dismissible fade show" role="alert" id="success-alert">
+    {{ session('duplicado') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+    
+  @endif
+
+
 <div class="card custom-card">
     <div class="card-body">
         <h5 class="card-title">Registrar Rol</h5>

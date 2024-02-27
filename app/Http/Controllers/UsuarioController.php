@@ -57,7 +57,7 @@ class UsuarioController extends Controller
         $input['password']=Hash::make($input['password']);
         $user=User::create($input);
         $user->assignRole($request->input('roles'));
-        return redirect()->route('usuarios.index')->with('success', 'El rol ha sido registrado exitosamente: ' . $user->name);
+        return redirect()->route('usuarios.index')->with('success', 'El usuario ha sido registrado exitosamente: ' . $user->name);
 
         //return redirect()->route('usuarios.index');
     }

@@ -45,14 +45,21 @@ class RolController extends Controller
    public function store(Request $request)
 {
     $this->validate($request, ['name'=>'required', 'permission'=>'required']);
-    $role = Role::create(['name' => $request->input('name')]);
-    $role->syncPermissions($request->input('permission'));
+   
+    
+    $registro = DB::table('roles')->where('name', $request->name)->first();
 
-    // Agrega un mensaje flash a la sesión
-    //$request->session()->flash('success', 'El rol ha sido registrado exitosamente:.' .$role->name);
-    return redirect()->route('roles.index')->with('success', 'El rol ha sido registrado exitosamente: ' . $role->name);
+    if($registro){
+        return redirect()->route('roles.create')->with('duplicado', 'El rol ya existe');
+    }else{
+        $role = Role::create(['name' => $request->input('name')]);
+        $role->syncPermissions($request->input('permission'));
 
-    //return redirect()->route('roles.index');
+        // Agrega un mensaje flash a la sesión
+        //$request->session()->flash('success', 'El rol ha sido registrado exitosamente:.' .$role->name);
+        return redirect()->route('roles.index')->with('success', 'El rol ha sido registrado exitosamente: ' . $role->name);
+    }
+  
 }
 
     /**
