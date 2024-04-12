@@ -22,28 +22,39 @@
                    
                    
                     <div class="modal-body">
-                        <form class="row g-3 needs-validation" action="{{route('inventario.store')}}" method="POST">
-                        
+                        <form class="row g-3" action="{{route('inventario.store')}}" method="POST">
+                        @csrf
                             <div class="col-md-12">
                                 <label for="nombre" class="form-label">Nombre del articulo</label>
-                                <input type="text" class="form-control" id="nombre">
+                                <input type="text" class="form-control" id="nombre" name="nombre">
                             </div>
 
                             <div class="col-md-12">
                                 <label for="cantidad" class="form-label">Cantidad</label>
-                                <input type="number" class="form-control" id="cantidad">
+                                <input type="number" class="form-control" id="cantidad" name="cantidad">
                             </div>
 
 
                             <div class="col-md-12">
                                 <label for="estatus" class="form-label">Estatus</label>
-                                <input type="text" class="form-control" id="estatus">
+                                <input type="text" class="form-control" id="estatus" name="estatus">
+                            </div>
+
+                            <div class="col-md-12">
+                                <label for="tipo" class="form-label">Tipo</label>
+                                <select id="tipo" class="form-select" required name="tipo">
+                                    <option selected disabled>Selecciona un tipo</option>
+                                    <option value="Insumos">Insumos</option>
+                                    <option value="Maquinaria">Maquinaria</option>
+                                     <option value="Herramientas">Herramientas</option>
+                                </select>
                             </div>
 
 
-                            <div class="col-md-6">
+
+                            <div class="col-md-12" id="seccion">
                                 <label for="seccion" class="form-label">Seccion</label>
-                                    <select id="seccion" class="form-select">
+                                    <select id="seccion" class="form-select" name="seccion">
                                     <option selected disabled>Selecciona una seccion </option>
                                         <option value="03">03 Metrologia II </option>
                                         <option value="04">04 Mecanica de materiales</option>
@@ -58,60 +69,52 @@
                                     </select>
                             </div>
 
-                            <div class="col-md-6">
-                                <label for="tipo" class="form-label">Tipo</label>
-                                <select id="tipo" class="form-select" required>
-                                    <option selected disabled>Selecciona un tipo</option>
-                                    <option value="Insumos">Insumos</option>
-                                    <option value="Maquinaria">Maquinaria</option>
-                                     <option value="Herramientas">Herramientas</option>
-                                </select>
-                            </div>
+                            
 
-                            <div id="otroTipo" style="display: none;" class="col-md-6">
-                                <label for="otroTipo" class="form-label">Tipo de herramientas</label>
-                                <select id="otroTipo" class="form-select">
+                            <div id="tipo_herramienta" style="display: none;" class="col-md-6">
+                                <label for="tipo_herramienta" class="form-label">Tipo de herramientas</label>
+                                <select id="tipo_herramienta" class="form-select" name="tipo_herramienta">
                                 <option selected disabled>Selecciona un tipo</option>
-                                <option value="HC">Herramienta de corte</option>
-                                <option value="HG">Herramienta de golpe</option>
-                                <option value="HM">Herramienta de mantenimimiento</option>
-                                <option value="MA">Herramienta de maquinado</option>
-                                <option value="HM">Herramienta de medición</option>
-                                <option value="HM">Herramienta de montaje</option>
-                                <option value="HN">Herramienta de neumaticos</option>
-                                <option value="HS">Herramienta de seguridad</option>
-                                <option value="HS">Herramienta de sujeción</option>
-                                <option value="HT">Herramienta de torno</option>
-                                <option value="HE">Herramienta Electrica</option>
-                                <option value="HM">Herramienta manual</option>
+                                <option value="Herramienta de corte">Herramienta de corte</option>
+                                <option value="Herramienta de golpe">Herramienta de golpe</option>
+                                <option value="Herramienta de mantenimimiento">Herramienta de mantenimimiento</option>
+                                <option value="Herramienta de maquinado">Herramienta de maquinado</option>
+                                <option value="Herramienta de medición">Herramienta de medición</option>
+                                <option value="Herramienta de montaje">Herramienta de montaje</option>
+                                <option value="Herramienta de neumaticos">Herramienta de neumaticos</option>
+                                <option value="Herramienta de seguridad">Herramienta de seguridad</option>
+                                <option value="Herramienta de sujecion">Herramienta de sujeción</option>
+                                <option value="Herramienta de torno">Herramienta de torno</option>
+                                <option value="Herramienta Electrica">Herramienta Electrica</option>
+                                <option value="Herramienta manual">Herramienta manual</option>
                                 </select>
                             </div>  
 
                             <div class="col-md-6" id="dimensionHerramienta" style="display:none;">
                                 <label for="dimension_herramienta" class="form-label">Dimensión</label>
-                                <input type="number" class="form-control" id="dimension_herramienta">
+                                <input type="number" class="form-control" id="dimension_herramienta" name="dimension_herramienta">
                             </div>
 
                             <div class="col-md-12" id="condicionHerramienta" style="display:none;">
                                 <label for="condicion_herramienta" class="form-label">Condición</label>
-                                <input type="text" class="form-control" id="condicion_herramienta">
+                                <input type="text" class="form-control" id="condicion_herramienta" name="condicion_herramienta">
                             </div>
 
 
 
                             <div class="col-md-12" id="tipoMaquina" style="display:none;">
                                 <label for="tipo_maquina" class="form-label">Tipo de maquina</label>
-                                <input type="text" class="form-control" id="tipo_maquina">
+                                <input type="text" class="form-control" id="tipo_maquina"  name="tipo_maquina">
                             </div>
 
                             <div class="col-md-8" id="tipoInsumo" style="display:none;">
                                 <label for="tipo_insumo" class="form-label">Tipo de insumo</label>
-                                <input type="text" class="form-control" id="tipo_insumo">
+                                <input type="text" class="form-control" id="tipo_insumo"  name="tipo_insumo">
                             </div>
 
                             <div class="col-md-4" id="capacidadInsumo" style="display:none;">
                                 <label for="capacidad_insumo" class="form-label">Capacidad</label>
-                                <input type="number" class="form-control" id="capacidad_insumo">
+                                <input type="number" class="form-control" id="capacidad_insumo" name="capacidad_insumo">
                             </div>
 
 
@@ -134,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
    
     var tipoSelect = document.getElementById('tipo');
    
-    var otroTipoDiv = document.getElementById('otroTipo');
+    var tipo_herramienta = document.getElementById('tipo_herramienta');
 
 
     var tipo_maquina=document.getElementById('tipoMaquina');
@@ -147,24 +150,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var condicion_herramienta=document.getElementById('condicionHerramienta');
 
+    var seccion=document.getElementById('seccion');
 
 
     tipoSelect.addEventListener('change', function() {
     switch (this.value) {
         case 'Herramientas':
-            showElement(otroTipoDiv);
+            showElement(tipo_herramienta);
             showElement(dimension_herramienta);
             showElement(condicion_herramienta);
-            hideElements([tipo_maquina, tipo_insumo,capacidad_insumo]);
+            
+            hideElements([tipo_maquina, tipo_insumo,capacidad_insumo,seccion]);
             break;
         case 'Maquinaria':
             showElement(tipo_maquina);
-            hideElements([otroTipoDiv, tipo_insumo,capacidad_insumo,dimension_herramienta,condicion_herramienta]);
+            showElement(seccion);
+            hideElements([tipo_herramienta, tipo_insumo,capacidad_insumo,dimension_herramienta,condicion_herramienta]);
+           
             break;
         case 'Insumos':
             showElement(tipo_insumo);
             showElement(capacidad_insumo);
-            hideElements([otroTipoDiv, tipo_maquina,dimension_herramienta,condicion_herramienta]);
+            hideElements([tipo_herramienta, tipo_maquina,dimension_herramienta,condicion_herramienta,seccion]);
             break;
         default:
          

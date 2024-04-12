@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('id_articulo')->primary();
             $table->string('nombre');
             $table->integer('cantidad');
-            $table->string('seccion');
+            $table->string('seccion')->nullable();
             $table->string('tipo');
             $table->timestamps();
         });
