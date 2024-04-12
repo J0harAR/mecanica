@@ -286,6 +286,15 @@
   </li><!-- End Role Page Nav -->
   @endcan
 
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="{{ route('inventario.index') }}">
+      <i class="bi bi-person-lock"></i>
+      <span>Inventario</span>
+    </a>
+  </li><!-- End Role Page Nav -->
+
+
+
 
 </ul>
 
