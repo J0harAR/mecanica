@@ -14,10 +14,8 @@ return new class extends Migration
         Schema::create('herramientas', function (Blueprint $table) {
 
             $table->string('id_herramientas')->primary();
-            $table->string('id_inventario')->nullable();
             $table->string('condicion');
             $table->float('dimension');
-            $table->foreign('id_inventario')->references('id_inventario')->on('articulo_inventariado')->onDelete('SET NULL');
         });
     }
 

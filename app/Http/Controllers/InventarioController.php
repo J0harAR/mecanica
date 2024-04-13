@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Catalogo_articulo;
+use App\Models\Articulo_inventariado;
+
 class InventarioController extends Controller
 {
    
@@ -17,36 +19,48 @@ class InventarioController extends Controller
     public function store(Request $request){
 
         $catalogo_articulo=new Catalogo_articulo;  
+
+        $articulo_inventariado=new Articulo_inventariado;  
+
         $tipo=$request->input('tipo');
         $catalogo_articulo->nombre=$request->input('nombre');
         $catalogo_articulo->cantidad=$request->input('cantidad');
         
 
         if($tipo==="Insumos"){  
-           
+           //Agregar en la tabla de catalogo articulo 
             $catalogo_articulo->tipo=$request->input('tipo_insumo');   
             $catalogo_articulo->id_articulo=$this->generadorCodigoArticulo($catalogo_articulo->nombre,"",$tipo,"");
             $catalogo_articulo->seccion=null;
             $catalogo_articulo->save();
+
+          
+          
            
         }
 
         if($tipo==="Maquinaria"){
-       
+           //Agregar en la tabla de catalogo articulo 
            $catalogo_articulo->tipo=$request->input('tipo_maquina');  
            $catalogo_articulo->seccion=$request->input('seccion'); 
            $catalogo_articulo->id_articulo=$this->generadorCodigoArticulo($catalogo_articulo->nombre,$catalogo_articulo->seccion,$tipo,"");
            $catalogo_articulo->save();
+
+
+            //Agregar en la tabla de articulo inventariado
+            $articulo_inventariado->id_articulo=$catalogo_articulo->id_articulo;
+            echo($articulo_inventariado);
+           //$articulo_inventariado->id_inventario='111';
            
         }
 
         if($tipo==="Herramientas"){
-
+            //Agregar en la tabla de catalogo articulo 
             $catalogo_articulo->tipo=$request->input('tipo_herramienta');
             $catalogo_articulo->id_articulo=$this->generadorCodigoArticulo($catalogo_articulo->nombre,"",$tipo,$catalogo_articulo->tipo);
             $catalogo_articulo->seccion=null;
             $catalogo_articulo->save();
-          
+            
         }
 
  
@@ -100,5 +114,12 @@ class InventarioController extends Controller
 
             return $codigo;
     }
+
+
+        public function generadorCodigoInventario(Articulo_inventariado $articulo_inventariado){
+
+
+
+        }
 
 }

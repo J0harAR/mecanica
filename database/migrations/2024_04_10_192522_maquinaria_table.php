@@ -13,9 +13,6 @@ return new class extends Migration
     {
         Schema::create('maquinaria', function (Blueprint $table) {
             $table->string('id_maquinaria')->primary();
-            $table->string('id_inventario')->nullable();
-            $table->foreign('id_inventario')->references('id_inventario')->on('articulo_inventariado')->onDelete('SET NULL');
-
         });
     }
 
