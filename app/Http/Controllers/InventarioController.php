@@ -192,7 +192,16 @@ class InventarioController extends Controller
         ->value('id_inventario');
 
         if($ultimo_codigo==null){
-            $ultimo_codigo=$catalogo_articulo->id_articulo."00";
+
+            if($tipo==="Maquinaria"){
+                $ultimo_codigo=$catalogo_articulo->id_articulo."00";
+            }
+
+            if($tipo==="Herramientas"){
+                $ultimo_codigo=$catalogo_articulo->id_articulo."-00";
+            }
+
+            
         }
         $ultimo_numero = intval(substr($ultimo_codigo, -2)); 
         
@@ -212,9 +221,7 @@ class InventarioController extends Controller
         if($tipo==="Herramientas"){
             //Revisar si es el primer registro 
                 if($this->contarGuionesMedios($ultimo_codigo)==2){          
-                    $ultimo_codigo=$ultimo_codigo."-00";
-                    $ultimo_numero = intval(substr($ultimo_codigo, -2));
-           
+
                     for ($i = $ultimo_numero + 1; $i <= $ultimo_numero + $cantidad_productos; $i++) {
                         $numero_formateado = str_pad($i, 2, "0", STR_PAD_LEFT);
                         $nuevo_codigo = substr($ultimo_codigo, 0, -2). $numero_formateado;
