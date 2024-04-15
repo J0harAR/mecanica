@@ -14,6 +14,6 @@ class Articulo_inventariado extends Model
     protected $keyType = 'string';
 
     public function Catalogo_articulos(){
-        return $this->hasMany(Catalogo_articulo::class, 'id_articulo')->keyType('string');
+        return $this->belongsTo(Catalogo_articulo::class, 'id_articulo');
     }
 }

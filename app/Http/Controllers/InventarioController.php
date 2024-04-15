@@ -11,9 +11,9 @@ class InventarioController extends Controller
    
     public function index()
     {
-        $articulo_inventariado=Articulo_inventariado::count();   
-        $catalogo_articulo=Catalogo_articulo::count();   
-        return view('inventarios.index');
+        $articulos_inventariados=Articulo_inventariado::all();   
+        $catalogo_articulo=Catalogo_articulo::all();   
+        return view('inventarios.index',compact('articulos_inventariados','total_herramientas'));
     }
 
 
@@ -164,9 +164,7 @@ class InventarioController extends Controller
             $iniciales_tipo_herramienta=strtoupper($iniciales_herramienta);
 
             if($tipo==="Maquinaria"){
-                $codigo=$seccion.$iniciales_nombre;
-               
-               
+                $codigo=$seccion.$iniciales_nombre;                          
             }
 
             if($tipo==="Insumos"){
@@ -243,9 +241,7 @@ class InventarioController extends Controller
         return $nuevo_codigos;
     }
 
-
    public function contarGuionesMedios($cadena) {
-        // Contar el número de guiones medios en la cadena
         $conteo = substr_count($cadena, "-");
         return $conteo;
     }

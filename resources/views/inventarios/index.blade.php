@@ -7,6 +7,118 @@
         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal">Agregar articulo</button>
 
     </div>
+            
+<div class="row">
+    <div class="col-lg-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Herramientas</h5>
+                <div class="d-flex justify-content-between">
+                    <h2 class="text-right"><i class="bi bi-person-lock"></i></h2>
+                    <div class="d-flex flex-column justify-content-between align-items-center"> 
+                        <h2><span></span></h2>
+                        <p class="m-b-o text-right"><a href="/roles">Ver mas...</a></p>
+                    </div> 
+                </div> 
+                
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Maquinaria</h5>
+                <div class="d-flex justify-content-between">
+                    <h2 class="text-right"><i class="bi bi-person-lock"></i></h2>
+                    <div class="d-flex flex-column justify-content-between align-items-center"> 
+                        <h2><span></span></h2>
+                        <p class="m-b-o text-right"><a href="/roles">Ver mas...</a></p>
+                    </div> 
+                </div> 
+                
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Insumos</h5>
+                <div class="d-flex justify-content-between">
+                    <h2 class="text-right"><i class="bi bi-person-lock"></i></h2>
+                    <div class="d-flex flex-column justify-content-between align-items-center"> 
+                        <h2><span></span></h2>
+                        <p class="m-b-o text-right"><a href="/roles">Ver mas...</a></p>
+                    </div> 
+                </div> 
+                
+            </div>
+          </div>
+        </div>
+</div>
+
+    <div class="card">
+            <div class="card-body">
+            
+                    <table class="table datatable">
+                        <thead>
+                        <tr>
+                            <th>
+                            Codigo
+                            </th>
+                            <th>Nombre</th>
+                            <th>Estatus</th>
+                            <th>Tipo</th>
+                            <th>Subtipo</th>
+                            <th>Seccion</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($articulos_inventariados  as $articulo )
+                        <tr>
+                            <td>{{$articulo->id_inventario}}</td>
+                            <td>{{$articulo->Catalogo_articulos->nombre}}</td>
+                            <td>{{$articulo->estatus}}</td>
+                            <td>{{$articulo->tipo}}</td>
+
+                            @if ($articulo->Catalogo_articulos->tipo)
+                                <td>{{$articulo->Catalogo_articulos->tipo}}</td>
+                            @else
+                                <td>Sin subtipo</td>
+                            @endif
+
+                            
+
+                            @if ($articulo->Catalogo_articulos->seccion)
+                                <td>{{$articulo->Catalogo_articulos->seccion}}</td>
+                            @else
+                                <td>Sin sección</td>
+                            @endif
+                            <td>{{$articulo->id_inventario}}</td>
+                           
+                        </tr>  
+                        @endforeach
+                       
+                        </tbody>
+                    </table>
+             </div>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
 
 
 
