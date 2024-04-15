@@ -9,8 +9,11 @@ use  App\Models\Catalogo_articulo;
 class Articulo_inventariado extends Model
 {
     use HasFactory;
+    protected $table = "Articulo_inventariado";
+    protected $primaryKey = 'id_inventario';
+    protected $keyType = 'string';
 
-    public function Catalogos_arituculos(){
-        return $this->hasMany(Catalogo_articulo);
+    public function Catalogo_articulos(){
+        return $this->hasMany(Catalogo_articulo::class, 'id_articulo')->keyType('string');
     }
 }

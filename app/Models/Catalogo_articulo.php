@@ -9,4 +9,9 @@ class Catalogo_articulo extends Model
 {
     use HasFactory;
     protected $table = "catalogo_articulo";
+    protected $primaryKey = 'id_articulo';
+    protected $keyType = 'string';
+    
+
+    
 }

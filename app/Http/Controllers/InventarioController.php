@@ -17,71 +17,109 @@ class InventarioController extends Controller
 
 
     public function store(Request $request){
-
-        $catalogo_articulo=new Catalogo_articulo;  
-
-        $articulo_inventariado=new Articulo_inventariado;  
-
+        //Obtengo los inputs
+        $nombre_articulo=$request->input('nombre');
+        $seccion_articulo=$request->input('seccion');
+        $estatus=$request->input('estatus');
         $tipo=$request->input('tipo');
-        $catalogo_articulo->nombre=$request->input('nombre');
-        $catalogo_articulo->cantidad=$request->input('cantidad');
-        
+        $cantidad_articulo=$request->input('cantidad');
+        $tipo_maquina=$request->input('tipo_maquina');
+       
 
         if($tipo==="Insumos"){  
            //Agregar en la tabla de catalogo articulo 
-            $catalogo_articulo->tipo=$request->input('tipo_insumo');   
-            $catalogo_articulo->id_articulo=$this->generadorCodigoArticulo($catalogo_articulo->nombre,"",$tipo,"");
-            $catalogo_articulo->seccion=null;
-            $catalogo_articulo->save();
-
-          
-          
-           
+           // $catalogo_articulo->tipo=$request->input('tipo_insumo');   
+            //$catalogo_articulo->id_articulo=$this->generadorCodigoArticulo($catalogo_articulo->nombre,"",$tipo,"","");
+            //$catalogo_articulo->seccion=null;
+           //$catalogo_articulo->save();
+        
         }
 
         if($tipo==="Maquinaria"){
-           //Agregar en la tabla de catalogo articulo 
-           $catalogo_articulo->tipo=$request->input('tipo_maquina');  
-           $catalogo_articulo->seccion=$request->input('seccion'); 
-           $catalogo_articulo->id_articulo=$this->generadorCodigoArticulo($catalogo_articulo->nombre,$catalogo_articulo->seccion,$tipo,"");
-           $catalogo_articulo->save();
+            //Agregar en la tabla de catalogo articulo 
+             $codigo=$this->generadorCodigoArticulo($nombre_articulo,$seccion_articulo,$tipo,"","");
+             
+             
+             if(Catalogo_articulo::where('id_articulo',$codigo)->exists()){
+                    $articulo = Catalogo_articulo::find($codigo);
+                    $articulo->id_articulo=$codigo;
+                    $codigos_inventario=$this->generadorCodigoInventario($articulo,$tipo);
+     
+                    for ($i = 0; $i < $cantidad_articulo; $i++) {
+                         $articulo_inventariado=new Articulo_inventariado;
+                         $articulo_inventariado->id_inventario=$codigos_inventario[$i];
+                         $articulo_inventariado->id_articulo=$codigo;
+                         $articulo_inventariado->estatus=$estatus;
+                         $articulo_inventariado->tipo=$tipo;                  
+                         $articulo_inventariado->save();
+                     }
+     
+                    $articulo->cantidad+=$cantidad_articulo;
+                    $articulo->save();
+                    
+                    
+             }else{
+                
+                 $articulo_nuevo = new Catalogo_articulo;
+                 $articulo_nuevo->id_articulo= $codigo;
+                 $articulo_nuevo->nombre=$nombre_articulo;
+                 $articulo_nuevo->cantidad=$cantidad_articulo;
+                 $articulo_nuevo->seccion=$seccion_articulo;
+                 $articulo_nuevo->tipo=$tipo_maquina;
+                 $articulo_nuevo->save();
+                 $articulo = Catalogo_articulo::find($codigo);
+             
 
-
-            //Agregar en la tabla de articulo inventariado
-            $articulo_inventariado->id_articulo=$catalogo_articulo->id_articulo;
-            echo($articulo_inventariado);
-           //$articulo_inventariado->id_inventario='111';
-           
-        }
+                 $codigos_inventario=$this->generadorCodigoInventario($articulo,$tipo);
+                 for ($i = 0; $i < $articulo->cantidad; $i++) {
+                     $articulo_inventariado=new Articulo_inventariado;
+                     $articulo_inventariado->id_inventario=$codigos_inventario[$i];
+                     $articulo_inventariado->id_articulo=$codigo;
+                     $articulo_inventariado->estatus=$estatus;
+                     $articulo_inventariado->tipo=$tipo;               
+                     $articulo_inventariado->save();
+                }
+     
+             }
+             return redirect()->route('inventario.index');
+         }
+     
 
         if($tipo==="Herramientas"){
-            //Agregar en la tabla de catalogo articulo 
-            $catalogo_articulo->tipo=$request->input('tipo_herramienta');
-            $catalogo_articulo->id_articulo=$this->generadorCodigoArticulo($catalogo_articulo->nombre,"",$tipo,$catalogo_articulo->tipo);
+            //Agregar en la tabla de catalogo articulo
+
+            $dimension=$request->input('dimension_herramienta'); 
+            $catalogo_articulo->tipo=$request
+            ->input('tipo_herramienta');
+            $catalogo_articulo->id_articulo=$this->generadorCodigoArticulo($catalogo_articulo->nombre,"",$tipo,$catalogo_articulo->tipo ?? "",$dimension);       
             $catalogo_articulo->seccion=null;
-            $catalogo_articulo->save();
-            
+            $catalogo_articulo->cantidad=$request->input('cantidad');
+            $catalogo_articulo->save();           
+            $codigos_inventario=$this->generadorCodigoInventario($catalogo_articulo,$tipo);
+
+            for ($i = 0; $i < $catalogo_articulo->cantidad; $i++) {
+                    $articulo_inventariado=new Articulo_inventariado;
+                    $articulo_inventariado->id_inventario=$codigos_inventario[$i];
+                    $articulo_inventariado->id_articulo=$catalogo_articulo->id_articulo;
+                    $articulo_inventariado->estatus=$estatus;
+                    $articulo_inventariado->tipo=$tipo;
+                    $articulo_inventariado->save();
+               
+            }                      
         }
 
- 
     }
 
-
-
-
-
-    public function generadorCodigoArticulo(String $nombre,String $seccion,String $tipo,String $tipoHerramienta){
+    public function generadorCodigoArticulo(String $nombre,String $seccion,String $tipo,String $tipoHerramienta,$dimension){
             $codigo="";
             $iniciales="";
             $iniciales_herramienta="";
-            $ignorar = ["de"];
+            $ignorar = ["de","para"];
 
 
             $palabras = explode(' ', $nombre);
             $tipo_herramientas = explode(' ', $tipoHerramienta);
 
-          
-          
             foreach ($palabras as $palabra) {
              
                 if (!in_array(strtolower($palabra), $ignorar)) {
@@ -102,6 +140,8 @@ class InventarioController extends Controller
 
             if($tipo==="Maquinaria"){
                 $codigo=$seccion.$iniciales_nombre;
+               
+               
             }
 
             if($tipo==="Insumos"){
@@ -109,17 +149,73 @@ class InventarioController extends Controller
             }
 
             if($tipo=="Herramientas"){
-                $codigo = $iniciales_tipo_herramienta.$iniciales_nombre;
+                //MA-FP-0635-01
+                $numero = $dimension;
+                $numero_formateado = str_pad($numero, 4, "0", STR_PAD_LEFT);
+                $codigo = $iniciales_tipo_herramienta."-".$iniciales_nombre."-".$numero_formateado;
             }
+          
 
             return $codigo;
     }
 
 
-        public function generadorCodigoInventario(Articulo_inventariado $articulo_inventariado){
+    public function generadorCodigoInventario(Catalogo_articulo $catalogo_articulo, String $tipo) {
+      
+        $ultimo_codigo = Articulo_inventariado::where('id_articulo', $catalogo_articulo->id_articulo)
+        ->orderBy('id_inventario', 'desc')
+        ->value('id_inventario');
 
-
-
+        if($ultimo_codigo==null){
+            $ultimo_codigo=$catalogo_articulo->id_articulo."00";
         }
+        $ultimo_numero = intval(substr($ultimo_codigo, -2)); 
+        
+        $nuevo_codigos = [];
+        $cantidad_productos = $catalogo_articulo->cantidad;
+    
+        
+        if($tipo==="Maquinaria"){
+            for ($i = $ultimo_numero + 1; $i <= $ultimo_numero + $cantidad_productos; $i++) {
+                $numero_formateado = str_pad($i, 2, "0", STR_PAD_LEFT);
+                $nuevo_codigo = substr($ultimo_codigo, 0, -2) . $numero_formateado;
+                $nuevo_codigos[] = $nuevo_codigo;
+            }
+            
+        }  
+
+        if($tipo==="Herramientas"){
+            //Revisar si es el primer registro 
+                if($this->contarGuionesMedios($ultimo_codigo)==2){          
+                    $ultimo_codigo=$ultimo_codigo."-00";
+                    $ultimo_numero = intval(substr($ultimo_codigo, -2));
+           
+                    for ($i = $ultimo_numero + 1; $i <= $ultimo_numero + $cantidad_productos; $i++) {
+                        $numero_formateado = str_pad($i, 2, "0", STR_PAD_LEFT);
+                        $nuevo_codigo = substr($ultimo_codigo, 0, -2). $numero_formateado;
+                        $nuevo_codigos[] = $nuevo_codigo;
+                    }
+                    
+                }else{
+ 
+                    for ($i = $ultimo_numero + 1; $i <= $ultimo_numero + $cantidad_productos; $i++) {
+                        $numero_formateado = str_pad($i, 2, "0", STR_PAD_LEFT);
+                        $nuevo_codigo = substr($ultimo_codigo, 0, -2) . $numero_formateado;           
+                        $nuevo_codigos[] = $nuevo_codigo;
+                    }
+                    
+                }
+
+        }  
+
+        return $nuevo_codigos;
+    }
+
+
+   public function contarGuionesMedios($cadena) {
+        // Contar el número de guiones medios en la cadena
+        $conteo = substr_count($cadena, "-");
+        return $conteo;
+    }
 
 }

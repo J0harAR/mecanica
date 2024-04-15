@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('estatus');
             $table->string('tipo');
             $table->foreign('id_articulo')->references('id_articulo')->on('catalogo_articulo')->onDelete('SET NULL');
+            $table->timestamps();
 
         });
     }
