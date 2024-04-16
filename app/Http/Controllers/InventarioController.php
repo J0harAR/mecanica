@@ -7,6 +7,7 @@ use App\Models\Catalogo_articulo;
 use App\Models\Articulo_inventariado;
 use App\Models\Herramientas;
 use App\Models\Maquinaria;
+use App\Models\Insumos;
 
 class InventarioController extends Controller
 {
@@ -30,12 +31,69 @@ class InventarioController extends Controller
         $tipo_herramienta=$request->input('tipo_herramienta');
         $dimension=$request->input('dimension_herramienta'); 
         $condicion_herramienta=$request->input('condicion_herramienta');
+        $capacidad_insumo=$request->input('capacidad_insumo');
+        $tipo_insumo=$request->input('tipo_insumo');
+
         if($tipo==="Insumos"){  
-           //Agregar en la tabla de catalogo articulo 
-           // $catalogo_articulo->tipo=$request->input('tipo_insumo');   
-            //$catalogo_articulo->id_articulo=$this->generadorCodigoArticulo($catalogo_articulo->nombre,"",$tipo,"","");
-            //$catalogo_articulo->seccion=null;
-           //$catalogo_articulo->save();
+            $codigo=$this->generadorCodigoArticulo($nombre_articulo,"",$tipo,"","");
+ 
+                if(Catalogo_articulo::where('id_articulo',$codigo)->exists()){
+                    $articulo = Catalogo_articulo::find($codigo);
+                    $articulo->id_articulo=$codigo;
+                    $codigos_inventario=$this->generadorCodigoInventario($articulo,$tipo,$cantidad_articulo);
+
+                    for ($i = 0; $i < $cantidad_articulo; $i++) {
+                        $articulo_inventariado=new Articulo_inventariado;
+                        $insumo=new Insumos;
+
+                        $articulo_inventariado->id_inventario=$codigos_inventario[$i];
+                        $articulo_inventariado->id_articulo=$codigo;
+                        $articulo_inventariado->estatus=$estatus;
+                        $articulo_inventariado->tipo=$tipo; 
+
+                        $insumo->id_insumo=$codigos_inventario[$i];   
+                        $insumo->capacidad=$capacidad_insumo;
+
+                        $articulo_inventariado->save();
+                        $insumo->save();
+                    
+                    }
+
+                    $articulo->cantidad+=$cantidad_articulo;
+                    $articulo->save();
+                    
+                    
+            }else{
+                
+                $articulo_nuevo = new Catalogo_articulo;
+                $articulo_nuevo->id_articulo= $codigo;
+                $articulo_nuevo->nombre=$nombre_articulo;
+                $articulo_nuevo->cantidad=$cantidad_articulo;
+                $articulo_nuevo->seccion=null;
+                $articulo_nuevo->tipo=$tipo_insumo;
+                $articulo_nuevo->save();
+                $articulo = Catalogo_articulo::find($codigo);
+            
+
+                $codigos_inventario=$this->generadorCodigoInventario($articulo,$tipo,$cantidad_articulo);
+                for ($i = 0; $i < $articulo->cantidad; $i++) {
+                    $articulo_inventariado=new Articulo_inventariado;
+                    $insumo=new Insumos;
+
+                    $articulo_inventariado->id_inventario=$codigos_inventario[$i];
+                    $articulo_inventariado->id_articulo=$codigo;
+                    $articulo_inventariado->estatus=$estatus;
+                    $articulo_inventariado->tipo=$tipo;   
+                                
+                    $insumo->id_insumo=$codigos_inventario[$i];   
+                    $insumo->capacidad=$capacidad_insumo;
+                                        
+                    $articulo_inventariado->save();
+                    $insumo->save();
+                }
+
+            }
+            return redirect()->route('inventario.index');
         
         }
 
@@ -226,7 +284,7 @@ class InventarioController extends Controller
 
         if($ultimo_codigo==null){
 
-            if($tipo==="Maquinaria"){
+            if($tipo==="Maquinaria" or $tipo==="Insumos"){
                 $ultimo_codigo=$catalogo_articulo->id_articulo."00";
             }
 
@@ -235,6 +293,7 @@ class InventarioController extends Controller
             }
 
             
+            
         }
         $ultimo_numero = intval(substr($ultimo_codigo, -2)); 
         
@@ -242,7 +301,7 @@ class InventarioController extends Controller
         $cantidad_productos = $Cantidad;
     
         
-        if($tipo==="Maquinaria"){
+        if($tipo==="Maquinaria" or $tipo==="Insumos"){
             for ($i = $ultimo_numero + 1; $i <= $ultimo_numero + $cantidad_productos; $i++) {
                 $numero_formateado = str_pad($i, 2, "0", STR_PAD_LEFT);
                 $nuevo_codigo = substr($ultimo_codigo, 0, -2) . $numero_formateado;

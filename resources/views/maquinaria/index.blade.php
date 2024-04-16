@@ -69,7 +69,7 @@
                             <th>Codigo</th>
                             <th>Nombre</th>
                             <th>Seccion</th>
-                            <th>Condicion</th>
+                            <th>Estatus</th>
                         </tr>
                         </thead>
                         <tbody>
