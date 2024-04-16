@@ -8,5 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Maquinaria extends Model
 {
     use HasFactory;
-    
+    protected $table = "maquinaria";
+    protected $primaryKey = 'id_maquinaria';
+    protected $keyType = 'string';
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\CatalogoArticulosController;
+use App\Http\Controllers\HerramientasController;
 
 
 
@@ -48,3 +49,5 @@ Route::get('/articulos', [CatalogoArticulosController::class, 'index']);
     //parte de inventario
 Route::get('/inventario', [InventarioController::class, 'index'])->name('inventario.index');
 Route::post('/inventario', [InventarioController::class, 'store'])->name('inventario.store');
+
+Route::get('/inventario/herramientas', [HerramientasController::class, 'index'])->name('herramientas.index');

@@ -16,4 +16,5 @@ class Articulo_inventariado extends Model
     public function Catalogo_articulos(){
         return $this->belongsTo(Catalogo_articulo::class, 'id_articulo');
     }
+
 }

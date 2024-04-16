@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('maquinaria', function (Blueprint $table) {
             $table->string('id_maquinaria')->primary();
+            $table->foreign('id_maquinaria')->references('id_inventario')->on('articulo_inventariado');
+            $table->timestamps();
         });
     }
 

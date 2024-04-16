@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('insumos', function (Blueprint $table) {
             $table->string('id_insumo')->primary();
+            $table->foreign('id_insumo')->references('id_inventario')->on('articulo_inventariado');
             $table->float('capacidad');
+            $table->timestamps();
         });
     }
 

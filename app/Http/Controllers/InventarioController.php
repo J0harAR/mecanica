@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Catalogo_articulo;
 use App\Models\Articulo_inventariado;
+use App\Models\Herramientas;
+use App\Models\Maquinaria;
 
 class InventarioController extends Controller
 {
@@ -13,7 +15,7 @@ class InventarioController extends Controller
     {
         $articulos_inventariados=Articulo_inventariado::all();   
         $catalogo_articulo=Catalogo_articulo::all();   
-        return view('inventarios.index',compact('articulos_inventariados','total_herramientas'));
+        return view('inventarios.index',compact('catalogo_articulo'));
     }
 
 
@@ -27,7 +29,7 @@ class InventarioController extends Controller
         $tipo_maquina=$request->input('tipo_maquina');
         $tipo_herramienta=$request->input('tipo_herramienta');
         $dimension=$request->input('dimension_herramienta'); 
-
+        $condicion_herramienta=$request->input('condicion_herramienta');
         if($tipo==="Insumos"){  
            //Agregar en la tabla de catalogo articulo 
            // $catalogo_articulo->tipo=$request->input('tipo_insumo');   
@@ -41,19 +43,27 @@ class InventarioController extends Controller
             //Agregar en la tabla de catalogo articulo 
              $codigo=$this->generadorCodigoArticulo($nombre_articulo,$seccion_articulo,$tipo,"","");
              
-             
+               //Agregar en la tabla de articulo_inventariado 
              if(Catalogo_articulo::where('id_articulo',$codigo)->exists()){
                     $articulo = Catalogo_articulo::find($codigo);
                     $articulo->id_articulo=$codigo;
-                    $codigos_inventario=$this->generadorCodigoInventario($articulo,$tipo);
+                    $codigos_inventario=$this->generadorCodigoInventario($articulo,$tipo,$cantidad_articulo);
      
                     for ($i = 0; $i < $cantidad_articulo; $i++) {
                          $articulo_inventariado=new Articulo_inventariado;
+                         $maquinaria=new Maquinaria;
+
                          $articulo_inventariado->id_inventario=$codigos_inventario[$i];
                          $articulo_inventariado->id_articulo=$codigo;
                          $articulo_inventariado->estatus=$estatus;
-                         $articulo_inventariado->tipo=$tipo;                  
+                         $articulo_inventariado->tipo=$tipo; 
+
+                         $maquinaria->id_maquinaria=$codigos_inventario[$i];   
+                         
+
                          $articulo_inventariado->save();
+                         $maquinaria->save();
+                       
                      }
      
                     $articulo->cantidad+=$cantidad_articulo;
@@ -72,14 +82,20 @@ class InventarioController extends Controller
                  $articulo = Catalogo_articulo::find($codigo);
              
 
-                 $codigos_inventario=$this->generadorCodigoInventario($articulo,$tipo);
+                 $codigos_inventario=$this->generadorCodigoInventario($articulo,$tipo,$cantidad_articulo);
                  for ($i = 0; $i < $articulo->cantidad; $i++) {
                      $articulo_inventariado=new Articulo_inventariado;
+                     $maquinaria=new Maquinaria;
+
                      $articulo_inventariado->id_inventario=$codigos_inventario[$i];
                      $articulo_inventariado->id_articulo=$codigo;
                      $articulo_inventariado->estatus=$estatus;
-                     $articulo_inventariado->tipo=$tipo;               
+                     $articulo_inventariado->tipo=$tipo;   
+                                 
+                     $maquinaria->id_maquinaria=$codigos_inventario[$i]; 
+                                          
                      $articulo_inventariado->save();
+                     $maquinaria->save();
                 }
      
              }
@@ -89,19 +105,29 @@ class InventarioController extends Controller
 
         if($tipo==="Herramientas"){
          
-            $codigo=$this->generadorCodigoArticulo($nombre_articulo,"",$tipo,$tipo_herramienta,$dimension);               
+            $codigo=$this->generadorCodigoArticulo($nombre_articulo,"",$tipo,$tipo_herramienta,$dimension);     
+             //Agregar en la tabla de articulo_inventariado           
            if(Catalogo_articulo::where('id_articulo',$codigo)->exists()){
             $articulo = Catalogo_articulo::find($codigo);
             $articulo->id_articulo=$codigo;
-            $codigos_inventario=$this->generadorCodigoInventario($articulo,$tipo);
+            $codigos_inventario=$this->generadorCodigoInventario($articulo,$tipo,$cantidad_articulo);
 
             for ($i = 0; $i < $cantidad_articulo; $i++) {
-                 $articulo_inventariado=new Articulo_inventariado;
+                 $articulo_inventariado=new Articulo_inventariado;   
+                 $herramienta=new Herramientas;
+                 
                  $articulo_inventariado->id_inventario=$codigos_inventario[$i];
                  $articulo_inventariado->id_articulo=$codigo;
                  $articulo_inventariado->estatus=$estatus;
-                 $articulo_inventariado->tipo=$tipo;                  
+                 $articulo_inventariado->tipo=$tipo;
+                 
+                 $herramienta->id_herramientas=$codigos_inventario[$i];
+                 $herramienta->condicion=$condicion_herramienta;
+                 $herramienta->dimension=$dimension;
+
                  $articulo_inventariado->save();
+                 $herramienta->save();
+
              }
 
             $articulo->cantidad+=$cantidad_articulo;
@@ -116,16 +142,25 @@ class InventarioController extends Controller
                 $articulo_nuevo->tipo=$tipo_herramienta;
                 $articulo_nuevo->save();
                 $articulo = Catalogo_articulo::find($codigo);
+                
             
 
-                $codigos_inventario=$this->generadorCodigoInventario($articulo,$tipo);
+                $codigos_inventario=$this->generadorCodigoInventario($articulo,$tipo,$cantidad_articulo);
                 for ($i = 0; $i < $articulo->cantidad; $i++) {
                     $articulo_inventariado=new Articulo_inventariado;
+                    $herramienta=new Herramientas;
+
                     $articulo_inventariado->id_inventario=$codigos_inventario[$i];
                     $articulo_inventariado->id_articulo=$codigo;
                     $articulo_inventariado->estatus=$estatus;
-                    $articulo_inventariado->tipo=$tipo;               
+                    $articulo_inventariado->tipo=$tipo;  
+                    
+                    $herramienta->id_herramientas=$codigos_inventario[$i];
+                    $herramienta->condicion=$condicion_herramienta;
+                    $herramienta->dimension=$dimension;
                     $articulo_inventariado->save();
+                    $herramienta->save();
+                   
                }
     
             }   
@@ -183,7 +218,7 @@ class InventarioController extends Controller
     }
 
 
-    public function generadorCodigoInventario(Catalogo_articulo $catalogo_articulo, String $tipo) {
+    public function generadorCodigoInventario(Catalogo_articulo $catalogo_articulo, String $tipo,$Cantidad) {
       
         $ultimo_codigo = Articulo_inventariado::where('id_articulo', $catalogo_articulo->id_articulo)
         ->orderBy('id_inventario', 'desc')
@@ -204,7 +239,7 @@ class InventarioController extends Controller
         $ultimo_numero = intval(substr($ultimo_codigo, -2)); 
         
         $nuevo_codigos = [];
-        $cantidad_productos = $catalogo_articulo->cantidad;
+        $cantidad_productos = $Cantidad;
     
         
         if($tipo==="Maquinaria"){
