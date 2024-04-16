@@ -34,7 +34,7 @@
                     <h2 class="text-right"><i class="bi bi-person-lock"></i></h2>
                     <div class="d-flex flex-column justify-content-between align-items-center"> 
                         <h2><span></span></h2>
-                        <p class="m-b-o text-right"><a href="{{route('maquinaria.index')}}">Ver mas...</a></p>
+                        <p class="m-b-o text-right"><a href="/roles">Ver mas...</a></p>
                     </div> 
                 </div> 
                 
@@ -68,28 +68,17 @@
                         <tr>
                             <th>Codigo</th>
                             <th>Nombre</th>
-                            <th>Cantidad</th>
-                            <th>Seccion</th>                         
-                            <th>Tipo</th>                       
+                            <th>Seccion</th>
+                            <th>Condicion</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach ($catalogo_articulo  as $articulo )
+                        @foreach ($maquinaria  as $maquina )
                         <tr>
-                            <td>{{$articulo->id_articulo}}</td>
-                            <td>{{$articulo->nombre}}</td>
-                            <td>{{$articulo->cantidad}}</td>
-                          
-                            
-                            @if ($articulo->seccion)
-                                <td>{{$articulo->seccion}}</td>
-                            @else
-                                <td>Sin asignar</td>
-                            @endif
-
-
-                            <td>{{$articulo->tipo}}</td>
-                         
+                            <th>{{$maquina->id_maquinaria}}</th>
+                            <td>{{$maquina->Articulo_inventariados->Catalogo_articulos->nombre}}</td>
+                            <td>{{$maquina->Articulo_inventariados->Catalogo_articulos->seccion}}</td>
+                            <td>{{$maquina->Articulo_inventariados->estatus}}</td>
                            
                         </tr>  
                         @endforeach
@@ -125,7 +114,7 @@
                    
                    
                     <div class="modal-body">
-                        <form class="row g-3" action="{{route('inventario.store')}}" method="POST">
+                        <form class="row g-3"method="POST">
                         @csrf
                             <div class="col-md-12">
                                 <label for="nombre" class="form-label">Nombre del articulo</label>
@@ -232,73 +221,6 @@
         </div>
     </div><!-- End Vertically centered Modal-->
 </div>
-
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-   
-    var tipoSelect = document.getElementById('tipo');
-   
-    var tipo_herramienta = document.getElementById('tipo_herramienta');
-
-
-    var tipo_maquina=document.getElementById('tipoMaquina');
-
-    var tipo_insumo=document.getElementById('tipoInsumo');
-
-    var capacidad_insumo=document.getElementById('capacidadInsumo');
-
-    var dimension_herramienta=document.getElementById('dimensionHerramienta');
-
-    var condicion_herramienta=document.getElementById('condicionHerramienta');
-
-    var seccion=document.getElementById('seccion');
-
-
-    tipoSelect.addEventListener('change', function() {
-    switch (this.value) {
-        case 'Herramientas':
-            showElement(tipo_herramienta);
-            showElement(dimension_herramienta);
-            showElement(condicion_herramienta);
-            
-            hideElements([tipo_maquina, tipo_insumo,capacidad_insumo,seccion]);
-            break;
-        case 'Maquinaria':
-            showElement(tipo_maquina);
-            showElement(seccion);
-            hideElements([tipo_herramienta, tipo_insumo,capacidad_insumo,dimension_herramienta,condicion_herramienta]);
-           
-            break;
-        case 'Insumos':
-            showElement(tipo_insumo);
-            showElement(capacidad_insumo);
-            hideElements([tipo_herramienta, tipo_maquina,dimension_herramienta,condicion_herramienta,seccion]);
-            break;
-        default:
-         
-            break;
-    }
-
-    function showElement(element) {
-        element.style.display = 'block';
-    }
-
-    function hideElements(elements) {
-        elements.forEach(element => {
-            element.style.display = 'none';
-        });
-    }
-
-                
-    });
-});
-</script>
-
-
-
-
 
 
 @endsection

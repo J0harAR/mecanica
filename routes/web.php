@@ -8,6 +8,7 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\CatalogoArticulosController;
 use App\Http\Controllers\HerramientasController;
+use App\Http\Controllers\MaquinariaController;
 
 
 
@@ -51,3 +52,4 @@ Route::get('/inventario', [InventarioController::class, 'index'])->name('inventa
 Route::post('/inventario', [InventarioController::class, 'store'])->name('inventario.store');
 
 Route::get('/inventario/herramientas', [HerramientasController::class, 'index'])->name('herramientas.index');
+Route::get('/inventario/maquinaria', [MaquinariaController::class, 'index'])->name('maquinaria.index');
