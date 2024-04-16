@@ -4,11 +4,11 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="fw-bold mb-0">Inventario</h1>
       
-        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal">Agregar articulo</button>
+        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal"><i class="ri-add-line"></i>Agregar articulo</button>
 
     </div>
             
-<div class="row">
+    <div class="row">
     <div class="col-lg-4">
           <div class="card">
             <div class="card-body">
@@ -34,7 +34,7 @@
                     <h2 class="text-right"><i class="bi bi-person-lock"></i></h2>
                     <div class="d-flex flex-column justify-content-between align-items-center"> 
                         <h2><span></span></h2>
-                        <p class="m-b-o text-right"><a href="/roles">Ver mas...</a></p>
+                        <p class="m-b-o text-right"><a href="{{route('maquinaria.index')}}">Ver mas...</a></p>
                     </div> 
                 </div> 
                 
@@ -51,7 +51,7 @@
                     <h2 class="text-right"><i class="bi bi-person-lock"></i></h2>
                     <div class="d-flex flex-column justify-content-between align-items-center"> 
                         <h2><span></span></h2>
-                        <p class="m-b-o text-right"><a href="/roles">Ver mas...</a></p>
+                        <p class="m-b-o text-right"><a href="{{route('insumos.index')}}">Ver mas...</a></p>
                     </div> 
                 </div> 
                 

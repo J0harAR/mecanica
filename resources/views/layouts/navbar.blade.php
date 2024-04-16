@@ -288,7 +288,7 @@
 
   <li class="nav-item">
     <a class="nav-link collapsed" href="{{ route('inventario.index') }}">
-      <i class="bi bi-person-lock"></i>
+      <i class="bi bi-archive"></i>
       <span>Inventario</span>
     </a>
   </li><!-- End Role Page Nav -->

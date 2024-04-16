@@ -8,7 +8,7 @@
 
     </div>
             
-<div class="row">
+    <div class="row">
     <div class="col-lg-4">
           <div class="card">
             <div class="card-body">
@@ -34,7 +34,7 @@
                     <h2 class="text-right"><i class="bi bi-person-lock"></i></h2>
                     <div class="d-flex flex-column justify-content-between align-items-center"> 
                         <h2><span></span></h2>
-                        <p class="m-b-o text-right"><a href="/roles">Ver mas...</a></p>
+                        <p class="m-b-o text-right"><a href="{{route('maquinaria.index')}}">Ver mas...</a></p>
                     </div> 
                 </div> 
                 
@@ -51,7 +51,7 @@
                     <h2 class="text-right"><i class="bi bi-person-lock"></i></h2>
                     <div class="d-flex flex-column justify-content-between align-items-center"> 
                         <h2><span></span></h2>
-                        <p class="m-b-o text-right"><a href="/roles">Ver mas...</a></p>
+                        <p class="m-b-o text-right"><a href="{{route('insumos.index')}}">Ver mas...</a></p>
                     </div> 
                 </div> 
                 
