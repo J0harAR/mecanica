@@ -228,6 +228,10 @@ class InventarioController extends Controller
 
     }
 
+
+  
+
+
     public function generadorCodigoArticulo(String $nombre,String $seccion,String $tipo,String $tipoHerramienta,$dimension){
             $codigo="";
             $iniciales="";

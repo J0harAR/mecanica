@@ -26,9 +26,9 @@ class SuperAdminSeedder extends Seeder
         ]);
         
         //En caso de que no haya ningun rol registrado
-        //$rol=Role::create(['name'=>'Administrador']);
-        //$permisos=Permission::pluck('id','id')->all();
-        //$rol->syncPermissions($permisos);
+        $rol=Role::create(['name'=>'Administrador']);
+        $permisos=Permission::pluck('id','id')->all();
+        $rol->syncPermissions($permisos);
 
         
         $usuario->assignRole('Administrador');

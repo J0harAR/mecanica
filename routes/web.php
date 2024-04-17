@@ -58,3 +58,6 @@ Route::get('/inventario/maquinaria', [MaquinariaController::class, 'index'])->na
 
 Route::get('/inventario/insumos', [InsumosController::class, 'index'])->name('insumos.index');
 
+Route::delete('/inventario/herramientas/{id}', [HerramientasController::class, 'destroy'])->name('herramientas.destroy');
+
+
