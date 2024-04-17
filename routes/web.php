@@ -60,4 +60,6 @@ Route::get('/inventario/insumos', [InsumosController::class, 'index'])->name('in
 
 Route::delete('/inventario/herramientas/{id}', [HerramientasController::class, 'destroy'])->name('herramientas.destroy');
 
+Route::delete('/inventario/insumos/{id}', [InsumosController::class, 'destroy'])->name('insumos.destroy');
+
 
