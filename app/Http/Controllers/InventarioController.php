@@ -228,6 +228,18 @@ class InventarioController extends Controller
 
     }
 
+    public function destroy($id_articulo)
+    {
+
+    
+        $catalogo_articulo=Catalogo_articulo::find($id_articulo);     
+        $catalogo_articulo->delete();
+
+        return redirect()->route('inventario.index');
+
+       
+    }
+
 
   
 

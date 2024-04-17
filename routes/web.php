@@ -52,17 +52,18 @@ Route::get('/articulos', [CatalogoArticulosController::class, 'index']);
 Route::get('/inventario', [InventarioController::class, 'index'])->name('inventario.index');
 Route::post('/inventario', [InventarioController::class, 'store'])->name('inventario.store');
 
+
+
 Route::get('/inventario/herramientas', [HerramientasController::class, 'index'])->name('herramientas.index');
 Route::get('/inventario/maquinaria', [MaquinariaController::class, 'index'])->name('maquinaria.index');
-
-
 Route::get('/inventario/insumos', [InsumosController::class, 'index'])->name('insumos.index');
 
+
+
 Route::delete('/inventario/herramientas/{id}', [HerramientasController::class, 'destroy'])->name('herramientas.destroy');
-
 Route::delete('/inventario/insumos/{id}', [InsumosController::class, 'destroy'])->name('insumos.destroy');
-
-
 Route::delete('/inventario/maquinaria/{id}', [MaquinariaController::class, 'destroy'])->name('maquinaria.destroy');
+Route::delete('/inventario/{id}', [InventarioController::class, 'destroy'])->name('inventario.destroy');
+
 
 

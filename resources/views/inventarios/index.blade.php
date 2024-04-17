@@ -70,7 +70,8 @@
                             <th>Nombre</th>
                             <th>Cantidad</th>
                             <th>Seccion</th>                         
-                            <th>Tipo</th>                       
+                            <th>Tipo</th>                         
+                            <th>Acciones</th>                       
                         </tr>
                         </thead>
                         <tbody>
@@ -89,9 +90,48 @@
 
 
                             <td>{{$articulo->tipo}}</td>
-                         
+                            <td>                          
+                                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#modal-{{ $articulo->id_articulo}}"><i class="fas fa-trash"></i></button>
+                            </td>
                            
                         </tr>  
+
+                         <!-- Modal -->
+                         <div class="modal fade" id="modal-{{ $articulo->id_articulo}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                    ¿Estás seguro de querer eliminar : {{$articulo->nombre}}?
+                                    </div>
+                                    <div class="modal-footer">
+                                    <form action="{{ route('inventario.destroy', $articulo->id_articulo) }}" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    </form>
+                                    </div>
+                                </div>
+                                </div>
+                            </div><!-- End Modal -->
+
+
+
+
+
+
+
+
+
+
+
+
                         @endforeach
                        
                         </tbody>
