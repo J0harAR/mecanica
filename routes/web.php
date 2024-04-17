@@ -63,3 +63,6 @@ Route::delete('/inventario/herramientas/{id}', [HerramientasController::class, '
 Route::delete('/inventario/insumos/{id}', [InsumosController::class, 'destroy'])->name('insumos.destroy');
 
 
+Route::delete('/inventario/maquinaria/{id}', [MaquinariaController::class, 'destroy'])->name('maquinaria.destroy');
+
+
