@@ -155,7 +155,7 @@
 
 
 
-                            <div class="col-md-12" id="seccion">
+                            <div class="col-md-12" id="seccion" style="display: none;">
                                 <label for="seccion" class="form-label">Seccion</label>
                                     <select id="seccion" class="form-select" name="seccion">
                                     <option selected disabled>Selecciona una seccion </option>
@@ -257,6 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     tipoSelect.addEventListener('change', function() {
+        
     switch (this.value) {
         case 'Herramientas':
             showElement(tipo_herramienta);
@@ -277,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
             hideElements([tipo_herramienta, tipo_maquina,dimension_herramienta,condicion_herramienta,seccion]);
             break;
         default:
-         
+            
             break;
     }
 
