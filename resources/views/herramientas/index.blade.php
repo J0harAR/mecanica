@@ -68,8 +68,9 @@
                         <tr>
                             <th>Codigo</th>
                             <th>Nombre</th>
-                            <th>Dimension</th>
+                            <th>Dimension</th>                        
                             <th>Condicion</th>
+                            <th>Estatus</th>
                             <th>Acciones</th>
                         </tr>
                         </thead>
@@ -80,6 +81,7 @@
                             <td>{{$herramienta->Articulo_inventariados->Catalogo_articulos->nombre}}</td>
                             <td>{{$herramienta->dimension}}</td>
                             <td>{{$herramienta->condicion}}</td>
+                            <td>{{$herramienta->Articulo_inventariados->estatus}}</td>
                             <td>                          
                                 <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#modal-{{ $herramienta->id_herramientas}}"><i class="fas fa-trash"></i></button>

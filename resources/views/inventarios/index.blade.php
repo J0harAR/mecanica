@@ -68,8 +68,7 @@
                         <tr>
                             <th>Codigo</th>
                             <th>Nombre</th>
-                            <th>Cantidad</th>
-                            <th>Seccion</th>                         
+                            <th>Cantidad</th>                       
                             <th>Tipo</th>                         
                             <th>Acciones</th>                       
                         </tr>
@@ -80,15 +79,6 @@
                             <td>{{$articulo->id_articulo}}</td>
                             <td>{{$articulo->nombre}}</td>
                             <td>{{$articulo->cantidad}}</td>
-                          
-                            
-                            @if ($articulo->seccion)
-                                <td>{{$articulo->seccion}}</td>
-                            @else
-                                <td>Sin asignar</td>
-                            @endif
-
-
                             <td>{{$articulo->tipo}}</td>
                             <td>                          
                                 <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
