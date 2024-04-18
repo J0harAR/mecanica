@@ -21,6 +21,27 @@ class HerramientasController extends Controller
         return view('herramientas.index',compact('herramientas'));
     }
 
+    public function update(Request $request,$id_herramientas)
+    {
+        //Request
+        $condicion_herramienta=$request->input('condicion_herramienta');
+        $estatus_herramienta=$request->input('estatus');
+       
+
+        $articulo_inventariado=Articulo_inventariado::find($id_herramientas);      
+        $articulo_inventariado->estatus=$estatus_herramienta;
+        $articulo_inventariado->save();
+
+
+        $herramienta=Herramientas::find($id_herramientas);
+        $herramienta->condicion=$condicion_herramienta;
+        $herramienta->save();
+
+        return redirect()->route('herramientas.index');
+    }
+
+
+
 
     public function destroy($id_herramientas)
     {

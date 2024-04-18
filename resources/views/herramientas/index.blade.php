@@ -82,9 +82,17 @@
                             <td>{{$herramienta->dimension}}</td>
                             <td>{{$herramienta->condicion}}</td>
                             <td>{{$herramienta->Articulo_inventariados->estatus}}</td>
-                            <td>                          
+                            <td> 
+                              
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#modal-update-{{ $herramienta->id_herramientas}}"><i class="fas fa-edit bt"></i></button>
+
+
                                 <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#modal-{{ $herramienta->id_herramientas}}"><i class="fas fa-trash"></i></button>
+
+
+                               
                             </td>
                         </tr>  
 
@@ -112,15 +120,75 @@
                                 </div>
                             </div><!-- End Modal -->
 
+
+                        <!-- Vertically centered Modal -->
+  <div class="modal fade" id="modal-update-{{ $herramienta->id_herramientas}}" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Agregar articulo</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                   
+                   
+                    <div class="modal-body">
+                        <form class="row g-3" action="{{route('herramientas.update',$herramienta->id_herramientas)}}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="col-md-6">
+                                <label for="estatus" class="form-label">Codigo de herramienta</label>
+                                <input type="text" class="form-control" id="estatus" name="estatus" value="{{$herramienta->id_herramientas}}" disabled>
+                        </div>
+
+                        <div class="col-md-12">
+                                <label for="estatus" class="form-label">Nombre de la herramienta</label>
+                                <input type="text" class="form-control" id="estatus" name="estatus" value="{{$herramienta->Articulo_inventariados->Catalogo_articulos->nombre}}" disabled>
+                          </div>
+                          
+                          <div class="col-md-12" id="condicionHerramienta">
+                                <label for="condicion_herramienta" class="form-label">Condición</label>
+                                <input type="text" class="form-control" id="condicion_herramienta" name="condicion_herramienta" value="{{$herramienta->condicion}}">
+                            </div>
+
+                            <div class="col-md-12">
+                                <label for="estatus" class="form-label">Estatus</label>
+                                <input type="text" class="form-control" id="estatus" name="estatus" value="{{$herramienta->Articulo_inventariados->estatus}}">
+                            </div>
+
+                            
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary">Guardar</button>                               
+                            </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div><!-- End Vertically centered Modal-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         @endforeach
-                       
+
+
                         </tbody>
                     </table>
              </div>
     </div>
     
   
-
 
 </div>
 
