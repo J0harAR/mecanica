@@ -21,6 +21,19 @@ class InsumosController extends Controller
         return view('insumos.index',compact('insumos'));
     }
 
+    public function update(Request $request,$id_insumo)
+    {
+        //Request
+        $estatus_insumo=$request->input('estatus');
+       
+        $articulo_inventariado=Articulo_inventariado::find($id_insumo);      
+        $articulo_inventariado->estatus=$estatus_insumo;
+        $articulo_inventariado->save();
+  
+        return redirect()->route('insumos.index');
+    }
+
+
 
 
     public function destroy($id_insumo)
