@@ -69,6 +69,7 @@ Route::delete('/inventario/{id}', [InventarioController::class, 'destroy'])->nam
 
 
 Route::put('/inventario/herramientas/{id}', [HerramientasController::class, 'update'])->name('herramientas.update');
+Route::put('/inventario/maquinaria/{id}', [MaquinariaController::class, 'update'])->name('maquinaria.update');
 
 
 

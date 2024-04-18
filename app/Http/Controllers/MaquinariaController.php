@@ -22,6 +22,19 @@ class MaquinariaController extends Controller
       return view('maquinaria.index',compact('maquinaria'));
   }
 
+  public function update(Request $request,$id_maquinaria)
+  {
+      //Request
+      $estatus_maquinaria=$request->input('estatus');
+     
+      $articulo_inventariado=Articulo_inventariado::find($id_maquinaria);      
+      $articulo_inventariado->estatus=$estatus_maquinaria;
+      $articulo_inventariado->save();
+
+      return redirect()->route('maquinaria.index');
+  }
+
+
 
 
   public function destroy($id_maquinaria)

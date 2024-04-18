@@ -81,10 +81,69 @@
                             <td>{{$maquina->Articulo_inventariados->Catalogo_articulos->seccion}}</td>
                             <td>{{$maquina->Articulo_inventariados->estatus}}</td>
                             <td>
+
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#modal-update-{{ $maquina->id_maquinaria}}"><i class="fas fa-edit bt"></i></button>
+
+
                             <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#modal-{{ $maquina->id_maquinaria}}"><i class="fas fa-trash"></i></button>
+
                             </td>
-                        </tr>  
+                        </tr> 
+                        
+                        
+                        <div class="modal fade" id="modal-update-{{ $maquina->id_maquinaria}}" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Agregar articulo</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                   
+                   
+                    <div class="modal-body">
+                        <form class="row g-3" action="{{route('maquinaria.update',$maquina->id_maquinaria)}}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="col-md-6">
+                                <label for="estatus" class="form-label">Codigo de maquinaria</label>
+                                <input type="text" class="form-control" id="id_maquinaria" name="estatus" value="{{$maquina->id_maquinaria}}" disabled>
+                        </div>
+
+                        <div class="row">
+                              <div class="col-md-6">
+                                  <label for="seccion" class="form-label">Seccion de la maquinaria</label>
+                                  <input type="text" class="form-control" id="seccion" name="seccion" value="{{$maquina->Articulo_inventariados->Catalogo_articulos->seccion}}" disabled>
+                              </div>
+
+                              <div class="col-md-6">
+                                  <label for="nombre" class="form-label">Nombre de la maquinaria</label>
+                                  <input type="text" class="form-control" id="nombre" name="nombre" value="{{$maquina->Articulo_inventariados->Catalogo_articulos->nombre}}" disabled>
+                              </div>
+                          </div>
+                          
+
+                            <div class="col-md-12">
+                                <label for="estatus" class="form-label">Estatus</label>
+                                <input type="text" class="form-control" id="estatus" name="estatus" value="{{$maquina->Articulo_inventariados->estatus}}">
+                            </div>
+
+                            
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary">Guardar</button>                               
+                            </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div><!-- End Vertically centered Modal-->
+
+
+
+
 
 
                          <!-- Modal -->
