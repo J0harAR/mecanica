@@ -93,7 +93,7 @@ class InventarioController extends Controller
                 }
 
             }
-            return redirect()->route('inventario.index');
+            return redirect()->route('inventario.index')->with('success', 'El insumo ha sido registrado exitosamente: ' . $nombre_articulo);
         
         }
 
@@ -157,7 +157,7 @@ class InventarioController extends Controller
                 }
      
              }
-             return redirect()->route('inventario.index');
+             return redirect()->route('inventario.index')->with('success', 'Maquinaria registrada exitosamente: ' . $nombre_articulo);
          }
      
 
@@ -224,7 +224,8 @@ class InventarioController extends Controller
             }   
                                          
         }
-        return redirect()->route('inventario.index');
+        return redirect()->route('inventario.index')->with('success', 'Herramienta registrada exitosamente: ' . $nombre_articulo);
+
 
     }
 
