@@ -7,7 +7,17 @@
         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal"><i class="ri-add-line"></i>Agregar articulo</button>
 
     </div>
-            
+    @if (session('success'))
+        <div class="alert alert-success" id="success-alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger" id="error-alert">
+            {{ session('error') }}
+        </div>
+    @endif     
 <div class="row">
     <div class="col-lg-4">
           <div class="card">
@@ -326,7 +336,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
+@if(session('success'))
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      window.setTimeout(function () {
+        const successAlert = document.getElementById("success-alert");
+        if (successAlert) successAlert.style.display = 'none';
+      }, 3000);
+    });
+  </script>
+  @endif
 
 
 
