@@ -156,10 +156,10 @@
 
 <!-- Vertically centered Modal -->
               <div class="modal fade" id="modal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content shadow-lg border-0">
-            <div class="modal-header border-bottom-0">
-                <h5 class="modal-title">Agregar artículo</h5>
+              <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Agregar articulo</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                    
