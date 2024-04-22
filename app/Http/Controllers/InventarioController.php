@@ -22,6 +22,13 @@ class InventarioController extends Controller
 
     public function store(Request $request){
         //Obtengo los inputs
+        $this->validate($request,[
+            'name'=>'required',
+            'seccion'=>'required',
+            'status'=>'required ' ,
+           
+        
+        ]);
         $nombre_articulo=$request->input('nombre');
         $seccion_articulo=$request->input('seccion');
         $estatus=$request->input('estatus');

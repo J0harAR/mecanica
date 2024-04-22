@@ -3,31 +3,25 @@
 @section('content')
 
 
-<div class="container">
+<div class="container-fluid d-flex align-items-center justify-content-center" style="min-height: 100vh; background: url('/assets/img/fondo.jpg') no-repeat center center; background-size: cover;">
 
-      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+<section class="register d-flex flex-column align-items-center justify-content-center w-100">
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-
-              <div class="d-flex justify-content-center py-4">
-                    <img src="/assets/img/logo.png" alt="" class="logo w-25 shadow-lg rounded-pill">
+            <div class="card shadow-lg" style="border-radius: 25px; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);">
+            <div class="card-body p-4">
+               <div class="d-flex justify-content-center py-3">
+                <img src="/assets/img/logo.png" alt="Instituto Logo" class="logo w-50">
               </div><!-- End Logo -->
-
-              <div class="card mb-3">
-
-                <div class="card-body">
-
-                  <div class="pt-4 pb-2">
-                    <h5 class="card-title text-center pb-0 fs-4">Crea una cuenta</h5>
-                    <p class="text-center small">Ingrese sus datos personales para crear una cuenta</p>
-                  </div>
-
-                  <form method="POST" action="{{ route('register') }}" class="row g-3 needs-validation" novalidate>
-                        @csrf
-
-                        <div class="col-12">
-                            <label for="name" class="form-label">Nombre</label>
+              
+              <h5 class="card-title text-center pb-0 fs-4" style="color: #343a40;">Crea una cuenta</h5>
+              <p class="text-center small text-muted mb-4">Ingrese sus datos personales para crear una cuenta.</p>
+              
+              <form method="POST" action="{{ route('register') }}" class="row g-3 needs-validation" novalidate>
+              @csrf
+              <div class="col-12">
+                <label for="name" class="form-label">Nombre</label>
                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                                                     
                           
@@ -63,13 +57,8 @@
                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                         </div>
 
-                        <div class="col-12">                
-                            <button class="btn btn-primary w-100" type="submit">Crear Cuenta</button>
-                        </div>
-
-                        <div class="col-12">
-                            <p class="small mb-0">¿Ya tienes una cuenta?<a href="{{route('login')}}">Iniciar Sesión</a></p>
-                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Crear cuenta</button>
+                <p class="text-center small mt-3 mb-0">¿Ya tienes una cuenta? <a href="{{route('login')}}" class="text-primary">Iniciar sesión</a></p>
 
                     </form>
 

@@ -2,7 +2,7 @@
 @section('content')
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="fw-bold mb-0">Inventario</h1>
+    <h1 class="fw-bold mb-0" style="color: #343a40;">Inventario</h1>
       
         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal"><i class="ri-add-line"></i>Agregar articulo</button>
 
@@ -41,7 +41,7 @@
             <div class="card-body">
               <h5 class="card-title">Maquinaria</h5>
                 <div class="d-flex justify-content-between">
-                    <h2 class="text-right"><i class="bi bi-person-lock"></i></h2>
+                    <h2 class="text-right"><i class="bi bi-gear"></i></h2>
                     <div class="d-flex flex-column justify-content-between align-items-center"> 
                         <h2><span></span></h2>
                         <p class="m-b-o text-right"><a href="{{route('maquinaria.index')}}">Ver mas...</a></p>
@@ -58,7 +58,7 @@
             <div class="card-body">
               <h5 class="card-title">Insumos</h5>
                 <div class="d-flex justify-content-between">
-                    <h2 class="text-right"><i class="bi bi-person-lock"></i></h2>
+                    <h2 class="text-right"><i class="bi bi-droplet"></i></h2>
                     <div class="d-flex flex-column justify-content-between align-items-center"> 
                         <h2><span></span></h2>
                         <p class="m-b-o text-right"><a href="{{route('insumos.index')}}">Ver mas...</a></p>
@@ -76,7 +76,7 @@
                     <table class="table datatable">
                         <thead>
                         <tr>
-                            <th>Codigo</th>
+                            <th>Código</th>
                             <th>Nombre</th>
                             <th>Cantidad</th>                       
                             <th>Tipo</th>                         
@@ -156,10 +156,10 @@
 
 <!-- Vertically centered Modal -->
               <div class="modal fade" id="modal" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Agregar articulo</h5>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
+            <div class="modal-header border-bottom-0">
+                <h5 class="modal-title">Agregar artículo</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                    
@@ -169,18 +169,21 @@
                         @csrf
                             <div class="col-md-12">
                                 <label for="nombre" class="form-label">Nombre del articulo</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre">
+                                <input type="text" class="form-control" id="nombre" name="nombre"required autocomplete="nombre" autofocus>
+
                             </div>
 
                             <div class="col-md-12">
                                 <label for="cantidad" class="form-label">Cantidad</label>
                                 <input type="number" class="form-control" id="cantidad" name="cantidad">
+
                             </div>
 
 
                             <div class="col-md-12">
                                 <label for="estatus" class="form-label">Estatus</label>
                                 <input type="text" class="form-control" id="estatus" name="estatus">
+
                             </div>
 
                             <div class="col-md-12">
@@ -191,6 +194,7 @@
                                     <option value="Maquinaria">Maquinaria</option>
                                      <option value="Herramientas">Herramientas</option>
                                 </select>
+
                             </div>
 
 
@@ -210,6 +214,8 @@
                                         <option value="13">13 Neumatica</option>
                                         <option value="20">20 Área de diseño digital</option>
                                     </select>
+                                    <div class="invalid-feedback">Campo obligatorio</div>
+
                             </div>
 
                             
@@ -272,8 +278,18 @@
         </div>
     </div><!-- End Vertically centered Modal-->
 </div>
+<script>
+document.getElementById("formHerramienta").addEventListener("submit", function(event) {
+  var nombre = document.getElementById("nombreHerramienta").value;
+  var cantidad = document.getElementById("cantidadHerramienta").value;
+  
+  if (!nombre || cantidad <= 0) {
+    alert("Todos los campos son obligatorios y la cantidad debe ser mayor que cero.");
+    event.preventDefault(); // Evita que el formulario se envíe
+  }
+});
 
-
+</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

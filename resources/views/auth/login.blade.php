@@ -1,76 +1,67 @@
 @extends('layouts.imports')
 
 @section('content')
-  <div class="container">
+<div class="container-fluid d-flex align-items-center justify-content-center" style="min-height: 100vh; background: url('assets/img/fondo.jpg') no-repeat center center; background-size: cover;">
+  <section class="register d-flex flex-column align-items-center justify-content-center w-100">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6">
 
-    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-5 col-md-6 d-flex flex-column align-items-center justify-content-center">
+          <div class="card shadow-lg" style="border-radius: 25px; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);">
+            <div class="card-body p-4">
 
-            <div class="d-flex justify-content-center align-items-center py-4">
-              <img src="/assets/img/logo.png" alt="" class="logo w-25 shadow-lg rounded-pill">
-            </div><!-- End Logo -->
+              <!-- Logo integrado con un efecto visual moderno -->
+              <div class="d-flex justify-content-center py-3">
+                <img src="/assets/img/logo.png" alt="Instituto Logo" class="logo w-50">
+              </div><!-- End Logo -->
 
-            <div class="card mb-3">
-              <div class="card-body">
+              <h5 class="card-title text-center pb-0 fs-4" style="color: #343a40;">Iniciar sesión en tu cuenta</h5>
+              <p class="text-center small text-muted mb-4">Ingresa tu correo electrónico y contraseña para acceder.</p>
 
-                <div class="pt-4 pb-2">
-                  <h5 class="card-title text-center pb-0 fs-4">Iniciar sesión en tu cuenta</h5>
-                  <p class="text-center small">Ingresa tu correo electrónico y contraseña para iniciar sesión</p>
+              @if($errors->has('email') || $errors->has('password'))
+                <div class="alert alert-danger" role="alert">
+                  <strong>Algo salió mal.</strong> Por favor verifica tus datos e inténtalo de nuevo.
+                </div>
+              @endif
+
+              <form class="needs-validation" method="POST" action="{{ route('login') }}" novalidate>
+                @csrf
+                <div class="mb-3">
+                  <label for="email" class="form-label">Correo electrónico</label>
+                  <div class="input-group">
+                    <span class="input-group-text" id="email-addon"><i class="bi bi-envelope-fill"></i></span>
+                    <input id="email" type="email" class="form-control" name="email" required autocomplete="email" autofocus>
+                    <div class="invalid-feedback">Campo obligatorio</div>
+                  </div>
                 </div>
 
-                @if($errors->has('email') || $errors->has('password'))
-                  <p class="text-danger mb-0">Algo salió mal.</p>
-                  <ul><li class="text-danger mb-0 small mt-3">Estas credenciales no coinciden con nuestros registros.
-                
-                  </li></ul>
-                  
-                @endif
+                <div class="mb-3">
+                  <label for="password" class="form-label">Contraseña</label>
+                  <div class="input-group">
+                    <span class="input-group-text" id="password-addon"><i class="bi bi-lock-fill"></i></span>
+                    <input id="password" type="password" class="form-control" name="password" required autocomplete="current-password">
+                    <div class="invalid-feedback">Campo obligatorio</div>
 
-                <form class="row g-3 needs-validation" method="POST" action="{{ route('login') }}">
-                  @csrf
-                  <div class="col-12 mb-3">
-                    
-                    <label for="email" class="form-label">Correo electrónico</label>
-                    <div class="input-group has-validation">
-                      <span class="input-group-text" id="email-addon"><i class="bi bi-envelope-fill"></i></span>
-                      <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                    </div>
                   </div>
+                </div>
 
-                  <div class="col-12 mb-3">
-                    <label for="password" class="form-label">Contraseña</label>
-                    <div class="input-group has-validation">
-                      <span class="input-group-text" id="password-addon"><i class="bi bi-lock-fill"></i></span>
-                      <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-                    </div>
-                  </div>
+                <div class="mb-3 form-check">
+                  <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                  <label class="form-check-label" for="remember">Recordarme</label>
+                </div>
 
-                  <div class="col-12 mb-3">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                      <label class="form-check-label" for="remember">
-                        Recordarme
-                      </label>
-                    </div>
-                  </div>
+                <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
+                <p class="text-center small mt-3 mb-0">¿No tienes cuenta? <a href="{{route('register')}}" class="text-primary">Crear cuenta</a></p>
+              </form>
 
-                  <div class="col-12">
-                    <button class="btn btn-primary w-100" type="submit">Iniciar sesión</button>
-                  </div>
-                  <div class="col-12">
-                      <p class="small mb-0">¿No tienes cuenta? <a href="{{route('register')}}">Crear cuenta</a></p>
-                    </div>
-                </form>
-
-              </div>
             </div>
-
           </div>
+
         </div>
       </div>
-    </section>
-
-  </div>
+    </div>
+  </section>
+</div>
 @endsection
+
+

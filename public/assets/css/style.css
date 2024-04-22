@@ -11,47 +11,87 @@
 --------------------------------------------------------------*/
 :root {
   scroll-behavior: smooth;
+  --primary-color: #34568B; /* Azul oscuro para un tono más profesional */
+  --hover-primary: #88AACC; /* Azul claro para hover */
+  --font-primary: 'Poppins', sans-serif;
+  --font-secondary: 'Roboto', sans-serif;
 }
 
 body {
-  font-family: "Open Sans", sans-serif;
-  background: #f6f9ff;
-  color: #444444;
+  font-family: var(--font-secondary);
+  background: #f5f6f7; /* Fondo más claro para mejor lectura */
+  color: #333; /* Texto más oscuro para mejor contraste */
+  margin: 0;
+  padding: 0;
+  transition: color 0.3s ease;
 }
 
 a {
-  color: #4154f1;
+  color: var(--primary-color);
   text-decoration: none;
 }
 
 a:hover {
-  color: #717ff5;
-  text-decoration: none;
+  color: var(--hover-primary);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Nunito", sans-serif;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-primary);
+  margin-top: 0;
 }
 
-/*--------------------------------------------------------------
-# Main
---------------------------------------------------------------*/
+/* Main layout adjustments */
 #main {
   margin-top: 60px;
   padding: 20px 30px;
-  transition: all 0.3s;
 }
 
+/* More dynamic back-to-top button */
+.back-to-top {
+  background: var(--primary-color);
+  width: 40px;
+  height: 40px;
+  border-radius: 20px; /* Fully rounded */
+  transition: background 0.3s, transform 0.3s;
+}
+
+.back-to-top:hover {
+  background: var(--hover-primary);
+  transform: translateY(-3px); /* Slight lift */
+}
+
+/* Card styling for a cleaner look */
+.card {
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-header, .card-footer {
+  background-color: #FFF;
+  color: #666;
+}
+
+.card-title {
+  font-size: 20px; /* Larger for better visibility */
+  color: var(--primary-color);
+}
+
+/* Improved dropdown menu animations and color */
+.dropdown-menu {
+  animation: dropdown-animate 0.2s ease-in-out;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #f0f4f8; /* Lighter on hover */
+}
+
+/* Responsive design improvements */
 @media (max-width: 1199px) {
   #main {
-    padding: 20px;
+    padding: 15px;
   }
 }
+
 
 /*--------------------------------------------------------------
 # Page Title
