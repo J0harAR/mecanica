@@ -25,7 +25,7 @@ use App\Http\Controllers\InsumosController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();

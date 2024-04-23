@@ -167,6 +167,17 @@
                     <div class="modal-body">
                         <form class="row g-3" action="{{route('inventario.store')}}" method="POST">
                         @csrf
+                        <div class="col-md-12">
+                                <label for="tipo" class="form-label">Tipo</label>
+                                <select id="tipo" class="form-select" required name="tipo">
+                                    <option selected disabled>Selecciona un tipo</option>
+                                    <option value="Insumos">Insumos</option>
+                                    <option value="Maquinaria">Maquinaria</option>
+                                     <option value="Herramientas">Herramientas</option>
+                                </select>
+
+                            </div>
+                        
                             <div class="col-md-12">
                                 <label for="nombre" class="form-label">Nombre del articulo</label>
                                 <input type="text" class="form-control" id="nombre" name="nombre"required autocomplete="nombre" autofocus>
@@ -186,16 +197,7 @@
 
                             </div>
 
-                            <div class="col-md-12">
-                                <label for="tipo" class="form-label">Tipo</label>
-                                <select id="tipo" class="form-select" required name="tipo">
-                                    <option selected disabled>Selecciona un tipo</option>
-                                    <option value="Insumos">Insumos</option>
-                                    <option value="Maquinaria">Maquinaria</option>
-                                     <option value="Herramientas">Herramientas</option>
-                                </select>
-
-                            </div>
+                           
 
 
 
