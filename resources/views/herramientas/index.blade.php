@@ -66,7 +66,7 @@
                     <table class="table datatable">
                         <thead>
                         <tr>
-                            <th>Codigo</th>
+                            <th>Código</th>
                             <th>Nombre</th>
                             <th>Dimensión</th>                        
                             <th>Condición</th>
