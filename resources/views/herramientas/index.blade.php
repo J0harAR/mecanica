@@ -68,8 +68,8 @@
                         <tr>
                             <th>Codigo</th>
                             <th>Nombre</th>
-                            <th>Dimension</th>                        
-                            <th>Condicion</th>
+                            <th>Dimensión</th>                        
+                            <th>Condición</th>
                             <th>Estatus</th>
                             <th>Acciones</th>
                         </tr>
@@ -126,7 +126,7 @@
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title">Agregar articulo</h5>
+                      <h5 class="modal-title">Agregar artículo</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                    
@@ -136,7 +136,7 @@
                         @csrf
                         @method('PUT')
                         <div class="col-md-6">
-                                <label for="estatus" class="form-label">Codigo de herramienta</label>
+                                <label for="estatus" class="form-label">Código de herramienta</label>
                                 <input type="text" class="form-control" id="estatus" name="estatus" value="{{$herramienta->id_herramientas}}" disabled>
                         </div>
 

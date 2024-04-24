@@ -66,7 +66,7 @@
                     <table class="table datatable">
                         <thead>
                         <tr>
-                            <th>Codigo</th>
+                            <th>Código</th>
                             <th>Nombre</th>
                             <th>Capacidad</th>
                             <th>Estatus</th>
@@ -121,7 +121,7 @@
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title">Agregar articulo</h5>
+                      <h5 class="modal-title">Agregar artículo</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                    
@@ -131,7 +131,7 @@
                         @csrf
                         @method('PUT')
                         <div class="col-md-6">
-                                <label for="estatus" class="form-label">Codigo de insumo</label>
+                                <label for="estatus" class="form-label">Código de insumo</label>
                                 <input type="text" class="form-control" id="id_insumo" name="estatus" value="{{$insumo->id_insumo}}" disabled>
                         </div>
 

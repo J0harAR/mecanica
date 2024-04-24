@@ -159,7 +159,7 @@
               <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title">Agregar articulo</h5>
+                      <h5 class="modal-title">Agregar artículo</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                    
@@ -204,16 +204,16 @@
                             <div class="col-md-12" id="seccion" style="display: none;">
                                 <label for="seccion" class="form-label">Seccion</label>
                                     <select id="seccion" class="form-select" name="seccion">
-                                    <option selected disabled>Selecciona una seccion </option>
-                                        <option value="03">03 Metrologia II </option>
-                                        <option value="04">04 Mecanica de materiales</option>
+                                    <option selected disabled>Selecciona una sección </option>
+                                        <option value="03">03 Metrología II </option>
+                                        <option value="04">04 Mecánica de materiales</option>
                                         <option value="05">05 Mantenimiento</option>
                                         <option value="06">06 Robots industriales</option>
-                                        <option value="07">07 Mecanica de materiales</option>
+                                        <option value="07">07 Mecánica de materiales</option>
                                         <option value="08">08 Manufactura sustractiva</option>
                                         <option value="09">09 Manufactura adidtiva</option>
-                                        <option value="12">12 Mecanica de fluidos y termodinamica</option>
-                                        <option value="13">13 Neumatica</option>
+                                        <option value="12">12 Mecánica de fluidos y termodinámica</option>
+                                        <option value="13">13 Neumática</option>
                                         <option value="20">20 Área de diseño digital</option>
                                     </select>
                                     <div class="invalid-feedback">Campo obligatorio</div>
@@ -232,11 +232,11 @@
                                 <option value="Herramienta de maquinado">Herramienta de maquinado</option>
                                 <option value="Herramienta de medición">Herramienta de medición</option>
                                 <option value="Herramienta de montaje">Herramienta de montaje</option>
-                                <option value="Herramienta de neumaticos">Herramienta de neumaticos</option>
+                                <option value="Herramienta de neumaticos">Herramienta de neumáticos</option>
                                 <option value="Herramienta de seguridad">Herramienta de seguridad</option>
                                 <option value="Herramienta de sujecion">Herramienta de sujeción</option>
                                 <option value="Herramienta de torno">Herramienta de torno</option>
-                                <option value="Herramienta Electrica">Herramienta Electrica</option>
+                                <option value="Herramienta Electrica">Herramienta Eléctrica</option>
                                 <option value="Herramienta manual">Herramienta manual</option>
                                 </select>
                             </div>  
@@ -254,7 +254,7 @@
 
 
                             <div class="col-md-12" id="tipoMaquina" style="display:none;">
-                                <label for="tipo_maquina" class="form-label">Tipo de maquina</label>
+                                <label for="tipo_maquina" class="form-label">Tipo de máquina</label>
                                 <input type="text" class="form-control" id="tipo_maquina"  name="tipo_maquina">
                             </div>
 
