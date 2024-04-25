@@ -411,7 +411,17 @@ class InventarioController extends Controller
     {
 
     
-        $catalogo_articulo=Catalogo_articulo::find($id_articulo);     
+        $catalogo_articulo=Catalogo_articulo::find($id_articulo); 
+        
+        $auditoria=new Auditoria;
+        $auditoria->event='deleted';  
+        $auditoria->subject_type=Catalogo_articulo::class;
+        $auditoria->subject_id=$catalogo_articulo->id_articulo;
+        $auditoria->cause_id=auth()->id();
+        $auditoria->old_data=json_encode($catalogo_articulo);
+        $auditoria->new_data=json_encode([]);
+        $auditoria->save();
+        
         $catalogo_articulo->delete();
 
         return redirect()->route('inventario.index');
