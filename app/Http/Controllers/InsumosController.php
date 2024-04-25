@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Insumos;
 use App\Models\Catalogo_articulo;
 use App\Models\Articulo_inventariado;
+use App\Models\Auditoria;
 class InsumosController extends Controller
 {
     public function index()
@@ -26,9 +27,26 @@ class InsumosController extends Controller
         //Request
         $estatus_insumo=$request->input('estatus');
        
-        $articulo_inventariado=Articulo_inventariado::find($id_insumo);      
-        $articulo_inventariado->estatus=$estatus_insumo;
-        $articulo_inventariado->save();
+        $auditoria_insumo=new Auditoria;
+
+        $articulo_inventariado=Articulo_inventariado::find($id_insumo); 
+        
+        if($articulo_inventariado->estatus!==$estatus_insumo){
+            $auditoria_insumo->event='updated';
+            $auditoria_insumo->subject_type=Articulo_inventariado::class;
+            $auditoria_insumo->subject_id=$articulo_inventariado->id_inventario;
+            $auditoria_insumo->cause_id=auth()->id();
+            $auditoria_insumo->old_data=json_encode($articulo_inventariado);
+            
+            $articulo_inventariado->estatus=$estatus_insumo;
+            $articulo_inventariado->save();
+
+            $auditoria_insumo->new_data=json_encode($articulo_inventariado);
+            $auditoria_insumo->save();
+        }
+
+
+
   
         return redirect()->route('insumos.index');
     }
@@ -39,6 +57,15 @@ class InsumosController extends Controller
     public function destroy($id_insumo)
     {
         $insumo=Articulo_inventariado::find($id_insumo);
+        $auditoria=new Auditoria;
+        $auditoria->event='deleted';  
+        $auditoria->subject_type=Insumos::class;
+        $auditoria->subject_id=$insumo->id_inventario;
+        $auditoria->cause_id=auth()->id();
+        $auditoria->old_data=json_encode($insumo);
+        $auditoria->new_data=json_encode([]);
+        $auditoria->save();
+
        //Actualizar Catalogo articulos
         $catalogo_articulo=Catalogo_articulo::find($insumo->id_articulo);
         if($catalogo_articulo->cantidad>0){
