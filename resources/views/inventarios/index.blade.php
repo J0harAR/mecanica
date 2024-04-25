@@ -3,9 +3,11 @@
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="fw-bold mb-0" style="color: #343a40;">Inventario</h1>
-      
-        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal"><i class="ri-add-line"></i>Agregar articulo</button>
-
+        <div>
+            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal"><i class="ri-add-line"></i>Agregar articulo</button>
+            
+            <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#ExtralargeModal"><i class="bi bi-clock-history"></i></button>
+        </div>
     </div>
     @if (session('success'))
         <div class="alert alert-success" id="success-alert">
@@ -123,15 +125,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
                         @endforeach
                        
                         </tbody>
@@ -140,14 +133,71 @@
     </div>
     
 
+    <!-- Extra Large Modal -->
+              <div class="modal fade" id="ExtralargeModal" tabindex="-1">
+                <div class="modal-dialog modal-xl">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Historial</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+            
+                    <table class="table datatable">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Evento</th>
+                            <th>Modelo</th>                       
+                            <th>id articulo</th>                         
+                            <th>id usuario</th>                         
+                            <th>Datos pasados</th>                         
+                            <th>Datos actuales</th>                         
+                                        
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($historial  as $auditoria )
+                        <tr>
+                            <td>{{$auditoria->id}}</td>
+                            <td>{{$auditoria->event}}</td>
+                            <td>{{$auditoria->subject_type}}</td>
+                            <td>{{$auditoria->subject_id}}</td>
+                            <td>{{$auditoria->cause_id}}</td>
+
+                            <td>
+                                @if($auditoria->old_data==="[]")
+                                    Sin datos
+                                @else
+                                <button onclick="mostrarJSON('{{ $auditoria->old_data }}')" class="btn btn-info btn-sm"><i class="fas fa-info"></i>Ver mas</button>                  
+                                @endif
+                            </td>
 
 
 
+                            <td> 
+                                <button onclick="mostrarJSON('{{ $auditoria->new_data }}')" class="btn btn-info btn-sm"><i class="fas fa-info"></i>Ver mas</button>
+                            </td>
+
+                           
+                        </tr> 
+
+
+                        
+                        @endforeach
+                       
+                        </tbody>
 
 
 
+                    </table>
 
+                    </div>
 
+                  </div>
+                </div>
+              </div><!-- End Extra Large Modal-->
 
 
 
@@ -366,6 +416,54 @@ document.addEventListener('DOMContentLoaded', function() {
   @endif
 
 
+  <script>
+    function mostrarJSON(jsonData) {
+        // Convertir el JSON a una cadena de texto formateada para mostrarlo en la ventana emergente
+        var jsonStr = JSON.stringify(JSON.parse(jsonData), null, 2);
+
+        // Eliminar los corchetes al principio y al final de la cadena JSON
+        jsonStr = jsonStr.substring(1, jsonStr.length - 1);
+
+        // Estilos CSS para el contenido de la ventana emergente
+        var css = `
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f5f5f5;
+                padding: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+            pre {
+                background-color: #ffffff;
+                border: 1px solid #cccccc;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                overflow-x: auto;
+                max-width: 100%;
+            }
+        `;
+
+        // Estilos CSS dentro de la etiqueta <style>
+        var style = '<style>' + css + '</style>';
+
+        // Contenido de la ventana emergente con estilos
+        var content = style + '<body><pre>' + jsonStr + '</pre></body>';
+
+        // Obtener el ancho y alto de la ventana emergente
+        var width = 400;
+        var height = 400;
+        var left = window.innerWidth / 2 - width / 2;
+        var top = window.innerHeight / 2 - height / 2;
+
+        // Abrir una nueva ventana emergente y mostrar el contenido con los estilos
+        var ventanaEmergente = window.open('', '_blank', 'toolbar=yes,scrollbars=yes,resizable=yes,top=' + top + ',left=' + left + ',width=' + width + ',height=' + height);
+        ventanaEmergente.document.write(content);
+    }
+</script>
 
 
 

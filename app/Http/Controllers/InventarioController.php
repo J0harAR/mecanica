@@ -16,8 +16,9 @@ class InventarioController extends Controller
     public function index()
     {
         $articulos_inventariados=Articulo_inventariado::all();   
-        $catalogo_articulo=Catalogo_articulo::all();   
-        return view('inventarios.index',compact('catalogo_articulo'));
+        $catalogo_articulo=Catalogo_articulo::all();
+        $historial=Auditoria::all(); 
+        return view('inventarios.index',compact('catalogo_articulo','historial'));
     }
 
 

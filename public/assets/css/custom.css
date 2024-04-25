@@ -1,0 +1,33 @@
+.modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 300px; /* Ancho del modal */
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-out;
+    z-index: 9999; /* Asegura que esté por encima de otros elementos */
+  }
+  
+  .modal-contenido {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    padding: 20px;
+  }
+  
+  .cerrar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+  
+  /* Mostrar el modal cuando está abierto */
+  .modal-abierto {
+    transform: translateX(0);
+  }
