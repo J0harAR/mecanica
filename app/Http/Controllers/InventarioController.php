@@ -8,6 +8,7 @@ use App\Models\Articulo_inventariado;
 use App\Models\Herramientas;
 use App\Models\Maquinaria;
 use App\Models\Insumos;
+use App\Models\Auditoria;
 
 class InventarioController extends Controller
 {
@@ -45,6 +46,7 @@ class InventarioController extends Controller
                     for ($i = 0; $i < $cantidad_articulo; $i++) {
                         $articulo_inventariado=new Articulo_inventariado;
                         $insumo=new Insumos;
+                        $auditoria=new Auditoria;
 
                         $articulo_inventariado->id_inventario=$codigos_inventario[$i];
                         $articulo_inventariado->id_articulo=$codigo;
@@ -54,13 +56,39 @@ class InventarioController extends Controller
                         $insumo->id_insumo=$codigos_inventario[$i];   
                         $insumo->capacidad=$capacidad_insumo;
 
+
+                        $data = [
+                            'id_inventario' => $codigos_inventario[$i],
+                            'id_articulo' => $codigo,
+                            'estatus' => $estatus,
+                            'tipo'=>$tipo
+                        ];
+
                         $articulo_inventariado->save();
                         $insumo->save();
+
+                        $auditoria->event='created';
+                        $auditoria->subject_type=Articulo_inventariado::class;
+                        $auditoria->subject_id=$codigos_inventario[$i];
+                        $auditoria->cause_id=auth()->id();
+                        $auditoria->old_data=json_encode([]);
+                        $auditoria->new_data=json_encode($data);
+                        $auditoria->save();
                     
                     }
+                    $auditoria=new Auditoria;
+                    $auditoria->event='updated';
+                    $auditoria->subject_type=Catalogo_articulo::class;
+                    $auditoria->subject_id=$articulo->id_articulo;
+                    $auditoria->cause_id=auth()->id();
+                    $auditoria->old_data=json_encode($articulo->toArray());
+
 
                     $articulo->cantidad+=$cantidad_articulo;
                     $articulo->save();
+
+                    $auditoria->new_data=json_encode($articulo->toArray());
+                    $auditoria->save();
                     
                     
             }else{
@@ -73,12 +101,24 @@ class InventarioController extends Controller
                 $articulo_nuevo->tipo=$tipo_insumo;
                 $articulo_nuevo->save();
                 $articulo = Catalogo_articulo::find($codigo);
+
+
+                 //Aqui creamos el historial de agregar cuando aun no existe ninguno en base de datos
+                 $auditoria=new Auditoria;
+                 $auditoria->event='created';
+                 $auditoria->subject_type=Catalogo_articulo::class;
+                 $auditoria->subject_id=$articulo->id_articulo;
+                 $auditoria->cause_id=auth()->id();
+                 $auditoria->old_data=json_encode([]);
+                 $auditoria->new_data=json_encode($articulo->toArray());
+                 $auditoria->save();
             
 
                 $codigos_inventario=$this->generadorCodigoInventario($articulo,$tipo,$cantidad_articulo);
                 for ($i = 0; $i < $articulo->cantidad; $i++) {
                     $articulo_inventariado=new Articulo_inventariado;
                     $insumo=new Insumos;
+                    $auditoria=new Auditoria;
 
                     $articulo_inventariado->id_inventario=$codigos_inventario[$i];
                     $articulo_inventariado->id_articulo=$codigo;
@@ -87,9 +127,25 @@ class InventarioController extends Controller
                                 
                     $insumo->id_insumo=$codigos_inventario[$i];   
                     $insumo->capacidad=$capacidad_insumo;
+
+                    $data = [
+                        'id_inventario' => $codigos_inventario[$i],
+                        'id_articulo' => $codigo,
+                        'estatus' => $estatus,
+                        'tipo'=>$tipo
+                    ];
                                         
                     $articulo_inventariado->save();
                     $insumo->save();
+
+                    $auditoria->event='created';
+                    $auditoria->subject_type=Articulo_inventariado::class;
+                    $auditoria->subject_id=$codigos_inventario[$i];
+                    $auditoria->cause_id=auth()->id();
+                    $auditoria->old_data=json_encode([]);
+                    $auditoria->new_data=json_encode($data);
+                    $auditoria->save();
+
                 }
 
             }
@@ -110,6 +166,7 @@ class InventarioController extends Controller
                     for ($i = 0; $i < $cantidad_articulo; $i++) {
                          $articulo_inventariado=new Articulo_inventariado;
                          $maquinaria=new Maquinaria;
+                         $auditoria=new Auditoria;
 
                          $articulo_inventariado->id_inventario=$codigos_inventario[$i];
                          $articulo_inventariado->id_articulo=$codigo;
@@ -118,14 +175,38 @@ class InventarioController extends Controller
 
                          $maquinaria->id_maquinaria=$codigos_inventario[$i];   
                          
+                         $data = [
+                            'id_inventario' => $codigos_inventario[$i],
+                            'id_articulo' => $codigo,
+                            'estatus' => $estatus,
+                            'tipo'=>$tipo
+                        ];
+        
 
-                         $articulo_inventariado->save();
-                         $maquinaria->save();
+                        $articulo_inventariado->save();
+                        $maquinaria->save();
+
+                        $auditoria->event='created';
+                        $auditoria->subject_type=Articulo_inventariado::class;
+                        $auditoria->subject_id=$codigos_inventario[$i];
+                        $auditoria->cause_id=auth()->id();
+                        $auditoria->old_data=json_encode([]);
+                        $auditoria->new_data=json_encode($data);
+                        $auditoria->save();
                        
                      }
+                     $auditoria=new Auditoria;
+                     $auditoria->event='updated';
+                     $auditoria->subject_type=Catalogo_articulo::class;
+                     $auditoria->subject_id=$articulo->id_articulo;
+                     $auditoria->cause_id=auth()->id();
+                     $auditoria->old_data=json_encode($articulo->toArray());
      
                     $articulo->cantidad+=$cantidad_articulo;
                     $articulo->save();
+
+                    $auditoria->new_data=json_encode($articulo->toArray());
+                    $auditoria->save();
                     
                     
              }else{
@@ -138,22 +219,53 @@ class InventarioController extends Controller
                  $articulo_nuevo->tipo=$tipo_maquina;
                  $articulo_nuevo->save();
                  $articulo = Catalogo_articulo::find($codigo);
+
+
+                  //Aqui creamos el historial de agregar cuando aun no existe ninguno en base de datos
+                 $auditoria=new Auditoria;
+                 $auditoria->event='created';
+                 $auditoria->subject_type=Catalogo_articulo::class;
+                 $auditoria->subject_id=$articulo->id_articulo;
+                 $auditoria->cause_id=auth()->id();
+                 $auditoria->old_data=json_encode([]);
+                 $auditoria->new_data=json_encode($articulo->toArray());
+                 $auditoria->save();
              
 
                  $codigos_inventario=$this->generadorCodigoInventario($articulo,$tipo,$cantidad_articulo);
                  for ($i = 0; $i < $articulo->cantidad; $i++) {
                      $articulo_inventariado=new Articulo_inventariado;
                      $maquinaria=new Maquinaria;
+                     $auditoria=new Auditoria;
 
                      $articulo_inventariado->id_inventario=$codigos_inventario[$i];
                      $articulo_inventariado->id_articulo=$codigo;
                      $articulo_inventariado->estatus=$estatus;
                      $articulo_inventariado->tipo=$tipo;   
-                                 
+   
                      $maquinaria->id_maquinaria=$codigos_inventario[$i]; 
+
+                     $data = [
+                        'id_inventario' => $codigos_inventario[$i],
+                        'id_articulo' => $codigo,
+                        'estatus' => $estatus,
+                        'tipo'=>$tipo
+                    ];
+
+
                                           
                      $articulo_inventariado->save();
                      $maquinaria->save();
+
+
+
+                    $auditoria->event='created';
+                    $auditoria->subject_type=Articulo_inventariado::class;
+                    $auditoria->subject_id=$codigos_inventario[$i];
+                    $auditoria->cause_id=auth()->id();
+                    $auditoria->old_data=json_encode([]);
+                    $auditoria->new_data=json_encode($data);
+                    $auditoria->save();
                 }
      
              }
@@ -166,14 +278,19 @@ class InventarioController extends Controller
             $codigo=$this->generadorCodigoArticulo($nombre_articulo,"",$tipo,$tipo_herramienta,$dimension);     
              //Agregar en la tabla de articulo_inventariado           
            if(Catalogo_articulo::where('id_articulo',$codigo)->exists()){
+
             $articulo = Catalogo_articulo::find($codigo);
             $articulo->id_articulo=$codigo;
             $codigos_inventario=$this->generadorCodigoInventario($articulo,$tipo,$cantidad_articulo);
 
+        
             for ($i = 0; $i < $cantidad_articulo; $i++) {
                  $articulo_inventariado=new Articulo_inventariado;   
                  $herramienta=new Herramientas;
-                 
+                 $auditoria=new Auditoria;
+
+
+
                  $articulo_inventariado->id_inventario=$codigos_inventario[$i];
                  $articulo_inventariado->id_articulo=$codigo;
                  $articulo_inventariado->estatus=$estatus;
@@ -183,13 +300,43 @@ class InventarioController extends Controller
                  $herramienta->condicion=$condicion_herramienta;
                  $herramienta->dimension=$dimension;
 
+                 $data = [
+                    'id_inventario' => $codigos_inventario[$i],
+                    'id_articulo' => $codigo,
+                    'estatus' => $estatus,
+                    'tipo'=>$tipo
+                ];
+
+                 
+
                  $articulo_inventariado->save();
                  $herramienta->save();
 
+                 $auditoria->event='created';
+                 $auditoria->subject_type=Articulo_inventariado::class;
+                 $auditoria->subject_id=$codigos_inventario[$i];
+                 $auditoria->cause_id=auth()->id();
+                 $auditoria->old_data=json_encode([]);
+                 $auditoria->new_data=json_encode($data);
+                 $auditoria->save();
+
              }
+
+            $auditoria=new Auditoria;
+            $auditoria->event='updated';
+            $auditoria->subject_type=Catalogo_articulo::class;
+            $auditoria->subject_id=$articulo->id_articulo;
+            $auditoria->cause_id=auth()->id();
+            $auditoria->old_data=json_encode($articulo->toArray());
+    
 
             $articulo->cantidad+=$cantidad_articulo;
             $articulo->save();
+        
+            $auditoria->new_data=json_encode($articulo->toArray());
+            $auditoria->save();
+   
+
             }else{
                 
                 $articulo_nuevo = new Catalogo_articulo;
@@ -201,12 +348,23 @@ class InventarioController extends Controller
                 $articulo_nuevo->save();
                 $articulo = Catalogo_articulo::find($codigo);
                 
+                //Aqui creamos el historial de agregar cuando aun no existe ninguno en base de datos
+                $auditoria=new Auditoria;
+                $auditoria->event='created';
+                $auditoria->subject_type=Catalogo_articulo::class;
+                $auditoria->subject_id=$articulo->id_articulo;
+                $auditoria->cause_id=auth()->id();
+                $auditoria->old_data=json_encode([]);
+                $auditoria->new_data=json_encode($articulo->toArray());
+                $auditoria->save();
+
             
 
                 $codigos_inventario=$this->generadorCodigoInventario($articulo,$tipo,$cantidad_articulo);
                 for ($i = 0; $i < $articulo->cantidad; $i++) {
                     $articulo_inventariado=new Articulo_inventariado;
                     $herramienta=new Herramientas;
+                    $auditoria=new Auditoria;
 
                     $articulo_inventariado->id_inventario=$codigos_inventario[$i];
                     $articulo_inventariado->id_articulo=$codigo;
@@ -216,8 +374,27 @@ class InventarioController extends Controller
                     $herramienta->id_herramientas=$codigos_inventario[$i];
                     $herramienta->condicion=$condicion_herramienta;
                     $herramienta->dimension=$dimension;
+
+                    $data = [
+                        'id_inventario' => $codigos_inventario[$i],
+                        'id_articulo' => $codigo,
+                        'estatus' => $estatus,
+                        'tipo'=>$tipo
+                    ];
+
+
                     $articulo_inventariado->save();
                     $herramienta->save();
+                    //Parte de auditoria
+
+                    $auditoria->event='created';
+                    $auditoria->subject_type=Articulo_inventariado::class;
+                    $auditoria->subject_id=$codigos_inventario[$i];
+                    $auditoria->cause_id=auth()->id();
+                    $auditoria->old_data=json_encode([]);
+                    $auditoria->new_data=json_encode($data);
+                    $auditoria->save();
+
                    
                }
     
