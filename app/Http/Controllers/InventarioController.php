@@ -423,8 +423,8 @@ class InventarioController extends Controller
         $auditoria->save();
         
         $catalogo_articulo->delete();
+        return redirect()->route('inventario.index')->with('success', 'La herramienta con el ID: ' . $id_articulo . ' ha sido eliminada exitosamente.');
 
-        return redirect()->route('inventario.index');
 
        
     }

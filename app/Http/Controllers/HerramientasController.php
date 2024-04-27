@@ -71,7 +71,9 @@ class HerramientasController extends Controller
 
         }
 
-        return redirect()->route('herramientas.index');
+        
+        return redirect()->route('herramientas.index')->with('success', 'La herramienta: ' . $id_herramientas . ' ha sido actualizada exitosamente.');
+
     }
 
 
@@ -100,7 +102,7 @@ class HerramientasController extends Controller
             $catalogo_articulo->save();
         }
         $herramienta->delete();
-        return redirect()->route('herramientas.index');
+        return redirect()->route('herramientas.index')->with('success', 'La herramienta: ' . $id_herramientas . ' ha sido eliminada exitosamente.');
 
 
        
