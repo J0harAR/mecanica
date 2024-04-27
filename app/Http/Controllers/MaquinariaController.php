@@ -48,7 +48,7 @@ class MaquinariaController extends Controller
 
 
 
-      return redirect()->route('maquinaria.index');
+      return redirect()->route('maquinaria.index')->with('success', 'La maquina: ' . $id_maquinaria . ' ha sido actualizada exitosamente.');
   }
 
 
@@ -80,7 +80,7 @@ class MaquinariaController extends Controller
           $catalogo_articulo->save();
       }
       $maquinaria->delete();
-      return redirect()->route('maquinaria.index');
+      return redirect()->route('maquinaria.index')->with('success', 'La maquina: ' . $id_maquinaria . ' ha sido eliminada exitosamente.');
 
      
   }
