@@ -48,7 +48,7 @@ class InsumosController extends Controller
 
 
   
-        return redirect()->route('insumos.index');
+        return redirect()->route('insumos.index')->with('success', 'El insumo con id: ' . $id_insumo . ' ha sido actualizado exitosamente.');
     }
 
 
@@ -77,7 +77,7 @@ class InsumosController extends Controller
             $catalogo_articulo->save();
         }
         $insumo->delete();
-        return redirect()->route('insumos.index');
+        return redirect()->route('insumos.index')->with('success', 'El insumo con id: ' . $id_insumo. ' ha sido eliminado exitosamente.');
 
        
     }
