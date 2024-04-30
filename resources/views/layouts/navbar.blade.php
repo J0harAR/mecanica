@@ -294,7 +294,13 @@
 
 
 
-
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="{{ route('mantenimiento.index') }}">
+      <i class="bi bi-archive"></i>
+      <span>Mantenimiento</span>
+    </a>
+  </li><!-- End Role Page Nav -->
 </ul>
+
 
 </aside><!-- End Sidebar-->

@@ -10,6 +10,7 @@ use App\Http\Controllers\CatalogoArticulosController;
 use App\Http\Controllers\HerramientasController;
 use App\Http\Controllers\MaquinariaController;
 use App\Http\Controllers\InsumosController;
+use App\Http\Controllers\MantenimientoController;
 
 
 
@@ -75,6 +76,8 @@ Route::put('/inventario/insumos/{id}', [InsumosController::class, 'update'])->na
 
 
 
+//Parte de mantenimiento
 
+Route::get('/mantenimiento', [MantenimientoController::class, 'index'])->name('mantenimiento.index');
 
-
+Route::post('/mantenimiento', [MantenimientoController::class, 'store'])->name('mantenimiento.store');

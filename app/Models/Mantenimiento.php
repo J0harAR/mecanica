@@ -9,14 +9,16 @@ use  App\Models\Insumos;
 class Mantenimiento extends Model
 {
     use HasFactory;
+    protected $table = "mantenimiento";
 
     public function Maquinarias(){
         return $this->belongsTo(Maquinaria::class, 'id_maquinaria');
     }
 
 
-    public function insumos(){
-        return $this->belongsToMany(Insumos::class);
+    public function insumos()
+    {
+        return $this->belongsToMany(Insumos::class, 'insumos_mantenimiento', 'mantenimiento_id', 'insumo_id');
     }
 
 }

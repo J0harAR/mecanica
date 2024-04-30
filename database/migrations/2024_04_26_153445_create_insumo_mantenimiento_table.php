@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('insumo_mantenimiento', function (Blueprint $table) {
+        Schema::create('insumos_mantenimiento', function (Blueprint $table) {
             $table->id();
     
 
-            $table->foreignId('id_insumo')->nullable();
-            $table->foreignId('id_mantenimiento')->nullable();;
+            $table->foreignId('insumo_id')->nullable();
+            $table->foreignId('mantenimiento_id')->nullable();;
          
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('insumo_mantenimiento');
+        Schema::dropIfExists('insumos_mantenimiento');
     }
 };

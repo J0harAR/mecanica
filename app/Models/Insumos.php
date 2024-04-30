@@ -8,6 +8,7 @@ use  App\Models\Mantenimiento;
 class Insumos extends Model
 {
     use HasFactory;
+    //protected $table = "insumos";
     protected $primaryKey = 'id_insumo';
     protected $keyType = 'string';
 
@@ -16,7 +17,8 @@ class Insumos extends Model
     }
 
 
-    public function mantenimientos(){
-        return $this->belongsToMany(Mantenimiento::class);
+    public function mantenimientos()
+    {
+        return $this->belongsToMany(Mantenimiento::class, 'insumos_mantenimiento', 'insumo_id', 'mantenimiento_id');
     }
 }

@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('insumo_mantenimiento', function (Blueprint $table) {
-            $table->string('id_insumo', 191)->change();
-            $table->string('id_mantenimiento', 191)->change();
+        Schema::table('insumos_mantenimiento', function (Blueprint $table) {
+            $table->string('insumo_id', 191)->change();
+            $table->string('mantenimiento_id', 191)->change();
         });
     }
 
@@ -22,9 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('insumo_mantenimiento', function (Blueprint $table) {
-            $table->string('id_insumo')->change();
-            $table->string('id_mantenimiento')->change();
+        Schema::table('insumos_mantenimiento', function (Blueprint $table) {
+            $table->string('insumo_id')->change();
+            $table->string('mantenimiento_id')->change();
         });
     }
 };
