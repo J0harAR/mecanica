@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('insumos_mantenimiento', function (Blueprint $table) {
             $table->string('insumo_id', 191)->change();
-            $table->string('mantenimiento_id', 191)->change();
+        
         });
     }
 
@@ -24,7 +24,7 @@ return new class extends Migration
     {
         Schema::table('insumos_mantenimiento', function (Blueprint $table) {
             $table->string('insumo_id')->change();
-            $table->string('mantenimiento_id')->change();
+           
         });
     }
 };
