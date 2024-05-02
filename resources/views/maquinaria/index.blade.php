@@ -81,6 +81,7 @@
                             <th>Nombre</th>
                             <th>Seccion</th>
                             <th>Estatus</th>
+                            <th>Insumos</th>
                             <th>Acciones</th>
                         </tr>
                         </thead>
@@ -91,6 +92,13 @@
                             <td>{{$maquina->Articulo_inventariados->Catalogo_articulos->nombre}}</td>
                             <td>{{$maquina->Articulo_inventariados->Catalogo_articulos->seccion}}</td>
                             <td>{{$maquina->Articulo_inventariados->estatus}}</td>
+
+                            <td>
+                              @foreach ($maquina->insumos as $insumo)
+                                {{$insumo->id_insumo}}                         
+                              @endforeach
+                            </td>
+
                             <td>
 
                             <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"

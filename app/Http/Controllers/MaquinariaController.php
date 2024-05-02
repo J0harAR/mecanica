@@ -14,7 +14,7 @@ class MaquinariaController extends Controller
   {
     
 
-      $maquinaria = Maquinaria::with('Articulo_inventariados.Catalogo_articulos')->get();
+      $maquinaria = Maquinaria::with(['Articulo_inventariados.Catalogo_articulos','insumos'])->get();
       $insumos=Insumos::all();
       //foreach ($herramientas as $herramienta) {
         //  echo $herramienta->Articulo_inventariados->Catalogo_articulos->nombre;
