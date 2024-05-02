@@ -4,10 +4,11 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="fw-bold mb-0" style="color: #343a40;">Inventario</h1>
         <div>
-            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal"><i class="ri-add-line"></i>Agregar articulo</button>
+            <button type="button" class="btn btn-outline-primary " data-bs-toggle="modal" data-bs-target="#modal"><i class="ri-add-line"></i>Agregar articulo</button>
             
-            <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#ExtralargeModal"><i class="bi bi-clock-history"></i></button>
+            <button type="button" class="btn btn-outline-primary " data-bs-toggle="modal" data-bs-target="#ExtralargeModal"><i class="bi bi-clock"></i></button>
         </div>
+
     </div>
     @if (session('success'))
         <div class="alert alert-success" id="success-alert">
