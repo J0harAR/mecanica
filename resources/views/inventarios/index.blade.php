@@ -308,6 +308,21 @@
                                 <input type="text" class="form-control" id="tipo_maquina"  name="tipo_maquina">
                             </div>
 
+                            <div class="row mb-3" id="todos_insumos" style="display:none;">
+                                <label class="col-sm-2 col-form-label">Insumos</label>
+                                <div class="col-sm-12">
+                                    <select class="form-select" multiple aria-label="multiple select example" name="insumos[]",id="insumos">
+                                    <option selected>Open this select menu</option>
+                                    @foreach ($insumos as $insumo)
+                                    <option value="{{$insumo->id_insumo}}">{{$insumo->Articulo_inventariados->Catalogo_articulos->nombre}}</option>
+                                    @endforeach 
+                                    
+                                    </select>
+                                </div>
+                            </div>
+
+                      
+
                             <div class="col-md-8" id="tipoInsumo" style="display:none;">
                                 <label for="tipo_insumo" class="form-label">Tipo de insumo</label>
                                 <input type="text" class="form-control" id="tipo_insumo"  name="tipo_insumo">
@@ -363,6 +378,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var seccion=document.getElementById('seccion');
 
+    var todos_insumos=document.getElementById('todos_insumos');
+
 
     tipoSelect.addEventListener('change', function() {
         
@@ -372,21 +389,22 @@ document.addEventListener('DOMContentLoaded', function() {
             showElement(dimension_herramienta);
             showElement(condicion_herramienta);
             
-            hideElements([tipo_maquina, tipo_insumo,capacidad_insumo,seccion]);
+            hideElements([tipo_maquina, tipo_insumo,capacidad_insumo,seccion,todos_insumos]);
             break;
         case 'Maquinaria':
             showElement(tipo_maquina);
             showElement(seccion);
+            showElement(todos_insumos);
             hideElements([tipo_herramienta, tipo_insumo,capacidad_insumo,dimension_herramienta,condicion_herramienta]);
            
             break;
         case 'Insumos':
             showElement(tipo_insumo);
             showElement(capacidad_insumo);
-            hideElements([tipo_herramienta, tipo_maquina,dimension_herramienta,condicion_herramienta,seccion]);
+            hideElements([tipo_herramienta, tipo_maquina,dimension_herramienta,condicion_herramienta,seccion,todos_insumos]);
             break;
         default:
-            
+       
             break;
     }
 

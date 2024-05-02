@@ -7,7 +7,7 @@ use App\Models\Maquinaria;
 use App\Models\Articulo_inventariado;
 use App\Models\Catalogo_articulo;
 use App\Models\Auditoria;
-
+use App\Models\Insumos;
 class MaquinariaController extends Controller
 {
   public function index()
@@ -15,12 +15,12 @@ class MaquinariaController extends Controller
     
 
       $maquinaria = Maquinaria::with('Articulo_inventariados.Catalogo_articulos')->get();
-
+      $insumos=Insumos::all();
       //foreach ($herramientas as $herramienta) {
         //  echo $herramienta->Articulo_inventariados->Catalogo_articulos->nombre;
     //  }
       
-      return view('maquinaria.index',compact('maquinaria'));
+      return view('maquinaria.index',compact('maquinaria','insumos'));
   }
 
   public function update(Request $request,$id_maquinaria)
@@ -45,6 +45,12 @@ class MaquinariaController extends Controller
             $auditoria_inventario->new_data=json_encode($articulo_inventariado);
             $auditoria_inventario->save();
         }
+
+     
+
+
+
+
 
 
 

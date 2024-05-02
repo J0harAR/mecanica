@@ -17,8 +17,9 @@ class InventarioController extends Controller
     {
         $articulos_inventariados=Articulo_inventariado::all();   
         $catalogo_articulo=Catalogo_articulo::all();
+        $insumos=Insumos::all();
         $historial=Auditoria::all(); 
-        return view('inventarios.index',compact('catalogo_articulo','historial'));
+        return view('inventarios.index',compact('catalogo_articulo','historial','insumos'));
     }
 
 
@@ -185,7 +186,9 @@ class InventarioController extends Controller
         
 
                         $articulo_inventariado->save();
+                        $maquinaria->insumos()->sync($request->input('insumos',[]));
                         $maquinaria->save();
+                       
 
                         $auditoria->event='created';
                         $auditoria->subject_type=Articulo_inventariado::class;
@@ -256,7 +259,9 @@ class InventarioController extends Controller
 
                                           
                      $articulo_inventariado->save();
+                     $maquinaria->insumos()->sync($request->input('insumos',[]));
                      $maquinaria->save();
+                    
 
 
 
