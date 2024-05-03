@@ -1,67 +1,137 @@
 @extends('layouts.imports')
 
 @section('content')
-<div class="container-fluid d-flex align-items-center justify-content-center" style="min-height: 100vh; background: url('assets/img/fondo.jpg') no-repeat center center; background-size: cover;">
-  <section class="register d-flex flex-column align-items-center justify-content-center w-100">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-4 col-md-6">
+<style>
+    body {
+        background: url('assets/img/fondo.jpg') no-repeat center center;
+        background-size: cover;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-          <div class="card shadow-lg" style="border-radius: 25px; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);">
-            <div class="card-body p-4">
+    .blur-background {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 123, 255, 0.2);
+        backdrop-filter: blur(15px); /* More pronounced blur effect */
+    }
 
-              <!-- Logo integrado con un efecto visual moderno -->
-              <div class="d-flex justify-content-center py-3">
-                <img src="/assets/img/logo.png" alt="Instituto Logo" class="logo w-50">
-              </div><!-- End Logo -->
+    .login-card {
+        max-width: 900px;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05); /* Softer shadow */
+        border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border */
+        overflow: hidden;
+    }
 
-              <h5 class="card-title text-center pb-0 fs-4" style="color: #343a40;">Iniciar sesión en tu cuenta</h5>
-              <p class="text-center small text-muted mb-4">Ingresa tu correo electrónico y contraseña para acceder.</p>
+    .card-body {
+        padding: 40px;
+        transition: all 0.3s ease;
+    }
 
-              @if($errors->has('email') || $errors->has('password'))
-                <div class="alert alert-danger" role="alert">
-                  <strong>Algo salió mal.</strong> Por favor verifica tus datos e inténtalo de nuevo.
-                </div>
-              @endif
+    .input-group-text {
+        background: transparent;
+        border: none;
+        color: #007bff;
+    }
 
-              <form class="needs-validation" method="POST" action="{{ route('login') }}" novalidate>
-                @csrf
-                <div class="mb-3">
-                  <label for="email" class="form-label">Correo electrónico</label>
-                  <div class="input-group">
-                    <span class="input-group-text" id="email-addon"><i class="bi bi-envelope-fill"></i></span>
-                    <input id="email" type="email" class="form-control" name="email" required autocomplete="email" autofocus>
-                    <div class="invalid-feedback">Campo obligatorio</div>
-                  </div>
-                </div>
+    .form-control {
+        background: transparent;
+        border: 2px solid #007bff;
+        border-radius: 5px;
+        padding: 10px;
+        transition: border-color 0.3s ease;
+    }
 
-                <div class="mb-3">
-                  <label for="password" class="form-label">Contraseña</label>
-                  <div class="input-group">
-                    <span class="input-group-text" id="password-addon"><i class="bi bi-lock-fill"></i></span>
-                    <input id="password" type="password" class="form-control" name="password" required autocomplete="current-password">
-                    <div class="invalid-feedback">Campo obligatorio</div>
+    .form-control:focus {
+        border-color: #0056b3;
+        box-shadow: none;
+    }
 
-                  </div>
-                </div>
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,123,255,0.2);
+    }
 
-                <div class="mb-3 form-check">
-                  <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                  <label class="form-check-label" for="remember">Recordarme</label>
-                </div>
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
 
-                <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
-                <p class="text-center small mt-3 mb-0">¿No tienes cuenta? <a href="{{route('register')}}" class="text-primary">Crear cuenta</a></p>
-              </form>
+    .form-check-input:checked {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
 
-            </div>
+    .logo {
+        width: 30%;
+    }
+</style>
+
+<div class="container-fluid blur-background">
+  <div class="card shadow-lg login-card">
+    <div class="row g-0">
+
+      <!-- Column for the image -->
+      <div class="col-md-5 d-flex align-items-center">
+        <img src="/assets/img/logo_side_image.jpg" alt="Side Image" class="w-100" style="height: 100%; object-fit: cover;">
+      </div>
+      
+      <!-- Column for the login form -->
+      <div class="col-md-7">
+        <div class="card-body">
+          <div class="d-flex justify-content-center">
+            <img src="/assets/img/logo.png" alt="Logo" class="logo">
           </div>
 
+          <h5 class="card-title text-center">Iniciar sesión en tu cuenta</h5>
+          <p class="text-center small">Ingresa tu correo electrónico y contraseña para acceder.</p>
+
+          @if($errors->has('email') || $errors->has('password'))
+            <div class="alert alert-danger">
+              <strong>Algo salió mal.</strong> Por favor verifica tus datos e inténtalo de nuevo.
+            </div>
+          @endif
+
+          <form class="needs-validation" method="POST" action="{{ route('login') }}" novalidate>
+            @csrf
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo electrónico</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                <input id="email" type="email" class="form-control" name="email" required autocomplete="email" autofocus>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" the form-label">Contraseña</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                <input id="password" type="password" class="form-control" name="password" required autocomplete="current-password">
+              </div>
+            </div>
+
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="remember" name="remember">
+              <label class="form-check-label" for="remember">Recordarme</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
+            <p class="text-center small mt-3 mb-0">¿No tienes cuenta? <a href="{{route('register')}}" class="text-primary">Crear cuenta</a></p>
+          </form>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </div>
 @endsection
-
-
