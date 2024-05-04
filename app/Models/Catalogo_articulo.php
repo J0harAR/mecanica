@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use  App\Models\Practica;
 class Catalogo_articulo extends Model
 {
     use HasFactory;
@@ -12,6 +12,10 @@ class Catalogo_articulo extends Model
     protected $primaryKey = 'id_articulo';
     protected $keyType = 'string';
     
-
+    //Relacion n a n con practica
+    public function practicas()
+      {
+          return $this->belongsToMany(Practica::class, 'catalogo_practica', 'articulo_id', 'practica_id');
+      }
     
 }

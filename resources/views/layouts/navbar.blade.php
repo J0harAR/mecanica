@@ -300,7 +300,17 @@
       <span>Mantenimiento</span>
     </a>
   </li><!-- End Role Page Nav -->
+
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="{{ route('practicas.index') }}">
+      <i class="bi bi-archive"></i>
+      <span>Practicas</span>
+    </a>
+  </li><!-- End Role Page Nav -->
 </ul>
+
+
 
 
 </aside><!-- End Sidebar-->
