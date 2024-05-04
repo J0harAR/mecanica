@@ -11,6 +11,7 @@ use App\Http\Controllers\HerramientasController;
 use App\Http\Controllers\MaquinariaController;
 use App\Http\Controllers\InsumosController;
 use App\Http\Controllers\MantenimientoController;
+use App\Http\Controllers\PracticaController;
 
 
 
@@ -81,3 +82,6 @@ Route::put('/inventario/insumos/{id}', [InsumosController::class, 'update'])->na
 Route::get('/mantenimiento', [MantenimientoController::class, 'index'])->name('mantenimiento.index');
 
 Route::post('/mantenimiento', [MantenimientoController::class, 'store'])->name('mantenimiento.store');
+
+
+//Parte de las practicas
