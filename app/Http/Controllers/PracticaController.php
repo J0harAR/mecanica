@@ -5,21 +5,25 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use  App\Models\Docente;
 use  App\Models\Practica;
+use  App\Models\Catalogo_articulo;
 class PracticaController extends Controller
 {
    
 
     public function index(){
+
+
         
+
         return view('practicas.index');
       
     }
 
 
     public function create(){
-
+        $catalogo_articulos=Catalogo_articulo::all();
         $docentes=Docente::all();
-        return view('practicas.crear',compact('docentes'));
+        return view('practicas.crear',compact('docentes','catalogo_articulos'));
       
     }
 
@@ -41,11 +45,12 @@ class PracticaController extends Controller
         $practica->introduccion=$introduccion;
         $practica->fundamento=$fundamento;
         $practica->referencias=$referencias;
+        $practica->catalogo_articulos()->sync($request->input('articulos',[]));
         $practica->estatus=0;
-    
-
         $practica->save();
 
+       
+    
         return redirect()->route('practicas.index');
       
     }

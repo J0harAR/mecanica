@@ -49,6 +49,19 @@
             <div class="col-12">
                 <label for="inputNanme4" class="form-label">Referencias</label>
                 <input type="text" class="form-control" name="referencias" required>
+            </div>  
+
+            <div class="row mb-3">
+                  <label class="col-sm-12 col-form-label">Articulos</label>
+                  <div class="col-sm-10">
+                    <select class="form-select" multiple aria-label="multiple select example" name="articulos[]">
+                    <option selected>Open this select menu</option>
+                    @foreach ($catalogo_articulos as $articulo)
+                      <option value="{{$articulo->id_articulo}}">{{$articulo->nombre}}</option>
+                    @endforeach 
+                    
+                    </select>
+                  </div>
             </div>
 
 

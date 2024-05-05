@@ -11,6 +11,8 @@ class Practica extends Model
 
 
     protected $table = "practica";
+    protected $primaryKey = 'id_practica';
+    protected $keyType = 'string';
     use HasFactory;
     
     public function docente(){
