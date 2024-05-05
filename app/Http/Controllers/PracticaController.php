@@ -11,11 +11,11 @@ class PracticaController extends Controller
    
 
     public function index(){
-
+        $practicas=Practica::with(['catalogo_articulos'])->get();
 
         
 
-        return view('practicas.index');
+        return view('practicas.index',compact('practicas'));
       
     }
 
