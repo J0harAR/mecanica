@@ -8,9 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Persona extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'nombre',
-        'apellido_p',
-        'apellido_m',
-    ];
+    protected $table = "persona";
+    protected $primaryKey = 'curp';
 }

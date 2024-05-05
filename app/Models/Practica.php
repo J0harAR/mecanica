@@ -8,9 +8,13 @@ use  App\Models\Docente;
 use  App\Models\Catalogo_articulo;
 class Practica extends Model
 {
+
+
+    protected $table = "practica";
     use HasFactory;
+    
     public function docente(){
-        return $this->belongsTo(Docente::class, 'id_docente');
+        return $this->belongsTo(Docente::class, 'rfc');
     }
       //Relacion n a n con catalogo articulo
       public function catalogo_articulos()

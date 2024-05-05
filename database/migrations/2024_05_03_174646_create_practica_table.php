@@ -13,17 +13,15 @@ return new class extends Migration
     {
         Schema::create('practica', function (Blueprint $table) {
             $table->string('id_practica')->primary();
-            $table->string('id_docente');
+            $table->string('rfc');
             $table->string('nombre');
             $table->text('objetivo');
             $table->text('introduccion');
             $table->text('fundamento');
             $table->text('referencias');
             $table->boolean('estatus');
-
-
-            $table->foreign('id_docente')->references('rfc')->on('docente');
             $table->timestamps();
+            $table->foreign('rfc')->references('rfc')->on('docente');
         });
     }
 

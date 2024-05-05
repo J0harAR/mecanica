@@ -87,3 +87,5 @@ Route::post('/mantenimiento', [MantenimientoController::class, 'store'])->name('
 //Parte de las practicas
 Route::get('/practicas', [PracticaController::class, 'index'])->name('practicas.index');
 Route::get('/practicas/create', [PracticaController::class, 'create'])->name('practicas.create');
+
+Route::post('/practicas/create', [PracticaController::class, 'store'])->name('practicas.store');
