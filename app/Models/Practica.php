@@ -14,7 +14,7 @@ class Practica extends Model
     use HasFactory;
     
     public function docente(){
-        return $this->belongsTo(Docente::class, 'rfc');
+        return $this->belongsTo(Docente::class, 'id_docente');
     }
       //Relacion n a n con catalogo articulo
       public function catalogo_articulos()

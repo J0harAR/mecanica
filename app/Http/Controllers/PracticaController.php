@@ -35,7 +35,7 @@ class PracticaController extends Controller
         $practica=new Practica;
 
         $practica->id_practica=$id_practica;
-        $practica->rfc=$id_docente;
+        $practica->id_docente=$id_docente;
         $practica->nombre=$nombre;
         $practica->objetivo=$objetivo;
         $practica->introduccion=$introduccion;

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('practica', function (Blueprint $table) {
             $table->string('id_practica')->primary();
-            $table->string('rfc');
+            $table->string('id_docente');
             $table->string('nombre');
             $table->text('objetivo');
             $table->text('introduccion');
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('referencias');
             $table->boolean('estatus');
             $table->timestamps();
-            $table->foreign('rfc')->references('rfc')->on('docente');
+            $table->foreign('id_docente')->references('rfc')->on('docente');
         });
     }
 
