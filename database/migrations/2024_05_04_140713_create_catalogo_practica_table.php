@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('articulo_id')->nullable();
 
 
-            $table->foreign('practica_id')->references('id_practica')->on('practica')->onUpdate('cascade');
-            $table->foreign('articulo_id')->references('id_articulo')->on('catalogo_articulo')->onUpdate('cascade');
+            $table->foreign('practica_id')->references('id_practica')->on('practica')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('articulo_id')->references('id_articulo')->on('catalogo_articulo')->onUpdate('cascade')->onDelete('SET NULL');
         });
     }
 

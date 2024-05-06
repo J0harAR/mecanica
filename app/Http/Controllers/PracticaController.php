@@ -57,6 +57,14 @@ class PracticaController extends Controller
         return redirect()->route('practicas.index');
       
     }
+    public function show($id){
+        $practica=Practica::find($id);
+        $practica=Practica::find($id);
+        $docentes=Docente::all();
+        $articulos=Catalogo_articulo::all();
+       return view('practicas.mostrar',compact('practica','docentes','articulos'));
+    }
+
 
     public function edit($id){
        $practica=Practica::find($id);
@@ -103,6 +111,14 @@ class PracticaController extends Controller
 
     
         return redirect()->route('practicas.index');
+    }
+
+    public function destroy($id){
+        $practica = Practica::find($id);
+        $practica->delete();
+        
+        return redirect()->route('practicas.index');
+
     }
 
 }

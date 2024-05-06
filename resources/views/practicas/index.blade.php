@@ -42,25 +42,33 @@
     </div>
 
 
-<div class="container">
+    <div class="container">
   <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach ($practicas as $practica)
     <div class="col">
-      <a href="{{route('practicas.edit',['id'=>$practica->id_practica])}}">
-      <div class="folder-card">
-      
-        <div class="folder-header"></div>
-        <div class="folder-content">
-          <h2>{{ $practica->id_practica }}</h2>
-          <p>{{ $practica->nombre }}</p>
+      <a href="{{route('practicas.show',['id'=>$practica->id_practica])}}">
+        <div class="folder-card">
+          <div class="folder-header"></div>
+          <div class="folder-content">
+            <h2>{{ $practica->id_practica }}</h2>
+            <p>{{ $practica->nombre }}</p>
+            <!-- Botón para editar -->
+            <a href="{{ route('practicas.edit', ['id'=>$practica->id_practica]) }}">
+              <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
+            </a>
+            <form action="{{ route('practicas.destroy', ['id'=>$practica->id_practica]) }}" method="POST" style="display: inline;">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> </button>
+            </form>
+        
+          </div>
         </div>
-      </div>
       </a>
     </div>
     @endforeach
   </div>
 </div>
-
 
 
 

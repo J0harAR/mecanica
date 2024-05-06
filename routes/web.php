@@ -88,7 +88,12 @@ Route::post('/mantenimiento', [MantenimientoController::class, 'store'])->name('
 Route::get('/practicas', [PracticaController::class, 'index'])->name('practicas.index');
 Route::get('/practicas/create', [PracticaController::class, 'create'])->name('practicas.create');
 Route::post('/practicas/create', [PracticaController::class, 'store'])->name('practicas.store');
+Route::get('/practicas/{id}', [PracticaController::class, 'show'])->name('practicas.show');
 Route::get('/practicas/{id}/edit', [PracticaController::class, 'edit'])->name('practicas.edit');
 Route::PATCH('/practicas/{id}', [PracticaController::class, 'update'])->name('practicas.update');
+
+Route::delete('/practicas/{id}', [PracticaController::class, 'destroy'])->name('practicas.destroy');
+
+
 
 
