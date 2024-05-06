@@ -14,8 +14,8 @@ class Catalogo_articulo extends Model
     
     //Relacion n a n con practica
     public function practicas()
-      {
-          return $this->belongsToMany(Practica::class, 'catalogo_practica', 'articulo_id', 'practica_id');
-      }
+    {
+        return $this->belongsToMany(Practica::class, 'catalogo_practica', 'articulo_id', 'practica_id');
+    }
     
 }

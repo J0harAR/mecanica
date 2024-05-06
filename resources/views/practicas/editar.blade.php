@@ -3,9 +3,9 @@
 @section('content')
 
 <!-- Vertical Form -->
-<form class="row g-3" action="{{route('practicas.store')}}" method="POST">
+<form class="row g-3" action="{{route('practicas.update',['id'=>$practica->id_practica])}}" method="POST">
+        @method('PATCH')
         @csrf
-
             <div class="col-12">
                 <label for="inputNanme4" class="form-label">No.Practica </label>
                 <input type="text" class="form-control" name="codigo_practica" value="{{$practica->id_practica}}"required >
@@ -65,11 +65,15 @@
                   </div>
             </div>
 
+            <div class="col-12">
+                <label for="inputNanme4" class="form-label">Estatus</label>
+                <input type="text" class="form-control" name="referencias" required  value="{{$practica->referencias}}">
+            </div>  
 
 
 
             <div class="text-center">
-                <button type="submit" class="btn btn-primary">Registrar</button>
+                <button type="submit" class="btn btn-primary">Editar</button>
             </div>
            
         </form><!-- End Vertical Form -->
