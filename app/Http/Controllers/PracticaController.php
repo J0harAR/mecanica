@@ -55,6 +55,14 @@ class PracticaController extends Controller
       
     }
 
+    public function edit($id){
+       $practica=Practica::find($id);
+       $docentes=Docente::all();
+       $articulos=Catalogo_articulo::all();
+       return view('practicas.editar',compact('practica','docentes','articulos'));
+    }
+
+
 
 
 

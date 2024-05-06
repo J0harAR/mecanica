@@ -34,20 +34,28 @@
     transform: translateY(-5px);
   }
 </style>
-
+<div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold mb-0">Practicas</h1>
+      
+        <a href="{{route('practicas.create')}}"  class="btn btn-outline-primary btn-sm" ><i class="ri-add-line"></i>Registrar práctica</a>
+      
+    </div>
 
 
 <div class="container">
   <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach ($practicas as $practica)
     <div class="col">
+      <a href="{{route('practicas.edit',['id'=>$practica->id_practica])}}">
       <div class="folder-card">
+      
         <div class="folder-header"></div>
         <div class="folder-content">
           <h2>{{ $practica->id_practica }}</h2>
           <p>{{ $practica->nombre }}</p>
         </div>
       </div>
+      </a>
     </div>
     @endforeach
   </div>

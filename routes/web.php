@@ -89,3 +89,5 @@ Route::get('/practicas', [PracticaController::class, 'index'])->name('practicas.
 Route::get('/practicas/create', [PracticaController::class, 'create'])->name('practicas.create');
 
 Route::post('/practicas/create', [PracticaController::class, 'store'])->name('practicas.store');
+
+Route::get('/practicas/{id}/edit', [PracticaController::class, 'edit'])->name('practicas.edit');

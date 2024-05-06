@@ -302,13 +302,29 @@
   </li><!-- End Role Page Nav -->
 
 
-  <li class="nav-item">
-    <a class="nav-link collapsed" href="{{ route('practicas.index') }}">
-      <i class="bi bi-archive"></i>
-      <span>Practicas</span>
+
+<li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#practicas-nav" data-bs-toggle="collapse" href="#">
+      <i class="bi bi-bar-chart"></i><span>Practicas</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
-  </li><!-- End Role Page Nav -->
-</ul>
+    <ul id="practicas-nav" class="nav-content collapse " data-bs-parent="#practicas-nav">
+      <li>
+        <a href="{{ route('practicas.index') }}">
+          <i class="bi bi-circle"></i><span>Todas las practicas</span>
+        </a>
+      </li>
+      <li>
+        <a href="charts-apexcharts.html">
+          <i class="bi bi-circle"></i><span>ApexCharts</span>
+        </a>
+      </li>
+      <li>
+        <a href="charts-echarts.html">
+          <i class="bi bi-circle"></i><span>ECharts</span>
+        </a>
+      </li>
+    </ul>
+  </li><!-- End Charts Nav -->
 
 
 

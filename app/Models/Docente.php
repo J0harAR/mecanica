@@ -9,7 +9,8 @@ class Docente extends Model
 {
     use HasFactory;
     protected $table = "docente";
-
+    protected $primaryKey = 'rfc';
+    protected $keyType = 'string';
 
     public function persona(){
         return $this->belongsTo(Persona::class, 'curp');
