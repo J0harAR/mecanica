@@ -52,7 +52,7 @@
           <div class="folder-content">
             <h2>{{ $practica->id_practica }}</h2>
             <p>{{ $practica->nombre }}</p>
-            <!-- Botón para editar -->
+        
             <a href="{{ route('practicas.edit', ['id'=>$practica->id_practica]) }}">
               <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
             </a>

@@ -240,6 +240,7 @@
     </a>
   </li><!-- End Dashboard Nav -->
 
+
   <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-bar-chart"></i><span>Charts</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -258,6 +259,23 @@
       <li>
         <a href="charts-echarts.html">
           <i class="bi bi-circle"></i><span>ECharts</span>
+        </a>
+      </li>
+    </ul>
+  </li><!-- End Charts Nav -->
+  <li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#personas-nav" data-bs-toggle="collapse" href="#">
+      <i class="bi bi-bar-chart"></i><span>Personas</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="personas-nav" class="nav-content collapse " data-bs-parent="#personas-nav">
+      <li>
+        <a href="{{ route('alumnos.index') }}">
+          <i class="bi bi-circle"></i><span>Docentes</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('alumnos.index') }}">
+          <i class="bi bi-circle"></i><span>Alumnos</span>
         </a>
       </li>
     </ul>
@@ -315,7 +333,7 @@
       </li>
       <li>
         <a href="charts-apexcharts.html">
-          <i class="bi bi-circle"></i><span>ApexCharts</span>
+          <i class="bi bi-circle"></i><span>Alumnos</span>
         </a>
       </li>
       <li>

@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use  App\Models\Docente;
 use  App\Models\Practica;
 use  App\Models\Catalogo_articulo;
+use  App\Models\Articulo_inventariado;
+use  App\Models\Alumno;
+
 class PracticaController extends Controller
 {
    
@@ -116,9 +119,30 @@ class PracticaController extends Controller
     public function destroy($id){
         $practica = Practica::find($id);
         $practica->delete();
-        
+
         return redirect()->route('practicas.index');
 
+    }
+
+    //PARTE DE PRACTICAS DONDE SE VAN A REALIZAR EN EL LABORATORIO
+
+
+    public function RegistroPracticaAlumno (){
+        $practicas=Practica::with(['catalogo_articulos'])->get();
+        $articulos_inventariados=Articulo_inventariado::all();
+        $alumnos=Alumno::all();
+        
+        
+        return view('practicas.alumnos',compact('practicas','alumnos'));
+    }
+
+
+    public function buscarAlumno(Request $request){
+        $no_control = $request->input('no_control');
+        $alumnos = Alumno::where('no_control', 'like', '%' . $no_control . '%')->get();  
+    
+        // Devuelve los resultados de la búsqueda de alumnos en formato JSON
+        return response()->json($alumnos);
     }
 
 }

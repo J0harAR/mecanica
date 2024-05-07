@@ -12,6 +12,7 @@ use App\Http\Controllers\MaquinariaController;
 use App\Http\Controllers\InsumosController;
 use App\Http\Controllers\MantenimientoController;
 use App\Http\Controllers\PracticaController;
+use App\Http\Controllers\AlumnoController;
 
 
 
@@ -91,9 +92,19 @@ Route::post('/practicas/create', [PracticaController::class, 'store'])->name('pr
 Route::get('/practicas/{id}', [PracticaController::class, 'show'])->name('practicas.show');
 Route::get('/practicas/{id}/edit', [PracticaController::class, 'edit'])->name('practicas.edit');
 Route::PATCH('/practicas/{id}', [PracticaController::class, 'update'])->name('practicas.update');
-
 Route::delete('/practicas/{id}', [PracticaController::class, 'destroy'])->name('practicas.destroy');
 
 
 
+//Parte de realizar practica de alumnos
 
+
+Route::get('/alumnos/practicas/', [PracticaController::class, 'RegistroPracticaAlumno'])->name('practicasAlumno.create');
+Route::get('/buscarAlumno', [PracticaController::class, 'buscarAlumno']);
+
+
+
+
+//Parte de alumnos
+Route::get('/alumnos', [AlumnoController::class, 'index'])->name('alumnos.index');
+Route::post('/alumnos', [AlumnoController::class, 'store'])->name('alumnos.store');
