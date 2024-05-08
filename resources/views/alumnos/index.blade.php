@@ -1,26 +1,17 @@
 
-
-
-
-
 @extends('layouts.app')
 
 @section('content')
 
-@foreach ($alumnos as $alumno)
-    {{$alumno}}   
 
-@endforeach
-
-
-<button type="button" class="btn btn-outline-primary " data-bs-toggle="modal" data-bs-target="#modal"><i class="ri-add-line"></i>Agregar articulo</button>
+<button type="button" class="btn btn-outline-primary " data-bs-toggle="modal" data-bs-target="#modal"><i class="ri-add-line"></i></button>
 
 <!-- Vertically centered Modal -->
 <div class="modal fade" id="modal" tabindex="-1">
               <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title">Agregar artículo</h5>
+                      <h5 class="modal-title">Agregar alumno</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                    
@@ -55,7 +46,17 @@
                                 <label for="capacidad_insumo" class="form-label">Curp</label>
                                 <input type="text" class="form-control" id="curp" name="curp">
                             </div>
-                 
+
+                            <div class="col-md-12" id="capacidadInsumo" >
+                                <label for="capacidad_insumo" class="form-label">Grupo</label>
+                                <select multiple class="form-control" id="grupos[]" name="grupos[]">
+                                @foreach ($grupos as $grupo)
+                                    <option value="{{$grupo->clave}}"> {{$grupo->clave}}  </option>                                     
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary">Guardar</button>                               
                             </div>

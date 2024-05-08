@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use  App\Models\Alumno;
 use  App\Models\Persona;
+use  App\Models\Grupo;
 
 
 class AlumnoController extends Controller
@@ -12,8 +13,8 @@ class AlumnoController extends Controller
    
         public function index(){
             $alumnos=Alumno::all();
-
-            return view('alumnos.index',compact('alumnos'));
+            $grupos=Grupo::all();
+            return view('alumnos.index',compact('alumnos','grupos'));
         }
 
 
@@ -23,8 +24,6 @@ class AlumnoController extends Controller
             $apellido_p=$request->input('apellido_p');   
             $apellido_m=$request->input('apellido_m');   
             $no_control=$request->input('no_control');
-
-
 
             $persona=new Persona;
             $persona->curp=$curp;
@@ -40,8 +39,19 @@ class AlumnoController extends Controller
 
             $persona->save();
             $alumno->save();
+
+            
+            $alumno=Alumno::find($no_control);
+           
+            $alumno->grupos()->sync($request->input('grupos',[]));
+
             return redirect()->route('alumnos.index');
+
         }
+
+
+
+
 
 
 }
