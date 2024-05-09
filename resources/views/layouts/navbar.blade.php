@@ -281,6 +281,12 @@
     </ul>
   </li><!-- End Charts Nav -->
 
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="{{ route('asignatura.index') }}">
+      <i class="bi bi-people"></i>
+      <span>Materias</span>
+    </a>
+  </li><!-- End Users Page Nav -->
  
 
   <li class="nav-heading">Pages</li>

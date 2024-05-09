@@ -15,9 +15,5 @@ class Docente extends Model
     public function persona(){
         return $this->belongsTo(Persona::class, 'curp');
     }
-
-
-    public function asignaturas(){
-        return $this->belongsToMany(Asignatura::class);
-    }
+  
 }

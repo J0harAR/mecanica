@@ -9,6 +9,10 @@ class Asignatura extends Model
 {
     use HasFactory;
 
+    protected $table = "asignatura";
+    protected $primaryKey = 'clave';
+    protected $keyType = 'string';
+
     public function docentes(){
         return $this->belongsToMany(Docente::class);
     }

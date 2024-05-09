@@ -13,6 +13,7 @@ use App\Http\Controllers\InsumosController;
 use App\Http\Controllers\MantenimientoController;
 use App\Http\Controllers\PracticaController;
 use App\Http\Controllers\AlumnoController;
+use App\Http\Controllers\AsignaturaController;
 
 
 
@@ -108,3 +109,13 @@ Route::get('/buscarAlumno', [PracticaController::class, 'buscarAlumno']);
 //Parte de alumnos
 Route::get('/alumnos', [AlumnoController::class, 'index'])->name('alumnos.index');
 Route::post('/alumnos', [AlumnoController::class, 'store'])->name('alumnos.store');
+
+
+//Parte de asignatura
+Route::get('/asignaturas', [AsignaturaController::class, 'index'])->name('asignatura.index');
+Route::get('/asignaturas/create', [AsignaturaController::class, 'create'])->name('asignatura.create');
+Route::post('/asignaturas', [AsignaturaController::class, 'store'])->name('asignatura.store');
+Route::get('/asignaturas/{id}/edit', [AsignaturaController::class, 'edit'])->name('asignatura.edit');
+Route::PATCH('/asignaturas/{id}', [AsignaturaController::class, 'update'])->name('asignatura.update');
+
+Route::delete('/asignaturas/{id}', [AsignaturaController::class, 'destroy'])->name('asignatura.destroy');
