@@ -282,11 +282,27 @@
   </li><!-- End Charts Nav -->
 
   <li class="nav-item">
-    <a class="nav-link collapsed" href="{{ route('asignatura.index') }}">
-      <i class="bi bi-people"></i>
-      <span>Materias</span>
+    <a class="nav-link collapsed" data-bs-target="#cursos-nav" data-bs-toggle="collapse" href="#">
+      <i class="bi bi-bar-chart"></i><span>Cursos</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
-  </li><!-- End Users Page Nav -->
+    <ul id="cursos-nav" class="nav-content collapse " data-bs-parent="#cursos-nav">
+      <li>
+        <a href="{{route('asignatura.index')}}">
+          <i class="bi bi-circle"></i><span>Materias</span>
+        </a>
+      </li>
+      <li>
+        <a href="charts-apexcharts.html">
+          <i class="bi bi-circle"></i><span>Grupos</span>
+        </a>
+      </li>
+      <li>
+        <a href="charts-echarts.html">
+          <i class="bi bi-circle"></i><span>ECharts</span>
+        </a>
+      </li>
+    </ul>
+  </li><!-- End Charts Nav -->
  
 
   <li class="nav-heading">Pages</li>

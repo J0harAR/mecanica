@@ -119,3 +119,5 @@ Route::get('/asignaturas/{id}/edit', [AsignaturaController::class, 'edit'])->nam
 Route::PATCH('/asignaturas/{id}', [AsignaturaController::class, 'update'])->name('asignatura.update');
 
 Route::delete('/asignaturas/{id}', [AsignaturaController::class, 'destroy'])->name('asignatura.destroy');
+
+

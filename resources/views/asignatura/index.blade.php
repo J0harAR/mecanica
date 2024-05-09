@@ -3,6 +3,21 @@
 
 @section('content')
 
+<p>Listar materias</p>
+
+
+<form id="filterForm">
+    <label for="nombre">Nombre completo</label>
+    <input type="text" id="nombre" name="nombre">
+    <label for="clave">Clave de materia</label>
+    <input type="text" id="clave" name="clave">
+
+    <button type="submit">Filtrar</button>
+</form>
+
+
+
+
 <table class="table table-sm">
   <thead>
     <tr>
