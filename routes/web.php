@@ -14,6 +14,7 @@ use App\Http\Controllers\MantenimientoController;
 use App\Http\Controllers\PracticaController;
 use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\AsignaturaController;
+use App\Http\Controllers\DocenteController;
 
 
 
@@ -96,14 +97,9 @@ Route::PATCH('/practicas/{id}', [PracticaController::class, 'update'])->name('pr
 Route::delete('/practicas/{id}', [PracticaController::class, 'destroy'])->name('practicas.destroy');
 
 
-
 //Parte de realizar practica de alumnos
-
-
 Route::get('/alumnos/practicas/', [PracticaController::class, 'RegistroPracticaAlumno'])->name('practicasAlumno.create');
 Route::get('/buscarAlumno', [PracticaController::class, 'buscarAlumno']);
-
-
 
 
 //Parte de alumnos
@@ -117,7 +113,9 @@ Route::get('/asignaturas/create', [AsignaturaController::class, 'create'])->name
 Route::post('/asignaturas', [AsignaturaController::class, 'store'])->name('asignatura.store');
 Route::get('/asignaturas/{id}/edit', [AsignaturaController::class, 'edit'])->name('asignatura.edit');
 Route::PATCH('/asignaturas/{id}', [AsignaturaController::class, 'update'])->name('asignatura.update');
-
 Route::delete('/asignaturas/{id}', [AsignaturaController::class, 'destroy'])->name('asignatura.destroy');
 
 
+//Parte de docentes 
+Route::get('/docentes/create', [DocenteController::class, 'create'])->name('docentes.create');
+Route::post('/docentes/create', [DocenteController::class, 'store'])->name('docentes.store'); 
