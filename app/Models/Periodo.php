@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Periodo extends Model
 {
     use HasFactory;
+    protected $table = "periodo";
+    protected $primaryKey = 'clave';
+    protected $keyType = 'string';
+
+    protected $fillable = [
+        'clave',
+    ];
 }
