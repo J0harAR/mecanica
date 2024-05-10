@@ -269,7 +269,7 @@
     </a>
     <ul id="personas-nav" class="nav-content collapse " data-bs-parent="#personas-nav">
       <li>
-        <a href="{{ route('alumnos.index') }}">
+        <a href="{{ route('docentes.index') }}">
           <i class="bi bi-circle"></i><span>Docentes</span>
         </a>
       </li>
