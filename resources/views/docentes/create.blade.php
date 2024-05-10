@@ -3,7 +3,7 @@
 
 @section('content')
 
-<form action="" method="POST"> 
+<form action="" method="POST"  enctype="multipart/form-data">
 @csrf
         <label for="dimension_herramienta" class="form-label">Nombre</label>
         <input type="text" class="form-control" id="nombre" name="nombre">  
@@ -18,17 +18,18 @@
         <input type="text" class="form-control" id="curp" name="curp">
 
         <label for="">RFC</label>
-        <input type="text">
+        <input type="text" id="curp" name="rfc" >
 
 
         <label for="">Area</label>
-        <input type="text">
+        <input type="text" id="curp" name="area" >
 
         <label for="">Foto</label>
-        <input type="file">
+        <input type="file" id="foto" name="foto">
 
         <label for="">Telefono</label>
-        <input type="text">
+        <input type="text" id="foto" name="telefono">
+        <button>Guardar</button>
   
 </form>
     

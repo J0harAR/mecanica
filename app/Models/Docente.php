@@ -11,9 +11,18 @@ class Docente extends Model
     protected $table = "docente";
     protected $primaryKey = 'rfc';
     protected $keyType = 'string';
+   
+    protected $fillable = [
+        'rfc',
+        'curp',
+        'area',
+        'foto',
+        'telefono',
+    ];
 
     public function persona(){
         return $this->belongsTo(Persona::class, 'curp');
     }
+    
   
 }

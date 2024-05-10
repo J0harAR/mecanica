@@ -11,4 +11,11 @@ class Persona extends Model
     protected $table = "persona";
     protected $primaryKey = 'curp';
     protected $keyType = 'string';
+
+    protected $fillable = [
+        'curp',
+        'nombre',
+        'apellido_p',
+        'apellido_m',
+    ];
 }
