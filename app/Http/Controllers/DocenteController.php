@@ -70,9 +70,9 @@ class DocenteController extends Controller
         return redirect()->route('docentes.index');
     }
 
-    public function show(){
-        
-        return view('docentes.show');
+    public function show($id){
+        $docente=Docente::find($id);
+        return view('docentes.show',compact('docente'));
 
     }   
 
