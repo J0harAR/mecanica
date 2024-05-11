@@ -121,9 +121,12 @@ Route::delete('/asignaturas/{id}', [AsignaturaController::class, 'destroy'])->na
 Route::get('/docentes', [DocenteController::class, 'index'])->name('docentes.index');
 Route::get('/docentes/create', [DocenteController::class, 'create'])->name('docentes.create');
 Route::post('/docentes/create', [DocenteController::class, 'store'])->name('docentes.store'); 
+Route::get('/docentes/{id}', [DocenteController::class, 'show'])->name('docentes.show');
+
 
 
 //Parte de grupos
 Route::get('/grupos', [GrupoController::class, 'index'])->name('grupos.index');
 Route::get('/grupos/create', [GrupoController::class, 'create'])->name('grupos.create');
 Route::post('/grupos', [GrupoController::class, 'store'])->name('grupos.store');
+

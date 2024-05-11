@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 class DocenteController extends Controller
 {
     public function index(){
-      
-        return view('docentes.index');
+        $docentes=Docente::all();
+        return view('docentes.index',compact('docentes'));
     }
 
     public function create(){
@@ -69,6 +69,13 @@ class DocenteController extends Controller
 
         return redirect()->route('docentes.index');
     }
+
+    public function show(){
+        
+        return view('docentes.show');
+
+    }   
+
 
     public function update(Request $request , $id){
 

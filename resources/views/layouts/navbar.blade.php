@@ -268,14 +268,36 @@
       <i class="bi bi-bar-chart"></i><span>Personas</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="personas-nav" class="nav-content collapse " data-bs-parent="#personas-nav">
-      <li>
-        <a href="{{ route('docentes.index') }}">
-          <i class="bi bi-circle"></i><span>Docentes</span>
+    <li>
+        <a class="collapsed" data-bs-toggle="collapse" href="#submenu-docente">
+          <i class="bi bi-circle"></i><span>Docente</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
+        <ul id="submenu-docente" class="collapse">
+
+        <li>
+            <a href="{{route('docentes.index')}}">
+              <i class="bi bi-circle"></i><span>Mostrar docentes</span>
+            </a>
+          </li>
+
+        <li>
+            <a href="{{route('docentes.create')}}">
+              <i class="bi bi-circle"></i><span>Registrar docente</span>
+            </a>
+          </li>
+
+
+          <li>
+            <a href="{{route('grupos.index')}}">
+              <i class="bi bi-circle"></i><span>Asignacion asignatura</span>
+            </a>
+          </li>
+          
+        </ul>
       </li>
       <li>
         <a href="{{ route('alumnos.index') }}">
-          <i class="bi bi-circle"></i><span>Alumnos</span>
+          <i class="bi bi-circle"></i><span>Alumno</span>
         </a>
       </li>
     </ul>
