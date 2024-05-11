@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use  App\Models\Grupo;
+use  App\Models\Docente;
 class Asignatura extends Model
 {
     use HasFactory;
@@ -14,7 +15,7 @@ class Asignatura extends Model
     protected $keyType = 'string';
 
     public function docentes(){
-        return $this->belongsToMany(Docente::class);
+        return $this->belongsToMany(Docente::class,'asignatura_docente','clave_asignatura','id_docente');
     }
 
 

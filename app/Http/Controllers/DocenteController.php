@@ -102,13 +102,23 @@ class DocenteController extends Controller
 
     public function filtrar_asignaturas(Request $request){
         $clave_asignatura=$request->input('asignatura');
+        $id_docente=$request->input('docente');
+        $periodo=$request->input('periodo');
 
+
+        $docente=Docente::find($id_docente);
         $asignatura=Asignatura::find($clave_asignatura);
+        $periodo=Periodo::find($periodo);
         $grupos=$asignatura->grupos;
         
 
         
-        return redirect()->route('docentes.asigna')->with('grupos', $grupos);
+        return redirect()->route('docentes.asigna')->with(['grupos' => $grupos, 'docente' => $docente, 'periodo' => $periodo]);
+
+    }
+
+
+    public function asignar(Request $request){
 
     }
 

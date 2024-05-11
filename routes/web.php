@@ -124,7 +124,7 @@ Route::post('/docentes/create', [DocenteController::class, 'store'])->name('doce
 Route::get('/docentes/asigna/', [DocenteController::class, 'asigna'])->name('docentes.asigna');
 Route::get('/docentes/{id}', [DocenteController::class, 'show'])->name('docentes.show');
 Route::post('/docentes/filtrar_asignaturas', [DocenteController::class, 'filtrar_asignaturas'])->name('docentes.filtrar_asignaturas');
-
+Route::post('/asignar', [DocenteController::class, 'asignar'])->name('docentes.asignar');
 
 
 
@@ -133,4 +133,5 @@ Route::post('/docentes/filtrar_asignaturas', [DocenteController::class, 'filtrar
 Route::get('/grupos', [GrupoController::class, 'index'])->name('grupos.index');
 Route::get('/grupos/create', [GrupoController::class, 'create'])->name('grupos.create');
 Route::post('/grupos', [GrupoController::class, 'store'])->name('grupos.store');
+
 
