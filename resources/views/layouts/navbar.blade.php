@@ -288,7 +288,7 @@
 
 
           <li>
-            <a href="{{route('grupos.index')}}">
+            <a href="{{route('docentes.asigna')}}">
               <i class="bi bi-circle"></i><span>Asignacion asignatura</span>
             </a>
           </li>

@@ -121,7 +121,11 @@ Route::delete('/asignaturas/{id}', [AsignaturaController::class, 'destroy'])->na
 Route::get('/docentes', [DocenteController::class, 'index'])->name('docentes.index');
 Route::get('/docentes/create', [DocenteController::class, 'create'])->name('docentes.create');
 Route::post('/docentes/create', [DocenteController::class, 'store'])->name('docentes.store'); 
+Route::get('/docentes/asigna/', [DocenteController::class, 'asigna'])->name('docentes.asigna');
 Route::get('/docentes/{id}', [DocenteController::class, 'show'])->name('docentes.show');
+Route::post('/docentes/filtrar_asignaturas', [DocenteController::class, 'filtrar_asignaturas'])->name('docentes.filtrar_asignaturas');
+
+
 
 
 

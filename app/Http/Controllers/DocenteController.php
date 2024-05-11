@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use  App\Models\Docente;
 use  App\Models\Persona;
+use  App\Models\Asignatura;
+use  App\Models\Periodo;
 use Illuminate\Http\Request;
 
 class DocenteController extends Controller
@@ -86,6 +88,27 @@ class DocenteController extends Controller
     
     public function destroy($id){
        
+
+    }
+
+
+    public function asigna(){
+        $periodos=Periodo::all();
+        $docentes=Docente::all();
+        $asignaturas=Asignatura::all();
+        return view('docentes.asignar',compact('docentes','asignaturas','periodos'));
+    }
+
+
+    public function filtrar_asignaturas(Request $request){
+        $clave_asignatura=$request->input('asignatura');
+
+        $asignatura=Asignatura::find($clave_asignatura);
+        $grupos=$asignatura->grupos;
+        
+
+        
+        return redirect()->route('docentes.asigna')->with('grupos', $grupos);
 
     }
 
