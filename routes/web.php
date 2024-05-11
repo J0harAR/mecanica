@@ -15,6 +15,7 @@ use App\Http\Controllers\PracticaController;
 use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\AsignaturaController;
 use App\Http\Controllers\DocenteController;
+use App\Http\Controllers\GrupoController;
 
 
 
@@ -120,3 +121,9 @@ Route::delete('/asignaturas/{id}', [AsignaturaController::class, 'destroy'])->na
 Route::get('/docentes', [DocenteController::class, 'index'])->name('docentes.index');
 Route::get('/docentes/create', [DocenteController::class, 'create'])->name('docentes.create');
 Route::post('/docentes/create', [DocenteController::class, 'store'])->name('docentes.store'); 
+
+
+//Parte de grupos
+Route::get('/grupos', [GrupoController::class, 'index'])->name('grupos.index');
+Route::get('/grupos/create', [GrupoController::class, 'create'])->name('grupos.create');
+Route::post('/grupos', [GrupoController::class, 'store'])->name('grupos.store');
