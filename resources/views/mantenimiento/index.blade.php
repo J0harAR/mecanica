@@ -41,7 +41,7 @@
                     <select class="form-select" multiple aria-label="multiple select example" name="insumos[]",id="insumos">
                     <option selected>Open this select menu</option>
                     @foreach ($insumos as $insumo)
-                      <option value="{{$insumo->id_insumo}}">{{$insumo->Articulo_inventariados->Catalogo_articulos->nombre}}</option>
+                      <option value="{{$insumo->id_insumo}}">{{$insumo->id_insumo}} / {{$insumo->Articulo_inventariados->Catalogo_articulos->nombre}}</option>
                     @endforeach 
                     
                     </select>
