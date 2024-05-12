@@ -78,6 +78,7 @@
                         <tr>
                             <th>Código</th>
                             <th>Nombre</th>
+                            <th>Tipo</th>
                             <th>Capacidad</th>
                             <th>Estatus</th>
                             <th>Acciones</th>
@@ -88,6 +89,7 @@
                         <tr>
                             <th>{{$insumo->id_insumo}}</th>
                             <td>{{$insumo->Articulo_inventariados->Catalogo_articulos->nombre}}</td>
+                            <td>{{$insumo->Articulo_inventariados->Catalogo_articulos->tipo}}</td>
                             <td>{{$insumo->capacidad}}</td>
                             <td>{{$insumo->Articulo_inventariados->estatus}}</td>
                             <td>

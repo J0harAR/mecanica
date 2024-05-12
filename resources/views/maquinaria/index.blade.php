@@ -83,6 +83,7 @@
                             <th>Estatus</th>
                             <th>Insumos</th>
                             <th>Acciones</th>
+                            <th>Datos generales</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -109,6 +110,9 @@
                                 data-bs-target="#modal-{{ $maquina->id_maquinaria}}"><i class="fas fa-trash"></i></button>
 
                             </td>
+                            <th>
+                              <a href="{{ route('maquinaria.show', $maquina->id_maquinaria) }}">Datos generales</a>
+                            </th>
                         </tr> 
                         
                         

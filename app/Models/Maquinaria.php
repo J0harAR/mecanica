@@ -19,6 +19,7 @@ class Maquinaria extends Model
       //Relacion N a N
       public function insumos()
       {
-          return $this->belongsToMany(Insumos::class, 'insumos_maquinaria', 'maquinaria_id', 'insumo_id');
+          return $this->belongsToMany(Insumos::class, 'insumos_maquinaria', 'maquinaria_id', 'insumo_id')
+          ->withPivot(['cantidad']);
       }
 }

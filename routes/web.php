@@ -60,10 +60,11 @@ Route::post('/inventario', [InventarioController::class, 'store'])->name('invent
 
 
 
+
 Route::get('/inventario/herramientas', [HerramientasController::class, 'index'])->name('herramientas.index');
 Route::get('/inventario/maquinaria', [MaquinariaController::class, 'index'])->name('maquinaria.index');
 Route::get('/inventario/insumos', [InsumosController::class, 'index'])->name('insumos.index');
-
+Route::get('/inventario/maquinaria/{id}', [MaquinariaController::class, 'show'])->name('maquinaria.show');
 
 
 Route::delete('/inventario/herramientas/{id}', [HerramientasController::class, 'destroy'])->name('herramientas.destroy');
@@ -77,7 +78,7 @@ Route::delete('/inventario/{id}', [InventarioController::class, 'destroy'])->nam
 Route::put('/inventario/herramientas/{id}', [HerramientasController::class, 'update'])->name('herramientas.update');
 Route::put('/inventario/maquinaria/{id}', [MaquinariaController::class, 'update'])->name('maquinaria.update');
 Route::put('/inventario/insumos/{id}', [InsumosController::class, 'update'])->name('insumos.update');
-
+Route::match(['put', 'patch'], '/inventario/maquinaria/asignar/{id}', [MaquinariaController::class, 'asignar_cantidad_insumos'])->name('maquinaria.cantidad');
 
 
 

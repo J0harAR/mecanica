@@ -49,7 +49,7 @@ class MaquinariaController extends Controller
      
 
 
-
+        
 
 
 
@@ -57,6 +57,27 @@ class MaquinariaController extends Controller
       return redirect()->route('maquinaria.index')->with('success', 'La maquina: ' . $id_maquinaria . ' ha sido actualizada exitosamente.');
   }
 
+  public function show($id_maquinaria){
+
+    //$maquinaria=Articulo_inventariado::with(['Articulo_inventariados.Catalogo_articulos','insumos'])->where('id_inventario',$id_maquinaria);
+
+    $maquinaria=Maquinaria::find($id_maquinaria);
+    
+    return view('maquinaria.show',compact('maquinaria'));
+  }
+
+
+  public function asignar_cantidad_insumos(Request $request,$id_maquinaria){
+    $maquinaria=Maquinaria::find($id_maquinaria);
+
+    $insumos=collect($request->input('insumos',[]))
+      ->map(function($insumo){
+        return ['cantidad'=>$insumo];
+      });
+
+    
+    $maquinaria->insumos()->sync($insumos);
+  }
 
 
 
