@@ -1,39 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<style>
-  .folder-card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
-  }
-
-  .folder-header {
-    height: 50px;
-    background-color: #007bff;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-  }
-
-  .folder-content {
-    padding: 20px;
-  }
-
-  .folder-content h2 {
-    margin-top: 0;
-  }
-
-  .folder-content p {
-    margin-bottom: 0;
-  }
-
-  /* Efecto de elevación */
-  .folder-card:hover {
-    transform: translateY(-5px);
-  }
-</style>
 <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="fw-bold mb-0">Practicas</h1>
       
@@ -43,6 +10,11 @@
 
 
     <div class="container">
+    @if($practicas->isEmpty())
+        <div class="alert alert-secondary" role="alert">
+            No hay prácticas registradas actualmente. <a href="{{ route('practicas.create') }}" class="alert-link">¡Crea una nueva práctica!</a>
+        </div>
+    @else
   <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach ($practicas as $practica)
     <div class="col">
@@ -75,6 +47,7 @@
 
 
 
-
+@endif
+</div>
 
 @endsection
