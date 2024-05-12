@@ -83,6 +83,7 @@
                             <th>Estatus</th>
                             <th>Insumos</th>
                             <th>Acciones</th>
+                            <th>Asignar</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -109,6 +110,9 @@
                                 data-bs-target="#modal-{{ $maquina->id_maquinaria}}"><i class="fas fa-trash"></i></button>
 
                             </td>
+                            <th>
+                              <a href="{{ route('maquinaria.show', $maquina->id_maquinaria) }}" class="btn btn-primary">Asignar cantidad</a>
+                            </th>
                         </tr> 
                         
                         
@@ -148,7 +152,24 @@
                                 <input type="text" class="form-control" id="estatus" name="estatus" value="{{$maquina->Articulo_inventariados->estatus}}">
                             </div>
 
-                            
+                            <div class="col-md-12">
+                                  <label for="estatus" class="form-label">Insumos</label>
+                                  @foreach ($maquina->insumos as $insumo)
+                                      <div class="row">
+                                          <div class="col-md-6 mt-2"> 
+                                              {{$insumo->Articulo_inventariados->Catalogo_articulos->nombre}}
+                                          </div>
+                                          <div class="col-md-4 mt-2">  
+                                              <input type="text" name="insumos[{{$insumo->id_insumo}}]" class="form-control" value="{{$insumo->pivot->cantidad}}" disabled>
+                                              
+                                          </div>
+                                          <div class="col-md-2 mt-2">
+                                            <p>Litros</p>
+                                          </div>
+                                      </div>
+                                  @endforeach                                                     
+                              </div>
+
                             <div class="text-center mt-4">
                                 <button type="submit" class="btn btn-primary">Guardar</button>                               
                             </div>

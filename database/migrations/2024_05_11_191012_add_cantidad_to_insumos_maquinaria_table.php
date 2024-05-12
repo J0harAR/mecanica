@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('insumos_maquinaria', function (Blueprint $table) {
-            $table->string('insumo_id', 191)->change();
-            $table->string('maquinaria_id', 191)->change();
-        
+            $table->float('cantidad')->nullable();
+            
         });
     }
 
@@ -24,9 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('insumos_maquinaria', function (Blueprint $table) {
-            $table->string('insumo_id')->change();
-            $table->string('maquinaria_id')->change();
-           
+            //
         });
     }
 };

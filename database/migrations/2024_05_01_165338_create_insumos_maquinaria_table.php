@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('insumos_maquinaria', function (Blueprint $table) {
             $table->id();
             
-            $table->foreignId('insumo_id')->nullable();
-            $table->foreignId('maquinaria_id')->nullable();;
+            $table->string('insumo_id')->nullable();
+            $table->string('maquinaria_id')->nullable();
+
+
+            $table->foreign('insumo_id')->references('id_insumo')->on('insumos')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('maquinaria_id')->references('id_maquinaria')->on('maquinaria')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

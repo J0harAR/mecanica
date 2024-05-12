@@ -60,10 +60,11 @@ Route::post('/inventario', [InventarioController::class, 'store'])->name('invent
 
 
 
+
 Route::get('/inventario/herramientas', [HerramientasController::class, 'index'])->name('herramientas.index');
 Route::get('/inventario/maquinaria', [MaquinariaController::class, 'index'])->name('maquinaria.index');
 Route::get('/inventario/insumos', [InsumosController::class, 'index'])->name('insumos.index');
-
+Route::get('/inventario/maquinaria/{id}', [MaquinariaController::class, 'show'])->name('maquinaria.show');
 
 
 Route::delete('/inventario/herramientas/{id}', [HerramientasController::class, 'destroy'])->name('herramientas.destroy');
@@ -77,7 +78,7 @@ Route::delete('/inventario/{id}', [InventarioController::class, 'destroy'])->nam
 Route::put('/inventario/herramientas/{id}', [HerramientasController::class, 'update'])->name('herramientas.update');
 Route::put('/inventario/maquinaria/{id}', [MaquinariaController::class, 'update'])->name('maquinaria.update');
 Route::put('/inventario/insumos/{id}', [InsumosController::class, 'update'])->name('insumos.update');
-
+Route::match(['put', 'patch'], '/inventario/maquinaria/asignar/{id}', [MaquinariaController::class, 'asignar_cantidad_insumos'])->name('maquinaria.cantidad');
 
 
 
@@ -124,7 +125,7 @@ Route::post('/docentes/create', [DocenteController::class, 'store'])->name('doce
 Route::get('/docentes/asigna/', [DocenteController::class, 'asigna'])->name('docentes.asigna');
 Route::get('/docentes/{id}', [DocenteController::class, 'show'])->name('docentes.show');
 Route::post('/docentes/filtrar_asignaturas', [DocenteController::class, 'filtrar_asignaturas'])->name('docentes.filtrar_asignaturas');
-
+Route::post('/asignar', [DocenteController::class, 'asignar'])->name('docentes.asignar');
 
 
 
@@ -133,4 +134,5 @@ Route::post('/docentes/filtrar_asignaturas', [DocenteController::class, 'filtrar
 Route::get('/grupos', [GrupoController::class, 'index'])->name('grupos.index');
 Route::get('/grupos/create', [GrupoController::class, 'create'])->name('grupos.create');
 Route::post('/grupos', [GrupoController::class, 'store'])->name('grupos.store');
+
 

@@ -186,8 +186,13 @@ class InventarioController extends Controller
         
 
                         $articulo_inventariado->save();
-                        $maquinaria->insumos()->sync($request->input('insumos',[]));
+
+                        $id_maquina=$codigos_inventario[$i];
                         $maquinaria->save();
+                        
+                        $maquinaria=Maquinaria::find($id_maquina);
+                        $maquinaria->insumos()->sync($request->input('insumos',[]));
+                        
                        
 
                         $auditoria->event='created';
@@ -259,11 +264,12 @@ class InventarioController extends Controller
 
                                           
                      $articulo_inventariado->save();
-                     $maquinaria->insumos()->sync($request->input('insumos',[]));
+                     $id_maquina=$codigos_inventario[$i];
                      $maquinaria->save();
                     
 
-
+                     $maquinaria=Maquinaria::find($id_maquina);
+                     $maquinaria->insumos()->sync($request->input('insumos',[]));
 
                     $auditoria->event='created';
                     $auditoria->subject_type=Articulo_inventariado::class;
