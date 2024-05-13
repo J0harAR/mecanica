@@ -35,19 +35,29 @@
             </div>
 
 
-            <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">Insumos</label>
-                  <div class="col-sm-10">
-                    <select class="form-select" multiple aria-label="multiple select example" name="insumos[]",id="insumos">
-                    <option selected>Open this select menu</option>
-                    @foreach ($insumos as $insumo)
-                      <option value="{{$insumo->id_insumo}}">{{$insumo->id_insumo}} / {{$insumo->Articulo_inventariados->Catalogo_articulos->nombre}}</option>
-                    @endforeach 
-                    
-                    </select>
-                  </div>
-            </div>
+            <table>
+                @foreach ($insumos as $insumo)
+                    <tr>
+                        <td>
+                            <input type="checkbox"name="{{$insumo->id_insumo}}" data-id="{{$insumo->id_insumo}}" class="insumo-enable">
+                        </td> 
 
+                        <td>
+                            {{$insumo->Articulo_inventariados->Catalogo_articulos->nombre}}
+                        </td>
+                        <td>
+                            <input type="text" name="insumos[{{$insumo->id_insumo}}]" placeholder="cantidad"
+                            data-id="{{$insumo->id_insumo}}"
+                            class="insumo-cantidad form-control"
+                            placeholder="cantidad"
+                            disabled>
+                        </td>
+                    </tr>
+
+
+                @endforeach
+
+                </table>
 
 
             <div class="row mb-3">
@@ -69,5 +79,19 @@
 
 
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.insumo-enable').on('click', function(){
+            let id = $(this).attr('data-id');
+            let enable = $(this).is(":checked");
+            $('.insumo-cantidad[data-id="' + id + '"]').attr('disabled', !enable);
+            $('.insumo-cantidad[data-id="' + id + '"]').val(null);
+        });
+    });
+</script>
+
+
 
 @endsection

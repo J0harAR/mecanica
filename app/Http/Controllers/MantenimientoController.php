@@ -23,6 +23,8 @@ class MantenimientoController extends Controller
       $Mantenimiento->fecha=$request->input('fecha');
       $Mantenimiento->id_maquinaria=$request->input('maquina');
       $Mantenimiento->save();
+
+      
       $Mantenimiento->insumos()->sync($request->input('insumos',[]));
         
       return redirect()->route('mantenimiento.index');

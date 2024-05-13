@@ -18,7 +18,8 @@ class Mantenimiento extends Model
 
     public function insumos()
     {
-        return $this->belongsToMany(Insumos::class, 'insumos_mantenimiento', 'mantenimiento_id', 'insumo_id');
+        return $this->belongsToMany(Insumos::class, 'insumos_mantenimiento', 'mantenimiento_id', 'insumo_id')
+        ->withPivot(['cantidad']);
     }
 
 }
