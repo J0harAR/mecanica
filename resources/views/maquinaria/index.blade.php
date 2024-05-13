@@ -83,7 +83,6 @@
                             <th>Estatus</th>
                             <th>Insumos</th>
                             <th>Acciones</th>
-                            <th>Asignar</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -110,9 +109,6 @@
                                 data-bs-target="#modal-{{ $maquina->id_maquinaria}}"><i class="fas fa-trash"></i></button>
 
                             </td>
-                            <th>
-                              <a href="{{ route('maquinaria.show', $maquina->id_maquinaria) }}" class="btn btn-primary">Asignar cantidad</a>
-                            </th>
                         </tr> 
                         
                         
@@ -120,7 +116,7 @@
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title">Agregar articulo</h5>
+                      <h5 class="modal-title">Editar maquinaria</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                    
@@ -160,7 +156,7 @@
                                               {{$insumo->Articulo_inventariados->Catalogo_articulos->nombre}}
                                           </div>
                                           <div class="col-md-4 mt-2">  
-                                              <input type="text" name="insumos[{{$insumo->id_insumo}}]" class="form-control" value="{{$insumo->pivot->cantidad}}" disabled>
+                                              <input type="text" name="insumos[{{$insumo->id_insumo}}]" class="form-control" value="{{$insumo->pivot->cantidad}}" name="cantidad">
                                               
                                           </div>
                                           <div class="col-md-2 mt-2">

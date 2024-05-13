@@ -46,9 +46,16 @@ class MaquinariaController extends Controller
             $auditoria_inventario->save();
         }
 
-     
+        $maquinaria=Maquinaria::find($id_maquinaria);
 
 
+          $insumos=collect($request->input('insumos',[]))
+                ->map(function($insumo){
+                  return ['cantidad'=>$insumo];
+                });
+
+              
+              $maquinaria->insumos()->sync($insumos);
         
 
 
