@@ -13,8 +13,13 @@ class MantenimientoController extends Controller
     {
         $insumos=Insumos::all();
         $maquinarias=Maquinaria::all();
+        $mantenimientos=Mantenimiento::all();
+        return view('mantenimiento.index',compact('insumos','maquinarias','mantenimientos'));
+    }
 
-        return view('mantenimiento.index',compact('insumos','maquinarias'));
+
+    public function create(){
+
     }
 
     public function store(Request $request)
@@ -23,9 +28,13 @@ class MantenimientoController extends Controller
       $Mantenimiento->fecha=$request->input('fecha');
       $Mantenimiento->id_maquinaria=$request->input('maquina');
       $Mantenimiento->save();
-
       
-      $Mantenimiento->insumos()->sync($request->input('insumos',[]));
+      $insumos=collect($request->input('insumos',[]))
+      ->map(function($insumo){
+        return ['cantidad'=>$insumo];
+      });
+
+      $Mantenimiento->insumos()->sync($insumos);
         
       return redirect()->route('mantenimiento.index');
       

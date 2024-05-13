@@ -149,7 +149,7 @@
                             </div>
 
                             <div class="col-md-12">
-                                  <label for="estatus" class="form-label">Insumos</label>
+                                  <label for="insumos" class="form-label">Insumos</label>
                                   @foreach ($maquina->insumos as $insumo)
                                       <div class="row">
                                           <div class="col-md-6 mt-2"> 
