@@ -1,5 +1,7 @@
 @extends('layouts.app')
 @section('content')
+
+<div class="container py-5">
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="fw-bold mb-0" style="color: #343a40;">Matenimientos</h1>
     <button type="button" class="btn btn-outline-primary " data-bs-toggle="modal" data-bs-target="#modal"><i class="ri-add-line"></i></button>
@@ -130,8 +132,8 @@
 
   </table>
   </div>
-</div>
-
+  </div>
+</div>  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function(){
