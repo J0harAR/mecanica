@@ -86,6 +86,18 @@ class MaquinariaController extends Controller
     $maquinaria->insumos()->sync($insumos);
   }
 
+  public function asignar_insumos( Request $request,$id_maquinaria){
+
+    $maquina=Maquinaria::find($id_maquinaria);
+
+    $maquina->insumos()->sync($request->input('insumos',[]));
+  
+    
+    return redirect()->route('maquinaria.index');
+      
+
+  }
+
 
 
   public function destroy($id_maquinaria)

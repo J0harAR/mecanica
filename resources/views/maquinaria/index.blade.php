@@ -83,6 +83,7 @@
                             <th>Estatus</th>
                             <th>Insumos</th>
                             <th>Acciones</th>
+                            <th>Asignar insumos</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -109,6 +110,11 @@
                                 data-bs-target="#modal-{{ $maquina->id_maquinaria}}"><i class="fas fa-trash"></i></button>
 
                             </td>
+
+                            <th>
+                            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#modal-insumos{{ $maquina->id_maquinaria}}"><i class="fas fa-trash"></i></button>
+                            </th>
                         </tr> 
                         
                         
@@ -204,6 +210,44 @@
                                 </div>
                                 </div>
                             </div><!-- End Modal -->
+
+
+                         <!-- Modal -->
+                         <div class="modal fade" id="modal-insumos{{ $maquina->id_maquinaria}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                    <form action="{{ route('maquinaria.insumos_asignar', $maquina->id_maquinaria) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="col-md-12">
+                                          <label for="articulos" class="form-label">Artículos</label>
+                                          <select class="form-select" multiple aria-label="multiple select example" id="insumos" name="insumos[]">
+                                              @foreach ($insumos as $insumo)
+                                                  <option value="{{ $insumo->id_insumo }}">{{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre}}</option>
+                                              @endforeach
+                                          </select>
+                                      </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                    
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="btn btn-danger">asignar</button>
+                                    </form>
+                                    </div>
+                                </div>
+                                </div>
+                            </div><!-- End Modal -->
+
+
+
+
+                            
 
 
 

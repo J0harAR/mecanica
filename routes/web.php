@@ -79,6 +79,7 @@ Route::put('/inventario/herramientas/{id}', [HerramientasController::class, 'upd
 Route::put('/inventario/maquinaria/{id}', [MaquinariaController::class, 'update'])->name('maquinaria.update');
 Route::put('/inventario/insumos/{id}', [InsumosController::class, 'update'])->name('insumos.update');
 Route::match(['put', 'patch'], '/inventario/maquinaria/asignar/{id}', [MaquinariaController::class, 'asignar_cantidad_insumos'])->name('maquinaria.cantidad');
+Route::match(['put', 'patch'], '/inventario/maquinaria/asignar_insumos/{id}', [MaquinariaController::class, 'asignar_insumos'])->name('maquinaria.insumos_asignar');
 
 
 
