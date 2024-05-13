@@ -73,9 +73,7 @@
   <table class="table datatable">
           <thead>
               <tr>
-                <th>
-                  <b>N.Mantenimiento</b>
-                </th>
+                <th>N.Mantenimiento</th>
                 <th>Maquina</th>
                 <th>Insumos Utilizados</th>
                 <th data-type="date" data-format="YYYY/DD/MM">Fecha</th>
@@ -127,13 +125,6 @@
                                 </div>
                                 </div>
                             </div><!-- End Modal -->
-
-
-
-
-
-
-
               @endforeach
           </tbody>
 
