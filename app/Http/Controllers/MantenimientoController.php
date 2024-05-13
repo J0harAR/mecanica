@@ -40,4 +40,12 @@ class MantenimientoController extends Controller
       
     }
 
+    public function destroy($id){
+      $mantenimiento=Mantenimiento::find($id);
+      $mantenimiento->delete();
+      
+      return redirect()->route('mantenimiento.index');
+
+    }
+
 }

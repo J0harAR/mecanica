@@ -79,6 +79,7 @@
                 <th>Maquina</th>
                 <th>Insumos Utilizados</th>
                 <th data-type="date" data-format="YYYY/DD/MM">Fecha</th>
+                <th>Borrar</th>
               </tr>
           </thead>
         <tbody>
@@ -89,7 +90,11 @@
                   <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#modal-{{ $mantenimiento->id}}"><i class="bi bi-droplet"></i></button>
                   </td>
-                  <td>{{$mantenimiento->fecha}}</td>               
+                  <td>{{$mantenimiento->fecha}}</td> 
+                  <td><button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#modal-delete{{ $mantenimiento->id}}"><i class="fas fa-trash"></i></button></td>    
+                  
+                  
               </tr>
 
                <!-- Modal -->
@@ -127,6 +132,33 @@
                                 </div>
                                 </div>
                             </div><!-- End Modal -->
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="modal-delete{{ $mantenimiento->id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                    ¿Estás seguro de querer eliminar : {{$mantenimiento->id}}?
+                                    </div>
+                                    <div class="modal-footer">
+                                    <form action="{{ route('mantenimiento.destroy', $mantenimiento->id) }}" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    </form>
+                                    </div>
+                                </div>
+                                </div>
+                            </div><!-- End Modal -->
+
+
+
               @endforeach
           </tbody>
 

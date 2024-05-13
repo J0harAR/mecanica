@@ -87,6 +87,7 @@ Route::match(['put', 'patch'], '/inventario/maquinaria/asignar/{id}', [Maquinari
 Route::get('/mantenimiento', [MantenimientoController::class, 'index'])->name('mantenimiento.index');
 
 Route::post('/mantenimiento', [MantenimientoController::class, 'store'])->name('mantenimiento.store');
+Route::delete('/mantenimiento/{id}', [MantenimientoController::class, 'destroy'])->name('mantenimiento.destroy');
 
 
 //Parte de las practicas
