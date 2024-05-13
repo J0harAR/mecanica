@@ -47,7 +47,7 @@
             <label for="introduccion" class="form-label">Introducción</label>
             <input type="text" class="form-control" name="introduccion" required>
             <div class="invalid-feedback">
-                Ingrese una introducción para la práctica.
+                Ingrese una Introducción para la práctica.
             </div>
         </div>
 
