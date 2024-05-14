@@ -7,6 +7,7 @@ use App\Models\Herramientas;
 use App\Models\Articulo_inventariado;
 use App\Models\Catalogo_articulo;
 use App\Models\Auditoria;
+use App\Models\Insumos;
 class HerramientasController extends Controller
 {
     public function index()
@@ -14,12 +15,12 @@ class HerramientasController extends Controller
       
 
         $herramientas = Herramientas::with('Articulo_inventariados.Catalogo_articulos')->get();
-
+        $insumos=Insumos::all();
         //foreach ($herramientas as $herramienta) {
           //  echo $herramienta->Articulo_inventariados->Catalogo_articulos->nombre;
       //  }
         
-        return view('herramientas.index',compact('herramientas'));
+        return view('herramientas.index',compact('herramientas','insumos'));
     }
 
     public function update(Request $request,$id_herramientas)
