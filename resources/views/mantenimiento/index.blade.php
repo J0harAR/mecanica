@@ -2,10 +2,21 @@
 @section('content')
 
 <div class="container py-5">
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="fw-bold mb-0" style="color: #343a40;">Matenimientos</h1>
-    <button type="button" class="btn btn-outline-primary " data-bs-toggle="modal" data-bs-target="#modal"><i class="ri-add-line"></i></button>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold mb-0" style="color: #343a40;">Matenimientos</h1>
+        <button type="button" class="btn btn-outline-primary " data-bs-toggle="modal" data-bs-target="#modal"><i class="ri-add-line"></i></button>
     </div>
+
+
+    @if (session('error'))
+        <div class="alert alert-danger" id="danger-alert">
+         {{ session('error') }}
+        </div>
+    @endif
+
+
+
+
 
 
 <!-- Vertically centered Modal -->
@@ -178,5 +189,17 @@
     });
 </script>
 
+
+</script>
+@if(session('error'))
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      window.setTimeout(function () {
+        const successAlert = document.getElementById("danger-alert");
+        if (successAlert) successAlert.style.display = 'none';
+      }, 3000);
+    });
+  </script>
+  @endif
 
 @endsection

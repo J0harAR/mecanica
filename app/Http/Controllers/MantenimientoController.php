@@ -27,17 +27,44 @@ class MantenimientoController extends Controller
       $Mantenimiento= new Mantenimiento;
       $Mantenimiento->fecha=$request->input('fecha');
       $Mantenimiento->id_maquinaria=$request->input('maquina');
-      $Mantenimiento->save();
       
+    // Obtener los insumos asociados a la maquinaria
+    $maquinaria = Maquinaria::find($request->input('maquina'));
+    $insumos_maquinaria = $maquinaria->insumos()->pluck('id_insumo')->toArray();
+      
+  
       $insumos=collect($request->input('insumos',[]))
       ->map(function($insumo){
         return ['cantidad'=>$insumo];
-      });
+     });
 
-      $Mantenimiento->insumos()->sync($insumos);
-        
-      return redirect()->route('mantenimiento.index');
+
+     $insumo_presente = false;
+     foreach ($insumos as $key => $insumo) {
+
+          foreach ($insumos_maquinaria as $insumo_maquinaria) {
+                if ($key == $insumo_maquinaria) {               
+                      $insumo_presente = true;
+                      break;             
+                }
+          }
       
+          if (!$insumo_presente) {         
+               return redirect()->route('mantenimiento.index')->with('error', 'Insumos no están asociados a la maquinaria.');
+        }
+
+    
+
+      }
+
+      $Mantenimiento->save();
+      $Mantenimiento->insumos()->sync($insumos);
+
+
+
+    
+      return redirect()->route('mantenimiento.index');
+    
     }
 
     public function destroy($id){

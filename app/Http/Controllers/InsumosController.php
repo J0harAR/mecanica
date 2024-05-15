@@ -7,6 +7,7 @@ use App\Models\Insumos;
 use App\Models\Catalogo_articulo;
 use App\Models\Articulo_inventariado;
 use App\Models\Auditoria;
+
 class InsumosController extends Controller
 {
     public function index()
@@ -26,10 +27,14 @@ class InsumosController extends Controller
     {
         //Request
         $estatus_insumo=$request->input('estatus');
-       
+        $capacidad=$request->input('capacidad');
         $auditoria_insumo=new Auditoria;
 
         $articulo_inventariado=Articulo_inventariado::find($id_insumo); 
+        $insumo=Insumos::find($id_insumo);
+        
+        $insumo->capacidad=$capacidad;
+        $insumo->save();
         
         if($articulo_inventariado->estatus!==$estatus_insumo){
             $auditoria_insumo->event='updated';

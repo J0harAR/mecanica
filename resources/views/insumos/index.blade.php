@@ -307,7 +307,7 @@
 
                               <div class="col-md-4">
                                   <label for="nombre" class="form-label">Capacidad</label>
-                                  <input type="number" class="form-control" id="capacidad" name="capacidad" value="{{$insumo->capacidad}}" disabled>
+                                  <input type="number" class="form-control" id="capacidad" name="capacidad" value="{{$insumo->capacidad}}">
                               </div>
                         
                         </div>
