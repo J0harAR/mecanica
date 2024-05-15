@@ -51,18 +51,20 @@ class MantenimientoController extends Controller
       
           if (!$insumo_presente) {         
                return redirect()->route('mantenimiento.index')->with('error', 'Insumos no están asociados a la maquinaria.');
-        }
-
-    
-
+          }
       }
+
+
+      foreach ($insumos as $key => $insumo) {
+            $insumo_temp=Insumos::find($key);
+            $insumo_temp->capacidad-=$insumo['cantidad'];
+            $insumo_temp->save();
+      }
+
 
       $Mantenimiento->save();
       $Mantenimiento->insumos()->sync($insumos);
 
-
-
-    
       return redirect()->route('mantenimiento.index');
     
     }
