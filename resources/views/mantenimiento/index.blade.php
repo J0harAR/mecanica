@@ -8,6 +8,7 @@
         <button type="button" class="btn btn-outline-primary " data-bs-toggle="modal" data-bs-target="#modal"><i class="ri-add-line"></i></button>
             
             <a  href="{{route('insumos.index')}}" class="btn btn-outline-primary "><i class="bi bi-droplet"></i></a>
+            <a  href="{{route('maquinaria.index')}}" class="btn btn-outline-primary "><i class="bi bi-gear"></i></a>
         </div>
 
     </div>
