@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Insumos;
 use App\Models\Maquinaria;
 use App\Models\Mantenimiento;
-
+use Illuminate\Support\Facades\DB;
 class MantenimientoController extends Controller
 {
     public function index()
@@ -28,7 +28,7 @@ class MantenimientoController extends Controller
       $Mantenimiento->fecha=$request->input('fecha');
       $Mantenimiento->id_maquinaria=$request->input('maquina');
       
-    // Obtener los insumos asociados a la maquinaria
+ 
     $maquinaria = Maquinaria::find($request->input('maquina'));
     $insumos_maquinaria = $maquinaria->insumos()->pluck('id_insumo')->toArray();
       
@@ -41,11 +41,11 @@ class MantenimientoController extends Controller
 
      $insumo_presente = false;
      foreach ($insumos as $key => $insumo) {
-
+          $insumo_presente = false;
           foreach ($insumos_maquinaria as $insumo_maquinaria) {
                 if ($key == $insumo_maquinaria) {               
-                      $insumo_presente = true;
-                      break;             
+                      $insumo_presente = true;   
+                      break;                        
                 }
           }
       
@@ -55,10 +55,27 @@ class MantenimientoController extends Controller
       }
 
 
+     $errores = [];
+
       foreach ($insumos as $key => $insumo) {
-            $insumo_temp=Insumos::find($key);
-            $insumo_temp->capacidad-=$insumo['cantidad'];
-            $insumo_temp->save();
+          $insumo_temp = Insumos::find($key);
+          
+          if ($insumo_temp->capacidad < $insumo['cantidad']) {
+              $errores[] = 'No hay suficientes litros de insumo para ' . $insumo_temp->id_insumo;
+          }
+      }
+
+      if (!empty($errores)) {
+          return redirect()->route('mantenimiento.index')->with('errores_cantidad', $errores);
+      }
+
+      
+      foreach ($insumos as $key => $insumo) {
+          $insumo_temp = Insumos::find($key);
+          $insumo_temp->capacidad -= $insumo['cantidad'];
+          $insumo_temp->save();
+          //aqui hago el actualizado del aumento de insumo en la maquina
+          $maquinaria->insumos()->syncWithoutDetaching([$insumo_temp->id_insumo => ['cantidad' => DB::raw('cantidad + ' . $insumo['cantidad'])]]);
       }
 
 
