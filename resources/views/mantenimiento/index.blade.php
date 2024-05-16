@@ -2,9 +2,14 @@
 @section('content')
 
 <div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="fw-bold mb-0" style="color: #343a40;">Matenimientos</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fw-bold mb-0" style="color: #343a40;">Mantenimiento</h1>
+        <div>
         <button type="button" class="btn btn-outline-primary " data-bs-toggle="modal" data-bs-target="#modal"><i class="ri-add-line"></i></button>
+            
+            <a  href="{{route('insumos.index')}}" class="btn btn-outline-primary "><i class="bi bi-droplet"></i></a>
+        </div>
+
     </div>
 
 
@@ -19,7 +24,7 @@
               <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title">Agregar alumno</h5>
+                      <h5 class="modal-title">Registrar mantenimiento</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                    
