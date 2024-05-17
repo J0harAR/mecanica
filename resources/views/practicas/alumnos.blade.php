@@ -4,13 +4,32 @@
 
 <form action="{{route('practicasAlumno.store')}}" method="post">
     @csrf
+<label for="">Numero de control</label>
+<input type="text" name="no_control" id="no_control">
 
-    <select name="practica">
+
+
+<select name="practica">
     @foreach ($practicas as $practica)
             <option value="{{$practica->id_practica}}">{{$practica->id_practica}}//{{$practica->nombre}}</option>
     @endforeach
 
 </select>
+<label for="">Fecha</label>
+<input type="date" name="fecha" id="fecha">
+
+<label for="">Numero de equipo</label>
+<input type="number" name="no_equipo" id="no_equipo">
+
+
+<label for="">Hora de entrada</label>
+<input type="time" name="hora_entrada" id="hora_entrada">
+
+<label for="">Hora de salida</label>
+<input type="time" name="hora_salida" id="hora_salida">
+
+
+
 
 
     <select class="form-select" multiple aria-label="multiple select example" name="articulos[]",id="articulos">
