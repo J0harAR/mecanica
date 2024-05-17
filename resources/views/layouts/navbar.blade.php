@@ -383,15 +383,11 @@
         </a>
       </li>
       <li>
-        <a href="charts-apexcharts.html">
-          <i class="bi bi-circle"></i><span>Alumnos</span>
+        <a href="{{route('practicasAlumno.create')}}">
+          <i class="bi bi-circle"></i><span>Registrar practica del alumno</span>
         </a>
       </li>
-      <li>
-        <a href="charts-echarts.html">
-          <i class="bi bi-circle"></i><span>ECharts</span>
-        </a>
-      </li>
+
     </ul>
   </li><!-- End Charts Nav -->
 

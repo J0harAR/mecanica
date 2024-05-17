@@ -2,62 +2,66 @@
 
 @section('content')
 
-<form action="{{route('practicasAlumno.store')}}" method="post">
+<form action="{{ route('practicasAlumno.store') }}" method="post">
     @csrf
-<label for="">Numero de control</label>
-<input type="text" name="no_control" id="no_control">
+    <div class="mb-3">
+        <label for="no_control" class="form-label">Número de control</label>
+        <input type="text" class="form-control" name="no_control" id="no_control">
+    </div>
 
+    <div class="mb-3">
+        <label for="practica" class="form-label">Práctica</label>
+        <select name="practica" class="form-select" id="practica">
+            @foreach ($practicas as $practica)
+                <option value="{{ $practica->id_practica }}">{{ $practica->id_practica }} // {{ $practica->nombre }}</option>
+            @endforeach
+        </select>
+    </div>
 
+    <div class="mb-3">
+        <label for="fecha" class="form-label">Fecha</label>
+        <input type="date" class="form-control" name="fecha" id="fecha">
+    </div>
 
-<select name="practica">
-    @foreach ($practicas as $practica)
-            <option value="{{$practica->id_practica}}">{{$practica->id_practica}}//{{$practica->nombre}}</option>
-    @endforeach
+    <div class="mb-3">
+        <label for="no_equipo" class="form-label">Número de equipo</label>
+        <input type="number" class="form-control" name="no_equipo" id="no_equipo">
+    </div>
 
-</select>
-<label for="">Fecha</label>
-<input type="date" name="fecha" id="fecha">
+    <div class="mb-3">
+        <label for="hora_entrada" class="form-label">Hora de entrada</label>
+        <input type="time" class="form-control" name="hora_entrada" id="hora_entrada">
+    </div>
 
-<label for="">Numero de equipo</label>
-<input type="number" name="no_equipo" id="no_equipo">
+    <div class="mb-3">
+        <label for="hora_salida" class="form-label">Hora de salida</label>
+        <input type="time" class="form-control" name="hora_salida" id="hora_salida">
+    </div>
 
+    <div class="mb-3">
+        <label for="articulos" class="form-label">Artículos</label>
+        <select class="form-select" multiple aria-label="multiple select example" name="articulos[]" id="articulos">
+            @foreach ($articulos_inventariados as $articulo)
+                <option value="{{ $articulo->id_inventario }}">Código: {{ $articulo->id_inventario }} // {{ $articulo->Catalogo_articulos->nombre }}</option>
+            @endforeach
+        </select>
+    </div>
 
-<label for="">Hora de entrada</label>
-<input type="time" name="hora_entrada" id="hora_entrada">
-
-<label for="">Hora de salida</label>
-<input type="time" name="hora_salida" id="hora_salida">
-
-
-
-
-
-    <select class="form-select" multiple aria-label="multiple select example" name="articulos[]",id="articulos">
-             <option selected>Open this select menu</option>
-                    @foreach ($articulos_inventariados as $articulo)
-                        <option value="{{ $articulo->id_inventario }}">Codigo:{{ $articulo->id_inventario }} //
-                         {{ $articulo->Catalogo_articulos->nombre }}</option>
-                    @endforeach
-     </select>
-
-     <button>Guardar</button>
-
+    <button type="submit" class="btn btn-primary">Guardar</button>
 </form>
 
 @if(session('error'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="success-alert">
+    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
         {{ session('error') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
 
 @if(session('alumno_no_encontrado'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="success-alert">
+    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
         {{ session('alumno_no_encontrado') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
-
-
 
 @endsection
