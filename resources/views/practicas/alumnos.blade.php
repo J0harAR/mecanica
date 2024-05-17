@@ -45,10 +45,19 @@
 </form>
 
 @if(session('error'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="success-alert">
         {{ session('error') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
+
+@if(session('alumno_no_encontrado'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="success-alert">
+        {{ session('alumno_no_encontrado') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+
 
 @endsection

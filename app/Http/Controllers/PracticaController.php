@@ -139,11 +139,18 @@ class PracticaController extends Controller
 
 
     public function store_practica_Alumno(Request $request){
-        
-
+        $alumno=Alumno::find($request->input('no_control'));
         $practica=Practica::find($request->input('practica'));
         $practica_articulos=$practica->catalogo_articulos()->pluck('id_articulo')->toArray();
         $articulos_inventariados=$request->input('articulos');
+        $fecha=$request->input('fecha');
+        $no_equipo=$request->input('no_equipo');
+        $hora_entrada=$request->input('hora_entrada');
+        $hora_salida=$request->input('hora_salida');
+
+        if($alumno==null){
+            return redirect()->route('practicasAlumno.create')->with('alumno_no_encontrado', 'Alumno no encontrado.');
+        }
 
         $articulo_presente = false;
         foreach ($articulos_inventariados as $id_articulo_inventariado) {
@@ -169,10 +176,9 @@ class PracticaController extends Controller
             $articulo->save();
         }
 
-
-
-      $practica->articulo_inventariados()->sync($articulos_inventariados);
-      $practica->save();
+     $practica->alumnos()->attach($alumno->no_control,['fecha'=>$fecha,'no_equipo'=>$no_equipo,'hora_entrada'=>$hora_entrada,'hora_salida'=>$hora_salida]);
+     $practica->articulo_inventariados()->sync($articulos_inventariados);
+     $practica->save();
       
        
     }
