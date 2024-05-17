@@ -102,8 +102,11 @@ Route::delete('/practicas/{id}', [PracticaController::class, 'destroy'])->name('
 
 
 //Parte de realizar practica de alumnos
-Route::get('/alumnos/practicas/', [PracticaController::class, 'RegistroPracticaAlumno'])->name('practicasAlumno.create');
-Route::get('/buscarAlumno', [PracticaController::class, 'buscarAlumno']);
+Route::get('/alumnos/practicas/', [PracticaController::class, 'create_practica_alumno'])->name('practicasAlumno.create');
+Route::post('/alumnos/practicas/', [PracticaController::class, 'store_practica_Alumno'])->name('practicasAlumno.store');
+
+
+
 
 
 //Parte de alumnos

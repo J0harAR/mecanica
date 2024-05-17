@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use  App\Models\Catalogo_articulo;
+use  App\Models\Practica;
 
 class Articulo_inventariado extends Model
 {
@@ -15,6 +16,12 @@ class Articulo_inventariado extends Model
 
     public function Catalogo_articulos(){
         return $this->belongsTo(Catalogo_articulo::class, 'id_articulo');
+    }
+
+    //Relacion n a n con practica
+    public function practicas()
+    {
+        return $this->belongsToMany(Practica::class, 'inventariado_practica', 'inventario_id', 'practica_id');
     }
 
 }

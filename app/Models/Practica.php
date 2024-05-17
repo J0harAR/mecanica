@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use  App\Models\Docente;
 use  App\Models\Catalogo_articulo;
+use  App\Models\Articulo_inventariado;
 class Practica extends Model
 {
 
@@ -22,5 +23,12 @@ class Practica extends Model
       public function catalogo_articulos()
       {
           return $this->belongsToMany(Catalogo_articulo::class, 'catalogo_practica', 'practica_id', 'articulo_id');
+      }
+
+      //Relacion n a n con articulo_inventariado
+      public function articulo_inventariados()
+      {
+
+            return $this->belongsToMany(Articulo_inventariado::class, 'inventariado_practica','practica_id','inventario_id');
       }
 }

@@ -127,22 +127,53 @@ class PracticaController extends Controller
     //PARTE DE PRACTICAS DONDE SE VAN A REALIZAR EN EL LABORATORIO
 
 
-    public function RegistroPracticaAlumno (){
+
+
+
+    public function create_practica_alumno (){
         $practicas=Practica::with(['catalogo_articulos'])->get();
         $articulos_inventariados=Articulo_inventariado::all();
-        $alumnos=Alumno::all();
-        
-        
-        return view('practicas.alumnos',compact('practicas','alumnos'));
+       
+        return view('practicas.alumnos',compact('practicas','articulos_inventariados'));
     }
 
 
-    public function buscarAlumno(Request $request){
-        $no_control = $request->input('no_control');
-        $alumnos = Alumno::where('no_control', 'like', '%' . $no_control . '%')->get();  
-    
-        // Devuelve los resultados de la búsqueda de alumnos en formato JSON
-        return response()->json($alumnos);
+    public function store_practica_Alumno(Request $request){
+
+        $practica=Practica::find($request->input('practica'));
+        $practica_articulos=$practica->catalogo_articulos()->pluck('id_articulo')->toArray();
+        $articulos_inventariados=$request->input('articulos');
+
+        $articulo_presente = false;
+        foreach ($articulos_inventariados as $id_articulo_inventariado) {
+            $articulo_presente = false;
+            $articulo=Articulo_inventariado::find($id_articulo_inventariado);
+        
+                foreach ($practica_articulos as $practica_articulo) {
+
+                   if($articulo->Catalogo_articulos->id_articulo == $practica_articulo){
+                    $articulo_presente = true;
+                    break; 
+                   }
+                }
+                if (!$articulo_presente) {         
+                    return redirect()->route('practicasAlumno.create')->with('error', 'Articulos no están asociados a la practica.');
+               }
+        }
+
+
+        foreach ($articulos_inventariados as $id_articulo_inventariado) {
+            $articulo=Articulo_inventariado::find($id_articulo_inventariado);
+            $articulo->estatus="Ocupado";
+            $articulo->save();
+        }
+
+
+
+      $practica->articulo_inventariados()->sync($articulos_inventariados);
+      $practica->save();
+      
+       
     }
 
 }
