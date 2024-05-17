@@ -35,6 +35,7 @@ class Practica extends Model
       //Relacion n a n con alumno
       public function alumnos()
       {
-            return $this->belongsToMany(Alumno::class,'alumno_practica','practica_id','alumno_id');
+            return $this->belongsToMany(Alumno::class,'alumno_practica','practica_id','alumno_id')
+            ->withPivot(['fecha','no_equipo','hora_entrada','hora_salida']);
       }
 }
