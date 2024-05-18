@@ -2,12 +2,30 @@
 
 @section('content')
 @can('ver-usuarios')
-<div class="container py-5">
+
+<div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="fw-bold mb-0">Usuarios</h1>
+    <div>
+      <h1 class="fw-bold mb-0 text-primary">
+        <i class="fas fa-users me-2"></i>Usuarios
+      </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-light shadow-sm p-3 mb-4 rounded">
+          <li class="breadcrumb-item">
+            <a href="{{ route('home') }}" class="text-decoration-none text-primary">
+              <i class="fas fa-home me-1"></i>Dashboard
+            </a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            <i class="fas fa-users me-1"></i>Usuarios
+          </li>
+        </ol>
+      </nav>
+    </div>
     @can('crear-usuarios')
-    <a href="{{ route('usuarios.create') }}" class="btn btn-primary"><i class="fas fa-user-plus"></i> Añadir nuevo
-      usuario</a>
+    <a href="{{ route('usuarios.create') }}" class="btn btn-tecnm">
+      <i class="fas fa-user-plus me-1"></i>Añadir nuevo usuario
+    </a>
     @endcan
   </div>
 
@@ -16,8 +34,6 @@
     {{ session('success') }}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-  @endif
-  @if(session('success'))
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       window.setTimeout(function () {
@@ -27,10 +43,11 @@
     });
   </script>
   @endif
-  <div class="card shadow">
+
+  <div class="card shadow-sm">
     <div class="card-body">
-      <table class="table table-responsive-md table-hover">
-        <thead class="thead-light">
+      <table class="table table-responsive-md table-hover data-table">
+        <thead class="bg-primary text-white">
           <tr>
             <th scope="col">Nombre</th>
             <th scope="col">Correo</th>
@@ -41,31 +58,28 @@
         <tbody>
           @foreach($usuarios as $usuario)
           <tr>
-            <td>{{$usuario->name}}</td>
-            <td>{{$usuario->email}}</td>
+            <td>{{ $usuario->name }}</td>
+            <td>{{ $usuario->email }}</td>
             <td>
               @if(!empty($usuario->getRoleNames()))
               @foreach($usuario->getRoleNames() as $rolName)
-              <h6><span>{{$rolName}}</span></h6>
+              <span class="badge bg-secondary">{{ $rolName }}</span>
               @endforeach
               @endif
             </td>
             <td>
               @can('editar-usuarios')
-              <a href="{{ route('usuarios.edit',$usuario->id) }}" class="btn btn-outline-primary btn-sm"><i
-                  class="fas fa-edit"></i></a>
+              <a href="{{ route('usuarios.edit', $usuario->id) }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a>
               @endcan
 
               @can('borrar-usuarios')
-              <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
-                data-bs-target="#modal-{{ $usuario->id}}"><i class="fas fa-trash"></i></button>
+              <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-{{ $usuario->id }}"><i class="fas fa-trash"></i></button>
               @endcan
             </td>
           </tr>
 
           <!-- Modal -->
-          <div class="modal fade" id="modal-{{ $usuario->id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+          <div class="modal fade" id="modal-{{ $usuario->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -73,7 +87,7 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  ¿Estás seguro de querer eliminar el usuario: {{$usuario->name}}?
+                  ¿Estás seguro de querer eliminar el usuario: {{ $usuario->name }}?
                 </div>
                 <div class="modal-footer">
                   <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="POST">
