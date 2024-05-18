@@ -1017,7 +1017,7 @@ h6 {
 }
 
 .custom-card .form-control:focus {
-  border-color: #007bff;
+  border-color: #0f47ad;
   box-shadow: none;
 }
 
@@ -1064,7 +1064,7 @@ h6 {
 
 
 .dashboard .customers-card .card-icon {
-  color: #1d7bff;
+  color: #0f47ad;
   background: #ffecdf;
 }
 
