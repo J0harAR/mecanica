@@ -93,7 +93,7 @@ class MaquinariaController extends Controller
     $maquina->insumos()->sync($request->input('insumos',[]));
   
     
-    return redirect()->route('maquinaria.index');
+    return redirect()->route('maquinaria.index')->with('success', 'Insumo asignado correctamente a la máquina: ' . $id_maquinaria . '.');
       
 
   }
