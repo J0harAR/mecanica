@@ -62,8 +62,9 @@
               @endcan
 
               @can('borrar-rol')
-              <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-{{ $role->id }}"><i class="fas fa-trash-alt"></i></button>
+              <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-{{ $role->id }}"><i class="fas fa-trash"></i></button>
               @endcan
+             
             </td>
           </tr>
 
