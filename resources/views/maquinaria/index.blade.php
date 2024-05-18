@@ -48,9 +48,9 @@
                             <label for="tipo" class="form-label"><i class="bi bi-gear me-2"></i>Tipo</label>
                             <select id="tipo" class="form-select" required name="tipo">
                                 <option selected disabled>Selecciona un tipo</option>
-                                <option value="Insumos">Insumos</option>
+                               
                                 <option value="Maquinaria">Maquinaria</option>
-                                <option value="Herramientas">Herramientas</option>
+                                
                             </select>
                         </div>
                         <div class="col-md-12 mb-3">
