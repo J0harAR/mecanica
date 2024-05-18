@@ -1474,9 +1474,8 @@
 .p-4 {
   padding: 1.5rem !important;
 }
-
 .p-5 {
-  padding: 3rem !important;
+  padding: rem !important;
 }
 
 .px-0 {
