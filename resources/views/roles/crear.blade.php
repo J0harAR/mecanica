@@ -7,7 +7,7 @@
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
       <h1 class="fw-bold mb-0 text-primary">
-        <i class="fas fa-user-shield me-2"></i>Crear Rol
+        <i class="fas fa-plus-circle me-1"></i>Crear Rol
       </h1>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-light shadow-sm p-3 mb-4 rounded">
