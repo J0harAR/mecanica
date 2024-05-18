@@ -167,7 +167,7 @@
             <div class="card-body">
               <h5 class="card-title">Herramientas</h5>
                 <div class="d-flex justify-content-between">
-                    <h2 class="text-right"><i class="fas fa-wrench me-1"></i></h2>
+                    <h2 class="text-right"><i class="bi bi-wrench me-1"></i></h2>
                     <div class="d-flex flex-column justify-content-between align-items-center"> 
                         <h2><span></span></h2>
                         <p class="m-b-o text-right"><a href="{{route('herramientas.index')}}">Ver mas...</a></p>
