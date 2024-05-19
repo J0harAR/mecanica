@@ -82,7 +82,7 @@ class MantenimientoController extends Controller
       $Mantenimiento->save();
       $Mantenimiento->insumos()->sync($insumos);
 
-      return redirect()->route('mantenimiento.index');
+      return redirect()->route('mantenimiento.index')->with('success', 'El registro del mantenimiento ha sido creado exitosamente,');;
     
     }
 
@@ -90,7 +90,8 @@ class MantenimientoController extends Controller
       $mantenimiento=Mantenimiento::find($id);
       $mantenimiento->delete();
       
-      return redirect()->route('mantenimiento.index');
+      return redirect()->route('mantenimiento.index')->with('success', 'El registro del mantenimiento ha sido eliminado exitosamente.');;
+
 
     }
 
