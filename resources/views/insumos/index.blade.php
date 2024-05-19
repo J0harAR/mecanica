@@ -281,62 +281,43 @@
                             </div>
                         </div><!-- End Modal -->
 
-                        <div class="modal fade" id="modal-update-{{ $insumo->id_insumo}}" tabindex="-1">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Agregar artículo</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-
-
-                                    <div class="modal-body">
-                                        <form class="row g-3" action="{{route('insumos.update', $insumo->id_insumo)}}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <div class="col-md-6">
-                                                <label for="estatus" class="form-label">Código de insumo</label>
-                                                <input type="text" class="form-control" id="id_insumo" name="estatus"
-                                                    value="{{$insumo->id_insumo}}" disabled>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-8">
-                                                    <label for="nombre" class="form-label">Nombre de la maquinaria</label>
-                                                    <input type="text" class="form-control" id="nombre" name="nombre"
-                                                        value="{{$insumo->Articulo_inventariados->Catalogo_articulos->nombre}}"
-                                                        disabled>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <label for="nombre" class="form-label">Capacidad</label>
-                                                    <input type="number" class="form-control" id="capacidad"
-                                                        name="capacidad" value="{{$insumo->capacidad}}">
-                                                </div>
-
-                                            </div>
-
-                                            <div class="col-md-12">
-                                                <label for="estatus" class="form-label">Estatus</label>
-                                                <input type="text" class="form-control" id="estatus" name="estatus"
-                                                    value="{{$insumo->Articulo_inventariados->estatus}}">
-                                            </div>
-
-
-
-                                            <div class="text-center mt-4">
-                                                <button type="submit" class="btn btn-primary">Guardar</button>
-                                            </div>
-
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- End Vertically centered Modal-->
-
-
+                        <!-- Modal Update -->
+<div class="modal fade" id="modal-update-{{ $insumo->id_insumo }}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header" style="background-color: #002855; color: #ffffff;">
+                <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Agregar artículo</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" action="{{ route('insumos.update', $insumo->id_insumo) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="col-md-4 mb-3">
+                        <label for="id_insumo" class="form-label"><i class="bi bi-gear me-2"></i>Código de insumo</label>
+                        <input type="text" class="form-control" id="id_insumo" name="id_insumo" value="{{ $insumo->id_insumo }}" disabled>
+                    </div>
+                    <div class="col-md-8 mb-3">
+                        <label for="nombre" class="form-label"><i class="bi bi-box-seam me-2"></i>Nombre del artículo</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}" disabled>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="capacidad" class="form-label"><i class="bi bi-bar-chart me-2"></i>Capacidad</label>
+                        <input type="number" class="form-control" id="capacidad" name="capacidad" value="{{ $insumo->capacidad }}">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="estatus" class="form-label"><i class="bi bi-check-circle me-2"></i>Estatus</label>
+                        <input type="text" class="form-control" id="estatus" name="estatus" value="{{ $insumo->Articulo_inventariados->estatus }}">
+                    </div>
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary" style="background-color: #002855; border-color: #002855;">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal Update -->
 
 
 
@@ -390,7 +371,7 @@
         tipoSelect.addEventListener('change', function () {
 
             switch (this.value) {
-                case 'Herramientas':
+                case 'Herrentas':
                     showElement(tipo_herramienta);
                     showElement(dimension_herramienta);
                     showElement(condicion_herramienta);
