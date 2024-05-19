@@ -1,11 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="fw-bold mb-0">Prácticas</h1>
-    <a href="{{ route('practicas.create') }}" class="btn btn-outline-primary btn-sm"><i class="ri-add-line"></i>
-        Registrar práctica</a>
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+    <h1 class="fw-bold mb-0 text-primary">
+        <i class="fas fa-book "></i> Prácticas
+      </h1>
+      <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-light shadow-sm p-3 mb-4 rounded">
+      <li class="breadcrumb-item">
+        <a href="{{ route('home') }}" class="text-decoration-none text-primary">
+        <i class="fas fa-home me-1"></i>Dashboard
+        </a>
+      </li>
+    
+      <li class="breadcrumb-item active" aria-current="page">
+        <i class="fas fa-book "></i> Prácticas
+        </li>
+      </ol>
+    </nav>
+    </div>
+    <a href="{{ route('practicas.create') }}" class="btn btn-tecnm">
+      <i class="fas fa-plus-circle me-1"></i>Registrar práctica
+    </a>
 </div>
+
 @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
         {{ session('success') }}
@@ -52,14 +72,14 @@
                             <td>{{ $practica->objetivo }}</td>
                             <td>
                                 <a href="{{ route('practicas.show', ['id' => $practica->id_practica]) }}"
-                                    class="btn btn-outline-danger btn-sm"><i class="bi bi-eye"></i></a>
+                                    class="btn btn-outline-danger btn-sm"><i class="fas fa-eye"></i></a>
                                 <a href="{{ route('practicas.edit', ['id' => $practica->id_practica]) }}"
                                     class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a>
 
                                 <!-- Botón para abrir el modal de confirmación -->
                                 <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#deleteModal-{{ $practica->id_practica }}">
-                                    <i class="fas fa-trash-alt"></i>
+                                    <i class="fas fa-trash"></i>
                                 </button>
 
                                 <!-- Modal de Confirmación -->
