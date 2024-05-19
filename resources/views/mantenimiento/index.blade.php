@@ -197,7 +197,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-          ¿Estás seguro de querer eliminar : {{$mantenimiento->id}}?
+          ¿Estás seguro de querer eliminar el registro : {{$mantenimiento->id}}?
           </div>
           <div class="modal-footer">
           <form action="{{ route('mantenimiento.destroy', $mantenimiento->id) }}" method="POST">
