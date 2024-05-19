@@ -57,7 +57,7 @@ class PracticaController extends Controller
         $practica->catalogo_articulos()->sync($request->input('articulos',[]));
         
     
-        return redirect()->route('practicas.index');
+        return redirect()->route('practicas.index')->with('success', 'La práctica ha sido creada exitosamente.');   
       
     }
     public function show($id){
@@ -113,14 +113,14 @@ class PracticaController extends Controller
         }
 
     
-        return redirect()->route('practicas.index');
+        return redirect()->route('practicas.index')->with('success', 'La práctica ha sido actualizada exitosamente.');   
     }
 
     public function destroy($id){
         $practica = Practica::find($id);
         $practica->delete();
 
-        return redirect()->route('practicas.index');
+        return redirect()->route('practicas.index')->with('success', 'La práctica ha sido eliminada exitosamente.');   
 
     }
 
