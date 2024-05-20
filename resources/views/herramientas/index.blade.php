@@ -115,7 +115,7 @@
                         <div class="col-md-12 mb-3" id="condicionHerramienta" style="display:none;">
                             <label for="condicion_herramienta" class="form-label"><i
                                     class="bi bi-activity me-2"></i>Condición</label>
-                            <input type="text" class="form-control" id="condicion_herramienta"
+                            <input type="text" class="form-control" id="condicion_herramienta_input"
                                 name="condicion_herramienta">
                         </div>
                         <div class="col-md-12 mb-3" id="tipoMaquina" style="display:none;">
@@ -400,6 +400,7 @@
 
         var todos_insumos = document.getElementById('todos_insumos');
 
+        var condicion_herramienta_input=document.getElementById('condicion_herramienta_input')
 
         tipoSelect.addEventListener('change', function () {
 
@@ -408,7 +409,7 @@
                     showElement(tipo_herramienta);
                     showElement(dimension_herramienta);
                     showElement(condicion_herramienta);
-
+                    condicion_herramienta_input.required =true;
                     hideElements([tipo_maquina, tipo_insumo, capacidad_insumo, seccion, todos_insumos]);
                     break;
                 case 'Maquinaria':
