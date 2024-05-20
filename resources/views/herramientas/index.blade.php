@@ -127,8 +127,8 @@
                             <label class="col-sm-2 col-form-label"><i class="bi bi-droplet me-2"></i>Insumos</label>
                             <div class="col-sm-12">
                                 <select class="form-select" multiple aria-label="multiple select example"
-                                    name="insumos[]" id="insumos">
-                                    <option selected>Open this select menu</option>
+                                    name="insumos[]" id="insumos" required>
+                                    <option selected disabled>Open this select menu</option>
                                     @foreach ($insumos as $insumo)
                                         <option value="{{ $insumo->id_insumo }}">Código:{{ $insumo->id_insumo }} //
                                             {{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}
@@ -218,6 +218,13 @@
             {{ session('error') }}
         </div>
     @endif 
+
+    @if (session('tipo_vacia'))
+        <div class="alert alert-danger" id="error-alert">
+            {{ session('tipo_vacia') }}
+        </div>
+    @endif 
+    
     <div class="card">
         <div class="card-body">
 

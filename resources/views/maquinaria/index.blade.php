@@ -128,7 +128,7 @@
                             <div class="col-sm-12">
                                 <select class="form-select" multiple aria-label="multiple select example"
                                     name="insumos[]" id="insumos">
-                                    <option selected>Open this select menu</option>
+                                    <option selected disabled>Open this select menu</option>
                                     @foreach ($insumos as $insumo)
                                         <option value="{{ $insumo->id_insumo }}">Código:{{ $insumo->id_insumo }} //
                                             {{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}
@@ -216,6 +216,24 @@
             });
         </script>
     @endif
+
+
+    @if(session('seccion_vacia'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="seccion_vacia-alert">
+            {{ session('seccion_vacia') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                window.setTimeout(function () {
+                    const successAlert = document.getElementById("seccion_vacia-alert");
+                    if (successAlert) successAlert.style.display = 'none';
+                }, 3000);
+            });
+        </script>
+    @endif
+
+
     <div class="card">
         <div class="card-body">
             <table class="table datatable">
