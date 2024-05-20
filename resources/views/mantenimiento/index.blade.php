@@ -55,6 +55,15 @@
   </div>
 @endif
 
+@if (session('errores_cantidad'))
+    @foreach (session('errores_cantidad') as $error)
+          <div class="alert alert-danger" id="danger-alert">
+            {{$error}}
+        </div>
+    @endforeach
+  
+@endif
+
   <!-- Vertically centered Modal -->
   <div class="modal fade" id="modal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">

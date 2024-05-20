@@ -309,7 +309,7 @@
                             <label for="condicion_herramienta" class="form-label"><i
                                     class="bi bi-activity me-2"></i>Condición</label>
                             <input type="text" class="form-control" id="condicion_herramienta"
-                                name="condicion_herramienta">
+                                name="condicion_herramienta" >
                         </div>
                         <div class="col-md-12 mb-3" id="tipoMaquina" style="display:none;">
                             <label for="tipo_maquina" class="form-label"><i class="bi bi-robot me-2"></i>Tipo de
