@@ -40,6 +40,9 @@
   color: var(--text-color) !important;
 }
 
+.text-primary1 {
+  color: var( --text-muted-color) !important;
+}
 
 body {
   font-family: var(--font-secondary);

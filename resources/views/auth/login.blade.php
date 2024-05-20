@@ -50,7 +50,7 @@
     background: rgba(255, 255, 255, 0.8);
     border: 2px solid #0f47ad;
     border-radius: 10px;
-    padding: 15px;
+ 
     transition: border-color 0.3s ease, background-color 0.3s ease;
   }
 
