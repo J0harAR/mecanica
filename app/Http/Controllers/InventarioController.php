@@ -37,6 +37,11 @@ class InventarioController extends Controller
         $capacidad_insumo=$request->input('capacidad_insumo');
         $tipo_insumo=$request->input('tipo_insumo');
 
+        if($tipo==null){
+            return redirect()->route('inventario.index')->with('tipo_null', 'Selecciona algun tipo');
+        }
+
+
         if($tipo==="Insumos"){  
             $codigo=$this->generadorCodigoArticulo($nombre_articulo,"",$tipo,"","");
  
@@ -156,6 +161,13 @@ class InventarioController extends Controller
         }
 
         if($tipo==="Maquinaria"){
+            
+        //Validacion de la seccion en null
+        if($seccion_articulo==null){
+            return redirect()->route('maquinaria.index')->with('seccion_vacia','Seleccione a que seccion pertenece la maquinaria');
+
+        }
+
             //Agregar en la tabla de catalogo articulo 
              $codigo=$this->generadorCodigoArticulo($nombre_articulo,$seccion_articulo,$tipo,"","");
              
@@ -191,7 +203,11 @@ class InventarioController extends Controller
                         $maquinaria->save();
                         
                         $maquinaria=Maquinaria::find($id_maquina);
-                        $maquinaria->insumos()->sync($request->input('insumos',[]));
+                        
+                        if($request->input('insumos')!=null){
+                            $maquinaria->insumos()->sync($request->input('insumos',[]));
+                        }
+                        
                         
                        
 
@@ -269,7 +285,10 @@ class InventarioController extends Controller
                     
 
                      $maquinaria=Maquinaria::find($id_maquina);
-                     $maquinaria->insumos()->sync($request->input('insumos',[]));
+
+                     if($request->input('insumos')!=null){
+                        $maquinaria->insumos()->sync($request->input('insumos',[]));
+                     }
 
                     $auditoria->event='created';
                     $auditoria->subject_type=Articulo_inventariado::class;
@@ -286,6 +305,11 @@ class InventarioController extends Controller
      
 
         if($tipo==="Herramientas"){
+
+            if($tipo_herramienta==null){
+                return redirect()->route('herramientas.index')->with('tipo_vacia','Seleccione el  tipo de herramienta');
+            }
+
          
             $codigo=$this->generadorCodigoArticulo($nombre_articulo,"",$tipo,$tipo_herramienta,$dimension);     
              //Agregar en la tabla de articulo_inventariado           
