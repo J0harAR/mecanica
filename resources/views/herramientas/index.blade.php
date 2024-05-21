@@ -55,12 +55,11 @@
                         <div class="col-md-12 mb-3">
                             <label for="nombre" class="form-label"><i class="bi bi-box-seam me-2"></i>Nombre del
                                 artículo</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" required
-                                autocomplete="nombre" autofocus>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
                         </div>
                         <div class="col-md-12 mb-3">
                             <label for="cantidad" class="form-label"><i class="bi bi-stack me-2"></i>Cantidad</label>
-                            <input type="number" class="form-control" id="cantidad" name="cantidad">
+                            <input type="number" class="form-control" id="cantidad" name="cantidad"required>
                         </div>
                         <div class="col-md-12 mb-3">
                             <label for="estatus" class="form-label"><i
@@ -90,7 +89,7 @@
                         <div id="tipo_herramienta" style="display: none;" class="col-md-6 mb-3">
                             <label for="tipo_herramienta" class="form-label"><i class="bi bi-tools me-2"></i>Tipo de
                                 herramientas</label>
-                            <select id="tipo_herramienta" class="form-select" name="tipo_herramienta">
+                            <select id="tipo_herramienta" class="form-select" name="tipo_herramienta"required>
                                 <option selected disabled>Selecciona un tipo</option>
                                 <option value="Herramienta de corte">Herramienta de corte</option>
                                 <option value="Herramienta de golpe">Herramienta de golpe</option>
@@ -110,7 +109,7 @@
                             <label for="dimension_herramienta" class="form-label"><i
                                     class="bi bi-rulers me-2"></i>Dimensión</label>
                             <input type="number" class="form-control" id="dimension_herramienta"
-                                name="dimension_herramienta">
+                                name="dimension_herramienta"required>
                         </div>
                         <div class="col-md-12 mb-3" id="condicionHerramienta" style="display:none;">
                             <label for="condicion_herramienta" class="form-label"><i

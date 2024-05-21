@@ -240,45 +240,35 @@
                             <label for="tipo" class="form-label"><i class="bi bi-gear me-2"></i>Tipo</label>
                             <select id="tipo" class="form-select" required name="tipo">
                                 <option selected disabled>Selecciona un tipo</option>
-                                <option value="Insumos">Insumos</option>
-                                <option value="Maquinaria">Maquinaria</option>
                                 <option value="Herramientas">Herramientas</option>
+                                <option value="Maquinaria">Maquinaria</option>
+                                <option value="Insumos">Insumos</option>
+
+
                             </select>
                         </div>
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="nombre" class="form-label"><i class="bi bi-box-seam me-2"></i>Nombre del
                                 artículo</label>
                             <input type="text" class="form-control" id="nombre" name="nombre" required
                                 autocomplete="nombre" autofocus>
                         </div>
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="cantidad" class="form-label"><i class="bi bi-stack me-2"></i>Cantidad</label>
-                            <input type="number" class="form-control" id="cantidad" name="cantidad">
+                            <input type="number" class="form-control" id="cantidad" name="cantidad" required>
                         </div>
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="estatus" class="form-label"><i
                                     class="bi bi-check-circle me-2"></i>Estatus</label>
-                            <select id="estatus" class="form-select" name="estatus">
+                            <select id="estatus" class="form-select" required name="estatus">
                                 <option value="Disponible">Disponible</option>
                                 <option value="No disponible">No disponible</option>
                             </select>
                         </div>
-                        <div class="col-md-12 mb-3" id="seccion" style="display: none;">
-                            <label for="seccion" class="form-label"><i class="bi bi-tags me-2"></i>Sección</label>
-                            <select id="seccion" class="form-select" name="seccion">
-                                <option selected disabled>Selecciona una sección</option>
-                                <option value="03">03 Metrología II</option>
-                                <option value="04">04 Mecánica de materiales</option>
-                                <option value="05">05 Mantenimiento</option>
-                                <option value="06">06 Robots industriales</option>
-                                <option value="07">07 Mecánica de materiales</option>
-                                <option value="08">08 Manufactura sustractiva</option>
-                                <option value="09">09 Manufactura aditiva</option>
-                                <option value="12">12 Mecánica de fluidos y termodinámica</option>
-                                <option value="13">13 Neumática</option>
-                                <option value="20">20 Área de diseño digital</option>
-                            </select>
-                            <div class="invalid-feedback">Campo obligatorio</div>
+                        <div class="col-md-6 mb-3" id="tipoMaquina" style="display:none;">
+                            <label for="tipo_maquina" class="form-label"><i class="bi bi-robot me-2"></i>Tipo de
+                                máquina</label>
+                            <input type="text" class="form-control" id="tipo_maquina" name="tipo_maquina" required>
                         </div>
                         <div id="tipo_herramienta" style="display: none;" class="col-md-6 mb-3">
                             <label for="tipo_herramienta" class="form-label"><i class="bi bi-tools me-2"></i>Tipo de
@@ -305,16 +295,28 @@
                             <input type="number" class="form-control" id="dimension_herramienta"
                                 name="dimension_herramienta">
                         </div>
-                        <div class="col-md-12 mb-3" id="condicionHerramienta" style="display:none;">
+                        <div class="col-md-6 mb-3" id="condicionHerramienta" style="display:none;">
                             <label for="condicion_herramienta" class="form-label"><i
                                     class="bi bi-activity me-2"></i>Condición</label>
                             <input type="text" class="form-control" id="condicion_herramienta_input"
-                                name="condicion_herramienta" >
+                                name="condicion_herramienta">
                         </div>
-                        <div class="col-md-12 mb-3" id="tipoMaquina" style="display:none;">
-                            <label for="tipo_maquina" class="form-label"><i class="bi bi-robot me-2"></i>Tipo de
-                                máquina</label>
-                            <input type="text" class="form-control" id="tipo_maquina" name="tipo_maquina">
+
+                        <div class="col-md-6 mb-3" id="seccion" style="display: none;">
+                            <label for="seccion" class="form-label"><i class="bi bi-tags me-2"></i>Sección</label>
+                            <select id="seccion" class="form-select" name="seccion">
+                                <option selected disabled>Selecciona una sección</option>
+                                <option value="03">03 Metrología II</option>
+                                <option value="04">04 Mecánica de materiales</option>
+                                <option value="05">05 Mantenimiento</option>
+                                <option value="06">06 Robots industriales</option>
+                                <option value="07">07 Mecánica de materiales</option>
+                                <option value="08">08 Manufactura sustractiva</option>
+                                <option value="09">09 Manufactura aditiva</option>
+                                <option value="12">12 Mecánica de fluidos y termodinámica</option>
+                                <option value="13">13 Neumática</option>
+                                <option value="20">20 Área de diseño digital</option>
+                            </select>
                         </div>
                         <div class="row mb-3" id="todos_insumos" style="display:none;">
                             <label class="col-sm-2 col-form-label"><i class="bi bi-droplet me-2"></i>Insumos</label>
@@ -324,8 +326,7 @@
                                     <option selected disabled>Open this select menu</option>
                                     @foreach ($insumos as $insumo)
                                         <option value="{{ $insumo->id_insumo }}">Código:{{ $insumo->id_insumo }} //
-                                            {{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}
-                                        </option>
+                                            {{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -342,14 +343,15 @@
                         </div>
                         <div class="text-center mt-4">
                             <button type="submit" class="btn btn-primary"
-                                style="background-color: #002855; border-color: #002855;">Guardar
-                            </button>
+                                style="background-color: #002855; border-color: #002855;">Guardar</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+
 
     </>
 
@@ -364,25 +366,31 @@
             var condicion_herramienta = document.getElementById('condicionHerramienta');
             var seccion = document.getElementById('seccion');
             var todos_insumos = document.getElementById('todos_insumos');
-            var condicion_herramienta_input=document.getElementById('condicion_herramienta_input')
+            var condicion_herramienta_input = document.getElementById('condicion_herramienta_input');
+
             tipoSelect.addEventListener('change', function () {
                 switch (this.value) {
                     case 'Herramientas':
                         showElement(tipo_herramienta);
-                        showElement(dimension_herramienta);                     
+                        showElement(dimension_herramienta);
                         showElement(condicion_herramienta);
-                        condicion_herramienta_input.required =true;
+                        setRequired([tipo_herramienta, dimension_herramienta, condicion_herramienta_input], true);
+                        setRequired([tipo_maquina, tipo_insumo, capacidad_insumo, seccion, todos_insumos], false);
                         hideElements([tipo_maquina, tipo_insumo, capacidad_insumo, seccion, todos_insumos]);
                         break;
                     case 'Maquinaria':
                         showElement(tipo_maquina);
                         showElement(seccion);
-                        showElement(todos_insumos);                     
+                        showElement(todos_insumos);
+                        setRequired([tipo_maquina, seccion], true);
+                        setRequired([tipo_herramienta, tipo_insumo, capacidad_insumo, dimension_herramienta, condicion_herramienta_input], false);
                         hideElements([tipo_herramienta, tipo_insumo, capacidad_insumo, dimension_herramienta, condicion_herramienta]);
                         break;
                     case 'Insumos':
                         showElement(tipo_insumo);
                         showElement(capacidad_insumo);
+                        setRequired([tipo_insumo, capacidad_insumo], true);
+                        setRequired([tipo_herramienta, tipo_maquina, dimension_herramienta, condicion_herramienta_input, seccion, todos_insumos], false);
                         hideElements([tipo_herramienta, tipo_maquina, dimension_herramienta, condicion_herramienta, seccion, todos_insumos]);
                         break;
                     default:
@@ -392,14 +400,29 @@
 
             function showElement(element) {
                 element.style.display = 'block';
+                if (element.querySelector('input, select')) {
+                    element.querySelector('input, select').required = true;
+                }
             }
 
             function hideElements(elements) {
                 elements.forEach(element => {
                     element.style.display = 'none';
+                    if (element.querySelector('input, select')) {
+                        element.querySelector('input, select').required = false;
+                    }
+                });
+            }
+
+            function setRequired(elements, required) {
+                elements.forEach(element => {
+                    if (element.querySelector('input, select')) {
+                        element.querySelector('input, select').required = required;
+                    }
                 });
             }
         });
+
     </script>
 
     @if(session('success'))

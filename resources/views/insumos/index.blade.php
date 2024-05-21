@@ -139,12 +139,12 @@
                         <div class="col-md-8 mb-3" id="tipoInsumo" style="display:none;">
                             <label for="tipo_insumo" class="form-label"><i class="bi bi-fuel-pump me-2"></i>Tipo de
                                 insumo</label>
-                            <input type="text" class="form-control" id="tipo_insumo" name="tipo_insumo">
+                            <input type="text" class="form-control" id="tipo_insumo" name="tipo_insumo"required>
                         </div>
                         <div class="col-md-4 mb-3" id="capacidadInsumo" style="display:none;">
                             <label for="capacidad_insumo" class="form-label"><i
                                     class="bi bi-speedometer2 me-2"></i>Capacidad</label>
-                            <input type="number" class="form-control" id="capacidad_insumo" name="capacidad_insumo">
+                            <input type="number" class="form-control" id="capacidad_insumo" name="capacidad_insumo"required>
                         </div>
                         <div class="text-center mt-4">
                             <button type="submit" class="btn btn-primary"
