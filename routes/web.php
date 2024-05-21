@@ -16,6 +16,7 @@ use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\AsignaturaController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\GrupoController;
+use App\Http\Controllers\PrestamoController;
 
 
 
@@ -141,3 +142,6 @@ Route::get('/grupos/create', [GrupoController::class, 'create'])->name('grupos.c
 Route::post('/grupos', [GrupoController::class, 'store'])->name('grupos.store');
 
 
+//Parte de prestamo
+Route::get('/prestamos', [PrestamoController::class, 'index'])->name('prestamos.index');
+Route::post('/prestamos', [PrestamoController::class, 'store'])->name('prestamos.store');
