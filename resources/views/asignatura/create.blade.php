@@ -6,7 +6,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h1 class="fw-bold mb-0 text-primary">
-                    <i class="fas fa-book"></i> Datos de la Asignatura
+                    <i class="fas fa-book"></i> Registrar asignatura
                 </h1>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb bg-light shadow-sm p-3 mb-4 rounded">
@@ -15,8 +15,13 @@
                                 <i class="fas fa-home me-1"></i> Dashboard
                             </a>
                         </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('asignatura.index') }}" class="text-decoration-none text-primary">
+                                <i class="fas fa-book me-1"></i> Asignatura
+                            </a>
+                        </li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            <i class="fas fa-book me-1"></i> Asignaturas
+                            <i class="fas fa-plus"></i> Registrar asignatura
                         </li>
                     </ol>
                 </nav>
@@ -49,10 +54,16 @@
                 @csrf
                 <div class="col-md-8">
                     <label for="floatingSelect" class="form-label"><i class="fas fa-book me-2"></i>Nombre Completo</label>
-                            <input type="text" name="nombre" id="nombre" class="form-control" required>
-                            <div class="invalid-feedback">
-                                Ingrese el nombre completo de la asignatura.
-                            </div>
+                    <input type="text" name="nombre" id="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}" required>
+            @error('nombre')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @else
+                <div class="invalid-feedback">
+                    Ingrese el nombre completo de la asignatura.
+                </div>
+            @enderror
                         </div>
 
                         <div class="col-md-4">

@@ -24,18 +24,25 @@ class AsignaturaController extends Controller
     }   
 
 
-    public function store(Request $request){
-        $nombre=$request->input('nombre');
-        $clave=$request->input('clave');
+    public function store(Request $request)
+{
+    $nombre = $request->input('nombre');
+    $clave = $request->input('clave');
 
-        $asignatura=new Asignatura;
-        $asignatura->clave=$clave;
-        $asignatura->nombre=$nombre;
-        $asignatura->save();
+    $request->validate([
+        'nombre' => 'required|unique:asignatura,nombre',
+    ], [
+        'nombre.unique' => 'La asignatura ya existe.'
+    ]);
 
-        return redirect()->route('asignatura.index');
-    }
+    // Crear nueva asignatura
+    $asignatura = new Asignatura;
+    $asignatura->clave = $clave;
+    $asignatura->nombre = $nombre;
+    $asignatura->save();
+    return redirect()->route('asignatura.index')->with('success', 'La asignatura ha sido registrada exitositosamente.');
 
+}
 
     public function edit($id){
 
@@ -55,18 +62,22 @@ class AsignaturaController extends Controller
 
         $asignatura->save();
 
-        return redirect()->route('asignatura.index');
+        return redirect()->route('asignatura.index')->with('success', 'La asignatura ha sido actualizada exitosamente.');        
 
     }
 
 
-    public function destroy($id){
-        $asignatura=Asignatura::find($id);
-        $asignatura->delete();
+    // AsignaturaController.php
 
-        return redirect()->route('asignatura.index');
+public function destroy($id)
+{
+    $asignatura = Asignatura::findOrFail($id);
 
-    }
+    $asignatura->delete();
+
+    return redirect()->route('asignatura.index')->with('success', 'Asignatura eliminada exitosamente.');
+}
+
 
 
   
