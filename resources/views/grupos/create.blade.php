@@ -1,45 +1,67 @@
 @extends('layouts.app')
 
 @section('content')
-
-<div class="row justify-content-center">
- <div class="col-lg-12">
-        <!-- Card with header and footer -->
-        <div class="card">
-                    <div class="card-header">Datos del grupo</div>
-                    <div class="card-body mt-2">             
-                        <form action="{{route('grupos.store')}}" method="POST" class="row g-3">
-                            @csrf                       
-                                <div class="col-md-8">
-                                    <label for="" class="form-label">Asignatura</label>
-                                    <select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="asignatura">
-                                        <option selected>Open this select menu</option>
-                                        @foreach ($asignaturas as $asignatura)
-                                            <option value="{{$asignatura->clave}}">{{$asignatura->clave}}-{{$asignatura->nombre}}</option>    
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="" class="form-label">Grupo</label>
-                                    <input type="text" name="clave_grupo" id="clave_grupo" class="form-control">
-                                </div>
-                                <div class="col-12 d-flex justify-content-end mt-3 mr-2">
-                                    <a href="{{route('grupos.index')}}" class="btn btn-light btn-sm text-black me-1">
-                                        <i class="bi bi-arrow-left"></i>
-                                        Atrás
-                                    </a>
-                                    <button type="submit" class="btn btn-primary btn-sm ">
-                                        <i class="bi bi-check2"></i>
-                                        Guardar
-                                    </button>
-                                </div>
-
-                        </form>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold mb-0 text-primary">
+                <i class="fas fa-users"></i> Registro de Grupo
+            </h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-light shadow-sm p-3 mb-4 rounded">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('home') }}" class="text-decoration-none text-primary">
+                            <i class="fas fa-home me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('grupos.index')}}" class="text-decoration-none text-primary">
+                            <i class="fas fa-users me-1"></i> Administración de Grupos
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <i class="fas fa-user-plus"></i> Registrar Grupo
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    
+    <div class="card custom-card">
+    <div class="card-body">
+            <form class="row g-3 needs-validation" action="{{ route('grupos.store') }}" method="POST" novalidate>
+                @csrf
+                <div class="col-md-8">
+                    <label for="floatingSelect" class="form-label"><i class="fas fa-book me-2"></i> Asignatura</label>
+                    <select class="form-select" id="floatingSelect" name="asignatura" required>
+                        <option selected disabled>Selecciona una asignatura</option>
+                        @foreach ($asignaturas as $asignatura)
+                            <option value="{{ $asignatura->clave }}">{{ $asignatura->clave }} - {{ $asignatura->nombre }}</option>
+                        @endforeach
+                    </select>
+                    <div class="invalid-feedback">
+                        Seleccione una asignatura.
                     </div>
-        </div><!-- End Card with header and footer -->
-  </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <label for="clave_grupo" class="form-label"><i class="fas fa-users me-2"></i> Grupo</label>
+                    <input type="text" class="form-control" id="clave_grupo" name="clave_grupo" required>
+                    <div class="invalid-feedback">
+                        Ingrese la clave del grupo.
+                    </div>
+                </div>
+                
+                <div class="col-12 d-flex justify-content-end mt-4">
+                    <a href="{{ route('grupos.index') }}" class="btn btn-light btn-sm text-black me-2">
+                        <i class="fas fa-arrow-left"></i> Atrás
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-check"></i> Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-
-
-
 @endsection
