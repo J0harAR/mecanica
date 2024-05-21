@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use  App\Models\Persona;
 use  App\Models\Asignatura;
+use  App\Models\Herramientas;
 class Docente extends Model
 {
     use HasFactory;
@@ -25,14 +26,20 @@ class Docente extends Model
         return $this->belongsTo(Persona::class, 'curp');
     }
 
+    //Relacion n a n con asignaturas
     
     public function asignaturas(){
         return $this->belongsToMany(Asignatura::class,'asignatura_docente','id_docente','clave_asignatura');
     }
 
 
+    //Relacion n a n con herramientas
+    public function herramientas(){
+        return $this->belongsToMany(Herramientas::class,'prestamo','id_docente','id_herramientas')
+        ->withPivot(['id','fecha_prestamo','fecha_devolucion','estatus']);
+
+    }
 
 
-    
   
 }

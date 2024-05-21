@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use  App\Models\Docente;
 class Herramientas extends Model
 {
     use HasFactory;
@@ -14,4 +14,11 @@ class Herramientas extends Model
     public function Articulo_inventariados(){
         return $this->belongsTo(Articulo_inventariado::class, 'id_herramientas');
     }
+
+    public function docentes(){
+        return $this->belongsToMany(Docente::class,'prestamo','id_herramientas','id_docente');
+
+    }
+
+
 }
