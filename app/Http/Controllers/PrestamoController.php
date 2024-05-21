@@ -15,7 +15,7 @@ class PrestamoController extends Controller
             $query->withPivot(['id','fecha_prestamo', 'fecha_devolucion', 'estatus']);
         }])->get();
         
-        $herramientas=Herramientas::all();
+        $herramientas = Herramientas::with('Articulo_inventariados.Catalogo_articulos')->get();
 
         return view('prestamos.index',compact('prestamos','herramientas'));
 
@@ -55,5 +55,21 @@ class PrestamoController extends Controller
     }
 
 
+
+    public function update(Request $request ,$id){
+      
+        $id_docente=$request->input('rfc');
+    
+        $docente=Docente::find($id_docente);
+
+        $prestamo = DB::table('prestamo')->where('id', $id)->first();
+
+        DB::table('prestamo')
+        ->where('id', $id)
+        ->update(['fecha_devolucion' => $request->input('fecha_devolucion')]);
+     
+        return redirect()->route('prestamos.index')->with('success', 'Fecha de devolución actualizada correctamente.');
+
+    }
 
 }

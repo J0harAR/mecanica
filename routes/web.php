@@ -145,3 +145,4 @@ Route::post('/grupos', [GrupoController::class, 'store'])->name('grupos.store');
 //Parte de prestamo
 Route::get('/prestamos', [PrestamoController::class, 'index'])->name('prestamos.index');
 Route::post('/prestamos', [PrestamoController::class, 'store'])->name('prestamos.store');
+Route::match(['put', 'patch'], '/prestamos/{id}', [PrestamoController::class, 'update'])->name('prestamos.update');
