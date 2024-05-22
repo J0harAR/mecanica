@@ -48,7 +48,7 @@ class PrestamoController extends Controller
 
             $herramienta->estatus="No disponible";
             $herramienta->save();
-            $docente->herramientas()->attach($id_herramienta,['fecha_prestamo'=>$fecha_prestamo,'fecha_devolucion'=>$fecha_devolucion,'estatus'=>"No devuelto"]);
+            $docente->herramientas()->attach($id_herramienta,['fecha_prestamo'=>$fecha_prestamo,'fecha_devolucion'=>$fecha_devolucion,'estatus'=>"Pendiente"]);
            
             return redirect()->route('prestamos.index')->with('success', 'Prestamo registrado correctamente');
 
@@ -85,5 +85,19 @@ class PrestamoController extends Controller
         return redirect()->route('prestamos.index')->with('success', 'Préstamo eliminado correctamente.');
 
     }
+
+    public function finalizar($id){
+
+        $prestamo = DB::table('prestamo')->where('id', $id)->first();
+
+
+        DB::table('prestamo')
+        ->where('id', $id)
+        ->update(['estatus' => "Finalizado"]);
+
+        return redirect()->route('prestamos.index')->with('success', 'Préstamo finalizado correctamente.');
+    }
+
+
 
 }

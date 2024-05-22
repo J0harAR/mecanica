@@ -147,3 +147,4 @@ Route::get('/prestamos', [PrestamoController::class, 'index'])->name('prestamos.
 Route::post('/prestamos', [PrestamoController::class, 'store'])->name('prestamos.store');
 Route::match(['put', 'patch'], '/prestamos/{id}', [PrestamoController::class, 'update'])->name('prestamos.update');
 Route::delete('/prestamos/{id}', [PrestamoController::class, 'destroy'])->name('prestamos.destroy');
+Route::match(['put', 'patch'], '/prestamos/finalizar/{id}', [PrestamoController::class, 'finalizar'])->name('prestamos.finalizar');

@@ -92,49 +92,79 @@
 
 
 
-   
-
-
-
-
-
-
-
-
-  <table>
+  <table class="table datatable">
         <thead>
             <tr>
-              <th>ID</th>
                 <th>RFC del Docente</th>
                 <th>Nombre</th>
-                <th>Apellidos</th>
                 <th>Fecha de Préstamo</th>
                 <th>Fecha de Devolución</th>
-                <th>Estatus</th>
                 <th>Herramienta</th>
-                <th>Cambiar fecha de devolucion <th>
-                <th>Borrar</th>
+                <th>Estatus</th>
+                <th>Finalizar<th>
+                
+                
+
             </tr>
         </thead>
         <tbody>
             @foreach ($prestamos as $docente)
                 @foreach ($docente->herramientas as $prestamo)
                     <tr>
-                        <td>{{ $prestamo->pivot->id }}</td>
                         <td>{{ $docente->rfc }}</td>
-                        <td>{{ $docente->persona->nombre }}</td>
-                        <td>{{ $docente->persona->apellido_p }} {{$docente->persona->apellido_m}}</td>
+                        <td>{{ $docente->persona->nombre }} {{ $docente->persona->apellido_p }} {{$docente->persona->apellido_m}}</td>              
                         <td>{{ $prestamo->pivot->fecha_prestamo }}</td>
-                        <td>{{ $prestamo->pivot->fecha_devolucion }}</td>
-                        <td>{{ $prestamo->pivot->estatus }}</td>
+                        <td>{{ $prestamo->pivot->fecha_devolucion }}</td>                      
                         <td>{{ $prestamo->Articulo_inventariados->Catalogo_articulos->nombre}}</td>
-                        <td> <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#modal-update-{{ $prestamo->pivot->id }}">
-                                    <i class="fas fa-trash"></i>
-                                </button></td>
-                                <td><button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#modal-delete{{ $prestamo->pivot->id}}"><i class="fas fa-trash"></i></button></td>
+                        
+                        <td> 
+                          <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                                      data-bs-target="#modal-update-{{ $prestamo->pivot->id }}">
+                                      <i class="fas fa-trash"></i>
+                              </button>
+
+                          
+
+                            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                              data-bs-target="#modal-delete{{ $prestamo->pivot->id}}"><i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+
+                        <td>{{ $prestamo->pivot->estatus }}</td>
+
+                        <td><button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                              data-bs-target="#modal-finalizar{{ $prestamo->pivot->id}}"><i class="fas fa-trash"></i>
+                          </button></td>
+                        
                     </tr>
+
+
+
+ <!-- Modal Finalizar-->
+ <div class="modal fade" id="modal-finalizar{{ $prestamo->pivot->id}}" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+          ¿Estás seguro de finalizar el prestamo: {{ $prestamo->pivot->id}}?
+          </div>
+          <div class="modal-footer">
+          <form action="{{ route('prestamos.finalizar',['id'=>$prestamo->pivot->id]) }}" method="POST">
+            @csrf
+            @method('PATCH')
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-success">Confirmar</button>
+          </form>
+          </div>
+        </div>
+        </div>
+      </div><!-- End  Modal Finalizar -->
+
+
 
 
 <!-- Vertically centered Modal -->
@@ -220,13 +250,6 @@
         </div>
         </div>
       </div><!-- End Modal -->
-
-
-
-
-
-
-
 
 
 
