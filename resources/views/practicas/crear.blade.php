@@ -39,7 +39,7 @@
                             Ingrese el número de la práctica.
                         </div>
                     </div>
-                    
+
 
                     <div class="col-md-6">
                         <label for="docente" class="form-label"><i
@@ -100,8 +100,13 @@
 
                     <div class="col-md-12">
                         <label for="articulos" class="form-label"><i class="fas fa-boxes me-2"></i>Artículos</label>
-                        <select class="form-select" multiple aria-label="multiple select example" id="articulos"
-                            name="articulos[]">
+                        <div class="mb-2">
+                            <button type="button" id="select-all" class="btn btn-primary btn-sm">Seleccionar
+                                todos</button>
+                            <button type="button" id="deselect-all"
+                                class="btn btn-secondary btn-sm">Deseleccionar</button>
+                        </div>
+                        <select class="form-select" multiple="multiple" id="articulos" name="articulos[]">
                             @foreach ($catalogo_articulos as $articulo)
                                 <option value="{{ $articulo->id_articulo }}">{{ $articulo->nombre }}</option>
                             @endforeach
@@ -113,4 +118,22 @@
                     </div>
                 </form>
             </div>
+            <script>
+                $(document).ready(function () {
+                    $('#articulos').select2({
+                        placeholder: "Seleccionar articulos"
+                    });
+
+                    $('#select-all').click(function () {
+                        $('#articulos > option').prop("selected", true);
+                        $('#articulos').trigger("change");
+                    });
+
+                    $('#deselect-all').click(function () {
+                        $('#articulos > option').prop("selected", false);
+                        $('#articulos').trigger("change");
+                    });
+                });
+            </script>
+
             @endsection

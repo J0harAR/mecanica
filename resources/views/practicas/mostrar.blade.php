@@ -68,16 +68,11 @@
                     <input type="text" class="form-control" name="referencias" required value="{{ $practica->referencias }}" disabled>
                 </div>  
 
-                <div class="col-12">
-                    <label class="form-label"><i class="fas fa-boxes me-2"></i>Artículos</label>
-                    <select class="form-select" multiple aria-label="multiple select example" name="articulos[]" disabled>
-                        <option disabled>Selecciona los artículos</option>
-                        @foreach ($articulos as $articulo)
-                            <option value="{{ $articulo->id_articulo }}" {{ $practica->catalogo_articulos->contains('id_articulo', $articulo->id_articulo) ? 'selected' : '' }}>
-                                {{ $articulo->nombre }}
-                            </option>
-                        @endforeach               
-                    </select>
+                <div class=" row-3">
+                    <label for="articulos" class="form-label"><i class="fas fa-clipboard-check me-2"></i>Artículos</label>
+                    @foreach ($practica->catalogo_articulos as $articulo)
+                        <input type="text" class="form-control mb-2" value="{{ $articulo->nombre }}" disabled>
+                    @endforeach
                 </div>
 
                 <div class="col-12">

@@ -58,7 +58,7 @@ class PracticaController extends Controller
     
         $practica->estatus = 0;
         $practica->save();
-    
+        $practica=Practica::find($id_practica);
         $practica->catalogo_articulos()->sync($request->input('articulos', []));
     
         return redirect()->route('practicas.index')->with('success', 'La práctica ha sido creada exitosamente.');
