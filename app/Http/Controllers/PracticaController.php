@@ -8,25 +8,27 @@ use  App\Models\Practica;
 use  App\Models\Catalogo_articulo;
 use  App\Models\Articulo_inventariado;
 use  App\Models\Alumno;
+use  App\Models\Persona;
+use App\Models\Asignatura;
 
 class PracticaController extends Controller
 {
    
 
     public function index(){
+
         $practicas=Practica::with(['catalogo_articulos'])->get();
-
-        
-
-        return view('practicas.index',compact('practicas'));
       
+        
+        return view('practicas.index',compact('practicas'));   
     }
 
 
     public function create(){
         $catalogo_articulos=Catalogo_articulo::all();
         $docentes=Docente::all();
-        return view('practicas.crear',compact('docentes','catalogo_articulos'));
+        $asignaturas=Asignatura::all();
+        return view('practicas.crear',compact('docentes','catalogo_articulos','asignaturas'));
       
     }
 
@@ -40,6 +42,7 @@ class PracticaController extends Controller
         }
     
         $id_docente = $request->input('docente');
+        $id_asignatura=$request->input('asignatura');
         $nombre = $request->input('nombre_practica');
         $objetivo = $request->input('objetivo');
         $introduccion = $request->input('introduccion');
@@ -50,6 +53,7 @@ class PracticaController extends Controller
     
         $practica->id_practica = $id_practica;
         $practica->id_docente = $id_docente;
+        $practica->id_asignatura=$id_asignatura;
         $practica->nombre = $nombre;
         $practica->objetivo = $objetivo;
         $practica->introduccion = $introduccion;
@@ -66,9 +70,9 @@ class PracticaController extends Controller
     
     public function show($id){
         $practica=Practica::find($id);
-        $practica=Practica::find($id);
         $docentes=Docente::all();
         $articulos=Catalogo_articulo::all();
+        $asignatura=Asignatura::all();
        return view('practicas.mostrar',compact('practica','docentes','articulos'));
     }
 
@@ -127,6 +131,54 @@ class PracticaController extends Controller
         return redirect()->route('practicas.index')->with('success', 'La práctica ha sido eliminada exitosamente.');   
 
     }
+
+    public function filtrar(Request $request){
+        $nombre_docente=$request->input('docente');
+        $nombre_asignatura=$request->input('asignatura');
+        $estatus = $request->input('estatus');
+       
+        $query = Practica::query();
+
+      
+        if (!empty($nombre_docente)) {
+            $persona = Persona::where('nombre', $nombre_docente)->first();
+            if ($persona) {
+                $docente = Docente::where('curp', $persona->curp)->first();
+                if ($docente) {
+                    $query->where('id_docente', $docente->rfc);
+                }
+            }
+        }
+
+         
+        if (!empty($nombre_asignatura)) {
+            $asignatura = Asignatura::where('nombre', $nombre_asignatura)->first();
+            if ($asignatura) {
+                // Usamos `orWhere` solo si también se filtró por docente
+                if (!empty($nombre_docente)) {
+                    $query->orWhere('id_asignatura', $asignatura->clave);
+                } else {
+                    $query->where('id_asignatura', $asignatura->clave);
+                }
+            }
+        }
+       
+        if (isset($estatus)) {
+            $query->where('estatus', $estatus);
+        }
+        
+        $practicas = $query->get();
+       
+        return redirect()->route('practicas.index')->with(['practicas' => $practicas]);
+
+    }
+
+    public function completar_practica(Request $request){
+
+
+    }
+
+
 
     //PARTE DE PRACTICAS DONDE SE VAN A REALIZAR EN EL LABORATORIO
 

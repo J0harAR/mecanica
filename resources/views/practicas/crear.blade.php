@@ -31,7 +31,7 @@
                             {{ session('error') }}
                         </div>
                     @endif
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label for="codigo_practica" class="form-label"><i class="fas fa-id-badge me-2"></i>No. Práctica</label>
                         <input type="text" class="form-control" name="codigo_practica" required>
                         <div class="invalid-feedback">
@@ -49,6 +49,19 @@
                         </select>
                         <div class="invalid-feedback">
                             Seleccione un docente.
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="docente" class="form-label"><i class="fas fa-chalkboard-teacher me-2"></i>Asignatura</label>
+                        <select id="docente" class="form-select" required name="asignatura">
+                            <option selected disabled>Selecciona la asignatura</option>
+                            @foreach ($asignaturas as $asignatura)
+                                <option value="{{ $asignatura->clave }}">{{ $asignatura->nombre }}</option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback">
+                            Seleccione una asignatura.
                         </div>
                     </div>
 

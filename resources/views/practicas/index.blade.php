@@ -42,6 +42,32 @@
         });
     </script>
 @endif
+
+
+
+<form action="{{route('practicas.filtrar')}}" method="POST">
+    @csrf
+    <label for="">Docente</label>
+    <input type="text" name="docente">
+
+
+    <label for="">Asignatura</label>
+    <input type="text" name="asignatura">
+
+
+    <input type="radio" id="completa" name="estatus" value="1">
+    <label for="html">Completadas</label><br>
+
+
+    <input type="radio" id="incompleta" name="estatus" value="0">
+    <label for="css">No completadas</label><br>
+
+
+    <button>Filtrar</button>
+</form>
+
+
+
 <div class="container">
     @if($practicas->isEmpty())
         <div class="alert alert-secondary" role="alert">
@@ -53,6 +79,9 @@
             <div class="card-body">
                 
             </div>
+            @if (session('practicas'))
+                
+          
             <table class="table datatable ">
                 <thead>
                     <tr>
@@ -64,7 +93,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($practicas as $practica)
+                    @foreach (session('practicas') as $practica)
                         <tr>
                             <td>{{ $practica->id_practica }}</td>
                             <td>{{ $practica->nombre }}</td>
@@ -114,6 +143,7 @@
                     @endforeach
                 </tbody>
             </table>
+            @endif
         </div>
     @endif
 </div>

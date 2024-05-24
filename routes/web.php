@@ -101,6 +101,8 @@ Route::get('/practicas/{id}/edit', [PracticaController::class, 'edit'])->name('p
 Route::PATCH('/practicas/{id}', [PracticaController::class, 'update'])->name('practicas.update');
 Route::delete('/practicas/{id}', [PracticaController::class, 'destroy'])->name('practicas.destroy');
 
+Route::post('/practicas/filtrar', [PracticaController::class, 'filtrar'])->name('practicas.filtrar');
+
 
 //Parte de realizar practica de alumnos
 Route::get('/alumnos/practicas/', [PracticaController::class, 'create_practica_alumno'])->name('practicasAlumno.create');

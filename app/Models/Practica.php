@@ -8,6 +8,7 @@ use  App\Models\Docente;
 use  App\Models\Catalogo_articulo;
 use  App\Models\Alumno;
 use  App\Models\Articulo_inventariado;
+use  App\Models\Asignatura;
 class Practica extends Model
 {
 
@@ -20,6 +21,11 @@ class Practica extends Model
     public function docente(){
         return $this->belongsTo(Docente::class, 'id_docente');
     }
+
+    public function asignatura(){
+        return $this->belongsTo(Asignatura::class, 'id_asignatura');
+    }
+
       //Relacion n a n con catalogo articulo
       public function catalogo_articulos()
       {

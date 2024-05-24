@@ -50,6 +50,11 @@
           </div>
 
           <div class="col-12">
+            <label for="inputNanme4" class="form-label"><i class="fas fa-bullseye me-2"></i>Asignatura</label>
+            <input type="text" class="form-control" name="asignatura" required value="{{ $practica->asignatura->nombre ?? '' }}" disabled> 
+          </div>
+
+          <div class="col-12">
             <label for="inputNanme4" class="form-label"><i class="fas fa-bullseye me-2"></i>Objetivo</label>
             <input type="text" class="form-control" name="objetivo" required value="{{ $practica->objetivo }}" disabled> 
           </div>
