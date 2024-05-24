@@ -104,8 +104,9 @@
         <th>Fecha de Préstamo</th>
         <th>Fecha de Devolución</th>
         <th>Herramienta</th>
+        <th>Acciones</th>
         <th>Estatus</th>
-        <th>Finalizar</th>
+        
       </tr>
     </thead>
     <tbody>
@@ -124,13 +125,13 @@
           <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $prestamo->pivot->id }}">
             <i class="fas fa-trash"></i>
           </button>
-        </td>
-        <td>{{ $prestamo->pivot->estatus }}</td>
-        <td>
           <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-finalizar{{ $prestamo->pivot->id }}">
             <i class="fas fa-check"></i>
           </button>
+
         </td>
+        <td>{{ $prestamo->pivot->estatus }}</td>
+
       </tr>
 
       <!-- Modal Finalizar -->
@@ -169,33 +170,41 @@
               <form class="row g-3" action="{{ route('prestamos.update', ['id' => $prestamo->pivot->id]) }}" method="POST">
                 @method('PUT')
                 @csrf
-                <div class="col-md-6 mb-3">
+                <div class="col-md-12 mb-3">
                   <label for="id_prestamo" class="form-label"><i class="bi bi-calendar me-2"></i>ID del préstamo</label>
                   <input type="text" class="form-control" name="id_prestamo" id="id_prestamo" value="{{ $prestamo->pivot->id }}" disabled>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label for="rfc" class="form-label"><i class="bi bi-calendar me-2"></i>RFC del docente</label>
-                  <input type="text" class="form-control" name="rfc" id="rfc" value="{{ $docente->rfc }}" readonly>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="rfc" class="form-label"><i class="bi bi-calendar me-2"></i>RFC del docente</label>
+                    <input type="text" class="form-control" name="rfc" id="rfc" value="{{ $docente->rfc }}" readonly>
+                  </div>
+
+                    <div class="col-md-6 mb-3">
+                    <label for="herramienta" class="form-label"><i class="bi bi-tools me-2"></i>Seleccione herramienta</label>
+                    <select class="form-select" aria-label="Seleccione una herramienta" name="herramienta" id="herramienta" disabled>
+                      <option selected>Seleccione la herramienta</option>
+                      @foreach ($herramientas as $herramienta)
+                      <option value="{{ $herramienta->id_herramientas }}" @if ($prestamo->id_herramientas == $herramienta->id_herramientas) selected @endif>
+                        {{ $herramienta->Articulo_inventariados->Catalogo_articulos->nombre }}
+                      </option>
+                      @endforeach
+                    </select>
+                  </div>
+
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label for="herramienta" class="form-label"><i class="bi bi-tools me-2"></i>Seleccione herramienta</label>
-                  <select class="form-select" aria-label="Seleccione una herramienta" name="herramienta" id="herramienta" disabled>
-                    <option selected>Seleccione la herramienta</option>
-                    @foreach ($herramientas as $herramienta)
-                    <option value="{{ $herramienta->id_herramientas }}" @if ($prestamo->id_herramientas == $herramienta->id_herramientas) selected @endif>
-                      {{ $herramienta->Articulo_inventariados->Catalogo_articulos->nombre }}
-                    </option>
-                    @endforeach
-                  </select>
+
+                <div class ="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="fecha_prestamo" class="form-label"><i class="bi bi-calendar me-2"></i>Fecha del préstamo</label>
+                      <input type="date" class="form-control" name="fecha_prestamo" id="fecha_prestamo" value="{{ $prestamo->pivot->fecha_prestamo }}" disabled>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="fecha_devolucion" class="form-label"><i class="bi bi-calendar-check me-2"></i>Fecha de devolución</label>
+                      <input type="date" class="form-control" name="fecha_devolucion" id="fecha_devolucion" value="{{ $prestamo->pivot->fecha_devolucion }}">
+                    </div>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label for="fecha_prestamo" class="form-label"><i class="bi bi-calendar me-2"></i>Fecha del préstamo</label>
-                  <input type="date" class="form-control" name="fecha_prestamo" id="fecha_prestamo" value="{{ $prestamo->pivot->fecha_prestamo }}" disabled>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="fecha_devolucion" class="form-label"><i class="bi bi-calendar-check me-2"></i>Fecha de devolución</label>
-                  <input type="date" class="form-control" name="fecha_devolucion" id="fecha_devolucion" value="{{ $prestamo->pivot->fecha_devolucion }}">
-                </div>
+           
                 <div class="text-center mt-4">
                   <button type="submit" class="btn btn-primary" style="background-color: #002855; border-color: #002855;">Guardar</button>
                 </div>

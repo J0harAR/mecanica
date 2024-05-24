@@ -154,7 +154,7 @@ class PracticaController extends Controller
         if (!empty($nombre_asignatura)) {
             $asignatura = Asignatura::where('nombre', $nombre_asignatura)->first();
             if ($asignatura) {
-                // Usamos `orWhere` solo si también se filtró por docente
+           
                 if (!empty($nombre_docente)) {
                     $query->orWhere('id_asignatura', $asignatura->clave);
                 } else {
@@ -173,9 +173,13 @@ class PracticaController extends Controller
 
     }
 
-    public function completar_practica(Request $request){
+    public function completar_practica($id){
+        $practica=Practica::find($id);
+        $practica->estatus=1;
+        $practica->save();
 
-
+        $practicas=Practica::where('estatus',1)->get();        
+        return redirect()->route('practicas.index')->with(['practicas' => $practicas]);
     }
 
 

@@ -75,11 +75,12 @@
                 nueva práctica!</a>
         </div>
     @else
+    @if (session('practicas'))
         <div class="card">
             <div class="card-body">
                 
             </div>
-            @if (session('practicas'))
+         
                 
           
             <table class="table datatable ">
@@ -89,6 +90,7 @@
                         <th>Nombre</th>
                         <th>Docente</th>
                         <th>Objetivo</th>
+                        <th>Estatus</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -99,6 +101,20 @@
                             <td>{{ $practica->nombre }}</td>
                             <td>{{ $practica->id_docente }}</td>
                             <td>{{ $practica->objetivo }}</td>
+                            <td>                                                    
+                                @if ($practica->estatus== 0)
+                                <form action="{{route('practicas.completar',['id'=>$practica->id_practica])}}" method="POST">
+                                    @csrf
+                                        <button>  Marcar como completado</button>
+                                </form>
+
+                                  
+                                @else
+                                    Completada
+                               
+                        
+                                @endif                              
+                            </td>
                             <td>
                                 <a href="{{ route('practicas.show', ['id' => $practica->id_practica]) }}"
                                     class="btn btn-outline-danger btn-sm"><i class="fas fa-eye"></i></a>
