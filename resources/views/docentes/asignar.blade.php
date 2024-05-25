@@ -35,7 +35,10 @@
     <button>Siguiente</button>        
 </form>
 
-
+@if (session('error'))
+{{session('error')}}
+    
+@endif
 
 @if(session('grupos') and (session('docente')))
 

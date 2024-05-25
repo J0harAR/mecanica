@@ -132,7 +132,7 @@ class DocenteController extends Controller
                         ->first();
 
                             if($registro_duplicado!=null){
-                                return redirect()->route('docentes.asigna');
+                                return redirect()->route('docentes.asigna')->with('error','El grupo ya cuenta con docente');
 
                             }
                            
