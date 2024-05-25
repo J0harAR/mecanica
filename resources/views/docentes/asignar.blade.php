@@ -77,7 +77,6 @@
                         <td scope="row">{{ $grupo->asignaturas[0]->clave}}</td>
                         <td>{{$grupo->asignaturas[0]->nombre}}</td>
                         <td>{{$grupo->clave}}</td>
-                       
                         <td>
                             <input type="checkbox" name="grupos[{{ $grupo->clave }}][asignatura]" value="{{ $grupo->asignaturas[0]->clave }}">
                         </td>

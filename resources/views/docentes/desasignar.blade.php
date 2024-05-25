@@ -25,8 +25,14 @@
 
 
     <label for="">Periodo</label>
-    <input type="text" name="periodo">
 
+        <select  name="periodo">   
+        <option disabled selected>Selecciona...</option>
+        @foreach ($periodos as $periodo)
+            <option value="{{$periodo->clave}}">{{$periodo->clave}}</option>
+                
+        @endforeach  
+   </select>
 
 
 
@@ -39,7 +45,8 @@
     @csrf
 
     <input type="text" value="{{session('docente')->rfc}}" readonly name="rfc">
-    
+    <input type="text" value="{{session('periodo')->clave}}" readonly name="periodo">
+
 <table class="table table-sm table-bordered">
         <thead>
             <tr class="table-light text-center">

@@ -110,10 +110,7 @@ class DocenteController extends Controller
         $docente=Docente::find($id_docente);
         $asignatura=Asignatura::find($clave_asignatura);
         $periodo=Periodo::find($periodo);
-        $grupos=$asignatura->grupos;
-        
-
-        
+        $grupos=$asignatura->grupos; 
         return redirect()->route('docentes.asigna')->with(['grupos' => $grupos, 'docente' => $docente, 'periodo' => $periodo]);
 
     }
@@ -151,20 +148,20 @@ class DocenteController extends Controller
     public function eliminacion_asignacion(){
         $docentes=Docente::all();
         $asignaturas=Asignatura::all();
-
-        return view('docentes.desasignar',compact('docentes','asignaturas'));
+        $periodos=Periodo::all();
+        return view('docentes.desasignar',compact('docentes','asignaturas','periodos'));
     }
 
     public function filtrar(Request $request ){
 
         $docente=Docente::find($request->input('rfc'));
         $asignatura=Asignatura::find($request->input('id_asignatura'));
-
+        $periodo=Periodo::find($request->input('periodo'));
 
         $grupos=$docente->grupos()->where('clave_asignatura',$asignatura->clave)->get();
 
 
-        return redirect()->route('docentes.eliminacion_asignacion')->with(['grupos' => $grupos,'asignatura'=>$asignatura,'docente'=>$docente]);
+        return redirect()->route('docentes.eliminacion_asignacion')->with(['grupos' => $grupos,'asignatura'=>$asignatura,'docente'=>$docente,'periodo'=>$periodo]);
         
     }
 
@@ -174,16 +171,18 @@ class DocenteController extends Controller
       
             $grupos=$request->input('grupos');
             $docente=Docente::find($request->input('rfc'));
-
+            $clave_periodo=$request->input('periodo');
             foreach($grupos as $clave_grupo=>$datos_grupo){
 
                 DB::table('docente_grupo')
                 ->where('id_docente', $docente->rfc)
                 ->Where('clave_asignatura', $datos_grupo['asignatura'])
-                ->where('clave_grupo',$clave_grupo)
+                ->where('clave_grupo',$clave_grupo)              
+                ->where('clave_periodo',$clave_periodo)              
                 ->delete();
                
             }
+            return redirect()->route('docentes.index');
     }
 
 }
