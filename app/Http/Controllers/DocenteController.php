@@ -125,15 +125,27 @@ class DocenteController extends Controller
         
             $docente=Docente::find($request->input('rfc_docente'));
             $periodo=Periodo::find($clave_periodo);
-
-
+            
+        
             foreach($grupos as $clave_grupo=>$datos_grupo){
+
+                $registro_duplicado=DB::table('docente_grupo')                   
+                        ->Where('clave_asignatura', $datos_grupo['asignatura'])
+                        ->where('clave_grupo',$clave_grupo)
+                        ->first();
+
+                            if($registro_duplicado!=null){
+                                return redirect()->route('docentes.asigna');
+
+                            }
+                           
                 $docente->grupos()->attach($docente->rfc,
                 ['clave_grupo'=>$clave_grupo,'clave_asignatura'=>$datos_grupo['asignatura'],
                 'clave_periodo'=>$periodo->clave]);
+               
             }
-            
-
+         
+            return redirect()->route('docentes.index');
     }
 
     public function eliminacion_asignacion(){
