@@ -6,6 +6,7 @@ use  App\Models\Persona;
 use  App\Models\Asignatura;
 use  App\Models\Periodo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DocenteController extends Controller
 {
@@ -119,7 +120,58 @@ class DocenteController extends Controller
 
 
     public function asignar(Request $request){
+          $clave_periodo=$request->input('clave_periodo');
+          $grupos=$request->input('grupos');
+        
+            $docente=Docente::find($request->input('rfc_docente'));
+            $periodo=Periodo::find($clave_periodo);
 
+
+            foreach($grupos as $clave_grupo=>$datos_grupo){
+                $docente->grupos()->attach($docente->rfc,
+                ['clave_grupo'=>$clave_grupo,'clave_asignatura'=>$datos_grupo['asignatura'],
+                'clave_periodo'=>$periodo->clave]);
+            }
+            
+
+    }
+
+    public function eliminacion_asignacion(){
+        $docentes=Docente::all();
+        $asignaturas=Asignatura::all();
+
+        return view('docentes.desasignar',compact('docentes','asignaturas'));
+    }
+
+    public function filtrar(Request $request ){
+
+        $docente=Docente::find($request->input('rfc'));
+        $asignatura=Asignatura::find($request->input('id_asignatura'));
+
+
+        $grupos=$docente->grupos()->where('clave_asignatura',$asignatura->clave)->get();
+
+
+        return redirect()->route('docentes.eliminacion_asignacion')->with(['grupos' => $grupos,'asignatura'=>$asignatura,'docente'=>$docente]);
+        
+    }
+
+
+
+    public function eliminar_asignacion(Request $request){
+      
+            $grupos=$request->input('grupos');
+            $docente=Docente::find($request->input('rfc'));
+
+            foreach($grupos as $clave_grupo=>$datos_grupo){
+
+                DB::table('docente_grupo')
+                ->where('id_docente', $docente->rfc)
+                ->Where('clave_asignatura', $datos_grupo['asignatura'])
+                ->where('clave_grupo',$clave_grupo)
+                ->delete();
+               
+            }
     }
 
 }

@@ -79,7 +79,7 @@
                         <td>{{$grupo->clave}}</td>
                        
                         <td>
-                            <input type="checkbox" name="asignaturas[]" value="{{ $grupo->asignaturas[0]->clave}}">
+                            <input type="checkbox" name="grupos[{{ $grupo->clave }}][asignatura]" value="{{ $grupo->asignaturas[0]->clave }}">
                         </td>
                     </tr>
                 @endforeach

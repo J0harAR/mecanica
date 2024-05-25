@@ -269,6 +269,11 @@
                 <i class="bi bi-circle"></i><span>Asignacion asignatura</span>
               </a>
             </li>
+            <li>
+              <a href="{{route('docentes.eliminacion_asignacion')}}">
+                <i class="bi bi-circle"></i><span>Eliminacion de asignacion</span>
+              </a>
+            </li>
 
           </ul>
         </li>

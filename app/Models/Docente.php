@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use  App\Models\Persona;
 use  App\Models\Asignatura;
 use  App\Models\Herramientas;
+use  App\Models\Grupo;
 class Docente extends Model
 {
     use HasFactory;
@@ -29,7 +30,7 @@ class Docente extends Model
     //Relacion n a n con asignaturas
     
     public function asignaturas(){
-        return $this->belongsToMany(Asignatura::class,'asignatura_docente','id_docente','clave_asignatura');
+        return $this->belongsToMany(Asignatura::class,'docente_grupo','id_docente','clave_asignatura');
     }
 
 
@@ -37,6 +38,12 @@ class Docente extends Model
     public function herramientas(){
         return $this->belongsToMany(Herramientas::class,'prestamo','id_docente','id_herramientas')
         ->withPivot(['id','fecha_prestamo','fecha_devolucion','estatus']);
+
+    }
+
+    public function grupos(){
+        return $this->belongsToMany(Grupo::class,'docente_grupo','id_docente','clave_grupo') 
+        ->withPivot(['clave_asignatura','clave_periodo']);
 
     }
 

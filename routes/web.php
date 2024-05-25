@@ -136,7 +136,9 @@ Route::get('/docentes/{id}', [DocenteController::class, 'show'])->name('docentes
 Route::post('/docentes/filtrar_asignaturas', [DocenteController::class, 'filtrar_asignaturas'])->name('docentes.filtrar_asignaturas');
 Route::post('/asignar', [DocenteController::class, 'asignar'])->name('docentes.asignar');
 
-
+Route::post('/desasignar', [DocenteController::class, 'eliminar_asignacion'])->name('docentes.eliminar_asignacion');
+Route::get('/desasignar', [DocenteController::class, 'eliminacion_asignacion'])->name('docentes.eliminacion_asignacion');
+Route::post('/docentes/filtrar_grupos', [DocenteController::class, 'filtrar'])->name('docentes.filtrar_grupos');
 
 
 //Parte de grupos

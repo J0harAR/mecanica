@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use  App\Models\Alumno;
 use  App\Models\Asignatura;
+use  App\Models\Docente;
 class Grupo extends Model
 {
     use HasFactory;
@@ -24,4 +25,10 @@ class Grupo extends Model
 
         return $this->belongsToMany(Asignatura::class, 'asignatura_grupo', 'clave_grupo', 'clave_asignatura');
       }
+
+      public function docentes(){
+
+        return $this->belongsToMany(Docente::class, 'docente_grupo', 'clave_grupo', 'id_docente');
+      }
+      
 }

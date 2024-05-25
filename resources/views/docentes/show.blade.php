@@ -178,4 +178,27 @@
     </section>
 
 
+
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr class="table-light text-center">
+                <th scope="col">Clave de la materia</th>
+                <th scope="col">Nombre completo</th>
+                <th scope="col">Grupo</th>
+            </tr>
+        </thead>
+        <tbody>
+                @foreach ($docente->grupos as $grupo)
+                       
+                <tr class="text-center">
+                <td>{{ $grupo->asignaturas[0]->clave }}</td>
+                <td>{{ $grupo->asignaturas[0]->nombre }}</td>
+                <td>{{ $grupo->clave }}</td>
+                
+                </tr>
+                @endforeach
+           
+        </tbody>
+    </table>
+
 @endsection
