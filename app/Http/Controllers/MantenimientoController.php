@@ -24,6 +24,12 @@ class MantenimientoController extends Controller
 
     public function store(Request $request)
     {
+
+      if (empty($request->input('maquina')) || empty($request->input('fecha')) || empty($request->input('insumos'))) {
+         return redirect()->route('mantenimiento.index')->with('error', 'Todos los campos son requeridos.');             
+    }
+
+
       $Mantenimiento= new Mantenimiento;
       $Mantenimiento->fecha=$request->input('fecha');
       $Mantenimiento->id_maquinaria=$request->input('maquina');

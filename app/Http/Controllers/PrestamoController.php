@@ -27,6 +27,12 @@ class PrestamoController extends Controller
             $fecha_prestamo=$request->input('fecha_prestamo');
             $fecha_devolucion=$request->input('fecha_devolucion');
 
+
+            if (empty($id_docente) || empty($id_herramienta) || empty($fecha_prestamo) || empty($fecha_devolucion) ) {
+                return redirect()->route('prestamos.index')->with('error', 'Todos los campos son requeridos.');             
+           }
+
+
             $docente=Docente::find($id_docente);
             if($docente==null){
                 return redirect()->route('prestamos.index')->with('docente_no_encontrado', 'El docente no encontrado');

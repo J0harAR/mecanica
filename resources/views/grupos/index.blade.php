@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -32,6 +33,27 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
+
+@if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="success-alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+@if ($errors->any())
+    <div class="alert alert-danger  alert-dismissible fade show"">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </ul>
+    </div>
+@endif
+
+
+
 @if(session('success'))
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -42,6 +64,9 @@
         });
     </script>
 @endif
+
+
+
 <div class="card custom-card">
       <div class="card-body">
           <div class="card-body">

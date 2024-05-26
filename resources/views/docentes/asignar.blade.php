@@ -25,6 +25,15 @@
         </ol>
     </nav>
 
+    @if (session('error'))
+        <div class="alert alert-danger mt-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
+
+
+
     <form action="{{ route('docentes.filtrar_asignaturas') }}" method="POST" class="row g-3 needs-validation" novalidate>
         @csrf
         <div class="col-md-6">
@@ -72,11 +81,7 @@
         </div>
     </form>
 
-    @if (session('error'))
-        <div class="alert alert-danger mt-4">
-            {{ session('error') }}
-        </div>
-    @endif
+   
 
     @if(session('grupos') && session('docente'))
         <form action="{{ route('docentes.asignar') }}" method="POST" class="mt-4">

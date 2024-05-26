@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use  App\Models\Docente;
 use  App\Models\Persona;
+use  App\Models\Alumno;
 use  App\Models\Asignatura;
 use  App\Models\Periodo;
 use Illuminate\Http\Request;
@@ -23,9 +24,7 @@ class DocenteController extends Controller
 
 
     public function store(Request $request){
-      
-
-
+     
         $curp = $request->input('curp');
         $nombre=$request->input('nombre');   
         $apellido_p=$request->input('apellido_p');   
@@ -33,10 +32,22 @@ class DocenteController extends Controller
         $rfc=$request->input('rfc');   
         $area=$request->input('area');   
 
-        $telefono=$request->input('telefono');   
-
-
+        $telefono=$request->input('telefono');
         
+        $persona_existente=Alumno::where('curp',$curp)->first();
+        //Validacion de inclusion
+        if($persona_existente){
+
+            return redirect()->route('docentes.index')->with('error','Curp le pertenece a un alumno');
+        }
+
+        //validacion rfc 
+        $docente=Docente::find($rfc);
+        if($docente){
+            return redirect()->route('docentes.index')->with('error','RFC duplicado');
+        }
+
+      
         if($request->has('foto')){
 
             $file=$request->file('foto');
@@ -50,6 +61,8 @@ class DocenteController extends Controller
 
         }
 
+       
+    
         Persona::create([
             'curp'=>$curp,
             'nombre'=>$nombre,
@@ -71,6 +84,7 @@ class DocenteController extends Controller
 
 
         return redirect()->route('docentes.index');
+       
     }
 
     public function show($id){
@@ -102,9 +116,16 @@ class DocenteController extends Controller
 
 
     public function filtrar_asignaturas(Request $request){
+       
         $clave_asignatura=$request->input('asignatura');
         $id_docente=$request->input('docente');
         $periodo=$request->input('periodo');
+        
+        if (empty($clave_asignatura) || empty($id_docente) || empty($periodo)) {
+            return redirect()->route('docentes.asigna')->with('error', 'Todos los campos son requeridos.');             
+        }
+
+
 
 
         $docente=Docente::find($id_docente);

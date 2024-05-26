@@ -43,6 +43,12 @@
     </script>
     @endif
 
+    @if (session('error'))
+        <div class="alert alert-danger" id="error-alert">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="card custom-card">
       <div class="card-body">
         <div class="card shadow-sm mt-4">

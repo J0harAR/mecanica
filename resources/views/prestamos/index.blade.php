@@ -51,6 +51,12 @@
   </div>
   @endif
 
+  @if (session('error'))
+  <div class="alert alert-danger" id="success-alert">
+    {{ session('error') }}
+  </div>
+  @endif
+
   <!-- Vertically centered Modal -->
   <div class="modal fade" id="modal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">

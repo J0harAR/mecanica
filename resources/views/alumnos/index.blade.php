@@ -88,6 +88,16 @@
         </div>
     @endif
 
+
+    @error('curp')
+    <div class="alert alert-danger">CURP duplicada</div>
+    @enderror
+
+    
+    @error('no_control')
+    <div class="alert alert-danger">Numero de control duplicado</div>
+    @enderror
+
     <!-- Tabla de alumnos -->
     <div class="card shadow-sm">
         <div class="card-body">

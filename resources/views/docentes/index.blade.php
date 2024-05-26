@@ -34,6 +34,13 @@
     </div>
   </div>
 
+
+    @if (session('error'))
+        <div class="alert alert-danger" id="error-alert">
+            {{ session('error') }}
+        </div>
+    @endif
+
 <div class="card shadow-sm">
     <div class="card-body">
       <table class="table table-responsive-md table-hover data-table">

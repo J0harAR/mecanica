@@ -35,6 +35,12 @@ class AsignaturaController extends Controller
         'nombre.unique' => 'La asignatura ya existe.'
     ]);
 
+    $asignatura=Asignatura::find($clave);
+    
+    if($asignatura){
+        return redirect()->route('asignatura.index')->with('error', 'Clave de la asignatura duplicada');
+    }
+
     // Crear nueva asignatura
     $asignatura = new Asignatura;
     $asignatura->clave = $clave;

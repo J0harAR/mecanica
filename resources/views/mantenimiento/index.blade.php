@@ -235,7 +235,7 @@
     $('.insumo-enable').on('click', function () {
       let id = $(this).attr('data-id');
       let enable = $(this).is(":checked");
-      $('.insumo-cantidad[data-id="' + id + '"]').attr('disabled', !enable);
+      $('.insumo-cantidad[data-id="' + id + '"]').attr('disabled', !enable).attr('required', enable);
       $('.insumo-cantidad[data-id="' + id + '"]').val(null);
     });
   });
