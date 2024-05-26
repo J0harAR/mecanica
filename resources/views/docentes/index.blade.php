@@ -39,8 +39,8 @@
       <table class="table table-responsive-md table-hover data-table">
         <thead class="bg-primary text-white">
           <tr>
-    
           <th scope="col">RFC</th>
+          <th scope="col">Curp</th>
           <th scope="col">Nombre</th>
           <th scope="col">Area</th>
           <th scope="col">Acciones</th>
@@ -49,7 +49,8 @@
       <tbody>
         @foreach ($docentes as $docente)
           <tr>
-            <td scope="row">{{$docente->rfc}}</td>
+          <td scope="row">{{$docente->rfc}}</td>
+            <td scope="row">{{$docente->curp}}</td>
             <td>{{$docente->persona->nombre}} {{$docente->persona->apellido_p}} {{$docente->persona->apellido_m}}</td>
             <td>{{$docente->area}}</td>
             <td>

@@ -61,7 +61,7 @@ class DocenteController extends Controller
         $persona=Persona::find($curp);
 
         Docente::create([
-            'rfc'=>$nombre,
+            'rfc'=>$rfc,
             'curp'=>$persona->curp,
             'area'=>$area,
             'foto'=>$path.$filename,
