@@ -16,7 +16,7 @@
                     </li>
                     <li class="breadcrumb-item">
                         <a href="{{ route('practicas.index')}}" class="text-decoration-none text-primary">
-                            <i class="fas fa-home me-1"></i> Prácticas
+                            <i class="bi bi-journal me-1"></i> Prácticas
                         </a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
@@ -44,7 +44,7 @@
                         </div>
                 </div>
                 <div class="mb-3">
-                    <label for="practica" class="form-label"><i class="fas fa-file-alt" ></i> Práctica</label>
+                    <label for="practica" class="form-label"><i class="bi bi-journal me-1" ></i> Práctica</label>
                     <select name="practica" class="form-select" id="practica"required
                                 autocomplete="practica" autofocus>
                                 <div class="invalid-feedback">
