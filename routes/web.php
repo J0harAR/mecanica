@@ -17,6 +17,7 @@ use App\Http\Controllers\AsignaturaController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\PrestamoController;
+use App\Http\Controllers\PeriodoController;
 
 
 
@@ -153,3 +154,10 @@ Route::post('/prestamos', [PrestamoController::class, 'store'])->name('prestamos
 Route::match(['put', 'patch'], '/prestamos/{id}', [PrestamoController::class, 'update'])->name('prestamos.update');
 Route::delete('/prestamos/{id}', [PrestamoController::class, 'destroy'])->name('prestamos.destroy');
 Route::match(['put', 'patch'], '/prestamos/finalizar/{id}', [PrestamoController::class, 'finalizar'])->name('prestamos.finalizar');
+
+
+//Parte de periodo
+
+Route::get('/periodos', [PeriodoController::class, 'index'])->name('periodos.index');
+Route::post('/periodos', [PeriodoController::class, 'store'])->name('periodos.store');
+Route::delete('/periodos/{id}', [PeriodoController::class, 'destroy'])->name('periodos.destroy');

@@ -324,6 +324,14 @@
         </li>
       </ul>
     </li>
+
+    <li>
+      <a href="{{route('periodos.index')}}">
+        <i class="bi bi-circle"></i><span>Periodos</span>
+      </a>
+    </li>
+
+   
   </ul>
 </li><!-- End Charts Nav -->
 
