@@ -22,9 +22,9 @@
     </div>
     
     <div class="btn-group" role="group">
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
+    <a href="{{ route('docentes.create') }}" class="btn btn-outline-primary">
         <i class="ri-add-line"></i> Añadir docente
-      </button>
+</a>
       <a href="{{ route('docentes.asigna') }}" class="btn btn-outline-primary">
         <i class="fas fa-chalkboard-teacher me-1"></i>Añadir asignatura
       </a>
