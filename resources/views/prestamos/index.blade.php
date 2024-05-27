@@ -100,11 +100,14 @@
     </div>
   </div>
   <!-- End Vertically centered Modal -->
- <div class="card">
-    <div class="card-body">
-      <table class="table datatable">
-    <thead>
-      <tr>
+  <div class="card shadow-lg rounded-3 border-0">
+                    <div class="card-body p-4">
+                        <div class="table-responsive">
+                            <table
+                                class="table datatable table-striped table-hover table-bordered shadow-sm rounded align-middle"
+                                style="border-collapse: separate; border-spacing: 0 10px;">
+                                <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
+                                    <tr>
         <th>RFC del Docente</th>
         <th>Nombre</th>
         <th>Fecha de Préstamo</th>

@@ -279,6 +279,48 @@ h6 {
     opacity: 0;
   }
 }
+    /* Estilo adicional para mejorar la apariencia de la tabla */
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 123, 255, 0.1);
+    }
+
+    .transition-transform {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .hover\:scale-105:hover {
+        transform: scale(1.05);
+    }
+
+    .badge.bg-secondary {
+        background-color: #6c757d;
+        color: #fff;
+        padding: 0.5em 0.75em;
+        font-size: 0.875em;
+        border-radius: 1em;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-outline-primary {
+        color: #003366;
+        border-color: #003366;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #003366;
+        color: #fff;
+    }
+
+    .btn-outline-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
 
 /* Light Backgrounds */
 .bg-primary-light {

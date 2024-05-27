@@ -116,29 +116,31 @@
         </script>
     @endif
 
-    <div class="card">
-        <div class="card-body">
-            <table class="table datatable">
-                <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Nombre</th>
-                        <th>Cantidad</th>
-                        <th>Tipo</th>
-                        <th>Acciones</th>
+    <div class="card shadow-lg rounded-3 border-0">
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <table class="table datatable table-striped table-hover table-bordered shadow-sm rounded align-middle" style="border-collapse: separate; border-spacing: 0 10px;">
+                    <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
+                        <tr>
+
+                        <th scope="col" class="text-center">Código</th>
+                        <th scope="col" class="text-center">Nombre</th>
+                        <th scope="col" class="text-center">Cantidad</th>
+                        <th scope="col" class="text-center">Tipo</th>
+                        <th scope="col" class="text-center">Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody  class="bg-light">
                     @foreach ($catalogo_articulo as $articulo)
                         <tr>
                             <td>{{ $articulo->id_articulo }}</td>
                             <td>{{ $articulo->nombre }}</td>
                             <td>{{ $articulo->cantidad }}</td>
                             <td>{{ $articulo->tipo }}</td>
-                            <td>
-                                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                            <td class="text-center">
+                                <button type="button" class="btn btn-outline-danger btn-sm "data-bs-toggle="modal"
                                     data-bs-target="#modal-{{ $articulo->id_articulo }}"><i
-                                        class="fas fa-trash"></i></button>
+                                        class="fas fa-trash" ></i></button>
                             </td>
                         </tr>
 

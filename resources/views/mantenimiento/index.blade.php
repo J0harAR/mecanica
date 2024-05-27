@@ -55,13 +55,13 @@
   </div>
 @endif
 
-@if (session('errores_cantidad'))
-    @foreach (session('errores_cantidad') as $error)
-          <div class="alert alert-danger" id="danger-alert">
-            {{$error}}
-        </div>
-    @endforeach
-  
+  @if (session('errores_cantidad'))
+  @foreach (session('errores_cantidad') as $error)
+  <div class="alert alert-danger" id="danger-alert">
+    {{$error}}
+  </div>
+@endforeach
+
 @endif
 
   <!-- Vertically centered Modal -->
@@ -120,57 +120,61 @@
     </div>
   </div>
   <!-- End Vertically centered Modal -->
+  <div class="card shadow-lg rounded-3 border-0">
+    <div class="card-body p-4">
+      <div class="table-responsive">
+        <table class="table datatable table-striped table-hover table-bordered shadow-sm rounded align-middle"
+          style="border-collapse: separate; border-spacing: 0 10px;">
+          <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
+            <tr>
+              <th>N.Mantenimiento</th>
+              <th>Maquina</th>
+              <th>Insumos Utilizados</th>
+              <th data-type="date" data-format="YYYY/DD/MM">Fecha</th>
+              <th>Borrar</th>
+            </tr>
+          </thead>
 
-  <div class="card">
-    <div class="card-body">
-      <table class="table datatable">
-        <thead>
-          <tr>
-            <th>N.Mantenimiento</th>
-            <th>Maquina</th>
-            <th>Insumos Utilizados</th>
-            <th data-type="date" data-format="YYYY/DD/MM">Fecha</th>
-            <th>Borrar</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          @foreach ($mantenimientos as $mantenimiento)
-      <tr>
+          <tbody>
+            @foreach ($mantenimientos as $mantenimiento)
+        <tr>
         <td>{{$mantenimiento->id}}</td>
         <td>
-        {{$mantenimiento->Maquinarias->id_maquinaria}}/{{$mantenimiento->Maquinarias->Articulo_inventariados->Catalogo_articulos->nombre}}
+          {{$mantenimiento->Maquinarias->id_maquinaria}}/{{$mantenimiento->Maquinarias->Articulo_inventariados->Catalogo_articulos->nombre}}
         </td>
         <td>
-        
-          <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-          data-bs-target="#modal-{{ $mantenimiento->id }}" style="border-color: #002855; color: #002855;">
+
+          <button type="button" class="btn btn-outline-primary btn-sm  "
+          data-bs-toggle="modal" data-bs-target="#modal-{{ $mantenimiento->id }}"
+          style="border-color: #002855; color: #002855;">
           <i class="bi bi-droplet"></i>
           </button>
-        
+
 
 
         </td>
         <td>{{$mantenimiento->fecha}}</td>
-        <td>
-        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
-          data-bs-target="#modal-delete{{ $mantenimiento->id}}"><i class="fas fa-trash"></i></button>
+        <td class="text-center">
+          <button type="button" class="btn btn-outline-danger btn-sm btn-sm  "
+          data-bs-toggle="modal" data-bs-target="#modal-delete{{ $mantenimiento->id}}"><i
+            class="fas fa-trash"></i></button>
         </td>
-      </tr>
+        </tr>
 
-      <!-- Modal -->
-      <div class="modal fade" id="modal-{{ $mantenimiento->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+        <!-- Modal -->
+        <div class="modal fade" id="modal-{{ $mantenimiento->id }}" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-        <div class="modal-content border-0 shadow-lg">
+          <div class="modal-content border-0 shadow-lg">
           <div class="modal-header" style="background-color: #002855; color: #ffffff;">
-          <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-list-check me-2"></i>Insumos utilizados
-          </h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+            <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-list-check me-2"></i>Insumos
+            utilizados
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
             aria-label="Close"></button>
           </div>
           <div class="modal-body">
-          <div class="col-md-12">
+            <div class="col-md-12">
             @foreach ($mantenimiento->insumos as $insumo)
         <div class="row align-items-center mb-2">
         <div class="col-md-6">
@@ -178,71 +182,71 @@
         </div>
         <div class="col-md-4">
         <input type="text" name="insumos[{{ $insumo->id_insumo }}]" class="form-control"
-        value="{{ $insumo->pivot->cantidad }}" disabled>
+          value="{{ $insumo->pivot->cantidad }}" disabled>
         </div>
         <div class="col-md-2">
         <p class="mb-0">Litros</p>
         </div>
         </div>
       @endforeach
-          </div>
+            </div>
           </div>
           <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
           </div>
         </div>
         </div>
-      </div>
-      <!-- End Modal -->
+        <!-- End Modal -->
 
 
-      <!-- Modal -->
-      <div class="modal fade" id="modal-delete{{ $mantenimiento->id}}" tabindex="-1"
+        <!-- Modal -->
+        <div class="modal fade" id="modal-delete{{ $mantenimiento->id}}" tabindex="-1"
         aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-        <div class="modal-content">
+          <div class="modal-content">
           <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-          ¿Estás seguro de querer eliminar el registro : {{$mantenimiento->id}}?
+            ¿Estás seguro de querer eliminar el registro : {{$mantenimiento->id}}?
           </div>
           <div class="modal-footer">
-          <form action="{{ route('mantenimiento.destroy', $mantenimiento->id) }}" method="POST">
+            <form action="{{ route('mantenimiento.destroy', $mantenimiento->id) }}" method="POST">
             @csrf
             @method('delete')
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             <button type="submit" class="btn btn-danger">Eliminar</button>
-          </form>
+            </form>
+          </div>
           </div>
         </div>
-        </div>
-      </div><!-- End Modal -->
+        </div><!-- End Modal -->
 
 
 
-    @endforeach
-        </tbody>
+      @endforeach
+          </tbody>
 
-      </table>
+        </table>
+      </div>
     </div>
   </div>
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-  $(document).ready(function () {
-    $('.insumo-enable').on('click', function () {
-      let id = $(this).attr('data-id');
-      let enable = $(this).is(":checked");
-      $('.insumo-cantidad[data-id="' + id + '"]').attr('disabled', !enable).attr('required', enable);
-      $('.insumo-cantidad[data-id="' + id + '"]').val(null);
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('.insumo-enable').on('click', function () {
+        let id = $(this).attr('data-id');
+        let enable = $(this).is(":checked");
+        $('.insumo-cantidad[data-id="' + id + '"]').attr('disabled', !enable).attr('required', enable);
+        $('.insumo-cantidad[data-id="' + id + '"]').val(null);
+      });
     });
-  });
-</script>
+  </script>
 
 
-</script>
+  </script>
 
 
-@endsection
+  @endsection

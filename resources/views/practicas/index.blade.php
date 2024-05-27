@@ -76,86 +76,91 @@
                 <a href="{{ route('practicas.create') }}" class="alert-link">¡Crea una nueva práctica!</a>
             </div>
         @else
-                @if (session('practicas'))
-                    <div class="card">
-                        <div class="card-body"></div>
-                        <table class="table datatable ">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Docente</th>
-                                    <th>Objetivo</th>
-                                    <th>Estatus</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (session('practicas') as $practica)
+            @if (session('practicas'))
+                <div class="card shadow-lg rounded-3 border-0">
+                    <div class="card-body p-4">
+                        <div class="table-responsive">
+                            <table
+                                class="table datatable table-striped table-hover table-bordered shadow-sm rounded align-middle"
+                                style="border-collapse: separate; border-spacing: 0 10px;">
+                                <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
                                     <tr>
-                                        <td>{{ $practica->id_practica }}</td>
-                                        <td>{{ $practica->nombre }}</td>
-                                        <td>{{ $practica->id_docente }}</td>
-                                        <td>{{ $practica->objetivo }}</td>
-                                        <td>
-                                            @if ($practica->estatus == 0)
-                                                <form action="{{route('practicas.completar', ['id' => $practica->id_practica])}}"
-                                                    method="POST">
-                                                    @csrf
-                                                    <button> Marcar como completado</button>
-                                                </form>
-                                            @else
-                                                Completada
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('practicas.show', ['id' => $practica->id_practica]) }}"
-                                                class="btn btn-outline-danger btn-sm"><i class="fas fa-eye"></i></a>
-                                            <a href="{{ route('practicas.edit', ['id' => $practica->id_practica]) }}"
-                                                class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Docente</th>
+                                        <th>Objetivo</th>
+                                        <th>Estatus</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (session('practicas') as $practica)
+                                        <tr>
+                                            <td>{{ $practica->id_practica }}</td>
+                                            <td>{{ $practica->nombre }}</td>
+                                            <td>{{ $practica->id_docente }}</td>
+                                            <td>{{ $practica->objetivo }}</td>
+                                            <td>
+                                                @if ($practica->estatus == 0)
+                                                    <form action="{{route('practicas.completar', ['id' => $practica->id_practica])}}"
+                                                        method="POST">
+                                                        @csrf
+                                                        <button class="btn shadow-sm rounded-pill">
+  <i class="fas fa-check-circle me-2"></i> Marcar como completado
+</button>                                                    </form>
+                                                @else
+                                                    Completada
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('practicas.show', ['id' => $practica->id_practica]) }}"
+                                                    class="btn btn-outline-danger btn-sm  "><i class="fas fa-eye"></i></a>
+                                                <a href="{{ route('practicas.edit', ['id' => $practica->id_practica]) }}"
+                                                    class="btn btn-outline-primary btn-sm  "><i class="fas fa-edit"></i></a>
 
-                                            <!-- Botón para abrir el modal de confirmación -->
-                                            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#deleteModal-{{ $practica->id_practica }}">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
+                                                <!-- Botón para abrir el modal de confirmación -->
+                                                <button type="button" class="btn btn-outline-danger btn-sm   " data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal-{{ $practica->id_practica }}">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
 
-                                            <!-- Modal de Confirmación -->
-                                            <div class="modal fade" id="deleteModal-{{ $practica->id_practica }}" tabindex="-1"
-                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            ¿Estás seguro de que deseas eliminar la práctica "{{ $practica->nombre }}"?
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Cancelar</button>
-                                                            <form
-                                                                action="{{ route('practicas.destroy', ['id' => $practica->id_practica]) }}"
-                                                                method="POST" style="display: inline;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-danger">Eliminar</button>
-                                                            </form>
+                                                <!-- Modal de Confirmación -->
+                                                <div class="modal fade" id="deleteModal-{{ $practica->id_practica }}" tabindex="-1"
+                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ¿Estás seguro de que deseas eliminar la práctica
+                                                                "{{ $practica->nombre }}"?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Cancelar</button>
+                                                                <form
+                                                                    action="{{ route('practicas.destroy', ['id' => $practica->id_practica]) }}"
+                                                                    method="POST" style="display: inline;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                @endif
-            </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+            @endif
+                </div>
         @endif
+        </div>
     </div>
-</div>
-@endsection
+    @endsection

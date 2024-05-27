@@ -99,13 +99,16 @@
     @enderror
 
     <!-- Tabla de alumnos -->
-    <div class="card shadow-sm">
-        <div class="card-body">
-            @foreach($alumnosPorGrupo as $grupo => $alumnos)
+    <div class="card shadow-lg rounded-3 border-0">
+    <div class="card-body p-4">
+      <div class="table-responsive">
+      @foreach($alumnosPorGrupo as $grupo => $alumnos)
                 <h5 class="card-title1 text-primary1 mb-2 fw-bold ">{{ $grupo }}</h5>
                 <table class="table table-hover">
-                    <thead>
-                        <tr>
+        <table class="table table-striped table-hover table-bordered shadow-sm rounded align-middle"
+          style="border-collapse: separate; border-spacing: 0 10px;">
+          <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
+            <tr>
                             <th>#</th>
                             <th>Número de Control</th>
                             <th>Nombre</th>

@@ -218,12 +218,12 @@
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-body">
-
-            <table class="table datatable">
-                <thead>
-                    <tr>
+    <div class="card shadow-lg rounded-3 border-0">
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <table class="table datatable table-striped table-hover table-bordered shadow-sm rounded align-middle" style="border-collapse: separate; border-spacing: 0 10px;">
+                    <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
+                        <tr>
                         <th>Código</th>
                         <th>Nombre</th>
                         <th>Tipo</th>
@@ -232,7 +232,7 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody  class="bg-light">
                     @foreach ($insumos as $insumo)
                         <tr>
                             <th>{{$insumo->id_insumo}}</th>
@@ -240,14 +240,11 @@
                             <td>{{$insumo->Articulo_inventariados->Catalogo_articulos->tipo}}</td>
                             <td>{{$insumo->capacidad}}</td>
                             <td>{{$insumo->Articulo_inventariados->estatus}}</td>
-                            <td>
-
-                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                            <td class="text-center">
+                                <button type="button" class="btn btn-outline-primary btn-sm " data-bs-toggle="modal"
                                     data-bs-target="#modal-update-{{ $insumo->id_insumo}}"><i
                                         class="fas fa-edit bt"></i></button>
-
-
-                                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-outline-danger btn-sm " data-bs-toggle="modal"
                                     data-bs-target="#modal-{{ $insumo->id_insumo}}"><i class="fas fa-trash"></i></button>
                             </td>
 

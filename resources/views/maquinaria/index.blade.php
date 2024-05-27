@@ -215,13 +215,12 @@
             });
         </script>
     @endif
-
-
-    <div class="card">
-        <div class="card-body">
-            <table class="table datatable">
-                <thead>
-                    <tr>
+    <div class="card shadow-lg rounded-3 border-0">
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <table class="table datatable table-striped table-hover table-bordered shadow-sm rounded align-middle" style="border-collapse: separate; border-spacing: 0 10px;">
+                    <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
+                        <tr>
                         <th>Codigo</th>
                         <th>Nombre</th>
                         <th>Sección</th>
@@ -231,7 +230,7 @@
                         <th>Asignar insumos</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody  class="bg-light">
                     @foreach ($maquinaria as $maquina)
                         <tr>
                             <th>{{ $maquina->id_maquinaria }}</th>
@@ -243,17 +242,17 @@
                                     {{ $insumo->id_insumo }}
                                 @endforeach
                             </td>
-                            <td>
-                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                            <td class="text-center">
+                                <button type="button" class="btn btn-outline-primary btn-sm  " data-bs-toggle="modal"
                                     data-bs-target="#modal-update-{{ $maquina->id_maquinaria }}"><i
                                         class="fas fa-edit bt"></i></button>
-                                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-outline-danger btn-sm  " data-bs-toggle="modal"
                                     data-bs-target="#modal-{{ $maquina->id_maquinaria }}"><i
                                         class="fas fa-trash"></i></button>
                             </td>
-                            <th>
+                            <td class="text-center">
                                 <button type="button"
-                                    class="btn btn-outline-primary btn-sm d-flex align-items-center mx-auto"
+                                    class="btn btn-outline-primary  d-flex align-items-center mx-auto "
                                     data-bs-toggle="modal" data-bs-target="#modal-insumos{{ $maquina->id_maquinaria }}">
                                     <i class="fas fa-boxes me-2"></i>
                                 </button>

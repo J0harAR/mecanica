@@ -41,11 +41,13 @@
         </div>
     @endif
 
-<div class="card shadow-sm">
-    <div class="card-body">
-      <table class="table table-responsive-md table-hover data-table">
-        <thead class="bg-primary text-white">
-          <tr>
+    <div class="card shadow-lg rounded-3 border-0">
+    <div class="card-body p-4">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered shadow-sm rounded align-middle"
+          style="border-collapse: separate; border-spacing: 0 10px;">
+          <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
+            <tr>
           <th scope="col">RFC</th>
           <th scope="col">Curp</th>
           <th scope="col">Nombre</th>

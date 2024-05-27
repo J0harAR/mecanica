@@ -224,12 +224,12 @@
         </div>
     @endif 
     
-    <div class="card">
-        <div class="card-body">
-
-            <table class="table datatable">
-                <thead>
-                    <tr>
+    <div class="card shadow-lg rounded-3 border-0">
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <table class="table datatable table-striped table-hover table-bordered shadow-sm rounded align-middle" style="border-collapse: separate; border-spacing: 0 10px;">
+                    <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
+                        <tr>
                         <th>Código</th>
                         <th>Nombre</th>
                         <th>Dimensión</th>
@@ -238,7 +238,7 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody  class="bg-light">
                     @foreach ($herramientas as $herramienta)
                         <tr>
                             <th>{{$herramienta->id_herramientas}}</th>
@@ -246,9 +246,9 @@
                             <td>{{$herramienta->dimension}}</td>
                             <td>{{$herramienta->condicion}}</td>
                             <td>{{$herramienta->Articulo_inventariados->estatus}}</td>
-                            <td>
+                            <td class="text-center">
 
-                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-outline-primary btn-sm " data-bs-toggle="modal"
                                     data-bs-target="#modal-update-{{ $herramienta->id_herramientas}}"><i
                                         class="fas fa-edit bt"></i></button>
 
