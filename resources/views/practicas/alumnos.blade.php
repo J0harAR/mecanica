@@ -95,8 +95,21 @@
                         @endforeach
                     </select>
                 </div>
+
+                <div class="mb-3">
+                    <label for="articulos" class="form-label"><i class="fas fa-box" ></i> Artículos extras</label>
+                    <select class="form-select" multiple aria-label="multiple select example" name="articulos-extras[]"
+                        id="articulos">
+                        @foreach ($articulos_inventariados as $articulo)
+                            <option value="{{ $articulo->id_inventario }}">Código: {{ $articulo->id_inventario }} //
+                                {{ $articulo->Catalogo_articulos->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+
                 <div class="text-center mt-4">
-                <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
             </form>
 

@@ -64,7 +64,7 @@ class PracticaController extends Controller
         $practica->save();
         $practica=Practica::find($id_practica);
         $practica->catalogo_articulos()->sync($request->input('articulos', []));
-    
+        
         return redirect()->route('practicas.index')->with('success', 'La práctica ha sido creada exitosamente.');
     }
     
@@ -203,6 +203,7 @@ class PracticaController extends Controller
         $practica=Practica::find($request->input('practica'));
         $practica_articulos=$practica->catalogo_articulos()->pluck('id_articulo')->toArray();
         $articulos_inventariados=$request->input('articulos');
+        $articulos_extra=$request->input('articulos-extras');
         $fecha=$request->input('fecha');
         $no_equipo=$request->input('no_equipo');
         $hora_entrada=$request->input('hora_entrada');
@@ -232,14 +233,19 @@ class PracticaController extends Controller
 
         foreach ($articulos_inventariados as $id_articulo_inventariado) {
             $articulo=Articulo_inventariado::find($id_articulo_inventariado);
-            $articulo->estatus="Ocupado";
+            $articulo->estatus="No disponible";
             $articulo->save();
         }
 
-     $practica->alumnos()->attach($alumno->no_control,['fecha'=>$fecha,'no_equipo'=>$no_equipo,'hora_entrada'=>$hora_entrada,'hora_salida'=>$hora_salida]);
-     $practica->articulo_inventariados()->sync($articulos_inventariados);
-     $practica->save();
+   
+        $practica->alumnos()->attach($alumno->no_control,['fecha'=>$fecha,'no_equipo'=>$no_equipo,'hora_entrada'=>$hora_entrada,'hora_salida'=>$hora_salida]);
+        $practica->articulo_inventariados()->sync($articulos_inventariados);
+     
+        foreach ($articulos_extra as $articulo) {
 
+            $practica->articulo_inventariados()->attach($practica->id_practica,['inventario_id'=>$articulo]);
+        }
+        $practica->save();
 
         return redirect()->route('practicas.index');
        
