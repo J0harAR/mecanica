@@ -48,18 +48,26 @@ class MaquinariaController extends Controller
 
         $maquinaria=Maquinaria::find($id_maquinaria);
 
+       
+  //Asignacion de los insumos a la maquinaria
+        $insumosCapacidad = $request->input('insumos', []);
+        $insumosCantidadActual = $request->input('insumos-cantidad-actual', []);
+        $insumosCantidadMinima = $request->input('insumos-cantidad-minima', []);
 
-          $insumos=collect($request->input('insumos',[]))
-                ->map(function($insumo){
-                  return ['cantidad'=>$insumo];
-                });
 
-              
-              $maquinaria->insumos()->sync($insumos);
+        $insumos = collect($insumosCapacidad)->mapWithKeys(function ($capacidad, $id) use ($insumosCantidadActual, $insumosCantidadMinima) {
+          return [
+              $id => [
+                  'capacidad' => $capacidad,
+                  'cantidad_actual' => $insumosCantidadActual[$id] ?? null,
+                  'cantidad_minima' => $insumosCantidadMinima[$id] ?? null,
+              ],
+          ];
+      });
+     
+           $maquinaria->insumos()->sync($insumos);
+             
         
-
-
-
 
       return redirect()->route('maquinaria.index')->with('success', 'La maquina: ' . $id_maquinaria . ' ha sido actualizada exitosamente.');
   }
@@ -79,7 +87,7 @@ class MaquinariaController extends Controller
 
     $insumos=collect($request->input('insumos',[]))
       ->map(function($insumo){
-        return ['cantidad'=>$insumo];
+        return ['capacidad'=>$insumo];
       });
 
     

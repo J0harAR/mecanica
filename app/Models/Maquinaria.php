@@ -20,6 +20,6 @@ class Maquinaria extends Model
       public function insumos()
       {
           return $this->belongsToMany(Insumos::class, 'insumos_maquinaria', 'maquinaria_id', 'insumo_id')
-          ->withPivot(['cantidad']);
+          ->withPivot(['capacidad','cantidad_actual','cantidad_minima']);
       }
 }

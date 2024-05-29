@@ -80,15 +80,24 @@ class MantenimientoController extends Controller
           $insumo_temp = Insumos::find($key);
           $insumo_temp->capacidad -= $insumo['cantidad'];
           $insumo_temp->save();
+         
+           $insumo_maquinaria=$maquinaria->insumos()->where('insumo_id',$insumo_temp->id_insumo)->first();
+           $cantidad_actual=$insumo_maquinaria->pivot->cantidad_actual;
+           $capacidad_insumo=$insumo_maquinaria->pivot->capacidad;
+           $cantidad_final=$cantidad_actual+$insumo['cantidad'];
+
+            if($cantidad_final > $capacidad_insumo){
+                return redirect()->route('mantenimiento.index')->with('error', 'Cantidad no valida , excedió la capacidad.');
+            }       
           //aqui hago el actualizado del aumento de insumo en la maquina
-          $maquinaria->insumos()->syncWithoutDetaching([$insumo_temp->id_insumo => ['cantidad' => DB::raw('cantidad + ' . $insumo['cantidad'])]]);
+          $maquinaria->insumos()->syncWithoutDetaching([$insumo_temp->id_insumo => ['cantidad_actual' => $cantidad_final]]);
       }
 
 
       $Mantenimiento->save();
       $Mantenimiento->insumos()->sync($insumos);
 
-      return redirect()->route('mantenimiento.index')->with('success', 'El registro del mantenimiento ha sido creado exitosamente,');
+     return redirect()->route('mantenimiento.index')->with('success', 'El registro del mantenimiento ha sido creado exitosamente,');
     
     }
 

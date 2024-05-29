@@ -98,7 +98,7 @@
           <div class="col-md-5">
           <input type="checkbox" name="{{ $insumo->id_insumo }}" data-id="{{ $insumo->id_insumo }}"
             class="insumo-enable me-2">
-          <span>{{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}</span>
+          <span> {{$insumo->id_insumo}} {{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}</span>
           </div>
           <div class="col-md-7">
           <div class="input-group">
@@ -178,7 +178,7 @@
             @foreach ($mantenimiento->insumos as $insumo)
         <div class="row align-items-center mb-2">
         <div class="col-md-6">
-        {{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}
+        {{$insumo->id_insumo}}/{{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}
         </div>
         <div class="col-md-4">
         <input type="text" name="insumos[{{ $insumo->id_insumo }}]" class="form-control"

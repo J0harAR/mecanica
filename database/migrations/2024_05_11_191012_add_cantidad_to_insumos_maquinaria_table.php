@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('insumos_maquinaria', function (Blueprint $table) {
-            $table->float('cantidad')->nullable();
+            $table->float('capacidad')->nullable();
+            $table->float('cantidad_actual')->nullable();
+            $table->float('cantidad_minima')->nullable();
             
         });
     }

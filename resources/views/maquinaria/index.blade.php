@@ -262,7 +262,7 @@
 
                         <!-- Modal Update -->
                         <div class="modal fade" id="modal-update-{{ $maquina->id_maquinaria }}" tabindex="-1">
-                            <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
                                 <div class="modal-content border-0 shadow-lg">
                                     <div class="modal-header" style="background-color: #002855; color: #ffffff;">
                                         <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Editar maquinaria
@@ -311,13 +311,28 @@
                                                         class="bi bi-tools me-2"></i>Insumos</label>
                                                 @foreach ($maquina->insumos as $insumo)
                                                     <div class="row align-items-center mb-2">
-                                                        <div class="col-md-6">
-                                                            {{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <input type="text" name="insumos[{{ $insumo->id_insumo }}]"
-                                                                class="form-control" value="{{ $insumo->pivot->cantidad }}">
-                                                        </div>
+                                                            <div class="col">
+                                                                {{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}
+                                                            </div>
+
+                                                            <div class="col">
+                                                                <label for="Capacidad"></label>
+                                                                <input type="text" name="insumos[{{ $insumo->id_insumo }}]"
+                                                                    class="form-control" value="{{ $insumo->pivot->capacidad }}">
+                                                            </div> 
+
+                                                            <div class="col">
+                                                                <label for="Capacidad"></label>
+                                                                <input type="text" name="insumos-cantidad-actual[{{ $insumo->id_insumo }}]"
+                                                                class="form-control" value="{{ $insumo->pivot->cantidad_actual }}">
+                                                            </div>
+
+                                                            <div class="col">
+                                                                <label for="Capacidad"></label>
+                                                                <input type="text" name="insumos-cantidad-minima[{{ $insumo->id_insumo }}]"
+                                                                    class="form-control" value="{{ $insumo->pivot->cantidad_minima}}">
+                                                            </div>
+                                                            
                                                         <div class="col-md-2">
                                                             <p class="mb-0">Litros</p>
                                                         </div>
