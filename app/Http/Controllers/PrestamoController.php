@@ -101,6 +101,11 @@ class PrestamoController extends Controller
         ->where('id', $id)
         ->update(['estatus' => "Finalizado"]);
 
+       $herarmienta_prestada=Articulo_inventariado::find($prestamo->id_herramientas);
+       $herarmienta_prestada->estatus="Disponible";
+       $herarmienta_prestada->save();
+     
+
         return redirect()->route('prestamos.index')->with('success', 'Préstamo finalizado correctamente.');
     }
 
