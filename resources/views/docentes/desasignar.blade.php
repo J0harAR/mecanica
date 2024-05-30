@@ -92,11 +92,11 @@
                 <tbody>
                     @foreach (session('grupos') as $grupo)
                         <tr class="text-center">
-                            <td>{{ session('asignatura')->clave }} / {{ session('asignatura')->nombre }}</td>
-                            <td>{{ $grupo->clave }}</td>
+                            <td>{{ $grupo->asignatura->clave}} // {{$grupo->asignatura->nombre}} </td>
+                            <td>{{ $grupo->clave_grupo }}</td>
                             <td>
-                                <input type="checkbox" name="grupos[{{ $grupo->clave }}][asignatura]"
-                                    value="{{ session('asignatura')->clave }}">
+                                <input type="checkbox" name="grupos[{{ $grupo->clave_grupo }}][asignatura]"
+                                    value="{{ $grupo->asignatura->clave }}">
                             </td>
                         </tr>
                     @endforeach

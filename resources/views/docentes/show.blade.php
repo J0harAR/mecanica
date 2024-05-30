@@ -116,15 +116,17 @@
           <tr>
             <th scope="col" class="text-center">Clave de la materia</th>
             <th scope="col" class="text-center">Nombre completo</th>
-            <th scope="col" class="text-center">Grupo</th>
+          <th scope="col" class="text-center">Grupo</th>
+            
           </tr>
         </thead>
         <tbody>
-          @foreach ($docente->grupos as $grupo)
+          @foreach ($asignaturas as $asig)
           <tr class="text-center">
-            <td>{{ $grupo->asignaturas[0]->clave }}</td>
-            <td>{{ $grupo->asignaturas[0]->nombre }}</td>
-            <td>{{ $grupo->clave }}</td>
+            <td>{{ $asig->asignatura->clave }}</td>
+            <td>{{ $asig->asignatura->nombre }}</td>
+              <td>{{ $asig->clave_grupo}}</td>
+       
           </tr>
           @endforeach
         </tbody>

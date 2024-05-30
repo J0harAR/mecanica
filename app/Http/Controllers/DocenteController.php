@@ -90,7 +90,9 @@ class DocenteController extends Controller
 
     public function show($id){
         $docente=Docente::find($id);
-        return view('docentes.show',compact('docente'));
+
+        $asignaturas=Grupo::where('id_docente',$docente->rfc)->get();
+        return view('docentes.show',compact('docente','asignaturas'));
 
     }   
 
@@ -186,8 +188,11 @@ class DocenteController extends Controller
         $asignatura=Asignatura::find($request->input('id_asignatura'));
         $periodo=Periodo::find($request->input('periodo'));
 
-        $grupos=$docente->grupos()->where('clave_asignatura',$asignatura->clave)->get();
-
+        $grupos=Grupo::
+        where('clave_asignatura',$asignatura->clave)
+        ->where('id_docente',$docente->rfc)
+        ->get();
+       
 
         return redirect()->route('docentes.eliminacion_asignacion')->with(['grupos' => $grupos,'asignatura'=>$asignatura,'docente'=>$docente,'periodo'=>$periodo]);
         
@@ -202,7 +207,8 @@ class DocenteController extends Controller
             $clave_periodo=$request->input('periodo');
             foreach($grupos as $clave_grupo=>$datos_grupo){
 
-                DB::table('docente_grupo')
+
+                DB::table('grupo')
                 ->where('id_docente', $docente->rfc)
                 ->Where('clave_asignatura', $datos_grupo['asignatura'])
                 ->where('clave_grupo',$clave_grupo)              
