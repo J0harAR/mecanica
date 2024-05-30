@@ -11,7 +11,8 @@ class Grupo extends Model
 {
     use HasFactory;
     protected $table = "grupo";
-
+    protected $primaryKey = 'clave_grupo';
+    protected $keyType = 'string';
     public function alumnos()
       {
           return $this->belongsToMany(Alumno::class, 'alumno_grupo', 'clave_grupo', 'id_alumno');

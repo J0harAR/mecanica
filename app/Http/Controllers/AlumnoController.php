@@ -21,13 +21,20 @@ class AlumnoController extends Controller
         public function index()
         {
             $alumnos = Alumno::with('persona', 'grupos')->get();
-        
             $grupos = Grupo::all();
-        
-            $alumnosPorGrupo = $alumnos->groupBy(function($alumno) {
-                return $alumno->grupos->pluck('clave')->first();
-            });
-            return view('alumnos.index', compact('alumnosPorGrupo', 'grupos'));
+          
+           
+
+           $alumnosPorGrupo = [];
+            foreach ($grupos as $grupo) {
+               $alumnosPorGrupo[$grupo->clave_grupo] = $alumnos->filter(function ($alumno) use ($grupo) {
+            
+                return $alumno->grupos->contains('clave_grupo', $grupo->clave_grupo);
+               });
+            }
+         
+
+         return view('alumnos.index', compact('alumnosPorGrupo', 'grupos'));
         }
 
 
@@ -72,10 +79,18 @@ class AlumnoController extends Controller
 
             
             $alumno=Alumno::find($no_control);
-           
-            $alumno->grupos()->sync($request->input('grupos',[]));
 
+
+           $grupos=$request->input('grupos',[]);
+            foreach ($grupos as $grupo) {
+
+                $alumno->grupos()->attach($alumno->no_control,['clave_grupo'=>$grupo]);
+            }
+
+    
+        
             return redirect()->route('alumnos.index');
+
 
         }
 

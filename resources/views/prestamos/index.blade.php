@@ -134,9 +134,19 @@
           <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $prestamo->pivot->id }}">
             <i class="fas fa-trash"></i>
           </button>
+
+          @if ($prestamo->pivot->estatus == "Pendiente")
           <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-finalizar{{ $prestamo->pivot->id }}">
             <i class="fas fa-check"></i>
           </button>
+          @else
+          <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-finalizar{{ $prestamo->pivot->id }}"disabled>
+            <i class="fas fa-check"></i>
+          </button>
+          @endif
+          
+        
+          
 
         </td>
         <td>{{ $prestamo->pivot->estatus }}</td>

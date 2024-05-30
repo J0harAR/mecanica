@@ -62,7 +62,7 @@
                             <label for="grupos" class="form-label"><i class="bi bi-people me-2"></i>Grupo</label>
                             <select multiple class="form-control" id="grupos" name="grupos[]" required>
                                 @foreach ($grupos as $grupo)
-                                    <option value="{{ $grupo->clave }}">{{ $grupo->clave }}</option>
+                                    <option value="{{ $grupo->clave_grupo }}">{{ $grupo->clave_grupo }}</option>
                                 @endforeach
                             </select>
                         </div>
