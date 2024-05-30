@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('practica', function (Blueprint $table) {
             //
-            $table->string('id_asignatura')->nullable()->after('id_docente');
-            $table->foreign('id_asignatura')->references('clave')->on('asignatura')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('clave_grupo')->nullable()->after('id_docente');
+           
 
         });
     }

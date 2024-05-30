@@ -36,7 +36,7 @@
                         value="{{ $practica->id_practica }}" required>
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <label for="docente" class="form-label"><i
                             class="fas fa-chalkboard-teacher me-2"></i>Docente</label>
                     <select id="docente" class="form-select" required name="docente">
@@ -48,6 +48,20 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="col-md-6">
+                        <label for="docente" class="form-label"><i class="fas fa-chalkboard-teacher me-2"></i>Grupo</label>
+                        <select id="docente" class="form-select" required name="grupo">
+                            <option selected disabled>Selecciona el grupo</option>
+                            @foreach ($grupos as $grupo)
+                                <option value="{{ $grupo->clave_grupo }}" {{ $practica->grupo->clave_grupo === $grupo->clave_grupo ? 'selected' : '' }}>
+                                    {{$grupo->clave_grupo}}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback">
+                            Seleccione un grupo.
+                        </div>
+                    </div>
 
                 <div class="col-12">
                     <label for="nombre_practica" class="form-label"><i class="fas fa-id-badge me-2"></i>Nombre de la

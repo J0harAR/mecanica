@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use  App\Models\Docente;
 use  App\Models\Catalogo_articulo;
 use  App\Models\Alumno;
+use  App\Models\Grupo;
 use  App\Models\Articulo_inventariado;
 use  App\Models\Asignatura;
 class Practica extends Model
@@ -22,8 +23,8 @@ class Practica extends Model
         return $this->belongsTo(Docente::class, 'id_docente');
     }
 
-    public function asignatura(){
-        return $this->belongsTo(Asignatura::class, 'id_asignatura');
+    public function grupo(){
+        return $this->belongsTo(Grupo::class, 'clave_grupo');
     }
 
       //Relacion n a n con catalogo articulo

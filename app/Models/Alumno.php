@@ -22,7 +22,7 @@ class Alumno extends Model
       //Relacion n a n con catalogo articulo
     public function grupos()
     {
-          return $this->belongsToMany(Grupo::class, 'alumno_grupo', 'id_alumno', 'clave_grupo') ->using(AlumnoGrupo::class)->withPivot('id_alumno', 'clave_grupo'); // Especifica las columnas pivot;
+          return $this->belongsToMany(Grupo::class, 'alumno_grupo', 'id_alumno', 'clave_grupo');
     }
 
       //Relacion n a n con practica

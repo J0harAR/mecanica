@@ -8,6 +8,7 @@ use  App\Models\Practica;
 use  App\Models\Catalogo_articulo;
 use  App\Models\Articulo_inventariado;
 use  App\Models\Alumno;
+use  App\Models\Grupo;
 use  App\Models\Persona;
 use App\Models\Asignatura;
 
@@ -27,8 +28,8 @@ class PracticaController extends Controller
     public function create(){
         $catalogo_articulos=Catalogo_articulo::all();
         $docentes=Docente::all();
-        $asignaturas=Asignatura::all();
-        return view('practicas.crear',compact('docentes','catalogo_articulos','asignaturas'));
+        $grupos=Grupo::all();
+        return view('practicas.crear',compact('docentes','catalogo_articulos','grupos'));
       
     }
 
@@ -42,7 +43,7 @@ class PracticaController extends Controller
         }
     
         $id_docente = $request->input('docente');
-        $id_asignatura=$request->input('asignatura');
+        $clave_grupo=$request->input('grupo');
         $nombre = $request->input('nombre_practica');
         $objetivo = $request->input('objetivo');
         $introduccion = $request->input('introduccion');
@@ -53,7 +54,7 @@ class PracticaController extends Controller
     
         $practica->id_practica = $id_practica;
         $practica->id_docente = $id_docente;
-        $practica->id_asignatura=$id_asignatura;
+        $practica->clave_grupo=$clave_grupo;
         $practica->nombre = $nombre;
         $practica->objetivo = $objetivo;
         $practica->introduccion = $introduccion;
@@ -72,7 +73,6 @@ class PracticaController extends Controller
         $practica=Practica::find($id);
         $docentes=Docente::all();
         $articulos=Catalogo_articulo::all();
-        $asignatura=Asignatura::all();
        return view('practicas.mostrar',compact('practica','docentes','articulos'));
     }
 
@@ -81,12 +81,14 @@ class PracticaController extends Controller
        $practica=Practica::find($id);
        $docentes=Docente::all();
        $articulos=Catalogo_articulo::all();
-       return view('practicas.editar',compact('practica','docentes','articulos'));
+       $grupos=Grupo::all();
+       return view('practicas.editar',compact('practica','docentes','articulos','grupos'));
     }
 
     public function update(Request $request, $id){
         $id_practica = $request->input('codigo_practica');
         $id_docente = $request->input('docente');
+        $clave_grupo=$request->input('grupo');
         $nombre = $request->input('nombre_practica');
         $objetivo = $request->input('objetivo');
         $introduccion = $request->input('introduccion');
@@ -98,6 +100,7 @@ class PracticaController extends Controller
         if($id_practica === $practica->id_practica ){
             $practica->id_practica = $id_practica;
             $practica->id_docente = $id_docente;
+            $practica->clave_grupo=$clave_grupo;
             $practica->nombre = $nombre;
             $practica->objetivo = $objetivo;
             $practica->introduccion = $introduccion;
@@ -109,6 +112,7 @@ class PracticaController extends Controller
         }else{
             $practica->id_practica = $id_practica;
             $practica->id_docente = $id_docente;
+            $practica->clave_grupo=$clave_grupo;
             $practica->nombre = $nombre;
             $practica->objetivo = $objetivo;
             $practica->introduccion = $introduccion;

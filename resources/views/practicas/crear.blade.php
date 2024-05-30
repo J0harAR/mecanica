@@ -53,15 +53,15 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label for="docente" class="form-label"><i class="fas fa-chalkboard-teacher me-2"></i>Asignatura</label>
-                        <select id="docente" class="form-select" required name="asignatura">
-                            <option selected disabled>Selecciona la asignatura</option>
-                            @foreach ($asignaturas as $asignatura)
-                                <option value="{{ $asignatura->clave }}">{{ $asignatura->nombre }}</option>
+                        <label for="docente" class="form-label"><i class="fas fa-chalkboard-teacher me-2"></i>Grupo</label>
+                        <select id="docente" class="form-select" required name="grupo">
+                            <option selected disabled>Selecciona el grupo</option>
+                            @foreach ($grupos as $grupo)
+                                <option value="{{ $grupo->clave_grupo }}">{{ $grupo->clave_grupo }}</option>
                             @endforeach
                         </select>
                         <div class="invalid-feedback">
-                            Seleccione una asignatura.
+                            Seleccione un grupo.
                         </div>
                     </div>
 

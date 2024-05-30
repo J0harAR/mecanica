@@ -24,6 +24,11 @@ class Grupo extends Model
         return $this->belongsTo(Asignatura::class,'clave_asignatura');
       }
 
+      public function asignaturas(){
+
+        return $this->belongsTo(Asignatura::class,'grupo','clave_grupo','clave_asignatura');
+      }
+
       public function docentes(){
 
         return $this->belongsToMany(Docente::class, 'docente_grupo', 'clave_grupo', 'id_docente');
