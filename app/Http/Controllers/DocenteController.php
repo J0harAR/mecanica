@@ -213,7 +213,9 @@ class DocenteController extends Controller
                 ->Where('clave_asignatura', $datos_grupo['asignatura'])
                 ->where('clave_grupo',$clave_grupo)              
                 ->where('clave_periodo',$clave_periodo)              
-                ->delete();
+                ->update(['id_docente'=>null,'clave_periodo'=>null]);
+
+
                
             }
             return redirect()->route('docentes.index');
