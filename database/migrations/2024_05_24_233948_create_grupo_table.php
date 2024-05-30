@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('docente_grupo', function (Blueprint $table) {
+        Schema::create('grupo', function (Blueprint $table) {
             $table->string('id_docente')->nullable();
             $table->string('clave_grupo')->nullable();
-        
-
+            $table->string('clave_asignatura')->nullable();
+            $table->string('clave_periodo')->nullable();
+            $table->timestamps();
+            $table->foreign('clave_asignatura')->references('clave')->on('asignatura')->onUpdate('cascade')->onDelete('SET NULL');
+            $table->foreign('clave_periodo')->references('clave')->on('periodo')->onUpdate('cascade')->onDelete('SET NULL');
             $table->foreign('id_docente')->references('rfc')->on('docente')->onUpdate('cascade')->onDelete('SET NULL');
-            $table->foreign('clave_grupo')->references('clave')->on('grupo')->onUpdate('cascade')->onDelete('SET NULL');
-            
+        
         });
     }
 
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('docente_grupo');
+        Schema::dropIfExists('grupo');
     }
 };

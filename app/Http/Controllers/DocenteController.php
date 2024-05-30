@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use  App\Models\Docente;
 use  App\Models\Persona;
+use  App\Models\Grupo;
 use  App\Models\Alumno;
 use  App\Models\Asignatura;
 use  App\Models\Periodo;
@@ -131,39 +132,45 @@ class DocenteController extends Controller
         $docente=Docente::find($id_docente);
         $asignatura=Asignatura::find($clave_asignatura);
         $periodo=Periodo::find($periodo);
-        $grupos=$asignatura->grupos; 
+        $grupos=Grupo::where('clave_asignatura',$asignatura->clave)->get();
+        
+       
         return redirect()->route('docentes.asigna')->with(['grupos' => $grupos, 'docente' => $docente, 'periodo' => $periodo]);
 
     }
 
 
     public function asignar(Request $request){
-          $clave_periodo=$request->input('clave_periodo');
-          $grupos=$request->input('grupos');
+            $clave_periodo=$request->input('clave_periodo');
+            $grupos=$request->input('grupos');
         
             $docente=Docente::find($request->input('rfc_docente'));
             $periodo=Periodo::find($clave_periodo);
             
+           
         
             foreach($grupos as $clave_grupo=>$datos_grupo){
-
-                $registro_duplicado=DB::table('docente_grupo')                   
+                //Checar si tiene docente asignado el grupo
+                $grupo_disponible=DB::table('grupo')                   
                         ->Where('clave_asignatura', $datos_grupo['asignatura'])
                         ->where('clave_grupo',$clave_grupo)
+                        ->where('id_docente',null)
+                        ->where('clave_periodo',null)
                         ->first();
 
-                            if($registro_duplicado!=null){
-                                return redirect()->route('docentes.asigna')->with('error','El grupo ya cuenta con docente');
-
-                            }
-                           
-                $docente->grupos()->attach($docente->rfc,
-                ['clave_grupo'=>$clave_grupo,'clave_asignatura'=>$datos_grupo['asignatura'],
-                'clave_periodo'=>$periodo->clave]);
-               
+           
+                    if($grupo_disponible){
+                        $grupo=Grupo::Where('clave_asignatura', $datos_grupo['asignatura'])
+                         ->where('clave_grupo',$clave_grupo)
+                        ->update(['id_docente'=>$docente->rfc,'clave_periodo'=>$periodo->clave]);  
+                    }else{
+                        return redirect()->route('docentes.asigna')->with('error','El grupo ya cuenta con docente');
+                    }
+                   
+           
             }
          
-            return redirect()->route('docentes.index');
+          return redirect()->route('docentes.index');
     }
 
     public function eliminacion_asignacion(){

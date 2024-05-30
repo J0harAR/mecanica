@@ -22,6 +22,6 @@ class Asignatura extends Model
 
     public function grupos(){
 
-        return $this->belongsToMany(Grupo::class, 'asignatura_grupo', 'clave_asignatura', 'clave_grupo');
+        return $this->belongsToMany(Grupo::class, 'grupo', 'clave_asignatura', 'clave_grupo');
       }
 }

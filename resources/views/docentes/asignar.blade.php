@@ -121,12 +121,12 @@
                 <tbody>
                     @foreach (session('grupos') as $grupo)
                         <tr class="text-center">
-                            <td>{{ $grupo->asignaturas[0]->clave }}</td>
-                            <td>{{ $grupo->asignaturas[0]->nombre }}</td>
-                            <td>{{ $grupo->clave }}</td>
+                            <td>{{ $grupo->asignatura->clave}}</td>
+                            <td>{{ $grupo->asignatura->nombre}}</td>
+                            <td>{{ $grupo->clave_grupo}}</td>
                             <td>
-                                <input type="checkbox" name="grupos[{{ $grupo->clave }}][asignatura]"
-                                    value="{{ $grupo->asignaturas[0]->clave }}">
+                                <input type="checkbox" name="grupos[{{ $grupo->clave_grupo }}][asignatura]"
+                                    value="{{ $grupo->asignatura->clave }}">
                             </td>
                         </tr>
                     @endforeach

@@ -12,14 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('alumno_grupo', function (Blueprint $table) {
-            $table->id();
-
+         
             $table->string('id_alumno')->nullable();
             $table->string('clave_grupo')->nullable();
-
+    
 
             $table->foreign('id_alumno')->references('no_control')->on('alumno')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('clave_grupo')->references('clave')->on('grupo')->onUpdate('cascade')->onDelete('SET NULL');
+          
         });
     }
 

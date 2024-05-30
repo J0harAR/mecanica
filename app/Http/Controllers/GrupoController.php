@@ -25,30 +25,12 @@ class GrupoController extends Controller
             'clave_grupo' => 'required',
             'asignatura' => 'required',
         ]);
-        
-
-        $grupo=Grupo::find($request->input('clave_grupo'));
-        
-        if(!$grupo){
-            $grupo=new grupo;
-            $grupo->clave=$request->input('clave_grupo');
+            $grupo=new Grupo;
+            $grupo->clave_grupo=$request->input('clave_grupo');
+            $grupo->clave_asignatura=$request->input('asignatura');
             $grupo->save();
 
-            $grupo=Grupo::find($request->input('clave_grupo'));
-
-            $registro_repetido=$grupo->asignaturas()->where('clave_asignatura',$request->input('asignatura'))->first();
-
-            if($registro_repetido){
-                return redirect()->route('grupos.index')->with('error','Grupo ya cuenta con asignatura asignada');
-            }
-
-            $grupo->asignaturas()->sync([$request->input('asignatura')]);
-
-        }else{
-
-            $grupo->asignaturas()->sync([$request->input('asignatura')]);
-            $grupo->save();
-        }
+        
     
 
         return redirect()->route('grupos.index');

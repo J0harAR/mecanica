@@ -87,11 +87,9 @@
                         <tr>
                             <th scope="row">{{ $loop->iteration }}</th>
                             <td>
-                                @foreach($grupo->asignaturas as $asignatura)
-                                    {{ $asignatura->nombre }}
-                                @endforeach
+                                {{$grupo->asignatura->nombre}}
                             </td>
-                            <td>{{ $grupo->clave }}</td>
+                            <td>{{ $grupo->clave_grupo }}</td>
                             
                         </tr>
                     @endforeach
@@ -100,5 +98,7 @@
         </div>
     </div>
 </div>
+
+
 @endsection
 

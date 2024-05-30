@@ -30,7 +30,7 @@ class Docente extends Model
     //Relacion n a n con asignaturas
     
     public function asignaturas(){
-        return $this->belongsToMany(Asignatura::class,'docente_grupo','id_docente','clave_asignatura');
+        return $this->belongsToMany(Asignatura::class,'grupo','id_docente','clave_asignatura');
     }
 
 
@@ -42,8 +42,7 @@ class Docente extends Model
     }
 
     public function grupos(){
-        return $this->belongsToMany(Grupo::class,'docente_grupo','id_docente','clave_grupo') 
-        ->withPivot(['clave_asignatura','clave_periodo']);
+        return $this->belongsToMany(Grupo::class,'grupo','id_docente','clave_grupo');
 
     }
 
