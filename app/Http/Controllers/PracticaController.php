@@ -152,18 +152,25 @@ class PracticaController extends Controller
                     $query->where('id_docente', $docente->rfc);
                 }
             }
+            else{
+                $query->where('id_docente', null);
+            }
+          
+           
         }
 
          
         if (!empty($nombre_asignatura)) {
+         
             $asignatura = Asignatura::where('nombre', $nombre_asignatura)->first();
+
             if ($asignatura) {
-           
-                if (!empty($nombre_docente)) {
-                    $query->orWhere('id_asignatura', $asignatura->clave);
-                } else {
-                    $query->where('id_asignatura', $asignatura->clave);
+                $grupos = Grupo::where('clave_asignatura', $asignatura->clave)->pluck('clave_grupo');                       
+                if ($grupos) {
+                    $query->where('clave_grupo', $grupos);
                 }
+            } else{
+                $query->where('clave_grupo', null);
             }
         }
        
@@ -171,9 +178,10 @@ class PracticaController extends Controller
             $query->where('estatus', $estatus);
         }
         
+        
         $practicas = $query->get();
-       
-        return redirect()->route('practicas.index')->with(['practicas' => $practicas]);
+      
+    return redirect()->route('practicas.index')->with(['practicas' => $practicas]);
 
     }
 
