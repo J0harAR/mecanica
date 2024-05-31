@@ -25,69 +25,51 @@
 
         <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
           <i class="bi bi-bell"></i>
-          <span class="badge bg-primary badge-number">4</span>
+          <span class="badge bg-primary badge-number">{{ $total_notificaciones }}</span>
         </a><!-- End Notification Icon -->
 
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
           <li class="dropdown-header">
-            Tienes 4 nuevas notificaciones
+            Tienes {{$total_notificaciones}} nuevas notificaciones
             <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver todo</span></a>
           </li>
           <li>
             <hr class="dropdown-divider">
           </li>
 
-          <li class="notification-item">
-            <i class="bi bi-exclamation-circle text-warning"></i>
-            <div>
-              <h4>Lorem Ipsum</h4>
-              <p>Quae dolorem earum veritatis oditseno</p>
-              <p>30 min. ago</p>
-            </div>
+
+            @foreach ($maquinaria_mantenimiento as $maquina)
+            <li class="notification-item">
+              <i class="bi bi-exclamation-circle text-warning"></i>
+              <div>
+                <h4>Maquina:{{$maquina->maquinaria_id}}</h4>
+                <p>Se necesita brindarle mantenimiento urgente</p>
+              </div>
           </li>
 
-          <li>
-            <hr class="dropdown-divider">
-          </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            @endforeach
+        
 
-          <li class="notification-item">
-            <i class="bi bi-x-circle text-danger"></i>
-            <div>
-              <h4>Atque rerum nesciunt</h4>
-              <p>Quae dolorem earum veritatis oditseno</p>
-              <p>1 hr. ago</p>
-            </div>
-          </li>
+          @foreach ($prestamos_pendientes as $prestamo)
+            <li class="notification-item">
+              <i class="bi bi-info-circle text-primary"></i>
+              <div>
+                <h4>Prestamo:{{$prestamo->id}} pendiente</h4>
+                <p>Fecha de entrega cerca : {{$prestamo->fecha_devolucion}}</p>
+                <p>Docente:{{$prestamo->id_docente}}</p>
+                <p>Herramienta:{{$prestamo->id_herramientas}}</p>
+                
+              </div>
+            </li>
 
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li class="notification-item">
-            <i class="bi bi-check-circle text-success"></i>
-            <div>
-              <h4>Sit rerum fuga</h4>
-              <p>Quae dolorem earum veritatis oditseno</p>
-              <p>2 hrs. ago</p>
-            </div>
-          </li>
-
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li class="notification-item">
-            <i class="bi bi-info-circle text-primary"></i>
-            <div>
-              <h4>Dicta reprehenderit</h4>
-              <p>Quae dolorem earum veritatis oditseno</p>
-              <p>4 hrs. ago</p>
-            </div>
-          </li>
-
-          <li>
-            <hr class="dropdown-divider">
-          </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+          @endforeach
+          
           <li class="dropdown-footer">
             <a href="#">Mostrar todos los mensajes</a>
           </li>
