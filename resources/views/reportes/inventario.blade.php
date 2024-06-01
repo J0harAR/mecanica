@@ -27,6 +27,20 @@
             width: 60%;
             text-align: center;
         }
+        /* Center the table in the body */
+        .content-table {
+            margin: 0 auto;
+            width: 80%; /* Adjust the width as needed */
+            border-collapse: collapse;
+        }
+        .content-table th, .content-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        .content-table th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
@@ -34,41 +48,36 @@
         <table class="header-table">
             <tr>
                 <td class="left">
-                <img src="{{ public_path('assets/img/TecNM_logo.png') }}"  alt="Logo TecNM">
+                    <img src="{{ public_path('assets/img/TecNM_logo.png') }}" alt="Logo TecNM">
                 </td>
                 <td class="center">
                     <p>TECNOLÓGICO NACIONAL DE MÉXICO</p>
                     <p>Instituto Tecnológico de Oaxaca</p>
                 </td>
                 <td class="right">
-                <img src="{{ public_path('assets/img/logo.png') }}"  alt="Logo ITO">
+                    <img src="{{ public_path('assets/img/logo.png') }}" alt="Logo ITO">
                 </td>
             </tr>
         </table>
     </div>
 
-
-    <table>
-  <tr>
-    <th>Id articulo</th>
-    <th>Nombre del articulo</th>
-    <th>Cantidad</th>
-    <th>Seccion</th>
-    <th>Tipo</th>
-  </tr>
-
-  @foreach ($inventario as $i)
-  <tr>
-    <td>{{$i->id_articulo}}</td>
-    <td>{{$i->nombre}}</td>
-    <td>{{$i->cantidad}}</td>
-    <td>{{$i->seccion}}</td>
-    <td>{{$i->tipo}}</td>
-  </tr>
-  @endforeach
-</table>
- 
-       
-    
+    <table class="content-table">
+        <tr>
+            <th>Id articulo</th>
+            <th>Nombre del articulo</th>
+            <th>Cantidad</th>
+            <th>Seccion</th>
+            <th>Tipo</th>
+        </tr>
+        @foreach ($inventario as $i)
+        <tr>
+            <td>{{$i->id_articulo}}</td>
+            <td>{{$i->nombre}}</td>
+            <td>{{$i->cantidad}}</td>
+            <td>{{$i->seccion}}</td>
+            <td>{{$i->tipo}}</td>
+        </tr>
+        @endforeach
+    </table>
 </body>
 </html>

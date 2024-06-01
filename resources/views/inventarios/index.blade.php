@@ -27,6 +27,9 @@
                 <i class="fas fa-history me-1"></i>
 
             </button>
+            <a class="btn btn btn-tecnm" href="{{route('reporte.inventario')}}"><i class="bi bi-download"></i></a>
+
+
         </div>
     </div>
 

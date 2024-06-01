@@ -20,9 +20,13 @@
         </ol>
       </nav>
     </div>
+    <div>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
       <i class="ri-add-line"></i> Añadir préstamo
     </button>
+    <a class="btn btn btn-tecnm" href="{{route('reporte.prestamo')}}"><i class="bi bi-download"></i></a>
+    </div>
+    
   </div>
   </div>
   
@@ -128,9 +132,12 @@
         <td>{{ $prestamo->pivot->fecha_devolucion }}</td>
         <td>{{ $prestamo->Articulo_inventariados->Catalogo_articulos->nombre }}</td>
         <td>
+
+        @if ($prestamo->pivot->estatus == "Pendiente")
           <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update-{{ $prestamo->pivot->id }}">
             <i class="fas fa-pencil-alt"></i>
           </button>
+        @endif
           <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $prestamo->pivot->id }}">
             <i class="fas fa-trash"></i>
           </button>
