@@ -18,6 +18,7 @@ use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\PrestamoController;
 use App\Http\Controllers\PeriodoController;
+use App\Http\Controllers\ReportesController;
 
 
 
@@ -161,3 +162,10 @@ Route::match(['put', 'patch'], '/prestamos/finalizar/{id}', [PrestamoController:
 Route::get('/periodos', [PeriodoController::class, 'index'])->name('periodos.index');
 Route::post('/periodos', [PeriodoController::class, 'store'])->name('periodos.store');
 Route::delete('/periodos/{id}', [PeriodoController::class, 'destroy'])->name('periodos.destroy');
+
+
+
+//Parte de generar reportes
+
+Route::get('/reporte/prestamos', [ReportesController::class, 'generar_reporte_prestamo'])->name('reporte.prestamo');
+Route::get('/reporte/inventario', [ReportesController::class, 'generar_reporte_inventario'])->name('reporte.inventario');

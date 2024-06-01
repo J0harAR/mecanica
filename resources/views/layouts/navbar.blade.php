@@ -25,19 +25,19 @@
 
         <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
           <i class="bi bi-bell"></i>
-          <span class="badge bg-primary badge-number"><!--{{ $total_notificaciones }}---> </span>
+          <span class="badge bg-primary badge-number">{{ $total_notificaciones }}</span>
         </a><!-- End Notification Icon -->
 
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
           <li class="dropdown-header">
-            Tienes <!--{{$total_notificaciones}}--->  nuevas notificaciones
+            Tienes {{$total_notificaciones}} nuevas notificaciones
             <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver todo</span></a>
           </li>
           <li>
             <hr class="dropdown-divider">
           </li>
 
-          <!--
+
             @foreach ($maquinaria_mantenimiento as $maquina)
             <li class="notification-item">
               <i class="bi bi-exclamation-circle text-warning"></i>
@@ -69,7 +69,7 @@
               <hr class="dropdown-divider">
             </li>
           @endforeach
-          ---> 
+          
           <li class="dropdown-footer">
             <a href="#">Mostrar todos los mensajes</a>
           </li>
