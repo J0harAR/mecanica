@@ -9,6 +9,35 @@
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
+.input-group-text {
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+}
+
+.progress {
+  height: 25px;
+  margin-top: 10px;
+}
+
+.progress-bar {
+  line-height: 25px;
+}
+
+.form-label {
+  font-weight: bold;
+  color: #003366; /* Color del TECNM */
+}
+
+.input-group-text {
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
 :root {
   scroll-behavior: smooth;
   --primary-color: #0f47ad;
