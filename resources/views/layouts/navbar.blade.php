@@ -44,6 +44,7 @@
               <div>
                 <h4>Maquina:{{$maquina->maquinaria_id}}</h4>
                 <p>Se necesita brindarle mantenimiento urgente</p>
+                <p>Insumo:{{$maquina->insumo_id}} nivel bajo</p>
               </div>
           </li>
 
