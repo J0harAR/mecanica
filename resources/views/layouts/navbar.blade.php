@@ -1,4 +1,4 @@
- <!-- ======= Header ======= -->
+  <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center"
   style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px);">
 
@@ -8,6 +8,7 @@
       <span class="d-none d-lg-block">Lab. Mecánica</span>
     </a>
     <i class="bi bi-list toggle-sidebar-btn"></i>
+
   </div><!-- End Logo -->
 
 
@@ -30,7 +31,7 @@
 
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
           <li class="dropdown-header">
-            Tienes {{$total_notificaciones}} nuevas notificaciones
+          Tienes {{$total_notificaciones}} nuevas notificaciones
             <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver todo</span></a>
           </li>
           <li>
@@ -38,7 +39,7 @@
           </li>
 
 
-            @foreach ($maquinaria_mantenimiento as $maquina)
+          @foreach ($maquinaria_mantenimiento as $maquina)
             <li class="notification-item">
               <i class="bi bi-exclamation-circle text-warning"></i>
               <div>
@@ -55,20 +56,20 @@
         
 
           @foreach ($prestamos_pendientes as $prestamo)
-            <li class="notification-item">
-              <i class="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Prestamo:{{$prestamo->id}} pendiente</h4>
+          <li class="notification-item">
+            <i class="bi bi-info-circle text-primary"></i>
+            <div>
+            <h4>Prestamo:{{$prestamo->id}} pendiente</h4>
                 <p>Fecha de entrega cerca : {{$prestamo->fecha_devolucion}}</p>
                 <p>Docente:{{$prestamo->id_docente}}</p>
                 <p>Herramienta:{{$prestamo->id_herramientas}}</p>
-                
-              </div>
-            </li>
 
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+              </div>
+          </li>
+
+          <li>
+            <hr class="dropdown-divider">
+          </li>
           @endforeach
           
           <li class="dropdown-footer">
@@ -212,177 +213,229 @@
 </header><!-- End Header -->
 
 <!-- ======= Sidebar ======= -->
-<aside id="sidebar" class="sidebar">
+<aside class="sidebar in" id="main-sidebar" role="navigation">
+  <div class="sidebar-outer">
 
-  <ul class="sidebar-nav" id="sidebar-nav">
+    <ul class="sidebar-nav" id="sidebar-nav">
 
-    <li class="nav-item">
-      <a class="nav-link " href="{{route('home')}}">
-        <i class="bi bi-grid"></i>
-        <span>Dashboard</span>
+      <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{route('home')}}">
+          <i class="bi bi-house"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('personas.*', 'docentes.*', 'alumnos.*') ? 'active' : 'collapsed' }}"
+          data-bs-target="#personas-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-person"></i><span>Personas</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="personas-nav" class="nav-content collapse " data-bs-parent="#personas-nav">
+          <li>
+            <a class="collapsed" data-bs-toggle="collapse" href="#submenu-docente">
+              <span>Docente</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="submenu-docente" class="collapse">
+
+              <li>
+                <a href="{{route('docentes.index')}}">
+                  <span>Ver docentes</span>
+                </a>
+              </li>
+
+              <li>
+                <a href="{{route('docentes.create')}}">
+                  <span>Registrar docente</span>
+                </a>
+              </li>
+
+
+              <li>
+                <a href="{{route('docentes.asigna')}}">
+                  <span>Asignar asignatura</span>
+                </a>
+              </li>
+              <li>
+                <a href="{{route('docentes.eliminacion_asignacion')}}">
+                  <span>Remover asignacion</span>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+          <li>
+            <a href="{{ route('alumnos.index') }}">
+              <span>Alumno</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Charts Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('cursos.*', 'asignatura.*', 'grupos.*', 'periodos.*') ? 'active' : 'collapsed' }}"
+          data-bs-toggle="collapse" href="#cursos-nav">
+          <i class="bi bi-book"></i><span>Cursos</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="cursos-nav" class="nav-content collapse" data-bs-parent="#parent-nav">
+          <li>
+            <a class="collapsed" data-bs-toggle="collapse" href="#submenu-asignatura">
+              <span>Asignatura</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="submenu-asignatura" class="collapse">
+              <li>
+                <a href="{{route('asignatura.index')}}">
+                  <span>Ver asignaturas</span>
+                </a>
+              </li>
+              <li>
+                <a href="{{route('asignatura.create')}}">
+                  <span>Registrar asignatura</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a class="collapsed" data-bs-toggle="collapse" href="#submenu-grupos">
+              <span>Grupos</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="submenu-grupos" class="collapse">
+              <li>
+
+                <a href="{{route('grupos.index')}}">
+                  <span>Ver grupos</span>
+                </a>
+              </li>
+              <li>
+                <a href="{{route('grupos.create')}}">
+                  <span>Registrar grupo</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <a href="{{route('periodos.index')}}">
+              <span>Periodos</span>
+            </a>
+          </li>
+
+
+        </ul>
+      </li><!-- End Charts Nav -->
+
+
+
+      <li class="nav-heading">Páginas</li>
+
+      @can('ver-usuarios')
+      <li class="nav-item">
+      <a class="nav-link {{ request()->routeIs('usuarios.*') ? 'active' : 'collapsed' }}"
+        href="{{ route('usuarios.index') }}">
+        <i class="bi bi-people"></i>
+        <span>Usuarios</span>
       </a>
-    </li><!-- End Dashboard Nav -->
+      </li><!-- End Users Page Nav -->
+    @endcan
 
-    <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#personas-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-person"></i><span>Personas</span><i class="bi bi-chevron-down ms-auto"></i>
+
+      @can('ver-roles')
+      <li class="nav-item">
+      <a class="nav-link {{ request()->routeIs('roles.*') ? 'active' : 'collapsed' }}"
+        href="{{ route('roles.index') }}">
+        <i class="bi bi-person-lock"></i>
+        <span>Roles</span>
       </a>
-      <ul id="personas-nav" class="nav-content collapse " data-bs-parent="#personas-nav">
-        <li>
-          <a class="collapsed" data-bs-toggle="collapse" href="#submenu-docente">
-            <i class="bi bi-circle"></i><span>Docente</span><i class="bi bi-chevron-down ms-auto"></i>
-          </a>
-          <ul id="submenu-docente" class="collapse">
-
-            <li>
-              <a href="{{route('docentes.index')}}">
-                <i class="bi bi-circle"></i><span>Mostrar docentes</span>
-              </a>
-            </li>
-
-            <li>
-              <a href="{{route('docentes.create')}}">
-                <i class="bi bi-circle"></i><span>Registrar docente</span>
-              </a>
-            </li>
+      </li><!-- End Role Page Nav -->
+    @endcan
 
 
-            <li>
-              <a href="{{route('docentes.asigna')}}">
-                <i class="bi bi-circle"></i><span>Asignar asignatura</span>
-              </a>
-            </li>
-            <li>
-              <a href="{{route('docentes.eliminacion_asignacion')}}">
-                <i class="bi bi-circle"></i><span>Remover asignacion</span>
-              </a>
-            </li>
-
-          </ul>
-        </li>
-        <li>
-          <a href="{{ route('alumnos.index') }}">
-            <i class="bi bi-circle"></i><span>Alumno</span>
-          </a>
-        </li>
-      </ul>
-    </li><!-- End Charts Nav -->
-
-    <li class="nav-item">
-  <a class="nav-link collapsed" data-bs-toggle="collapse" href="#cursos-nav">
-    <i class="bi bi-book"></i><span>Cursos</span><i class="bi bi-chevron-down ms-auto"></i>
-  </a>
-  <ul id="cursos-nav" class="nav-content collapse" data-bs-parent="#parent-nav">
-    <li>
-      <a class="collapsed" data-bs-toggle="collapse" href="#submenu-asignatura">
-        <i class="bi bi-circle"></i><span>Asignatura</span><i class="bi bi-chevron-down ms-auto"></i>
-      </a>
-      <ul id="submenu-asignatura" class="collapse">
-        <li>
-          <a href="{{route('asignatura.index')}}">
-            <i class="bi bi-circle"></i><span>Administracion de asignaturas</span>
-          </a>
-        </li>
-        <li>
-          <a href="{{route('asignatura.create')}}">
-            <i class="bi bi-circle"></i><span>Registrar asignatura</span>
-          </a>
-        </li>
-      </ul>
-    </li>
-    <li>
-      <a class="collapsed" data-bs-toggle="collapse" href="#submenu-grupos">
-        <i class="bi bi-circle"></i><span>Grupos</span><i class="bi bi-chevron-down ms-auto"></i>
-      </a>
-      <ul id="submenu-grupos" class="collapse">
-        <li>
-          <a href="{{route('grupos.index')}}">
-            <i class="bi bi-circle"></i><span>Administracion de grupos</span>
-          </a>
-        </li>
-        <li>
-          <a href="{{route('grupos.create')}}">
-            <i class="bi bi-circle"></i><span>Registrar Grupo</span>
-          </a>
-        </li>
-      </ul>
-    </li>
-
-    <li>
-      <a href="{{route('periodos.index')}}">
-        <i class="bi bi-circle"></i><span>Periodos</span>
-      </a>
-    </li>
-
-   
-  </ul>
-</li><!-- End Charts Nav -->
+      <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('inventario.*') ? 'active' : 'collapsed' }}"
+          href="{{ route('inventario.index') }}">
+          <i class="bi bi-box"></i>
+          <span>Inventario</span>
+        </a>
+      </li><!-- End Role Page Nav -->
 
 
 
-    <li class="nav-heading">Pages</li>
-
-    @can('ver-usuarios')
-    <li class="nav-item">
-    <a class="nav-link collapsed" href="{{ route('usuarios.index') }}">
-      <i class="bi bi-people"></i>
-      <span>Usuarios</span>
-    </a>
-    </li><!-- End Users Page Nav -->
-  @endcan
-
-    @can('ver-roles')
-    <li class="nav-item">
-    <a class="nav-link collapsed" href="{{ route('roles.index') }}">
-      <i class="bi bi-person-lock"></i>
-      <span>Roles</span>
-    </a>
-    </li><!-- End Role Page Nav -->
-  @endcan
-
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="{{ route('inventario.index') }}">
-        <i class="bi bi-box"></i>
-        <span>Inventario</span>
-      </a>
-    </li><!-- End Role Page Nav -->
+      <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('mantenimiento.*') ? 'active' : 'collapsed' }}"
+          href="{{ route('mantenimiento.index') }}">
+          <i class="bi bi-tools"></i>
+          <span>Mantenimiento</span>
+        </a>
+      </li><!-- End Role Page Nav -->
 
 
 
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="{{ route('mantenimiento.index') }}">
-        <i class="bi bi-tools"></i>
-        <span>Mantenimiento</span>
-      </a>
-    </li><!-- End Role Page Nav -->
+      <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('practicas.*') || request()->routeIs('practicasAlumno.*') ? 'active' : 'collapsed' }}"
+          data-bs-target="#practicas-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal"></i><span>Prácticas</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="practicas-nav" class="nav-content collapse " data-bs-parent="#practicas-nav">
+          <li>
+            <a href="{{ route('practicas.index') }}">
+              <span>Ver prácticas</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{route('practicasAlumno.create')}}">
+              <span>Registrar práctica del alumno</span>
+            </a>
+          </li>
+
+        </ul>
+      </li><!-- End Charts Nav -->
 
 
+      <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('prestamos.*') ? 'active' : 'collapsed' }}"
+          href="{{ route('prestamos.index') }}">
+          <i class="bi bi-arrow-left-right"></i>
+          <span>Préstamos</span>
+        </a>
+      </li><!-- End Role Page Nav -->
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const searchInput = document.getElementById('searchInput');
 
-    <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#practicas-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-journal"></i><span>Practicas</span><i class="bi bi-chevron-down ms-auto"></i>
-      </a>
-      <ul id="practicas-nav" class="nav-content collapse " data-bs-parent="#practicas-nav">
-        <li>
-          <a href="{{ route('practicas.index') }}">
-            <i class="bi bi-circle"></i><span>Todas las practicas</span>
-          </a>
-        </li>
-        <li>
-          <a href="{{route('practicasAlumno.create')}}">
-            <i class="bi bi-circle"></i><span>Registrar practica del alumno</span>
-          </a>
-        </li>
+          searchInput.addEventListener('keyup', function () {
+            const input = searchInput.value.toLowerCase();
+            // Selector ajustado para incluir todos los elementos dentro de los menús colapsados
+            const navLinks = document.querySelectorAll('#sidebar-nav a');
 
-      </ul>
-    </li><!-- End Charts Nav -->
+            navLinks.forEach(link => {
+              const text = link.textContent.toLowerCase();
+              const listItem = link.closest('li');
 
+              if (text.includes(input)) {
+                listItem.style.display = ''; // Muestra el ítem si coincide
+                showParents(listItem); // Muestra todos los elementos padres si es necesario
+              } else {
+                listItem.style.display = 'none'; // Oculta el ítem si no coincide
+              }
+            });
+          });
 
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="{{ route('prestamos.index') }}">
-        <i class="bi bi-arrow-left-right"></i>
-        <span>Préstamos</span>
-      </a>
-    </li><!-- End Role Page Nav -->
+          // Función para mostrar todos los elementos padres del ítem actual
+          function showParents(listItem) {
+            while (listItem.id !== 'sidebar-nav') {
+              if (listItem.tagName === 'LI') {
+                listItem.style.display = '';
+              }
+              listItem = listItem.parentNode;
+              if (listItem.tagName === 'UL') {
+                // Si el UL es un menú colapsable, asegúrate de que esté expandido
+                if (listItem.classList.contains('collapse')) {
+                  listItem.classList.add('show');
+                }
+              }
+            }
+          }
+        });
+      </script>
+
 
 </aside><!-- End Sidebar-->
