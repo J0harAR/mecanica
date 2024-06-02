@@ -127,7 +127,7 @@
                                 <td>{{ $alumno->persona->apellido_p }}</td>
                                 <td>{{ $alumno->persona->apellido_m }}</td>
                                 <td>{{ $alumno->persona->curp }}</td>
-                                <td>{{ implode(', ', $alumno->grupos->pluck('clave')->toArray()) }}</td>
+                                <td>{{ implode(', ', $alumno->grupos->pluck('clave_grupo')->toArray()) }}</td>
                             </tr>
                         @endforeach
                     </tbody>

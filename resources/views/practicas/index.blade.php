@@ -42,7 +42,7 @@
         </script>
     @endif
 
-    <form action="{{ route('practicas.filtrar') }}" method="POST" class="mb-4">
+    <form  method="POST" class="mb-4" id="filterForm">
         @csrf
         <div class="row">
             <div class="col-md-4 mb-3">
@@ -65,7 +65,10 @@
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Filtrar</button>
+        <button type="submit" class="btn btn-primary" onclick="submitForm('{{ route('practicas.filtrar') }}')">Filtrar</button>
+        <button type="button" class="btn btn-tecnm" onclick="submitForm('{{ route('reporte.practicas') }}')">
+            <i class="bi bi-download"></i>
+        </button>
     </form>
 
 
@@ -163,4 +166,13 @@
         @endif
         </div>
     </div>
+
+
+    <script>
+    function submitForm(actionUrl) {
+            const form = document.getElementById('filterForm');
+            form.action = actionUrl;
+            form.submit();
+        }
+</script>
     @endsection
