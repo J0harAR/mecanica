@@ -1,9 +1,9 @@
 .datatable-wrapper.no-header .datatable-container {
-	border-top: 1px solid #d9d9d9;
+    border-top: 1px solid #d1d1d1;
 }
 
 .datatable-wrapper.no-footer .datatable-container {
-	border-bottom: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d1d1d1;
 }
 
 .datatable-top,
@@ -64,10 +64,7 @@
     cursor: pointer;
 }
 
-.datatable-pagination a:hover,
-.datatable-pagination button:hover {
-	background-color: #d9d9d9;
-}
+
 
 .datatable-pagination .datatable-active a,
 .datatable-pagination .datatable-active a:focus,
@@ -231,3 +228,63 @@ table.datatable-table:focus {
 	outline: solid 1px black;
     outline-offset: -1px;
 }
+
+/* Ajuste del selector y el texto */
+.datatable-selector {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #555;
+    background-color: #fff;
+    margin-right: 10px; /* Espacio entre el selector y el texto */
+}
+
+/* Ajuste de la tabla */
+.datatable-table {
+    max-width: 100%;
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: separate;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+.datatable-top {
+    display: auto;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+/* Ajuste del input */
+.datatable-input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #555;
+    background-color: #fff;
+}
+  .datatable-pagination .datatable-active a, .datatable-pagination .datatable-active a:focus, .datatable-pagination .datatable-active a:hover, .datatable-pagination .datatable-active button, .datatable-pagination .datatable-active button:focus, .datatable-pagination .datatable-active button:hover {
+  background-color: #d9d9d9;
+	  cursor: default;
+	  border-radius: 25px;
+  }
+  .datatable-pagination a:hover,
+  .datatable-pagination button:hover {
+	  background-color: #e3e3ed;
+	  cursor: default;
+	  border-radius: 25px;
+  }
+  .datatable-input {
+	padding: 6px 12px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	color: #777;
+	background-color: #fff;
+  }
+  
+  .datatable-info {
+	margin: 7px 0;
+	color: #777;
+  }
