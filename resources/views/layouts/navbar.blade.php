@@ -250,16 +250,7 @@
               </li>
 
 
-              <li>
-                <a href="{{route('docentes.asigna')}}">
-                  <span>Asignar asignatura</span>
-                </a>
-              </li>
-              <li>
-                <a href="{{route('docentes.eliminacion_asignacion')}}">
-                  <span>Remover asignacion</span>
-                </a>
-              </li>
+              
 
             </ul>
           </li>

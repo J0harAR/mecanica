@@ -57,7 +57,7 @@
   --text-muted-color: #6c757d;
   /* Texto secundario */
   --font-primary: 'Poppins', sans-serif;
-  --font-secondary: 'Roboto', sans-serif;
+  --font-secondary: 'Poppins', sans-serif;
 }
 
 .input-group {

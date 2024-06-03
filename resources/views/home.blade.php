@@ -4,7 +4,7 @@
 <section class="section">
   <div class="container">
     <!-- Encabezado de bienvenida -->
-    <div class="jumbotron text-center bg-primary text-white p-5 rounded mb-4 shadow-sm">
+    <div class=" text-center  p-5 rounded mb-4 shadow-sm">
       <h1 class="display-4 fw-bold">¡Bienvenido a tu sistema!</h1>
       <hr class="my-4 bg-light">
       <p class="mb-0">Utiliza los accesos rápidos para navegar fácilmente por el sistema.</p>
