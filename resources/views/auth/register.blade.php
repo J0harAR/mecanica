@@ -152,16 +152,16 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6 mb-3 text-start">
+                                        <div class="col-md-6 mb-3 text-start">
                         <label for="email" class="form-label">Correo electrónico</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                                name="email" value="{{ old('email') }}" required autocomplete="email">
+                                name="email" value="{{ old('email') }}" required autocomplete="email"
+                                pattern="^[\w\.-]+@itoaxaca\.edu\.mx$" title="El correo electrónico debe terminar con @itoaxaca.edu.mx">
                             @error('email')
-                            <div class="invalid-feedback">El correo electrónico ya existe.</div>
+                            <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                            
                         </div>
                     </div>
                 </div>
