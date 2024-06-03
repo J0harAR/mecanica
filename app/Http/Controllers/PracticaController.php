@@ -253,10 +253,15 @@ class PracticaController extends Controller
         $practica->alumnos()->attach($alumno->no_control,['fecha'=>$fecha,'no_equipo'=>$no_equipo,'hora_entrada'=>$hora_entrada,'hora_salida'=>$hora_salida]);
         $practica->articulo_inventariados()->sync($articulos_inventariados);
      
-        foreach ($articulos_extra as $articulo) {
 
-            $practica->articulo_inventariados()->attach($practica->id_practica,['inventario_id'=>$articulo]);
+        if($articulos_extra!=null){
+            foreach ($articulos_extra as $articulo) {
+
+                $practica->articulo_inventariados()->attach($practica->id_practica,['inventario_id'=>$articulo]);
+            }
+
         }
+        
         $practica->save();
 
         return redirect()->route('practicas.index');
