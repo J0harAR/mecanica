@@ -32,7 +32,7 @@
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
           <li class="dropdown-header">
           Tienes {{$total_notificaciones}} nuevas notificaciones
-            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver todo</span></a>
+            
           </li>
           <li>
             <hr class="dropdown-divider">
@@ -72,9 +72,7 @@
           </li>
           @endforeach
           
-          <li class="dropdown-footer">
-            <a href="#">Mostrar todos los mensajes</a>
-          </li>
+
 
         </ul><!-- End Notification Dropdown Items -->
 

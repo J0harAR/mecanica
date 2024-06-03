@@ -172,6 +172,23 @@
     @endif
 
 
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="success-alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                window.setTimeout(function () {
+                    const successAlert = document.getElementById("success-danger");
+                    if (successAlert) successAlert.style.display = 'none';
+                }, 3000);
+            });
+        </script>
+    @endif
+
+
     @if(session('seccion_vacia'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert" id="seccion_vacia-alert">
             {{ session('seccion_vacia') }}
