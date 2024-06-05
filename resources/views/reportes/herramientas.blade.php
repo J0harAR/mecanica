@@ -53,7 +53,7 @@
                 <td class="center">
                     <p>TECNOLÓGICO NACIONAL DE MÉXICO</p>
                     <p>Instituto Tecnológico de Oaxaca</p>
-                    <p>Reporte de inventario del periodo {{$periodo}}</p>
+                    <p>Reporte de herramientas del periodo {{$periodo}}</p>
                     
                 </td>
                 <td class="right">
@@ -67,19 +67,17 @@
 
     <table class="content-table">
         <tr>
-            <th>Id articulo</th>
+            <th>Codigo</th>
             <th>Nombre del articulo</th>
-            <th>Cantidad</th>
-            <th>Seccion</th>
-            <th>Tipo</th>
+            <th>Dimensión</th>
+            <th>Condicion</th>
         </tr>
-        @foreach ($inventario as $i)
+        @foreach ($herramientas as $herramienta)
         <tr>
-            <td>{{$i->id_articulo}}</td>
-            <td>{{$i->nombre}}</td>
-            <td>{{$i->cantidad}}</td>
-            <td>{{$i->seccion}}</td>
-            <td>{{$i->tipo}}</td>
+            <td>{{$herramienta->id_herramientas}}</td>
+            <td>{{$herramienta->Articulo_inventariados->Catalogo_articulos->nombre}}</td>
+            <td>{{$herramienta->dimension}}</td>
+            <td>{{$herramienta->condicion}}</td>
         </tr>
         @endforeach
     </table>

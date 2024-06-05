@@ -163,11 +163,19 @@ class PracticaController extends Controller
         if (!empty($nombre_asignatura)) {
          
             $asignatura = Asignatura::where('nombre', $nombre_asignatura)->first();
-
+    
             if ($asignatura) {
-                $grupos = Grupo::where('clave_asignatura', $asignatura->clave)->pluck('clave_grupo');                       
+              $grupos = Grupo::where('clave_asignatura', $asignatura->clave)->pluck('clave_grupo');                   
                 if ($grupos) {
-                    $query->where('clave_grupo', $grupos);
+
+                    foreach ($grupos as $key => $grupo) {
+                        if($grupo!=null){
+                          
+                            //$query->where('clave_grupo', $grupo);
+                        }
+                       
+                    }
+                                    
                 }
             } else{
                 $query->where('clave_grupo', null);

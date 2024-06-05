@@ -53,7 +53,7 @@
                 <td class="center">
                     <p>TECNOLÓGICO NACIONAL DE MÉXICO</p>
                     <p>Instituto Tecnológico de Oaxaca</p>
-                    <p>Reporte de inventario del periodo {{$periodo}}</p>
+                    <p>Reporte de insumos del periodo {{$periodo}}</p>
                     
                 </td>
                 <td class="right">
@@ -67,19 +67,17 @@
 
     <table class="content-table">
         <tr>
-            <th>Id articulo</th>
+            <th>Codigo</th>
             <th>Nombre del articulo</th>
-            <th>Cantidad</th>
-            <th>Seccion</th>
+            <th>Capacidad</th>
             <th>Tipo</th>
         </tr>
-        @foreach ($inventario as $i)
+        @foreach ($Insumos as $Insumo)
         <tr>
-            <td>{{$i->id_articulo}}</td>
-            <td>{{$i->nombre}}</td>
-            <td>{{$i->cantidad}}</td>
-            <td>{{$i->seccion}}</td>
-            <td>{{$i->tipo}}</td>
+            <td>{{$Insumo->id_insumo}}</td>
+            <td>{{$Insumo->Articulo_inventariados->Catalogo_articulos->nombre}}</td>
+            <td>{{$Insumo->capacidad}}</td>
+            <td>{{$Insumo->Articulo_inventariados->Catalogo_articulos->tipo}}</td>
         </tr>
         @endforeach
     </table>

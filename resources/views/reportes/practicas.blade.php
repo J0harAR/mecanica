@@ -1,9 +1,11 @@
+<!-- resources/views/reportes/practicas.blade.php -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Reporte de Prácticas Completas</title>
     <style>
         .header {
             width: 100%;
@@ -62,26 +64,37 @@
     </div>
 
     <table class="content-table">
-        <tr>
-            <th>Codigo de practica</th>
-            <th>Nombre de la practica</th>
-            <th>Docente</th>
-            <th>Grupo</th>
-            <th>No.Alumnos</th>
-            <th>Hora de entrada</th>
-            <th>Hora de salida</th>
-        </tr>
-        @foreach ($practicas as $practica)
-        <tr>
-            <td>{{ $practica->id_practica }}</td>
-            <td>{{ $practica->nombre }}</td>
-            <td>{{ $practica->docente->persona->nombre }} {{ $practica->docente->persona->apellido_p }} {{ $practica->docente->persona->apellido_m }}</td>
-            <td>{{ $practica->grupo->clave_grupo }}</td>
-            <td>{{ count($practica->alumnos) }}</td>
-            <td>{{$practica->alumnos->curp}}</td>
-           
-        </tr>
-        @endforeach
+        <thead>
+            <tr>
+                <th>Nombre de Docente</th>
+                <th>Nombre de la Práctica</th>
+                <th>Grupo</th>
+                <th>No. de Alumnos</th>
+                <th>Hora de Entrada</th>
+                <th>Hora de Salida</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($todas_practicas as $grupo => $practicas)
+                @foreach ($practicas as $practica)
+                    @php
+                        $nombre_docente = $practica->docente->persona->nombre ?? 'N/A';
+                        $nombre_practica = $practica->nombre;
+                        $no_alumnos = count($practica->alumnos);
+                        $hora_entrada = $practica->alumnos->min('pivot.hora_entrada');
+                        $hora_salida = $practica->alumnos->max('pivot.hora_salida');
+                    @endphp
+                    <tr>
+                        <td>{{ $nombre_docente }}</td>
+                        <td>{{ $nombre_practica }}</td>
+                        <td>{{ $grupo }}</td>
+                        <td>{{ $no_alumnos }}</td>
+                        <td>{{ $hora_entrada }}</td>
+                        <td>{{ $hora_salida }}</td>
+                    </tr>
+                @endforeach
+            @endforeach
+        </tbody>
     </table>
 </body>
 </html>

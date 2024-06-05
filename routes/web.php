@@ -169,6 +169,9 @@ Route::delete('/periodos/{id}', [PeriodoController::class, 'destroy'])->name('pe
 //Parte de generar reportes
 
 Route::get('/reporte/prestamos', [ReportesController::class, 'generar_reporte_prestamo'])->name('reporte.prestamo');
-Route::get('/reporte/inventario', [ReportesController::class, 'generar_reporte_inventario'])->name('reporte.inventario');
+Route::post('/reporte/inventario', [ReportesController::class, 'generar_reporte_inventario'])->name('reporte.inventario');
 
 Route::post('/reporte/practicas', [ReportesController::class, 'generar_reporte_practicas_completas'])->name('reporte.practicas');
+Route::post('/reporte/inventario/herramientas', [ReportesController::class, 'generar_reporte_herramientas'])->name('reporte.herramientas');
+Route::post('/reporte/inventario/maquinarias', [ReportesController::class, 'generar_reporte_maquinaria'])->name('reporte.maquinarias');
+Route::post('/reporte/inventario/insumos', [ReportesController::class, 'generar_reporte_insumos'])->name('reporte.insumos');

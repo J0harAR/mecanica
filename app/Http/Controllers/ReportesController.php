@@ -6,8 +6,12 @@ use App\Models\Practica;
 use Illuminate\Http\Request;
 use App\Models\Persona;
 use App\Models\Docente;
+use App\Models\Herramientas;
+use App\Models\Insumos;
+use App\Models\Maquinaria;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 class ReportesController extends Controller
 {
    
@@ -24,21 +28,51 @@ class ReportesController extends Controller
     }
 
     public function generar_reporte_inventario(Request $request){
-        $inventario=Catalogo_articulo::all();
-     
 
-        $pdf = Pdf::loadView('reportes.inventario',['inventario'=>$inventario]);
+        $periodo=$request->input('periodo');
+        $inventario=Catalogo_articulo::whereYear('created_at', $periodo)->get();
+        $pdf = Pdf::loadView('reportes.inventario',['inventario'=>$inventario,'periodo'=>$periodo]);
         return $pdf->stream();
 
     }
 
-    public function generar_reporte_practicas_completas(Request $request){
-        $todas_practicas=Practica::all();
-        dd($todas_practicas->alumnos()->get);
 
-      //  $pdf = Pdf::loadView('reportes.practicas',['practicas'=>$practicas]);
-       // $pdf->setPaper('A4','landscape');
-       // return $pdf->stream();
+    public function generar_reporte_herramientas(Request $request){
+
+        $periodo=$request->input('periodo');
+        $herramientas=Herramientas::whereYear('created_at', $periodo)->get();
+        $pdf = Pdf::loadView('reportes.herramientas',['herramientas'=>$herramientas,'periodo'=>$periodo]);
+        return $pdf->stream();
+
+    }
+
+    public function generar_reporte_maquinaria(Request $request){
+
+        $periodo=$request->input('periodo');
+        $maquinarias=Maquinaria::whereYear('created_at', $periodo)->get();
+        $pdf = Pdf::loadView('reportes.maquinaria',['maquinarias'=>$maquinarias,'periodo'=>$periodo]);
+        return $pdf->stream();
+
+    }
+
+    public function generar_reporte_insumos(Request $request){
+
+        $periodo=$request->input('periodo');
+        $Insumos=Insumos::whereYear('created_at', $periodo)->get();
+        $pdf = Pdf::loadView('reportes.insumos',['Insumos'=>$Insumos,'periodo'=>$periodo]);
+        return $pdf->stream();
+
+    }
+
+
+
+    public function generar_reporte_practicas_completas(Request $request){
+        $todas_practicas = Practica::with(['alumnos', 'docente', 'grupo'])->where('estatus', 1)->get();
+
+        $todas_practicas=$todas_practicas->groupby('grupo.clave_grupo');
+        $pdf = Pdf::loadView('reportes.practicas',['todas_practicas'=>$todas_practicas]);
+        $pdf->setPaper('A4','landscape');
+        return $pdf->stream();
 
     }
 

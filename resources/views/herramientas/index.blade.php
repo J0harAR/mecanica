@@ -28,9 +28,48 @@
             <button type="button" class="btn btn-tecnm" data-bs-toggle="modal" data-bs-target="#modal">
                 <i class="fas fa-plus-circle me-1"></i>Agregar herramienta
             </button>
+            <button class="btn btn btn-tecnm"  type="button"  data-bs-toggle="modal" data-bs-target="#modal-download" >
+                <i class="bi bi-download"></i>
+          </button>
 
         </div>
     </div>
+
+
+ <!-- Modal -->
+ <div class="modal fade" id="modal-download" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Reporte de herramientas</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form action="{{ route('reporte.herramientas') }}" method="POST">
+            @csrf
+          <div class="modal-body">
+          <label >Seleciona el periodo</label>
+
+            <select name="periodo" class="form-select">
+                @foreach ($periodos as $periodo)
+                    <option value="{{$periodo->clave}}">{{$periodo->clave}}</option>
+                @endforeach
+                    
+            </select>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary">Descargar</button>
+          </div>
+          </form>
+
+          </div>
+        </div>
+        </div><!-- End Modal -->
+
+
+
 
     <!-- Vertically centered Modal -->
     <div class="modal fade" id="modal" tabindex="-1">

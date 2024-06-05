@@ -7,6 +7,7 @@ use App\Models\Insumos;
 use App\Models\Catalogo_articulo;
 use App\Models\Articulo_inventariado;
 use App\Models\Auditoria;
+use App\Models\Periodo;
 
 class InsumosController extends Controller
 {
@@ -15,12 +16,12 @@ class InsumosController extends Controller
       
   
         $insumos = Insumos::with('Articulo_inventariados.Catalogo_articulos')->get();
-  
+        $periodos=Periodo::all();
         //foreach ($herramientas as $herramienta) {
           //  echo $herramienta->Articulo_inventariados->Catalogo_articulos->nombre;
       //  }
         
-        return view('insumos.index',compact('insumos'));
+        return view('insumos.index',compact('insumos','periodos'));
     }
 
 

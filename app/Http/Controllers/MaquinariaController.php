@@ -7,6 +7,7 @@ use App\Models\Maquinaria;
 use App\Models\Articulo_inventariado;
 use App\Models\Catalogo_articulo;
 use App\Models\Auditoria;
+use App\Models\Periodo;
 use App\Models\Insumos;
 class MaquinariaController extends Controller
 {
@@ -16,11 +17,12 @@ class MaquinariaController extends Controller
 
       $maquinaria = Maquinaria::with(['Articulo_inventariados.Catalogo_articulos','insumos'])->get();
       $insumos=Insumos::all();
+      $periodos=Periodo::all();
       //foreach ($herramientas as $herramienta) {
         //  echo $herramienta->Articulo_inventariados->Catalogo_articulos->nombre;
     //  }
       
-      return view('maquinaria.index',compact('maquinaria','insumos'));
+      return view('maquinaria.index',compact('maquinaria','insumos','periodos'));
   }
 
   public function store(Request $request){

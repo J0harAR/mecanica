@@ -8,6 +8,7 @@ use App\Models\Articulo_inventariado;
 use App\Models\Herramientas;
 use App\Models\Maquinaria;
 use App\Models\Insumos;
+use App\Models\Periodo;
 use App\Models\Auditoria;
 
 class InventarioController extends Controller
@@ -19,7 +20,8 @@ class InventarioController extends Controller
         $catalogo_articulo=Catalogo_articulo::all();
         $insumos=Insumos::all();
         $historial=Auditoria::all(); 
-        return view('inventarios.index',compact('catalogo_articulo','historial','insumos'));
+        $periodos=Periodo::all();
+        return view('inventarios.index',compact('catalogo_articulo','historial','insumos','periodos'));
     }
 
 
