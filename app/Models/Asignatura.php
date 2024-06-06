@@ -14,6 +14,12 @@ class Asignatura extends Model
     protected $primaryKey = 'clave';
     protected $keyType = 'string';
 
+
+    protected $fillable = [
+        'clave',
+        'nombre',
+    ];
+
     public function docentes(){
         return $this->belongsToMany(Docente::class,'asignatura_docente','clave_asignatura','id_docente');
     }

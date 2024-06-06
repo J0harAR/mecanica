@@ -18,7 +18,20 @@ class Practica extends Model
     protected $primaryKey = 'id_practica';
     protected $keyType = 'string';
     use HasFactory;
-    
+
+    protected $fillable = 
+    [
+      'id_practica',
+      'id_docente',
+      'clave_grupo',
+      'nombre',
+      'objetivo',
+      'introduccion',
+      'fundamento',
+      'referencias',
+      'estatus',
+      ];
+
     public function docente(){
         return $this->belongsTo(Docente::class, 'id_docente');
     }

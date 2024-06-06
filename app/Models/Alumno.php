@@ -13,6 +13,13 @@ class Alumno extends Model
     protected $table = "alumno";
     protected $primaryKey = 'no_control';
     protected $keyType = 'string';
+
+
+    protected $fillable = [
+      'no_control',
+      'curp',
+    ];
+
     
     public function persona()
     {

@@ -24,58 +24,7 @@
 
       <li class="nav-item dropdown">
 
-        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-          <i class="bi bi-bell"></i>
-          <span class="badge bg-primary badge-number">{{ $total_notificaciones }}</span>
-        </a><!-- End Notification Icon -->
-
-        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-          <li class="dropdown-header">
-          Tienes {{$total_notificaciones}} nuevas notificaciones
-            
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-
-          @foreach ($maquinaria_mantenimiento as $maquina)
-            <li class="notification-item">
-              <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Maquina:{{$maquina->maquinaria_id}}</h4>
-                <p>Se necesita brindarle mantenimiento urgente</p>
-                <p>Insumo:{{$maquina->insumo_id}} nivel bajo</p>
-              </div>
-          </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            @endforeach
-        
-
-          @foreach ($prestamos_pendientes as $prestamo)
-          <li class="notification-item">
-            <i class="bi bi-info-circle text-primary"></i>
-            <div>
-            <h4>Prestamo:{{$prestamo->id}} pendiente</h4>
-                <p>Fecha de entrega cerca : {{$prestamo->fecha_devolucion}}</p>
-                <p>Docente:{{$prestamo->id_docente}}</p>
-                <p>Herramienta:{{$prestamo->id_herramientas}}</p>
-
-              </div>
-          </li>
-
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-          @endforeach
-          
-
-
-        </ul><!-- End Notification Dropdown Items -->
-
+       
       </li><!-- End Notification Nav -->
 
       <li class="nav-item dropdown">

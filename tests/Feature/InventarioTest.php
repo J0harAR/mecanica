@@ -47,6 +47,60 @@ class InventarioTest extends TestCase
 
     }
 
+    public function test_delete_invetario(): void
+
+    {
+        Artisan::call('migrate');
+
+        User::create([
+            "name" =>"Test",
+            "email" => 'test@gmail.com',
+            "password" => Hash::make('password22'),
+        ]);
+        
+        
+        $acceso = $this->post(route('login'), [
+            'email' => 'test@gmail.com',
+            'password' => 'password22',
+        
+        ]);
+
+        $data = [
+            'nombre' => 'Torno',
+            'seccion' => 03,
+            'estatus' => 'Disponible',
+            'tipo' => 'Herramientas',
+            'cantidad' => 1,
+            'tipo_herramienta' => 'Herramienta manual',
+            'dimension_herramienta' => 234,
+            'condicion_herramienta' => 'Nueva',
+            'tipo_insumo' => null, 
+            'capacidad_insumo' => null 
+        ];
+
+        //Creacion correcta de una herramienta
+        $response = $this->post(route('inventario.store'), $data); 
+        
+        $response->assertStatus(302);
+        $response->assertRedirect(route('herramientas.index'));
+
+        //Checamos que si la herramienta si se existe en la base de datos
+        $this->assertDatabaseHas('catalogo_articulo', [
+            'nombre' => 'Torno',
+            'cantidad' => 1,
+            'tipo' => 'Herramienta manual'
+        ]);
+        $articulo=Catalogo_articulo::where('nombre', 'Torno')->first();
+        //No es nulo
+        $this->assertNotNull($articulo);
+
+        $delete_correcto = $this->delete(route('inventario.destroy',$articulo->id_articulo))->assertRedirect(route('inventario.index'));
+       
+        //Signigica que ya no existe en la base de datos
+        $this->assertDatabaseMissing('catalogo_articulo', ['id_articulo' => $articulo->id_articulo]);
+
+    }
+
     public function test_view_herramientas():void{
         Artisan::call('migrate');
 
@@ -111,7 +165,49 @@ class InventarioTest extends TestCase
             'tipo_insumo' => null, 
             'capacidad_insumo' => null 
         ];
+        //tipo nulo
+        $datos_nulos=[
+            'nombre' => 'Torno',
+            'seccion' => 03,
+            'estatus' => 'Disponible',
+            'tipo' => null,
+            'cantidad' => 10,
+            'tipo_herramienta' => null,
+            'dimension_herramienta' => 15,
+            'condicion_herramienta' => 'Nueva',
+            'tipo_insumo' => null, 
+            'capacidad_insumo' => null 
 
+        ];
+        //tipo herramienta nulo
+        $datos=[
+            'nombre' => 'Torno',
+            'seccion' => 03,
+            'estatus' => 'Disponible',
+            'tipo' => 'Herramientas',
+            'cantidad' => 10,
+            'tipo_herramienta' => null,
+            'dimension_herramienta' => 15,
+            'condicion_herramienta' => 'Nueva',
+            'tipo_insumo' => null, 
+            'capacidad_insumo' => null 
+
+        ];
+
+
+
+        //Creacion incorrecta con tipo en null
+        $response = $this->post(route('inventario.store'), $datos_nulos); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('inventario.index'));
+        $response->assertSessionHas('tipo_null', 'Selecciona algun tipo');
+
+
+        $response = $this->post(route('inventario.store'), $datos); 
+        $response->assertRedirect(route('herramientas.index'));
+        $response->assertStatus(302);
+        $response->assertSessionHas('tipo_vacia', 'Seleccione el  tipo de herramienta');
+        
 
         //Creacion correcta de una herramienta
         $response = $this->post(route('inventario.store'), $data); 
@@ -143,7 +239,28 @@ class InventarioTest extends TestCase
             'dimension' => 15
         ]);
         
+        //Insertar una herramienta ya registrada
 
+        $data = [
+            'nombre' => 'Torno',
+            'seccion' => 03,
+            'estatus' => 'Disponible',
+            'tipo' => 'Herramientas',
+            'cantidad' => 1,
+            'tipo_herramienta' => 'Herramienta manual',
+            'dimension_herramienta' => 15,
+            'condicion_herramienta' => 'Nueva',
+            'tipo_insumo' => null, 
+            'capacidad_insumo' => null 
+        ];
+
+
+        $response = $this->post(route('inventario.store'), $data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('herramientas.index'));
+
+        $herramienta=Herramientas::find('HM-T-0015-11');
+        $this->assertNotNull($herramienta);
 
     }
 
@@ -179,7 +296,6 @@ class InventarioTest extends TestCase
 
         //Creacion correcta de una herramienta
         $response = $this->post(route('inventario.store'), $data); 
-        
         $response->assertStatus(302);
         $response->assertRedirect(route('herramientas.index'));
 
@@ -337,14 +453,33 @@ class InventarioTest extends TestCase
             'capacidad_insumo' => null
 
         ];
+
+        $data_mala = [
+            'nombre' => 'Inyectora',
+            'seccion' => null,
+            'estatus' => 'Disponible',
+            'tipo' => 'Maquinaria',
+            'cantidad' => 1,
+            'tipo_maquina'=>'Maquina de robotica',
+            'tipo_herramienta' => 'Herramienta manual',
+            'dimension_herramienta' => 15,
+            'condicion_herramienta' => 'Nueva',
+            'tipo_insumo' => null, 
+            'capacidad_insumo' => null
+
+        ];
+        //Creacion incorrecta de una maquinara
+        $response = $this->post(route('inventario.store'), $data_mala); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('maquinaria.index'));
+        $response->assertSessionHas('seccion_vacia', 'Seleccione a que seccion pertenece la maquinaria');
        
-        //Creacion correcta de una herramienta
+        //Creacion correcta de una maquinaria
         $response = $this->post(route('inventario.store'), $data); 
         $response->assertStatus(302);
         $response->assertRedirect(route('maquinaria.index'));
 
        
-
 
         $this->assertDatabaseHas('catalogo_articulo', [
             'nombre' => 'Inyectora',
@@ -374,7 +509,7 @@ class InventarioTest extends TestCase
         } 
 
 
-          //Create pero con la asignacion de los insumos
+          //Create pero con la asignacion de los insumos es decir no se selecciono ningun insumo
           $data_insumos=[
             'nombre' => 'Aceite Industrial',
             'seccion' => null,
@@ -389,6 +524,7 @@ class InventarioTest extends TestCase
             'capacidad_insumo' => 3,
            
         ];
+
 
         $response_insumo = $this->post(route('inventario.store'), $data_insumos); 
 
@@ -413,6 +549,53 @@ class InventarioTest extends TestCase
                        
             ]);
         } 
+        
+        //data con los insumos como parametro  
+        $data_con_insumos = [
+            'nombre' => 'Inyectora Nueva ',
+            'seccion' => '04',
+            'estatus' => 'Disponible',
+            'tipo' => 'Maquinaria',
+            'cantidad' => 1,
+            'tipo_maquina'=>'Maquina de robotica',
+            'tipo_herramienta' => 'Herramienta manual',
+            'dimension_herramienta' => 15,
+            'condicion_herramienta' => 'Nueva',
+            'tipo_insumo' => null, 
+            'capacidad_insumo' => null,
+            'insumos'=>[
+                'AI01'
+            ]
+
+        ];
+        $response = $this->post(route('inventario.store'), $data_con_insumos); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('maquinaria.index'));
+
+        //Insertar una maquina existente y con insumos elegidos es decir insumos no es null
+        $data = [
+            'nombre' => 'Inyectora',
+            'seccion' => '03',
+            'estatus' => 'Disponible',
+            'tipo' => 'Maquinaria',
+            'cantidad' => 1,
+            'tipo_maquina'=>'Maquina de robotica',
+            'tipo_herramienta' => 'Herramienta manual',
+            'dimension_herramienta' => 15,
+            'condicion_herramienta' => 'Nueva',
+            'tipo_insumo' => null, 
+            'capacidad_insumo' => null,
+            'insumos'=>[
+                'AI01'
+            ]
+
+        ];
+        $response = $this->post(route('inventario.store'), $data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('maquinaria.index'));
+
+        $maquinaria=Maquinaria::find('03I02');
+        $this->assertNotNull($maquinaria);
 
 
     }
@@ -623,6 +806,33 @@ class InventarioTest extends TestCase
 
         $insumo=Insumos::find('AI01');
         $this->assertNotNull($insumo);
+
+
+
+        //Insertar un insumo ya registrado
+
+         $data_insumos=[
+            'nombre' => 'Aceite Industrial',
+            'seccion' => null,
+            'estatus' => 'Disponible',
+            'tipo' => 'Insumos',
+            'cantidad' => 1,
+            'tipo_maquina'=>'',
+            'tipo_herramienta' => '',
+            'dimension_herramienta' => null,
+            'condicion_herramienta' => 'Nueva',
+            'tipo_insumo' => 'Aceite para maquina', 
+            'capacidad_insumo' => 3,
+           
+         ];
+
+        $response = $this->post(route('inventario.store'), $data_insumos); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('insumos.index'));
+
+        $insumo=Insumos::find('AI03');
+        $this->assertNotNull($insumo);
+
     
     }
 

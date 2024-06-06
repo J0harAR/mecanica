@@ -39,20 +39,23 @@ class UserTest extends TestCase
 
         //Un register ingresado de forma Correcta 
         $registroBien=$this->post(route('register'),[
-            'email' => 'alfaro@gmail.com',
+            'email' => 'alfaro@itoaxaca.edu.mx',
             'name' => 'Johan',
-            'password' => 'johan1234',
-            'password_confirmation' => 'johan1234',
+            'password' => 'johan1234-',
+            'password_confirmation' => 'johan1234-',
         ]);
         $registroBien->assertStatus(302)->assertRedirect(route('home'));
 
-        $this->assertDatabaseHas('users',['email'=>"alfaro@gmail.com"]);
+
+        
+
+        $this->assertDatabaseHas('users',['email'=>"alfaro@itoaxaca.edu.mx"]);
 
 
 
         //Registro repetido, en este caso email repetidos
         $registroMal = $this->post(route('register'), [
-            'email' => 'alfaro@gmail.com',
+            'email' => 'alfaro@itoaxaca.edu.mx',
             'name' => 'Johan',
             'password' => 'johan1234',
             'password_confirmation' => 'johan1234',

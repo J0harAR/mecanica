@@ -25,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //maquinaria que necesita mantenimiento
+        /*
         $maquinaria_mantenimiento = DB::table('insumos_maquinaria')
         ->whereColumn('cantidad_actual', '<=', 'cantidad_minima')
         ->get();
@@ -48,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
-
+ */
 
        Schema::defaultStringLength(191);
        Paginator::useBootstrap();

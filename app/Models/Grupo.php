@@ -13,6 +13,16 @@ class Grupo extends Model
     protected $table = "grupo";
     protected $primaryKey = 'clave_grupo';
     protected $keyType = 'string';
+
+
+    protected $fillable = 
+    [
+      'id_docente',
+      'clave_grupo',
+      'clave_asignatura',
+      'clave_periodo',
+      ];
+      
     public function alumnos()
       {
           return $this->belongsToMany(Alumno::class, 'alumno_grupo', 'clave_grupo', 'id_alumno');
