@@ -22,7 +22,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::before(function ($user,$ability) {
-            return $user->email == 'alfaro.ruiz.johan@gmail.com' ?? null;
+            return $user->email == '19161229@itoaxaca.edu.mx' ?? null;
         });
     }
 }
