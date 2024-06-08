@@ -75,8 +75,6 @@ class MantenimientoController extends Controller
       
       foreach ($insumos as $key => $insumo) {
           $insumo_temp = Insumos::find($key);
-          $insumo_temp->capacidad -= $insumo['cantidad'];
-          $insumo_temp->save();
          
            $insumo_maquinaria=$maquinaria->insumos()->where('insumo_id',$insumo_temp->id_insumo)->first();
            $cantidad_actual=$insumo_maquinaria->pivot->cantidad_actual;
@@ -85,7 +83,10 @@ class MantenimientoController extends Controller
 
             if($cantidad_final > $capacidad_insumo){
                 return redirect()->route('mantenimiento.index')->with('error', 'Cantidad no valida , excedió la capacidad.');
-            }       
+            } 
+            
+            $insumo_temp->capacidad -= $insumo['cantidad'];
+            $insumo_temp->save();
           //aqui hago el actualizado del aumento de insumo en la maquina
           $maquinaria->insumos()->syncWithoutDetaching([$insumo_temp->id_insumo => ['cantidad_actual' => $cantidad_final]]);
       }
