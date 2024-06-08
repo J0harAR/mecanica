@@ -22,7 +22,7 @@
     </div>
     
     <div class="btn-group" role="group">
-    <a href="{{ route('docentes.create') }}" class="btn btn-outline-primary">
+    <a href="{{ route('docentes.create') }}" class="btn btn-primary">
         <i class="ri-add-line"></i> Añadir docente
 </a>
       <a href="{{ route('docentes.asigna') }}" class="btn btn-outline-primary">
