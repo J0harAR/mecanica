@@ -52,7 +52,7 @@
     <div class="card-body">
             <form class="row g-3 needs-validation" action="{{ route('asignatura.store') }}" method="POST" novalidate>
                 @csrf
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <label for="floatingSelect" class="form-label"><i class="fas fa-book me-2"></i>Nombre Completo</label>
                     <input type="text" name="nombre" id="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}" required>
             @error('nombre')
@@ -66,7 +66,7 @@
             @enderror
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label for="clave" class="form-label"><i class="fas fa-key me-2"></i> Clave de Asignatura</label>
                             <input type="text" name="clave" id="clave" class="form-control" required>
                             <div class="invalid-feedback">
