@@ -490,6 +490,11 @@ h6 {
   background-color: rgba(255, 255, 255, 0.6);
 }
 
+.card-seleccion {
+  background-color: #d3d3d1; /* Color gris */
+  transition: background-color 0.3s ease-in-out;
+}
+
 /* Alerts */
 .alert-heading {
   font-weight: 500;

@@ -146,8 +146,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-4">
-            <div class="card">
+    <div class="col-lg-4">
+    <div class="card card-seleccion">
                 <div class="card-body">
                     <h5 class="card-title1">Herramientas</h5>
                     <div class="d-flex justify-content-between">

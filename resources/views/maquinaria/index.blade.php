@@ -29,44 +29,42 @@
             <button type="button" class="btn btn-tecnm" data-bs-toggle="modal" data-bs-target="#modal">
                 <i class="fas fa-plus-circle me-1"></i>Agregar maquinaria
             </button>
-            <button class="btn btn btn-tecnm"  type="button"  data-bs-toggle="modal" data-bs-target="#modal-download" >
+            <button class="btn btn btn-tecnm" type="button" data-bs-toggle="modal" data-bs-target="#modal-download">
                 <i class="bi bi-download"></i>
             </button>
         </div>
     </div>
 
 
- <!-- Modal -->
- <div class="modal fade" id="modal-download" tabindex="-1"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Modal -->
+    <div class="modal fade" id="modal-download" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Reporte de maquinaria</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <form action="{{ route('reporte.maquinarias') }}" method="POST">
-            @csrf
-          <div class="modal-body">
-          <label >Seleciona el periodo</label>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Reporte de maquinaria</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('reporte.maquinarias') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <label>Seleciona el periodo</label>
 
-            <select name="periodo" class="form-select">
-                @foreach ($periodos as $periodo)
-                    <option value="{{$periodo->clave}}">{{$periodo->clave}}</option>
-                @endforeach
-                    
-            </select>
+                        <select name="periodo" class="form-select">
+                            @foreach ($periodos as $periodo)
+                                <option value="{{$periodo->clave}}">{{$periodo->clave}}</option>
+                            @endforeach
+                        </select>
 
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            <button type="submit" class="btn btn-primary">Descargar</button>
-          </div>
-          </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Descargar</button>
+                    </div>
+                </form>
 
-          </div>
+            </div>
         </div>
-        </div><!-- End Modal -->
+    </div><!-- End Modal -->
 
     <!-- Vertically centered Modal -->
     <div class="modal fade" id="modal" tabindex="-1">
@@ -83,7 +81,7 @@
 
                         <div class="col-md-6 mb-3">
                             <label for="nombre" class="form-label"><i class="bi bi-box-seam me-2"></i>Nombre de la
-                                maquinaria</label>
+                                maquina</label>
                             <input type="text" class="form-control" id="nombre" name="nombre" required
                                 autocomplete="nombre" autofocus>
                         </div>
@@ -124,18 +122,26 @@
                             </select>
                         </div>
                         <div class="row mb-3" id="todos_insumos">
-                            <label class="col-sm-2 col-form-label"><i class="bi bi-droplet me-2"></i>Insumos</label>
+                            <label class="col-sm-2 col-form-label d-flex align-items-center custom-label"><i
+                                    class="bi bi-droplet me-2"></i>Insumos</label>
                             <div class="col-sm-12">
+                                <div class="mb-2">
+                                    <button type="button" id="select-all" class="btn btn-primary btn-sm">Seleccionar
+                                        todos</button>
+                                    <button type="button" id="deselect-all"
+                                        class="btn btn-secondary btn-sm">Deseleccionar</button>
+                                </div>
                                 <select class="form-select" multiple aria-label="multiple select example"
                                     name="insumos[]" id="insumos">
-                                    <option selected disabled>Open this select menu</option>
                                     @foreach ($insumos as $insumo)
                                         <option value="{{ $insumo->id_insumo }}">Código:{{ $insumo->id_insumo }} //
-                                            {{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}</option>
+                                            {{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
+
 
                         <div class="text-center mt-4">
                             <button type="submit" class="btn btn-primary"
@@ -164,7 +170,7 @@
             </div>
         </div>
         <div class="col-lg-4">
-            <div class="card">
+            <div class="card card-seleccion">
                 <div class="card-body">
                     <h5 class="card-title1">Maquinaria</h5>
                     <div class="d-flex justify-content-between">
@@ -480,4 +486,29 @@
             }
         });
     </script>
+    <script>
+        $(document).ready(function () {
+            
+          
+
+            // Funcionalidad para seleccionar todos
+            $('#select-all').click(function () {
+                var allOptions = $('#insumos option');
+                allOptions.each(function () {
+                    $(this).prop('selected', true);
+                });
+                $('#insumos').trigger('change');
+            });
+
+            // Funcionalidad para deseleccionar todos
+            $('#deselect-all').click(function () {
+                var allOptions = $('#insumos option');
+                allOptions.each(function () {
+                    $(this).prop('selected', false);
+                });
+                $('#insumos').trigger('change');
+            });
+        });
+    </script>
+
     @endsection

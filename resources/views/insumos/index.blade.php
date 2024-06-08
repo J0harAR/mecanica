@@ -166,7 +166,7 @@
 
 
         <div class="col-lg-4">
-            <div class="card">
+            <div class="card card-seleccion">
                 <div class="card-body">
                     <h5 class="card-title1">Insumos</h5>
                     <div class="d-flex justify-content-between">
@@ -176,8 +176,8 @@
                             <p class="m-b-o text-right"><a href="{{route('insumos.index')}}">Ver mas...</a></p>
                         </div>
                     </div>
-
                 </div>
+            </div>
             </div>
         </div>
     </div>

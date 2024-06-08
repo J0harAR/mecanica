@@ -83,6 +83,9 @@
   .logo {
     width: 25%; /* Tamaño más pequeño */
     margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .form-label {
