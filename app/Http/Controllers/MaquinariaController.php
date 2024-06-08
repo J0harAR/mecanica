@@ -251,27 +251,6 @@ class MaquinariaController extends Controller
       return redirect()->route('maquinaria.index')->with('success', 'La maquina: ' . $id_maquinaria . ' ha sido actualizada exitosamente.');
   }
 
-  public function show($id_maquinaria){
-
-    //$maquinaria=Articulo_inventariado::with(['Articulo_inventariados.Catalogo_articulos','insumos'])->where('id_inventario',$id_maquinaria);
-
-    $maquinaria=Maquinaria::find($id_maquinaria);
-    
-    return view('maquinaria.show',compact('maquinaria'));
-  }
-
-
-  public function asignar_cantidad_insumos(Request $request,$id_maquinaria){
-    $maquinaria=Maquinaria::find($id_maquinaria);
-
-    $insumos=collect($request->input('insumos',[]))
-      ->map(function($insumo){
-        return ['capacidad'=>$insumo];
-      });
-
-    
-    $maquinaria->insumos()->sync($insumos);
-  }
 
   public function asignar_insumos( Request $request,$id_maquinaria){
 
@@ -308,10 +287,8 @@ class MaquinariaController extends Controller
           $catalogo_articulo->cantidad-=1;
           $catalogo_articulo->save();
 
-      }else{
-          $catalogo_articulo->cantidad=0;
-          $catalogo_articulo->save();
       }
+
       $maquinaria->delete();
       return redirect()->route('maquinaria.index')->with('success', 'La maquina: ' . $id_maquinaria . ' ha sido eliminada exitosamente.');
 
@@ -366,14 +343,6 @@ public function generadorCodigoInventario(Catalogo_articulo $catalogo_articulo,$
       
   return $nuevo_codigos;
 }
-
-public function contarGuionesMedios($cadena) {
-  $conteo = substr_count($cadena, "-");
-  return $conteo;
-}
-
-
-
 
 
 

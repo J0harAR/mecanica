@@ -44,14 +44,8 @@ class PrestamoController extends Controller
                 return redirect()->route('prestamos.index')->with('herramienta_no_disponible', 'La herramienta '.$herramienta->id_herramientas.' / '.$herramienta->Articulo_inventariados->Catalogo_articulos->nombre.' no se encuentra disponible');        
 
             }
-
             $herramienta=Articulo_inventariado::find($id_herramienta);
-            if($herramienta==null){
-                return redirect()->route('prestamos.index')->with('herramienta_no_encontrada', 'No se encontro la herramienta ');
-
-            }
-
-
+          
             $herramienta->estatus="No disponible";
             $herramienta->save();
             $docente->herramientas()->attach($id_herramienta,['fecha_prestamo'=>$fecha_prestamo,'fecha_devolucion'=>$fecha_devolucion,'estatus'=>"Pendiente"]);

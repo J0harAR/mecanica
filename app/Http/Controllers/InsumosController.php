@@ -208,9 +208,6 @@ class InsumosController extends Controller
             $catalogo_articulo->cantidad-=1;
             $catalogo_articulo->save();
 
-        }else{
-            $catalogo_articulo->cantidad=0;
-            $catalogo_articulo->save();
         }
         $insumo->delete();
         return redirect()->route('insumos.index')->with('success', 'El insumo con id: ' . $id_insumo. ' ha sido eliminado exitosamente.');
@@ -265,9 +262,6 @@ public function generadorCodigoInventario(Catalogo_articulo $catalogo_articulo,$
     return $nuevo_codigos;
 }
 
-    public function contarGuionesMedios($cadena) {
-        $conteo = substr_count($cadena, "-");
-        return $conteo;
-    }
+
 
 }

@@ -554,32 +554,19 @@ class InventarioController extends Controller
 
         if($tipo==="Herramientas"){
             //Revisar si es el primer registro 
-                if($this->contarGuionesMedios($ultimo_codigo)==2){          
-
-                    for ($i = $ultimo_numero + 1; $i <= $ultimo_numero + $cantidad_productos; $i++) {
-                        $numero_formateado = str_pad($i, 2, "0", STR_PAD_LEFT);
-                        $nuevo_codigo = substr($ultimo_codigo, 0, -2). $numero_formateado;
-                        $nuevo_codigos[] = $nuevo_codigo;
-                    }
+            
+            for ($i = $ultimo_numero + 1; $i <= $ultimo_numero + $cantidad_productos; $i++) {
+                $numero_formateado = str_pad($i, 2, "0", STR_PAD_LEFT);
+                $nuevo_codigo = substr($ultimo_codigo, 0, -2) . $numero_formateado;           
+                $nuevo_codigos[] = $nuevo_codigo;
+            }
                     
-                }else{
- 
-                    for ($i = $ultimo_numero + 1; $i <= $ultimo_numero + $cantidad_productos; $i++) {
-                        $numero_formateado = str_pad($i, 2, "0", STR_PAD_LEFT);
-                        $nuevo_codigo = substr($ultimo_codigo, 0, -2) . $numero_formateado;           
-                        $nuevo_codigos[] = $nuevo_codigo;
-                    }
-                    
-                }
-
+            
         }  
 
         return $nuevo_codigos;
     }
 
-   public function contarGuionesMedios($cadena) {
-        $conteo = substr_count($cadena, "-");
-        return $conteo;
-    }
+
 
 }
