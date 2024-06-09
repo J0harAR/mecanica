@@ -36,33 +36,21 @@ class GrupoController extends Controller
         return redirect()->route('grupos.index');
     }
 
-    public function update(Request $request,$id){
-
-        $clave_grupo=$request->input('clave_grupo');
-        $clave_asignatura=$request->input('asignatura');
-
-    
-        $grupos=Grupo::where("clave_grupo",$id)->get();
-
-        foreach ($grupos as $grupo) {
-                $grupo->clave_grupo=$clave_grupo;
-                $grupo->clave_asignatura=$clave_asignatura;
-                $grupo->save();
-
-        } 
-        return redirect()->route('grupos.index');
-    }
-
-
     public function destroy($id){
 
-        $grupos=Grupo::where("clave_grupo",$id)->get();
-       
-        foreach ($grupos as $grupo) {
-     
-            $grupo->delete();
+        $grupo=Grupo::find($id);
 
+        if ($grupo) {
+          
+            $alumnos = $grupo->alumnos;
+            foreach ($alumnos as $alumno) {
+                $grupo->alumnos()->updateExistingPivot($alumno->no_control, ['clave_grupo' => null]);
+            }
+    
+        
+            $grupo->delete();
         }
+
         return redirect()->route('grupos.index');
     }
 

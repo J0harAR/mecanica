@@ -119,6 +119,8 @@ Route::post('/alumnos/practicas/', [PracticaController::class, 'store_practica_A
 //Parte de alumnos
 Route::get('/alumnos', [AlumnoController::class, 'index'])->name('alumnos.index');
 Route::post('/alumnos', [AlumnoController::class, 'store'])->name('alumnos.store');
+Route::match(['put', 'patch'], '/alumnos/{id}', [AlumnoController::class, 'update'])->name('alumnos.update');
+Route::delete('/alumnos/{id}', [AlumnoController::class, 'destroy'])->name('alumnos.destroy');
 
 
 //Parte de asignatura
