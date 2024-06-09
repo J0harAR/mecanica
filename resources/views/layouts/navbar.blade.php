@@ -1,4 +1,4 @@
-  <!-- ======= Header ======= -->
+<!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center"
   style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px);">
 
@@ -12,151 +12,49 @@
   </div><!-- End Logo -->
 
 
-
   <nav class="header-nav ms-auto">
     <ul class="d-flex align-items-center">
 
       <li class="nav-item d-block d-lg-none">
-        <a class="nav-link nav-icon search-bar-toggle " href="#">
+        <a class="nav-link nav-icon search-bar-toggle" href="#">
           <i class="bi bi-search"></i>
         </a>
       </li><!-- End Search Icon-->
-
       <li class="nav-item dropdown">
 
-       
+
       </li><!-- End Notification Nav -->
 
-      <li class="nav-item dropdown">
-
-        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-          <i class="bi bi-chat-left-text"></i>
-          <span class="badge bg-success badge-number">3</span>
-        </a><!-- End Messages Icon -->
-
-        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-          <li class="dropdown-header">
-            Tienes 3 nuevos mensajes
-            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver todo</span></a>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li class="message-item">
-            <a href="#">
-              <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
-              <div>
-                <h4>Maria Hudson</h4>
-                <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </a>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li class="message-item">
-            <a href="#">
-              <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
-              <div>
-                <h4>Anna Nelson</h4>
-                <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                <p>6 hrs. ago</p>
-              </div>
-            </a>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li class="message-item">
-            <a href="#">
-              <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
-              <div>
-                <h4>David Muldon</h4>
-                <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                <p>8 hrs. ago</p>
-              </div>
-            </a>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li class="dropdown-footer">
-            <a href="#">Mostrar todos los mensajes</a>
-          </li>
-
-        </ul>
-
-      </li><!-- End Messages Nav -->
-
       <li class="nav-item dropdown pe-3">
-
         <a class="nav-link d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-
-          <span class="d-none d-md-block dropdown-toggle ps-2">Usuario </i></span> </a><!-- End Profile Iamge Icon -->
+          <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->name }}</span>
+        </a><!-- End Profile Image Icon -->
 
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-          <li class="dropdown-header">
-            <h6></h6>
-            <span>Usuario</span>
+          <li class="dropdown-header text-center">
+            <h6>{{ Auth::user()->name }}</h6>
+            <span>{{ Auth::user()->email }}</span><br>
+            <span>{{ Auth::user()->roles->pluck('name')->first() }}</span>
+
           </li>
           <li>
             <hr class="dropdown-divider">
           </li>
 
           <li>
-            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-              <i class="bi bi-person"></i>
-              <span>Perfil</span>
-            </a>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li>
-            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-              <i class="bi bi-gear"></i>
-              <span>Configuración</span>
-            </a>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li>
-            <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-              <i class="bi bi-question-circle"></i>
-              <span>Ayuda</span>
-            </a>
-          </li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-
-          <li>
-
-            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-              <i class="bi bi-box-arrow-right"></i>
+            <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">
+              <i class="bi bi-box-arrow-right me-2"></i>
               {{ __('Salir') }}
             </a>
-
             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
               @csrf
             </form>
           </li>
-
-        </ul><!-- End Profile Dropdown Items -->
+        </ul>
       </li><!-- End Profile Nav -->
-
-    </ul>
-  </nav><!-- End Icons Navigation -->
-
+    </ul><!-- End Profile Dropdown Items -->
+  </nav><!-- End Header Nav -->
 </header><!-- End Header -->
 
 <!-- ======= Sidebar ======= -->
@@ -197,7 +95,7 @@
               </li>
 
 
-              
+
 
             </ul>
           </li>
