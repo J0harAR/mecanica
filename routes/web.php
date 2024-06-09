@@ -136,9 +136,10 @@ Route::get('/docentes/create', [DocenteController::class, 'create'])->name('doce
 Route::post('/docentes/create', [DocenteController::class, 'store'])->name('docentes.store'); 
 Route::get('/docentes/asigna/', [DocenteController::class, 'asigna'])->name('docentes.asigna');
 Route::get('/docentes/{id}', [DocenteController::class, 'show'])->name('docentes.show');
+Route::match(['put', 'patch'], '/docentes/{id}', [DocenteController::class, 'update'])->name('docentes.update');
 Route::post('/docentes/filtrar_asignaturas', [DocenteController::class, 'filtrar_asignaturas'])->name('docentes.filtrar_asignaturas');
 Route::post('/asignar', [DocenteController::class, 'asignar'])->name('docentes.asignar');
-
+Route::delete('/docente/{id}', [DocenteController::class, 'destroy'])->name('docentes.destroy');
 Route::post('/desasignar', [DocenteController::class, 'eliminar_asignacion'])->name('docentes.eliminar_asignacion');
 Route::get('/desasignar', [DocenteController::class, 'eliminacion_asignacion'])->name('docentes.eliminacion_asignacion');
 Route::post('/docentes/filtrar_grupos', [DocenteController::class, 'filtrar'])->name('docentes.filtrar_grupos');
@@ -148,6 +149,15 @@ Route::post('/docentes/filtrar_grupos', [DocenteController::class, 'filtrar'])->
 Route::get('/grupos', [GrupoController::class, 'index'])->name('grupos.index');
 Route::get('/grupos/create', [GrupoController::class, 'create'])->name('grupos.create');
 Route::post('/grupos', [GrupoController::class, 'store'])->name('grupos.store');
+Route::match(['put', 'patch'],'/grupos/{id}', [GrupoController::class, 'update'])->name('grupos.update');
+Route::delete('/grupos/{id}', [GrupoController::class, 'destroy'])->name('grupos.destroy');
+
+
+
+
+
+
+
 
 
 //Parte de prestamo

@@ -67,19 +67,15 @@
 
 
 
-<div class="card custom-card">
-      <div class="card-body">
-          <div class="card-body">
-            <table class="table table-responsive-md data-table">
-            <h5 class="fw-bold mb-0 text-primary">Listado de Grupos</h5>
-        </div>
-        <div class="card-body">
-            <table class="table table-striped">
+
+
+            <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Asignatura</th>
                         <th scope="col">Clave del Grupo</th>
+                        <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -90,15 +86,100 @@
                                 {{$grupo->asignatura->nombre}}
                             </td>
                             <td>{{ $grupo->clave_grupo }}</td>
+                            <td>
+                                    <button type="button" class="btn btn-outline-primary btn-sm   " data-bs-toggle="modal"
+                                            data-bs-target="#updateModal-{{ $grupo->clave_grupo }}">
+                                            <i class="fas fa-pen me-1"></i>
+                                    </button>
+
+                                    <button type="button" class="btn btn-outline-danger btn-sm   " data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal-{{ $grupo->clave_grupo }}">
+                                            <i class="fas fa-trash"></i>
+                                    </button>
+                            </td>
                             
                         </tr>
+
+                        <!-- Modal de edicion -->
+                        <div class="modal fade" id="updateModal-{{ $grupo->clave_grupo }}" tabindex="-1"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                 <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                    <form
+                                            action="{{ route('grupos.update', ['id' => $grupo->clave_grupo]) }}"
+                                            method="POST" style="display: inline;">
+                                            @csrf
+                                            @method('PATCH')
+
+                                            <label for="">Clave grupo</label>
+                                            <input type="text" value="{{$grupo->clave_grupo}}" name="clave_grupo">
+                                            
+                                            <label for="floatingSelect" class="form-label"><i class="fas fa-book me-2"></i> Asignatura</label>
+                                            <select class="form-select" id="floatingSelect" name="asignatura" required>
+                                                <option selected disabled>Selecciona una asignatura</option>
+                                                @foreach ($asignaturas as $asignatura)
+                                                    <option value="{{ $asignatura->clave }}" {{$grupo->asignatura->clave === $asignatura->clave ? 'selected': ''}}>
+                                                        {{$asignatura->nombre}}
+                                                    </option>                     
+                                                @endforeach
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                Seleccione una asignatura.
+                                            </div>
+
+
+                                            <button type="submit" class="btn btn-danger">Guardar</button>
+                                        </form>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancelar</button>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                         <!-- Modal de eliminacion -->
+                        <div class="modal fade" id="deleteModal-{{ $grupo->clave_grupo }}" tabindex="-1"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                 <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Estás seguro de que deseas eliminar el grupo
+                                        "{{ $grupo->clave_grupo }}"?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancelar</button>
+                                        <form
+                                            action="{{ route('grupos.destroy', ['id' => $grupo->clave_grupo]) }}"
+                                            method="POST" style="display: inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     @endforeach
                 </tbody>
             </table>
-        </div>
-    </div>
-</div>
-
-
+  
 @endsection
 

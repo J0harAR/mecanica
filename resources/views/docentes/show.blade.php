@@ -35,6 +35,11 @@
                 <div class="col-lg-3 col-md-4 label">CURP</div>
                 <div class="col-lg-9 col-md-8">{{ $docente->persona->curp }}</div>
               </div>
+
+              <div class="row">
+                <div class="col-lg-3 col-md-4 label">RFC</div>
+                <div class="col-lg-9 col-md-8">{{ $docente->rfc }}</div>
+              </div>
               
               <div class="row">
                 <div class="col-lg-3 col-md-4 label">Área</div>
@@ -47,7 +52,7 @@
             </div>
             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
               <!-- Profile Edit Form -->
-              <form action="{{ route('docentes.create', $docente->id) }}" method="POST" enctype="multipart/form-data">
+              <form action="{{ route('docentes.update', ['id' => $docente->rfc]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="row mb-3">
@@ -55,7 +60,7 @@
                   <div class="col-md-8 col-lg-9">
                     <img src="{{ asset($docente->foto) }}" alt="Profile">
                     <div class="pt-2">
-                      <input type="file" class="form-control" id="profileImage" name="foto">
+                      <input type="file" class="form-control" id="profileImage" name="foto" value="{{$docente->foto}}">
                     </div>
                   </div>
                 </div>

@@ -11,12 +11,6 @@ use  App\Models\Grupo;
 
 class AlumnoController extends Controller
 {
-   
-        /*public function index(){
-            $alumnos=Alumno::all();
-            $grupos=Grupo::all();
-            return view('alumnos.index',compact('alumnos','grupos'));
-        }*/
 
         public function index()
         {
@@ -93,7 +87,6 @@ class AlumnoController extends Controller
 
 
         }
-
 
 
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('no_control')->primary();
             $table->string('curp')->nullable();
             $table->timestamps();
-            $table->foreign('curp')->references('curp')->on('persona')->onDelete('SET NULL');
+            $table->foreign('curp')->references('curp')->on('persona')->onDelete('SET NULL')->onUpdate('cascade');
         });
     }
 

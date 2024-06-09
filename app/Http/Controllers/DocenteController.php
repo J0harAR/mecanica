@@ -62,28 +62,39 @@ class DocenteController extends Controller
 
         }
 
-       
-    
-        Persona::create([
-            'curp'=>$curp,
-            'nombre'=>$nombre,
-            'apellido_p'=>$apellido_p,
-            'apellido_m'=>$apellido_m,
-            
-        ]);
-
         $persona=Persona::find($curp);
+        
+        if($persona){
+            Docente::create([
+                'rfc'=>$rfc,
+                'curp'=>$persona->curp,
+                'area'=>$area,
+                'foto'=>$path.$filename,
+                'telefono'=>$telefono,
+    
+            ]);
+        }else{
 
-        Docente::create([
-            'rfc'=>$rfc,
-            'curp'=>$persona->curp,
-            'area'=>$area,
-            'foto'=>$path.$filename,
-            'telefono'=>$telefono,
+            Persona::create([
+                'curp'=>$curp,
+                'nombre'=>$nombre,
+                'apellido_p'=>$apellido_p,
+                'apellido_m'=>$apellido_m,
+                
+            ]);
+            $persona=Persona::find($curp);
+            Docente::create([
+                'rfc'=>$rfc,
+                'curp'=>$persona->curp,
+                'area'=>$area,
+                'foto'=>$path.$filename,
+                'telefono'=>$telefono,
+    
+            ]);
+            
+        }
 
-        ]);
-
-
+ 
         return redirect()->route('docentes.index');
        
     }
@@ -95,6 +106,64 @@ class DocenteController extends Controller
         return view('docentes.show',compact('docente','asignaturas'));
 
     }   
+
+    public function update(Request $request ,$id){
+
+        $nombre=$request->input('nombre');
+        $apellido_p=$request->input('apellido_p');
+        $apellido_m=$request->input('apellido_m');
+        $curp=$request->input('curp');
+        $area=$request->input('area');
+        $telefono=$request->input('telefono');
+        
+    
+    
+        $persona_existente=Alumno::where('curp',$curp)->first();
+        
+        //Validacion de inclusion
+        if($persona_existente){
+
+            return redirect()->route('docentes.index')->with('error','Curp le pertenece a un alumno');
+        }
+
+        $docente=Docente::find($id);
+        
+        if($docente){
+            $persona=Persona::find($docente->persona->curp);
+          
+            $docente->area=$area;
+
+            if($request->has('foto')){
+                       
+                $file=$request->file('foto');
+                $extension=$file->getClientOriginalExtension();
+                $filename=time().'.'.$extension;
+                $path='uploads/docentes/';
+                $file->move($path,$filename);
+                $docente->foto=$path.$filename;
+            }
+            $docente->telefono=$telefono;
+            $docente->save();
+
+            $persona->curp=$curp;
+            $persona->nombre=$nombre;
+            $persona->apellido_p=$apellido_p;
+            $persona->apellido_m=$apellido_m;
+            $persona->save();          
+        }
+        return redirect()->route('docentes.index')->with('success','Docente actualizado correctamente');
+
+
+
+    }
+
+    public function destroy($id){
+       
+        $docente=Docente::find($id);
+        $docente->delete();
+        return redirect()->route('docentes.index')->with('success','Docente eliminado correctamente');
+
+    }
 
     public function asigna(){
         $periodos=Periodo::all();
