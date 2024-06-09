@@ -8,6 +8,14 @@ use  App\Models\Grupo;
 use  App\Models\Docente;
 class AsignaturaController extends Controller
 {
+    function _construct()
+    {
+        $this->middleware('permission:ver-asignaturas', ['only' => ['index']]);
+        $this->middleware('permission:crear-asignatura', ['only' => ['create','store']]);
+        $this->middleware('permission:editar-asignatura', ['only' => ['edit','update']]);
+        $this->middleware('permission:borrar-asignatura', ['only' => ['destroy']]);
+    }
+
 
     public function index(){
         $asignaturas=Asignatura::all();

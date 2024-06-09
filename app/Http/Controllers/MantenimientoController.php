@@ -9,6 +9,15 @@ use App\Models\Mantenimiento;
 use Illuminate\Support\Facades\DB;
 class MantenimientoController extends Controller
 {
+
+  function _construct()
+    {
+        $this->middleware('permission:ver-mantenimientos', ['only' => ['index']]);
+        $this->middleware('permission:crear-mantenimiento', ['only' => ['store']]);
+        $this->middleware('permission:borrar-mantenimiento', ['only' => ['destroy']]);
+    }
+
+
     public function index()
     {
         $insumos=Insumos::all();

@@ -6,6 +6,14 @@ use Illuminate\Http\Request;
 use  App\Models\Periodo;
 class PeriodoController extends Controller
 {
+
+    function _construct()
+    {
+        $this->middleware('permission:ver-periodos', ['only' => ['index']]);
+        $this->middleware('permission:crear-periodo', ['only' => ['store']]);
+        $this->middleware('permission:borrar-periodo', ['only' => ['destroy']]);
+    }
+    
    
         public function index(){
             $periodos=Periodo::all();

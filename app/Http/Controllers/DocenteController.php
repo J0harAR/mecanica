@@ -12,6 +12,18 @@ use Illuminate\Support\Facades\DB;
 
 class DocenteController extends Controller
 {
+
+    function _construct()
+    {
+        $this->middleware('permission:ver-docentes', ['only' => ['index']]);
+        $this->middleware('permission:crear-docente', ['only' => ['create','store']]);
+        $this->middleware('permission:ver-docente', ['only' => ['show']]);
+        $this->middleware('permission:editar-docente', ['only' => ['update']]);
+        $this->middleware('permission:borrar-docente', ['only' => ['destroy']]);
+        $this->middleware('permission:asignar-grupos-docente', ['only' => ['asigna','filtrar_asignaturas','asignar']]);
+        $this->middleware('permission:eliminar-grupos-docente', ['only' => ['eliminacion_asignacion','filtrar','eliminar_asignacion']]);
+    }
+
     public function index(){
         $docentes=Docente::all();
         return view('docentes.index',compact('docentes'));

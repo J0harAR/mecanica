@@ -11,6 +11,15 @@ use App\Models\Periodo;
 use App\Models\Insumos;
 class HerramientasController extends Controller
 {
+    function _construct()
+    {
+        $this->middleware('permission:ver-herramientas', ['only' => ['index']]);
+        $this->middleware('permission:crear-herramienta', ['only' => ['store']]);
+        $this->middleware('permission:editar-herramienta', ['only' => ['update']]);
+        $this->middleware('permission:borrar-herramienta', ['only' => ['destroy']]);
+    }
+
+
     public function index()
     {
       

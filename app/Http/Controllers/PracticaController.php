@@ -14,7 +14,19 @@ use App\Models\Asignatura;
 
 class PracticaController extends Controller
 {
+    
+    function _construct()
+    {
+        $this->middleware('permission:ver-practicas', ['only' => ['index','filtrar']]);
+        $this->middleware('permission:crear-practica', ['only' => ['create','store']]);
+        $this->middleware('permission:ver-practica', ['only' => ['show']]);
+        $this->middleware('permission:editar-practica', ['only' => ['edit','update']]);
+        $this->middleware('permission:borrar-practica', ['only' => ['destroy']]);
+        $this->middleware('permission:completar-practica', ['only' => ['completar_practica']]);
+        $this->middleware('permission:crear-practica-alumno', ['only' => ['create_practica_alumno','store_practica_Alumno']]);
    
+    }
+
 
     public function index(){
 

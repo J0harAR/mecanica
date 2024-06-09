@@ -11,6 +11,17 @@ use App\Models\Periodo;
 
 class InsumosController extends Controller
 {
+
+    function _construct()
+    {
+        $this->middleware('permission:ver-insumos', ['only' => ['index']]);
+        $this->middleware('permission:crear-insumo', ['only' => ['store']]);
+        $this->middleware('permission:editar-insumo', ['only' => ['update']]);
+        $this->middleware('permission:borrar-insumo', ['only' => ['destroy']]);
+    }
+
+
+
     public function index()
     {
       

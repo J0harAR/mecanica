@@ -15,6 +15,16 @@ use Carbon\Carbon;
 class ReportesController extends Controller
 {
    
+    function _construct()
+    {
+        $this->middleware('permission:generar_reporte_prestamo', ['only' => ['generar_reporte_prestamo']]);
+        $this->middleware('permission:generar_reporte_inventario', ['only' => ['generar_reporte_inventario']]);
+        $this->middleware('permission:generar_reporte_herramientas', ['only' => ['generar_reporte_herramientas']]);
+        $this->middleware('permission:generar_reporte_maquinaria', ['only' => ['generar_reporte_maquinaria']]);
+        $this->middleware('permission:generar_reporte_insumos', ['only' => ['generar_reporte_insumos']]);
+        $this->middleware('permission:generar_reporte_practicas', ['only' => ['generar_reporte_practicas_completas']]);
+    }
+
 
     public function generar_reporte_prestamo(Request $request){
         $prestamos = DB::table('prestamo')->get();

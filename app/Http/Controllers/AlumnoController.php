@@ -12,6 +12,16 @@ use  App\Models\Grupo;
 class AlumnoController extends Controller
 {
 
+    function _construct()
+    {
+        $this->middleware('permission:ver-alumnos', ['only' => ['index']]);
+        $this->middleware('permission:crear-alumno', ['only' => ['store']]);
+        $this->middleware('permission:editar-alumno', ['only' => ['update']]);
+        $this->middleware('permission:borrar-alumno', ['only' => ['destroy']]);
+    }
+
+
+
         public function index()
         {
             $alumnos = Alumno::with('persona', 'grupos')->get();

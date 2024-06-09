@@ -9,7 +9,17 @@ use App\Models\Herramientas;
 use App\Models\Articulo_inventariado;
 class PrestamoController extends Controller
 {
-   
+
+
+    function _construct()
+    {
+        $this->middleware('permission:ver-prestamos', ['only' => ['index']]);
+        $this->middleware('permission:crear-prestamo', ['only' => ['store']]);
+        $this->middleware('permission:editar-prestamo', ['only' => ['update']]);
+        $this->middleware('permission:borrar-prestamo', ['only' => ['destroy']]);
+        $this->middleware('permission:finalizar-prestamo', ['only' => ['finalizar']]);
+    }
+
     public function index(){
         $prestamos = Docente::with(['persona', 'herramientas' => function ($query) {
             $query->withPivot(['id','fecha_prestamo', 'fecha_devolucion', 'estatus']);
