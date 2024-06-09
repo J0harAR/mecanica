@@ -33,13 +33,15 @@
             <div class="modal-content border-0 shadow-lg">
                 <div class="modal-header" style="background-color: #002855; color: #ffffff;">
                     <h5 class="modal-title"><i class="bi bi-person-plus me-2"></i>Agregar Alumno</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form class="row g-3" action="{{ route('alumnos.store') }}" method="POST">
                         @csrf
                         <div class="col-md-12 mb-3">
-                            <label for="no_control" class="form-label"><i class="bi bi-card-text me-2"></i>Número de Control</label>
+                            <label for="no_control" class="form-label"><i class="bi bi-card-text me-2"></i>Número de
+                                Control</label>
                             <input type="text" class="form-control" id="no_control" name="no_control" required>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -47,11 +49,13 @@
                             <input type="text" class="form-control" id="nombre" name="nombre" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="apellido_p" class="form-label"><i class="bi bi-person me-2"></i>Apellido Paterno</label>
+                            <label for="apellido_p" class="form-label"><i class="bi bi-person me-2"></i>Apellido
+                                Paterno</label>
                             <input type="text" class="form-control" id="apellido_p" name="apellido_p" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="apellido_m" class="form-label"><i class="bi bi-person me-2"></i>Apellido Materno</label>
+                            <label for="apellido_m" class="form-label"><i class="bi bi-person me-2"></i>Apellido
+                                Materno</label>
                             <input type="text" class="form-control" id="apellido_m" name="apellido_m" required>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -67,7 +71,8 @@
                             </select>
                         </div>
                         <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-primary" style="background-color: #002855; border-color: #002855;">Guardar</button>
+                            <button type="submit" class="btn btn-primary"
+                                style="background-color: #002855; border-color: #002855;">Guardar</button>
                         </div>
                     </form>
                 </div>
@@ -90,155 +95,163 @@
 
 
     @error('curp')
-    <div class="alert alert-danger">CURP duplicada</div>
+        <div class="alert alert-danger">CURP duplicada</div>
     @enderror
 
-    
+
     @error('no_control')
-    <div class="alert alert-danger">Numero de control duplicado</div>
+        <div class="alert alert-danger">Numero de control duplicado</div>
     @enderror
 
     <!-- Tabla de alumnos -->
     <div class="card shadow-lg rounded-3 border-0">
-    <div class="card-body p-4">
-      <div class="table-responsive">
-      @foreach($alumnosPorGrupo as $grupo => $alumnos)
-                <h5 class="card-title1 text-primary1 mb-2 fw-bold ">{{ $grupo }}</h5>
-                <table class="table table-hover">
-        <table class="table table-striped table-hover table-bordered shadow-sm rounded align-middle"
-          style="border-collapse: separate; border-spacing: 0 10px;">
-          <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
-            <tr>
-                            <th>#</th>
-                            <th>Número de Control</th>
-                            <th>Nombre</th>
-                            <th>Apellido Paterno</th>
-                            <th>Apellido Materno</th>
-                            <th>CURP</th>
-                            <th>Acciones</th>
-                            
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($alumnos as $alumno)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $alumno->no_control }}</td>
-                                <td>{{ $alumno->persona->nombre }}</td>
-                                <td>{{ $alumno->persona->apellido_p }}</td>
-                                <td>{{ $alumno->persona->apellido_m }}</td>
-                                <td>{{ $alumno->persona->curp }}</td>
-                                <td>
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                @foreach($alumnosPorGrupo as $grupo => $alumnos)
+                    <h5 class="card-title1 text-primary1 mb-2 fw-bold ">{{ $grupo }}</h5>
+                    <table class="table table-hover">
+                        <table class="table table-striped table-hover table-bordered shadow-sm rounded align-middle"
+                            style="border-collapse: separate; border-spacing: 0 10px;">
+                            <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Número de Control</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido Paterno</th>
+                                    <th>Apellido Materno</th>
+                                    <th>CURP</th>
+                                    <th>Acciones</th>
 
-                                <button type="button" class="btn btn-outline-primary btn-sm   " data-bs-toggle="modal"
-                                            data-bs-target="#updateModal-{{ $alumno->no_control }}">
-                                            <i class="fas fa-pen me-1"></i>
-                                    </button>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($alumnos as $alumno)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $alumno->no_control }}</td>
+                                        <td>{{ $alumno->persona->nombre }}</td>
+                                        <td>{{ $alumno->persona->apellido_p }}</td>
+                                        <td>{{ $alumno->persona->apellido_m }}</td>
+                                        <td>{{ $alumno->persona->curp }}</td>
+                                        <td>
 
-                                <button type="button" class="btn btn-outline-danger btn-sm   " data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal-{{ $alumno->no_control }}">
-                                            <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
+                                            <button type="button" class="btn btn-outline-primary btn-sm   "
+                                                data-bs-toggle="modal" data-bs-target="#updateModal-{{ $alumno->no_control }}">
+                                                <i class="fas fa-pen me-1"></i>
+                                            </button>
 
-                               
-                            </tr>
+                                            <button type="button" class="btn btn-outline-danger btn-sm   "
+                                                data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $alumno->no_control }}">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
 
+                                    <!-- Modal de edicion -->
+                                    <div class="modal fade" id="updateModal-{{ $alumno->no_control }}" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content border-0 shadow-lg">
+                                                <div class="modal-header" style="background-color: #002855; color: #ffffff;">
+                                                    <h5 class="modal-title" id="exampleModalLabel"><i
+                                                            class="bi bi-person-plus me-2"></i>Editar alumno</h5>
+                                                    <button type="button" class="btn-close btn-close-white"
+                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form class="row g-3"
+                                                        action="{{ route('alumnos.update', ['id' => $alumno->no_control]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('PATCH')
 
-                            <!-- Modal de edicion -->
-                        <div class="modal fade" id="updateModal-{{ $alumno->no_control }}" tabindex="-1"
-                             aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                    <form
-                                            action="{{ route('alumnos.update', ['id' => $alumno->no_control]) }}"
-                                            method="POST" style="display: inline;">
-                                            @csrf
-                                            @method('PATCH')
-
-                                            <div class="col-md-12 mb-3">
-                                                <label for="no_control" class="form-label"><i class="bi bi-card-text me-2"></i>Número de Control</label>
-                                                <input type="text" class="form-control" id="no_control" name="no_control" value="{{ $alumno->no_control }}">
+                                                        <div class="col-md-12 mb-3">
+                                                            <label for="no_control" class="form-label"><i
+                                                                    class="bi bi-card-text me-2"></i>Número de Control</label>
+                                                            <input type="text" class="form-control" id="no_control"
+                                                                name="no_control" value="{{ $alumno->no_control }}" required>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="nombre" class="form-label"><i
+                                                                    class="bi bi-person me-2"></i>Nombre</label>
+                                                            <input type="text" class="form-control" id="nombre" name="nombre"
+                                                                value="{{ $alumno->persona->nombre }}" required>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="apellido_p" class="form-label"><i
+                                                                    class="bi bi-person me-2"></i>Apellido Paterno</label>
+                                                            <input type="text" class="form-control" id="apellido_p"
+                                                                name="apellido_p" value="{{ $alumno->persona->apellido_p }}"
+                                                                required>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="apellido_m" class="form-label"><i
+                                                                    class="bi bi-person me-2"></i>Apellido Materno</label>
+                                                            <input type="text" class="form-control" id="apellido_m"
+                                                                name="apellido_m" value="{{ $alumno->persona->apellido_m }}"
+                                                                required>
+                                                        </div>
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="curp" class="form-label"><i
+                                                                    class="bi bi-card-list me-2"></i>CURP</label>
+                                                            <input type="text" class="form-control" id="curp" name="curp"
+                                                                value="{{ $alumno->persona->curp }}" required>
+                                                        </div>
+                                                        <div class="col-md-12 mb-3">
+                                                            <label for="grupos" class="form-label"><i
+                                                                    class="bi bi-people me-2"></i>Grupo</label>
+                                                            <select multiple class="form-control" id="grupos" name="grupos[]"
+                                                                required>
+                                                                @foreach ($grupos as $grupo)
+                                                                    <option value="{{ $grupo->clave_grupo }}" {{ in_array($grupo->clave_grupo, $alumno->grupos->pluck('clave_grupo')->toArray()) ? 'selected' : '' }}>
+                                                                        {{ $grupo->clave_grupo }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="text-center mt-4">
+                                                            <button type="submit" class="btn btn-primary"
+                                                                style="background-color: #002855; border-color: #002855;">Guardar</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="nombre" class="form-label"><i class="bi bi-person me-2"></i>Nombre</label>
-                                                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $alumno->persona->nombre }}">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="apellido_p" class="form-label"><i class="bi bi-person me-2"></i>Apellido Paterno</label>
-                                                <input type="text" class="form-control" id="apellido_p" name="apellido_p" value="{{ $alumno->persona->apellido_p }}">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="apellido_m" class="form-label"><i class="bi bi-person me-2"></i>Apellido Materno</label>
-                                                <input type="text" class="form-control" id="apellido_m" name="apellido_m" value="{{ $alumno->persona->apellido_m }}">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="curp" class="form-label"><i class="bi bi-card-list me-2"></i>CURP</label>
-                                                <input type="text" class="form-control" id="curp" name="curp" value="{{ $alumno->persona->curp }}">
-                                            </div>
-                                            <div class="col-md-12 mb-3">
-                                                <label for="grupos" class="form-label"><i class="bi bi-people me-2"></i>Grupo</label>
-                                                <select multiple class="form-control" id="grupos" name="grupos[]" required>
-                                                    @foreach ($grupos as $grupo)
-                                                        <option value="{{ $grupo->clave_grupo }}">{{ $grupo->clave_grupo }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-
-                                            <button type="submit" class="btn btn-danger">Guardar</button>
-                                        </form>
+                                        </div>
                                     </div>
 
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Cancelar</button>
-                                        
+                                    <!-- Modal de eliminacion -->
+                                    <div class="modal fade" id="deleteModal-{{ $alumno->no_control }}" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    ¿Estás seguro de que deseas eliminar el alumno
+                                                    "{{ $alumno->no_control }}"?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Cancelar</button>
+                                                    <form action="{{ route('alumnos.destroy', ['id' => $alumno->no_control]) }}"
+                                                        method="POST" style="display: inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                            <!-- Modal de eliminacion -->
-                        <div class="modal fade" id="deleteModal-{{ $alumno->no_control }}" tabindex="-1"
-                             aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        ¿Estás seguro de que deseas eliminar el alumno
-                                        "{{ $alumno->no_control }}"?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Cancelar</button>
-                                        <form
-                                            action="{{ route('alumnos.destroy', ['id' => $alumno->no_control]) }}"
-                                            method="POST" style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                    </tbody>
-                </table>
-            @endforeach
+                                @endforeach
+                            </tbody>
+                        </table>
+                @endforeach
+            </div>
         </div>
+        <!-- End Tabla de alumnos -->
     </div>
-    <!-- End Tabla de alumnos -->
-</div>
-@endsection
+    @endsection

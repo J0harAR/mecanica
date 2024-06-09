@@ -58,7 +58,7 @@
           <th scope="col">RFC</th>
           <th scope="col">Curp</th>
           <th scope="col">Nombre</th>
-          <th scope="col">Area</th>
+          <th scope="col">Área</th>
           <th scope="col">Acciones</th>
         </tr>
       </thead>

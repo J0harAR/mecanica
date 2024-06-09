@@ -128,7 +128,7 @@
           <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
             <tr>
               <th>N.Mantenimiento</th>
-              <th>Maquina</th>
+              <th>Máquina</th>
               <th>Insumos Utilizados</th>
               <th data-type="date" data-format="YYYY/DD/MM">Fecha</th>
               <th>Borrar</th>

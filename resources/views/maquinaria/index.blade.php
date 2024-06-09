@@ -252,7 +252,7 @@
                     style="border-collapse: separate; border-spacing: 0 10px;">
                     <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
                         <tr>
-                            <th>Codigo</th>
+                            <th>Código</th>
                             <th>Nombre</th>
                             <th>Sección</th>
                             <th>Estatus</th>
