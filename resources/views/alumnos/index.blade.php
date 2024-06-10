@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+
+@can('ver-alumnos')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -21,12 +23,15 @@
             </nav>
         </div>
         <div>
+            @can('crear-alumnos')                          
             <button type="button" class="btn btn-tecnm" data-bs-toggle="modal" data-bs-target="#modal">
                 <i class="fas fa-plus-circle me-1"></i> Agregar Alumno
             </button>
+            @endcan
         </div>
     </div>
-
+    
+    @can('crear-alumnos')            
     <!-- Vertically centered Modal -->
     <div class="modal fade" id="modal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
@@ -80,7 +85,8 @@
         </div>
     </div>
     <!-- End Vertically centered Modal -->
-
+    @endcan
+    
     @if (session('success'))
         <div class="alert alert-success" id="success-alert">
             {{ session('success') }}
@@ -134,19 +140,24 @@
                                         <td>{{ $alumno->persona->apellido_m }}</td>
                                         <td>{{ $alumno->persona->curp }}</td>
                                         <td>
-
+                                            @can('editar-alumnos')                                                                                      
                                             <button type="button" class="btn btn-outline-primary btn-sm   "
                                                 data-bs-toggle="modal" data-bs-target="#updateModal-{{ $alumno->no_control }}">
                                                 <i class="fas fa-pen me-1"></i>
                                             </button>
-
+                                            @endcan
+                                            
+                                            @can('borrar-alumnos')                                                                                   
                                             <button type="button" class="btn btn-outline-danger btn-sm   "
                                                 data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $alumno->no_control }}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
+                                            @endcan
+
                                         </td>
                                     </tr>
 
+                                    @can('editar-alumnos')    
                                     <!-- Modal de edicion -->
                                     <div class="modal fade" id="updateModal-{{ $alumno->no_control }}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -218,7 +229,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                     @endcan
 
+                                     @can('borrar-alumnos')      
                                     <!-- Modal de eliminacion -->
                                     <div class="modal fade" id="deleteModal-{{ $alumno->no_control }}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -246,6 +259,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @endcan
                                 @endforeach
                             </tbody>
                         </table>
@@ -254,4 +268,5 @@
         </div>
         <!-- End Tabla de alumnos -->
     </div>
+    @endcan
     @endsection

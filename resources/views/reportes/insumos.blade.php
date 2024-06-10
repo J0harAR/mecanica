@@ -44,6 +44,7 @@
     </style>
 </head>
 <body>
+    @can('generar_reporte_insumos')
     <div class="header">
         <table class="header-table">
             <tr>
@@ -82,4 +83,5 @@
         @endforeach
     </table>
 </body>
+@endcan
 </html>

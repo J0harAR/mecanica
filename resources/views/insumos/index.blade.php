@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+
+@can('ver-insumos')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -26,16 +28,22 @@
             </nav>
         </div>
         <div>
+            @can('crear-insumo')                   
             <button type="button" class="btn btn-tecnm" data-bs-toggle="modal" data-bs-target="#modal">
                 <i class="fas fa-plus-circle me-1"></i>Agregar insumo
             </button>
+            @endcan
+
+            @can('generar_reporte_insumos')                           
             <button class="btn btn btn-tecnm"  type="button"  data-bs-toggle="modal" data-bs-target="#modal-download" >
                 <i class="bi bi-download"></i>
           </button>
+          @endcan
         </div>
     </div>
 
-
+@can('generar_reporte_insumos')
+   
     <!-- Modal -->
  <div class="modal fade" id="modal-download" tabindex="-1"
         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -67,10 +75,16 @@
           </div>
         </div>
         </div><!-- End Modal -->
+@endcan
 
+
+
+    
+
+    @can('crear-insumo')
         <!-- Vertically centered Modal -->
         <div class="modal fade" id="modal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg">
                 <div class="modal-header" style="background-color: #002855; color: #ffffff;">
                     <h5 class="modal-title"><i class="bi bi-plus-circle me-2"></i>Agregar insumo</h5>
@@ -118,6 +132,7 @@
                 </div>
             </div>
         </div>
+        @endcan
     </div>
 
     @if (session('success'))
@@ -180,8 +195,8 @@
             </div>
             </div>
         </div>
-    </div>
-
+   
+    @can('ver-insumos')    
     <div class="card shadow-lg rounded-3 border-0">
         <div class="card-body p-4">
             <div class="table-responsive">
@@ -214,7 +229,7 @@
 
                         </tr>
 
-
+                        @can('borrar-insumo')                                                 
                         <!-- Modal -->
                         <div class="modal fade" id="modal-{{ $insumo->id_insumo}}" tabindex="-1"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -241,45 +256,47 @@
                                 </div>
                             </div>
                         </div><!-- End Modal -->
-
+                        @endcan
+                        
+                        @can('editar-insumo')
                         <!-- Modal Update -->
-<div class="modal fade" id="modal-update-{{ $insumo->id_insumo }}" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header" style="background-color: #002855; color: #ffffff;">
-                <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Agregar artículo</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form class="row g-3" action="{{ route('insumos.update', $insumo->id_insumo) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="col-md-4 mb-3">
-                        <label for="id_insumo" class="form-label"><i class="bi bi-gear me-2"></i>Código de insumo</label>
-                        <input type="text" class="form-control" id="id_insumo" name="id_insumo" value="{{ $insumo->id_insumo }}" disabled>
-                    </div>
-                    <div class="col-md-8 mb-3">
-                        <label for="nombre" class="form-label"><i class="bi bi-box-seam me-2"></i>Nombre del artículo</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}" disabled>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="capacidad" class="form-label"><i class="bi bi-bar-chart me-2"></i>Capacidad</label>
-                        <input type="number" class="form-control" id="capacidad" name="capacidad" value="{{ $insumo->capacidad }}">
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="estatus" class="form-label"><i class="bi bi-check-circle me-2"></i>Estatus</label>
-                        <input type="text" class="form-control" id="estatus" name="estatus" value="{{ $insumo->Articulo_inventariados->estatus }}">
-                    </div>
-                    <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-primary" style="background-color: #002855; border-color: #002855;">Guardar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End Modal Update -->
-
+                        <div class="modal fade" id="modal-update-{{ $insumo->id_insumo }}" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content border-0 shadow-lg">
+                                    <div class="modal-header" style="background-color: #002855; color: #ffffff;">
+                                        <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Editar artículo</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="row g-3" action="{{ route('insumos.update', $insumo->id_insumo) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="col-md-4 mb-3">
+                                                <label for="id_insumo" class="form-label"><i class="bi bi-gear me-2"></i>Código de insumo</label>
+                                                <input type="text" class="form-control" id="id_insumo" name="id_insumo" value="{{ $insumo->id_insumo }}" disabled>
+                                            </div>
+                                            <div class="col-md-8 mb-3">
+                                                <label for="nombre" class="form-label"><i class="bi bi-box-seam me-2"></i>Nombre del artículo</label>
+                                                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}" disabled>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label for="capacidad" class="form-label"><i class="bi bi-bar-chart me-2"></i>Capacidad</label>
+                                                <input type="number" class="form-control" id="capacidad" name="capacidad" value="{{ $insumo->capacidad }}">
+                                            </div>
+                                            <div class="col-md-12 mb-3">
+                                                <label for="estatus" class="form-label"><i class="bi bi-check-circle me-2"></i>Estatus</label>
+                                                <input type="text" class="form-control" id="estatus" name="estatus" value="{{ $insumo->Articulo_inventariados->estatus }}">
+                                            </div>
+                                            <div class="text-center mt-4">
+                                                <button type="submit" class="btn btn-primary" style="background-color: #002855; border-color: #002855;">Guardar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Modal Update -->
+                        @endcan
 
 
 
@@ -293,6 +310,7 @@
 
 
 </div>
+@endcan
 
 @if(session('success'))
     <script>
@@ -304,5 +322,5 @@
         });
     </script>
 @endif
-
+@endcan
 @endsection

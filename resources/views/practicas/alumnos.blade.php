@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+
+@can('crear-practica-alumno')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -25,6 +27,7 @@
                 </ol>
             </nav>
             <div class="container mt-4"></div>
+            @can('crear-practica-alumno')          
             <form class="row g-3 needs-validation" action="{{ route('practicasAlumno.store') }}" method="post" novalidate>
                 @csrf
                 <div class="col-md-6">
@@ -112,7 +115,7 @@
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
             </form>
-
+            @endcan
             @if(session('error'))
                 <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
                     {{ session('error') }}
@@ -126,5 +129,5 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-
+@endcan
             @endsection

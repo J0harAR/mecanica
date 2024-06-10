@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('content')
+@can('ver-inventario')
+    
+
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -24,14 +27,16 @@
                 <i class="fas fa-history me-1"></i>
             </button>
 
+            @can('generar_reporte_inventario')        
             <button class="btn btn btn-tecnm" type="button" data-bs-toggle="modal" data-bs-target="#modal-download">
                 <i class="bi bi-download"></i>
             </button>
-
+            @endcan
 
         </div>
     </div>
 
+    @can('generar_reporte_inventario')
     <!-- Modal -->
     <div class="modal fade" id="modal-download" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -62,7 +67,7 @@
         </div>
     </div><!-- End Modal -->
 
-
+    @endcan
 
 
 
@@ -174,12 +179,15 @@
                                 <td>{{ $articulo->cantidad }}</td>
                                 <td>{{ $articulo->tipo }}</td>
                                 <td class="text-center">
+                                    @can('borrar-inventario')                                                                         
                                     <button type="button" class="btn btn-outline-danger btn-sm " data-bs-toggle="modal"
                                         data-bs-target="#modal-{{ $articulo->id_articulo }}"><i
                                             class="fas fa-trash"></i></button>
+                                    @endcan
+
                                 </td>
                             </tr>
-
+                            @can('borrar-inventario')                                                     
                             <!-- Modal -->
                             <div class="modal fade" id="modal-{{ $articulo->id_articulo }}" tabindex="-1"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -206,12 +214,13 @@
                                     </div>
                                 </div>
                             </div>
+                            @endcan
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
-
+        @endcan
         </>
 
         <script>

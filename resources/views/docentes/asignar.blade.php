@@ -33,7 +33,8 @@
 
 
 
-
+    @can('asignar-grupos-docente')
+    
     <form action="{{ route('docentes.filtrar_asignaturas') }}" method="POST" class="row g-3 needs-validation" novalidate>
         @csrf
         <div class="col-md-6">
@@ -80,10 +81,11 @@
             <button type="submit" class="btn btn-primary"><i class="fas fa-arrow-right me-2"></i>Siguiente</button>
         </div>
     </form>
-
+    @endcan
    
 
     @if(session('grupos') && session('docente'))
+        @can('asignar-grupos-docente')         
         <form action="{{ route('docentes.asignar') }}" method="POST" class="mt-4">
             @csrf
 
@@ -133,6 +135,7 @@
                 </tbody>
             </table>
         </form>
+        @endcan
     @endif
 </div>
 

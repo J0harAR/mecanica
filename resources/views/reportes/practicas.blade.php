@@ -46,6 +46,7 @@
     </style>
 </head>
 <body>
+    @can('generar_reporte_practicas')
     <div class="header">
         <table class="header-table">
             <tr>
@@ -96,5 +97,6 @@
             @endforeach
         </tbody>
     </table>
+    @endcan
 </body>
 </html>

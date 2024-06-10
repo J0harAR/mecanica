@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
+@can('ver-grupos')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -22,9 +22,12 @@
             </nav>
         </div>
         <div>
+            @can('crear-grupo')                        
             <a href="{{ route('grupos.create') }}" class="btn btn-primary">
                 <i class="fas fa-user-plus"></i> Registrar Grupo
             </a>
+            @endcan
+
         </div>
     </div>
     @if(session('success'))
@@ -65,9 +68,8 @@
     </script>
 @endif
 
-
-
-
+        @can('ver-grupos')
+    
 
             <table class="table">
                 <thead>
@@ -87,68 +89,17 @@
                             </td>
                             <td>{{ $grupo->clave_grupo }}</td>
                             <td>
-                                    <button type="button" class="btn btn-outline-primary btn-sm   " data-bs-toggle="modal"
-                                            data-bs-target="#updateModal-{{ $grupo->clave_grupo }}">
-                                            <i class="fas fa-pen me-1"></i>
-                                    </button>
-
+                                    @can('borrar-grupo')                                                                
                                     <button type="button" class="btn btn-outline-danger btn-sm   " data-bs-toggle="modal"
                                             data-bs-target="#deleteModal-{{ $grupo->clave_grupo }}">
                                             <i class="fas fa-trash"></i>
                                     </button>
+                                    @endcan
                             </td>
                             
                         </tr>
 
-                        <!-- Modal de edicion -->
-                        <div class="modal fade" id="updateModal-{{ $grupo->clave_grupo }}" tabindex="-1"
-                             aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                    <form
-                                            action="{{ route('grupos.update', ['id' => $grupo->clave_grupo]) }}"
-                                            method="POST" style="display: inline;">
-                                            @csrf
-                                            @method('PATCH')
-
-                                            <label for="">Clave grupo</label>
-                                            <input type="text" value="{{$grupo->clave_grupo}}" name="clave_grupo">
-                                            
-                                            <label for="floatingSelect" class="form-label"><i class="fas fa-book me-2"></i> Asignatura</label>
-                                            <select class="form-select" id="floatingSelect" name="asignatura" required>
-                                                <option selected disabled>Selecciona una asignatura</option>
-                                                @foreach ($asignaturas as $asignatura)
-                                                    <option value="{{ $asignatura->clave }}" {{$grupo->asignatura->clave === $asignatura->clave ? 'selected': ''}}>
-                                                        {{$asignatura->nombre}}
-                                                    </option>                     
-                                                @endforeach
-                                            </select>
-                                            <div class="invalid-feedback">
-                                                Seleccione una asignatura.
-                                            </div>
-
-
-                                            <button type="submit" class="btn btn-danger">Guardar</button>
-                                        </form>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Cancelar</button>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
+                        @can('borrar-grupo')                                                 
                          <!-- Modal de eliminacion -->
                         <div class="modal fade" id="deleteModal-{{ $grupo->clave_grupo }}" tabindex="-1"
                              aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -177,9 +128,11 @@
                                 </div>
                             </div>
                         </div>
+                        @endcan
                     @endforeach
                 </tbody>
             </table>
-  
+            @endcan
+    @endcan
 @endsection
 

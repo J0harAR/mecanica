@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+
+@can('ver-prestamos')
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
@@ -21,10 +23,15 @@
       </nav>
     </div>
     <div>
+    
+    @can('crear-prestamo')        
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
       <i class="ri-add-line"></i> Añadir préstamo
     </button>
+    @endcan
+    @can('generar_reporte_prestamo')
     <a class="btn btn btn-tecnm" href="{{route('reporte.prestamo')}}"><i class="bi bi-download"></i></a>
+    @endcan
     </div>
     
   </div>
@@ -61,6 +68,8 @@
   </div>
   @endif
 
+
+  @can('crear-prestamo')
   <!-- Vertically centered Modal -->
   <div class="modal fade" id="modal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -104,6 +113,9 @@
     </div>
   </div>
   <!-- End Vertically centered Modal -->
+  @endcan
+  @can('ver-prestamos')
+    
   <div class="card shadow-lg rounded-3 border-0">
                     <div class="card-body p-4">
                         <div class="table-responsive">
@@ -134,18 +146,24 @@
         <td>
 
         @if ($prestamo->pivot->estatus == "Pendiente")
+          @can('editar-prestamo')
           <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update-{{ $prestamo->pivot->id }}">
             <i class="fas fa-pencil-alt"></i>
           </button>
+          @endcan
         @endif
+          @can('borrar-prestamo')       
           <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $prestamo->pivot->id }}">
             <i class="fas fa-trash"></i>
           </button>
+          @endcan
 
           @if ($prestamo->pivot->estatus == "Pendiente")
-          <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-finalizar{{ $prestamo->pivot->id }}">
+          @can('finalizar-prestamo')                    
+         <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-finalizar{{ $prestamo->pivot->id }}">
             <i class="fas fa-check"></i>
           </button>
+          @endcan
           @else
           <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-finalizar{{ $prestamo->pivot->id }}"disabled>
             <i class="fas fa-check"></i>
@@ -160,6 +178,7 @@
 
       </tr>
 
+      @can('finalizar-prestamo')
       <!-- Modal Finalizar -->
       <div class="modal fade" id="modal-finalizar{{ $prestamo->pivot->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -183,7 +202,9 @@
         </div>
       </div>
       <!-- End Modal Finalizar -->
-
+      @endcan
+     
+      @can('editar-prestamo')      
       <!-- Modal Actualizar -->
       <div class="modal fade" id="modal-update-{{ $prestamo->pivot->id }}" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -240,7 +261,10 @@
         </div>
       </div>
       <!-- End Modal Actualizar -->
+      @endcan
 
+
+      @can('borrar-prestamo')     
       <!-- Modal Eliminar -->
       <div class="modal fade" id="modal-delete{{ $prestamo->pivot->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -264,11 +288,13 @@
         </div>
       </div>
       <!-- End Modal Eliminar -->
-
+      @endcan
       @endforeach
       @endforeach
     </tbody>
   </table>
 </div>
+@endcan
 </div>
+@endcan
 @endsection

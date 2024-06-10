@@ -1,28 +1,19 @@
 
 <?php
         
-        
+
         $maquinaria_mantenimiento = DB::table('insumos_maquinaria')
         ->whereColumn('cantidad_actual', '<=', 'cantidad_minima')
         ->get();
-
         $cantidad_maquinas=count($maquinaria_mantenimiento);
-
-
         $prestamos_pendientes=DB::table('prestamo')
         ->whereColumn('fecha_devolucion', '<=', DB::raw('DATE_ADD(CURDATE(), INTERVAL 1 DAY)'))
         ->where('estatus','Pendiente')
         ->get();
         $cantidad_prestamos=count($prestamos_pendientes);
-
-
         $total_notificaciones=$cantidad_maquinas + $cantidad_prestamos;
 
-
-
 ?>
-
-
 
 <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center"
@@ -128,35 +119,6 @@
             </form>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-            
           </li>
         </ul>
       </li><!-- End Profile Nav -->
@@ -176,7 +138,7 @@
           <span>Dashboard</span>
         </a>
       </li>
-
+      @canany(['ver-alumnos', 'ver-docentes'])
       <li class="nav-item">
         <a class="nav-link {{ request()->routeIs('personas.*', 'docentes.*', 'alumnos.*') ? 'active' : 'collapsed' }}"
           data-bs-target="#personas-nav" data-bs-toggle="collapse" href="#">
@@ -184,36 +146,43 @@
         </a>
         <ul id="personas-nav" class="nav-content collapse " data-bs-parent="#personas-nav">
           <li>
+            @can('ver-docentes')
+                        
             <a class="collapsed" data-bs-toggle="collapse" href="#submenu-docente">
               <span>Docente</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
+            @endcan
             <ul id="submenu-docente" class="collapse">
-
+             
+              @can('ver-docentes')                           
               <li>
                 <a href="{{route('docentes.index')}}">
                   <span>Ver docentes</span>
                 </a>
               </li>
-
+              @endcan
+              
+              @can('crear-docente')                           
               <li>
                 <a href="{{route('docentes.create')}}">
                   <span>Registrar docente</span>
                 </a>
               </li>
-
-
-
-
+              @endcan
             </ul>
           </li>
+          @can('ver-alumnos')            
           <li>
             <a href="{{ route('alumnos.index') }}">
               <span>Alumno</span>
             </a>
           </li>
+          @endcan
         </ul>
       </li><!-- End Charts Nav -->
+      @endcanany
 
+      @canany(['ver-grupos','ver-asignaturas','ver-periodos'])
       <li class="nav-item">
         <a class="nav-link {{ request()->routeIs('cursos.*', 'asignatura.*', 'grupos.*', 'periodos.*') ? 'active' : 'collapsed' }}"
           data-bs-toggle="collapse" href="#cursos-nav">
@@ -221,51 +190,65 @@
         </a>
         <ul id="cursos-nav" class="nav-content collapse" data-bs-parent="#parent-nav">
           <li>
+            @can('ver-asignaturas')                     
             <a class="collapsed" data-bs-toggle="collapse" href="#submenu-asignatura">
               <span>Asignatura</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
+            @endcan
             <ul id="submenu-asignatura" class="collapse">
+
+              @can('ver-asignaturas')     
               <li>
                 <a href="{{route('asignatura.index')}}">
                   <span>Ver asignaturas</span>
                 </a>
               </li>
+              @endcan
+
+              @can('crear-asignatura')    
               <li>
                 <a href="{{route('asignatura.create')}}">
                   <span>Registrar asignatura</span>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
           <li>
+          @can('ver-grupos')      
             <a class="collapsed" data-bs-toggle="collapse" href="#submenu-grupos">
               <span>Grupos</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
+          @endcan
             <ul id="submenu-grupos" class="collapse">
+            @can('ver-grupos')     
               <li>
-
                 <a href="{{route('grupos.index')}}">
                   <span>Ver grupos</span>
                 </a>
               </li>
+              @endcan
+              @can('crear-grupo')     
               <li>
                 <a href="{{route('grupos.create')}}">
                   <span>Registrar grupo</span>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
 
+          @can('ver-periodos')
           <li>
             <a href="{{route('periodos.index')}}">
               <span>Periodos</span>
             </a>
           </li>
-
+          @endcan
 
         </ul>
       </li><!-- End Charts Nav -->
-
+      @endcanany
 
 
       <li class="nav-heading">Páginas</li>
@@ -291,7 +274,7 @@
       </li><!-- End Role Page Nav -->
     @endcan
 
-
+      @can('ver-inventario')       
       <li class="nav-item">
         <a class="nav-link {{ request()->routeIs('inventario.*') ? 'active' : 'collapsed' }}"
           href="{{ route('inventario.index') }}">
@@ -299,9 +282,9 @@
           <span>Inventario</span>
         </a>
       </li><!-- End Role Page Nav -->
+      @endcan
 
-
-
+      @can('ver-mantenimientos')      
       <li class="nav-item">
         <a class="nav-link {{ request()->routeIs('mantenimiento.*') ? 'active' : 'collapsed' }}"
           href="{{ route('mantenimiento.index') }}">
@@ -309,30 +292,38 @@
           <span>Mantenimiento</span>
         </a>
       </li><!-- End Role Page Nav -->
+      @endcan
 
-
-
+      
+      @can('ver-practicas')     
       <li class="nav-item">
         <a class="nav-link {{ request()->routeIs('practicas.*') || request()->routeIs('practicasAlumno.*') ? 'active' : 'collapsed' }}"
           data-bs-target="#practicas-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-journal"></i><span>Prácticas</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="practicas-nav" class="nav-content collapse " data-bs-parent="#practicas-nav">
+         
+          @can('ver-practicas')         
           <li>
             <a href="{{ route('practicas.index') }}">
               <span>Ver prácticas</span>
             </a>
           </li>
+          @endcan
+
+          @can('crear-practica-alumno')                         
           <li>
             <a href="{{route('practicasAlumno.create')}}">
               <span>Registrar práctica del alumno</span>
             </a>
           </li>
+          @endcan
 
         </ul>
       </li><!-- End Charts Nav -->
-
-
+      @endcan
+      
+      @can('ver-prestamos')
       <li class="nav-item">
         <a class="nav-link {{ request()->routeIs('prestamos.*') ? 'active' : 'collapsed' }}"
           href="{{ route('prestamos.index') }}">
@@ -340,6 +331,7 @@
           <span>Préstamos</span>
         </a>
       </li><!-- End Role Page Nav -->
+      @endcan
       <script>
         document.addEventListener('DOMContentLoaded', function () {
           const searchInput = document.getElementById('searchInput');

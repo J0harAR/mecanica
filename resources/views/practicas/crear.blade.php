@@ -1,5 +1,7 @@
 @extends('layouts.app')
 @section('content')
+
+@can('crear-practica')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -24,6 +26,8 @@
                 </ol>
             </nav>
             <div class="container mt-4">
+                @can('crear-practica')
+                              
                 <form class="row g-3 needs-validation" action="{{ route('practicas.store') }}" method="POST" novalidate>
                     @csrf
                     @if(session('error'))
@@ -122,6 +126,7 @@
                         <button type="submit" class="btn btn-primary">Registrar</button>
                     </div>
                 </form>
+                @endcan
             </div>
             <script>
                 $(document).ready(function () {
@@ -140,5 +145,5 @@
                     });
                 });
             </script>
-
+@endcan
 @endsection

@@ -21,7 +21,7 @@
           </ol>
         </nav>
       </div>
-      @can('crear-asignaturas')
+      @can('crear-asignatura')
       <a href="{{ route('asignatura.create') }}" class="btn btn-primary shadow">
         <i class="fas fa-plus"></i> Nueva Asignatura
       </a>
@@ -67,14 +67,14 @@
                   <td scope="row">{{ $asignatura->clave }}</td>
                   <td>{{ $asignatura->nombre }}</td>
                   <td>
-                    @can('editar-asignaturas')
+                    @can('editar-asignatura')
                     <a href="{{ route('asignatura.edit', ['id' => $asignatura->clave]) }}"
                        class="btn btn-outline-primary btn-sm">
                       <i class="fas fa-edit mr-2"></i>
                     </a>
                     @endcan
 
-                    @can('borrar-asignaturas')
+                    @can('borrar-asignatura')
                     <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
                             data-bs-target="#deleteModal" data-asignatura="{{ $asignatura->clave }}">
                       <i class="fas fa-trash mr-2"></i>
@@ -90,6 +90,8 @@
       </div>
     </div>
 
+
+@can('borrar-asignaturas')
     <!-- Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -112,6 +114,7 @@
     </div>
   </div>
 </div>
+@endcan
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {

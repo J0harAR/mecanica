@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@can('crear-grupo')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -15,9 +16,11 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item">
+                        @can('ver-grupos')                                                  
                         <a href="{{ route('grupos.index')}}" class="text-decoration-none text-primary">
                             <i class="fas fa-users me-1"></i> Administración de Grupos
                         </a>
+                        @endcan
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
                         <i class="fas fa-user-plus"></i> Registrar Grupo
@@ -26,9 +29,11 @@
             </nav>
         </div>
     </div>
-    
+
+
+    @can('crear-grupo')
     <div class="card custom-card">
-    <div class="card-body">
+        <div class="card-body">
             <form class="row g-3 needs-validation" action="{{ route('grupos.store') }}" method="POST" novalidate>
                 @csrf
                 <div class="col-md-8">
@@ -53,9 +58,11 @@
                 </div>
                 
                 <div class="col-12 d-flex justify-content-end mt-4">
+                    @can('ver-grupos')                                       
                     <a href="{{ route('grupos.index') }}" class="btn btn-light btn-sm text-black me-2">
                         <i class="fas fa-arrow-left"></i> Atrás
                     </a>
+                    @endcan
                     <button type="submit" class="btn btn-primary btn-sm">
                         <i class="fas fa-check"></i> Guardar
                     </button>
@@ -63,5 +70,7 @@
             </form>
         </div>
     </div>
+    @endcan
 </div>
+@endcan
 @endsection

@@ -1,5 +1,7 @@
 @extends('layouts.app')
 @section('content')
+
+@can('ver-herramientas')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -14,9 +16,12 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item">
+                        @can('ver-inventario')                                                
                         <a href="{{ route('inventario.index') }}" class="text-decoration-none text-primary">
                             <i class="fas fa-clipboard-list me-1"></i>Inventario
                         </a>
+                        @endcan
+
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
                         <i class="fas fa-wrench me-1"></i>Herramientas
@@ -25,17 +30,22 @@
             </nav>
         </div>
         <div>
+            @can('crear-herramienta')                      
             <button type="button" class="btn btn-tecnm" data-bs-toggle="modal" data-bs-target="#modal">
                 <i class="fas fa-plus-circle me-1"></i>Agregar herramienta
             </button>
+            @endcan
+
+            @can('generar_reporte_herramientas')                         
             <button class="btn btn btn-tecnm"  type="button"  data-bs-toggle="modal" data-bs-target="#modal-download" >
                 <i class="bi bi-download"></i>
           </button>
+          @endcan
 
         </div>
     </div>
 
-
+    @can('generar_reporte_herramientas') 
  <!-- Modal -->
  <div class="modal fade" id="modal-download" tabindex="-1"
         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -67,10 +77,10 @@
           </div>
         </div>
         </div><!-- End Modal -->
+        @endcan
 
 
-
-
+    @can('crear-herramienta')
     <!-- Vertically centered Modal -->
     <div class="modal fade" id="modal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
@@ -195,6 +205,8 @@
             </div>
         </div>
     </div>
+    @endcan
+
     @if (session('success'))
         <div class="alert alert-success" id="success-alert">
             {{ session('success') }}
@@ -212,7 +224,8 @@
             {{ session('tipo_vacia') }}
         </div>
     @endif 
-    
+
+    @can('ver-herramientas')       
     <div class="card shadow-lg rounded-3 border-0">
         <div class="card-body p-4">
             <div class="table-responsive">
@@ -236,21 +249,25 @@
                             <td>{{$herramienta->condicion}}</td>
                             <td>{{$herramienta->Articulo_inventariados->estatus}}</td>
                             <td class="text-center">
-
+                                
+                                @can('editar-herramienta')                                                                
                                 <button type="button" class="btn btn-outline-primary btn-sm " data-bs-toggle="modal"
                                     data-bs-target="#modal-update-{{ $herramienta->id_herramientas}}"><i
                                         class="fas fa-edit bt"></i></button>
+                                @endcan
 
-
+                                @can('borrar-herramienta')                                                                  
                                 <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#modal-{{ $herramienta->id_herramientas}}"><i
                                         class="fas fa-trash"></i></button>
-
+                                @endcan
 
 
                             </td>
                         </tr>
 
+
+                        @can('borrar-herramienta')
                         <!-- Modal -->
                         <div class="modal fade" id="modal-{{ $herramienta->id_herramientas}}" tabindex="-1"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -278,8 +295,10 @@
                                 </div>
                             </div>
                         </div><!-- End Modal -->
+                        @endcan
 
-
+                        @can('editar-herramienta')
+                                               
                         <!-- Vertically centered Modal -->
                         <div class="modal fade" id="modal-update-{{ $herramienta->id_herramientas}}" tabindex="-1">
                             <div class="modal-dialog modal-dialog-centered">
@@ -337,7 +356,7 @@
                             </div>
                         </div><!-- End Vertically centered Modal -->
 
-
+                        @endcan
 
 
                     @endforeach
@@ -348,7 +367,7 @@
         </div>
     </div>
 
-
+  @endcan
 
 </div>
 
@@ -363,5 +382,5 @@
     </script>
 @endif
 
-
+@endcan
 @endsection

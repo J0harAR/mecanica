@@ -1,5 +1,7 @@
 @extends('layouts.app')
 @section('content')
+@can('ver-practicas')
+
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -41,6 +43,7 @@
             });
         </script>
     @endif
+    @canany(['ver-practicas', 'generar_reporte_practicas'])
 
     <form method="POST" class="border p-4 rounded shadow-sm" id="filterForm">
         @csrf
@@ -76,9 +79,11 @@
             </button>
         </div>
     </form>
+    @endcanany
 
 </div>
 
+@can('ver-practicas')
 <div class="container">
     @if($practicas->isEmpty())
         <div class="alert alert-secondary" role="alert">
@@ -110,7 +115,9 @@
                                         <td>{{ $practica->id_docente }}</td>
                                         <td>{{ $practica->objetivo }}</td>
                                         <td>
+                                                                                                                           
                                             @if ($practica->estatus == 0)
+                                                @can('completar-practica')
                                                 <form action="{{route('practicas.completar', ['id' => $practica->id_practica])}}"
                                                     method="POST">
                                                     @csrf
@@ -118,22 +125,32 @@
                                                         <i class="fas fa-check-circle me-2"></i> Marcar como completado
                                                     </button>
                                                 </form>
+                                                @endcan
                                             @else
                                                 Completada
                                             @endif
+
                                         </td>
                                         <td>
+                                            @can('ver-practica')                                                                                        
                                             <a href="{{ route('practicas.show', ['id' => $practica->id_practica]) }}"
                                                 class="btn btn-outline-danger btn-sm  "><i class="fas fa-eye"></i></a>
+                                            @endcan
+                                            
+                                            @can('editar-practica')                                                                               
                                             <a href="{{ route('practicas.edit', ['id' => $practica->id_practica]) }}"
                                                 class="btn btn-outline-primary btn-sm  "><i class="fas fa-edit"></i></a>
-
+                                            @endcan
                                             <!-- Botón para abrir el modal de confirmación -->
+                                             @can('borrar-practica')                                                                                         
                                             <button type="button" class="btn btn-outline-danger btn-sm   " data-bs-toggle="modal"
                                                 data-bs-target="#deleteModal-{{ $practica->id_practica }}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
+                                            @endcan
 
+
+                                            @can('borrar-practica')                                                                                          
                                             <!-- Modal de Confirmación -->
                                             <div class="modal fade" id="deleteModal-{{ $practica->id_practica }}" tabindex="-1"
                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -162,6 +179,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach
@@ -172,9 +190,11 @@
             </div>
     @endif
     </div>
+    @endcan
 </div>
 
-
+    
+@endcan
 <script>
     function submitForm(actionUrl) {
         const form = document.getElementById('filterForm');

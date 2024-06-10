@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+
+@can('editar-practica')
+
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -24,6 +27,7 @@
                     </li>
                 </ol>
             </nav>
+            @can('editar-practica')
             <!-- Vertical Form -->
             <form class="row g-3" action="{{ route('practicas.update', ['id' => $practica->id_practica]) }}"
                 method="POST">
@@ -116,10 +120,11 @@
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
             </form>
+            @endcan
         </div>
     </div>
 </div>
-
+@endcan
 <script>
     $(document).ready(function () {
         $('#articulos').select2({

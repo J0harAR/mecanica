@@ -3,6 +3,9 @@
 
 @section('content')
 
+@can('ver-periodos')
+    
+
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -31,11 +34,14 @@
 
 
 
-
+    @can('crear-periodo')
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
       <i class="ri-add-line"></i> Añadir periodo
     </button>
+    @endcan
 
+
+@can('crear-periodo')     
 <!-- Vertically centered Modal -->
 <div class="modal fade" id="modal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -60,14 +66,15 @@
     </div>
   </div>
   <!-- End Vertically centered Modal -->
+  @endcan
 
 
 
 
 
 
-
-
+@can('ver-periodos')
+    
     <div class="card custom-card">
       <div class="card-body">
           <div class="card-body">
@@ -87,26 +94,24 @@
                         <tr>
                             <td>{{$periodo->clave}}</td>
                             <td>
+                                @can('borrar-periodo')                                                             
                                 <form action="{{route('periodos.destroy',['id'=>$periodo->clave])}}" method="POST">
                                     @csrf
                                     @method('DELETE')
 
                                 <button  class="btn btn-outline-danger btn-sm">Eliminar</button>
                                 </form>
-                           
+                                @endcan
                             
                             </td>
                         </tr>
-
-                        
-
-
+                  
                         @endforeach
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
-
+@endcan
+@endcan
 @endsection

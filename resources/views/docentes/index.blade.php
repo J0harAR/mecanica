@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+
+@can('ver-docentes')
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
@@ -22,15 +24,23 @@
     </div>
     
     <div class="btn-group" role="group">
-    <a href="{{ route('docentes.create') }}" class="btn btn-primary">
-        <i class="ri-add-line"></i> Añadir docente
-</a>
+      @can('crear-docente')              
+        <a href="{{ route('docentes.create') }}" class="btn btn-primary">
+            <i class="ri-add-line"></i> Añadir docente
+        </a>
+      @endcan
+
+      @can('asignar-grupos-docente')     
       <a href="{{ route('docentes.asigna') }}" class="btn btn-outline-primary">
         <i class="fas fa-chalkboard-teacher me-1"></i>Añadir asignatura
       </a>
+      @endcan
+
+      @can('eliminar-grupos-docente')       
       <a href="{{ route('docentes.eliminacion_asignacion') }}" class="btn btn-outline-primary">
         <i class="fas fa-trash-alt"></i> Remover asignatura
       </a>
+      @endcan
     </div>
   </div>
 
@@ -47,8 +57,8 @@
         </div>
     @endif
 
-
-    <div class="card shadow-lg rounded-3 border-0">
+    @can('ver-docentes')
+  <div class="card shadow-lg rounded-3 border-0">
     <div class="card-body p-4">
       <div class="table-responsive">
         <table class="table table-striped table-hover table-bordered shadow-sm rounded align-middle"
@@ -70,17 +80,23 @@
             <td>{{$docente->persona->nombre}} {{$docente->persona->apellido_p}} {{$docente->persona->apellido_m}}</td>
             <td>{{$docente->area}}</td>
             <td>
+              
+              @can('ver-docente')                             
               <a href="{{route('docentes.show', $docente->rfc)}}" class="btn btn-primary btn-sm">
                 <i class="bi bi-person-vcard"></i> Datos generales
               </a>
+              @endcan
+              
+              @can('borrar-docente')                            
               <button type="button" class="btn btn-outline-danger btn-sm btn-sm  "
              data-bs-toggle="modal" data-bs-target="#modal-delete{{ $docente->rfc}}"><i
             class="fas fa-trash"></i></button>
+            @endcan
             </td>
           </tr>
 
 
-
+        @can('borrar-docente')                  
            <!-- Modal -->
         <div class="modal fade" id="modal-delete{{ $docente->rfc}}" tabindex="-1"
         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -104,11 +120,14 @@
           </div>
         </div>
         </div><!-- End Modal -->
+        @endcan
         @endforeach
       </tbody>
     </table>
     </div>
     </div>
   </div>
+  @endcan
 </div>
+@endcan
 @endsection

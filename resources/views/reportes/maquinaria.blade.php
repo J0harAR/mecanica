@@ -44,6 +44,8 @@
     </style>
 </head>
 <body>
+    @can('generar_reporte_maquinaria')
+    
     <div class="header">
         <table class="header-table">
             <tr>
@@ -81,5 +83,6 @@
         </tr>
         @endforeach
     </table>
+    @endcan
 </body>
 </html>

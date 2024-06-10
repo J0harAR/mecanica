@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+@can('ver-maquinarias')
+
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -26,16 +28,22 @@
             </nav>
         </div>
         <div>
+            @can('crear-maquinaria')
             <button type="button" class="btn btn-tecnm" data-bs-toggle="modal" data-bs-target="#modal">
                 <i class="fas fa-plus-circle me-1"></i>Agregar maquinaria
-            </button>
+            </button> 
+            @endcan 
+
+            @can('generar_reporte_maquinaria')
             <button class="btn btn btn-tecnm" type="button" data-bs-toggle="modal" data-bs-target="#modal-download">
                 <i class="bi bi-download"></i>
-            </button>
+            </button>           
+            @endcan
+          
         </div>
     </div>
 
-
+    @can('generar_reporte_maquinaria')
     <!-- Modal -->
     <div class="modal fade" id="modal-download" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -65,6 +73,9 @@
             </div>
         </div>
     </div><!-- End Modal -->
+    @endcan
+
+    @can('crear-maquinaria')
 
     <!-- Vertically centered Modal -->
     <div class="modal fade" id="modal" tabindex="-1">
@@ -152,7 +163,7 @@
             </div>
         </div>
     </div>
-
+    @endcan
 
     <div class="row">
         <div class="col-lg-4">
@@ -245,6 +256,7 @@
             });
         </script>
     @endif
+    @can('ver-maquinarias')
     <div class="card shadow-lg rounded-3 border-0">
         <div class="card-body p-4">
             <div class="table-responsive">
@@ -274,23 +286,30 @@
                                     @endforeach
                                 </td>
                                 <td class="text-center">
+                                    @can('editar-maquinaria')                                                                         
                                     <button type="button" class="btn btn-outline-primary btn-sm  " data-bs-toggle="modal"
                                         data-bs-target="#modal-update-{{ $maquina->id_maquinaria }}"><i
                                             class="fas fa-edit bt"></i></button>
+                                    @endcan
+
+                                    @can('borrar-maquinaria')                                                                      
                                     <button type="button" class="btn btn-outline-danger btn-sm  " data-bs-toggle="modal"
                                         data-bs-target="#modal-{{ $maquina->id_maquinaria }}"><i
                                             class="fas fa-trash"></i></button>
+                                    @endcan
                                 </td>
                                 <td class="text-center">
+                                     @can('asignar-insumos-maquinaria')   
                                     <button type="button"
                                         class="btn btn-outline-primary  d-flex align-items-center mx-auto "
                                         data-bs-toggle="modal" data-bs-target="#modal-insumos{{ $maquina->id_maquinaria }}">
                                         <i class="fas fa-boxes me-2"></i>
                                     </button>
+                                    @endcan
 
                                     </th>
                             </tr>
-
+                            @can('editar-maquinaria')                                                         
                             <!-- Modal Update -->
                             <div class="modal fade" id="modal-update-{{ $maquina->id_maquinaria }}" tabindex="-1">
                                 <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -402,8 +421,9 @@
                                 </div>
                             </div>
                             <!-- End Modal Update -->
+                            @endcan
 
-
+                            @can('borrar-maquinaria')                                                            
                             <!-- Modal Delete -->
                             <div class="modal fade" id="modal-{{ $maquina->id_maquinaria }}" tabindex="-1"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -431,7 +451,10 @@
                                     </div>
                                 </div>
                             </div>
+                            @endcan
 
+
+                            @can('asignar-insumos-maquinaria')                                                         
                             <!-- Modal Asignar Insumos -->
                             <div class="modal fade" id="modal-insumos{{ $maquina->id_maquinaria }}" tabindex="-1"
                                 aria-labelledby="modalLabel{{ $maquina->id_maquinaria }}" aria-hidden="true">
@@ -471,12 +494,15 @@
                                     </div>
                                 </div>
                             </div>
+                            @endcan
                         @endforeach
                     </tbody>
                 </table>
             </div>
-        </div>
+            @endcan
+        </div>  
     </div>
+    @endcan
     <script>
         document.getElementById('machineForm').addEventListener('submit', function (event) {
             const insumos = document.getElementById('insumos');

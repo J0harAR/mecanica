@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@can('ver-mantenimientos')
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
@@ -21,15 +22,23 @@
       </nav>
     </div>
     <div class="btn-group" role="group">
+      @can('crear-mantenimiento')
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
         <i class="ri-add-line"></i> Añadir
       </button>
+      @endcan
+      
+      @can('ver-insumos')
       <a href="{{ route('insumos.index') }}" class="btn btn-outline-primary">
         <i class="bi bi-droplet"></i> Insumos
       </a>
+      @endcan
+
+      @can('ver-maquinarias')
       <a href="{{ route('maquinaria.index') }}" class="btn btn-outline-primary">
         <i class="bi bi-gear"></i> Maquinaria
       </a>
+      @endcan
     </div>
   </div>
 
@@ -64,6 +73,7 @@
 
 @endif
 
+@can('crear-mantenimiento')
   <!-- Vertically centered Modal -->
   <div class="modal fade" id="modal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -120,6 +130,9 @@
     </div>
   </div>
   <!-- End Vertically centered Modal -->
+  @endcan
+
+@can('ver-mantenimientos')
   <div class="card shadow-lg rounded-3 border-0">
     <div class="card-body p-4">
       <div class="table-responsive">
@@ -155,9 +168,11 @@
         </td>
         <td>{{$mantenimiento->fecha}}</td>
         <td class="text-center">
+          @can('borrar-mantenimiento')             
           <button type="button" class="btn btn-outline-danger btn-sm btn-sm  "
           data-bs-toggle="modal" data-bs-target="#modal-delete{{ $mantenimiento->id}}"><i
             class="fas fa-trash"></i></button>
+           @endcan
         </td>
         </tr>
 
@@ -199,7 +214,7 @@
         </div>
         <!-- End Modal -->
 
-
+      @can('borrar-mantenimiento')
         <!-- Modal -->
         <div class="modal fade" id="modal-delete{{ $mantenimiento->id}}" tabindex="-1"
         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -223,8 +238,7 @@
           </div>
         </div>
         </div><!-- End Modal -->
-
-
+      @endcan
 
       @endforeach
           </tbody>
@@ -233,6 +247,8 @@
       </div>
     </div>
   </div>
+  @endcan
+  @endcan
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
     $(document).ready(function () {
