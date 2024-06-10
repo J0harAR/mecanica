@@ -1,3 +1,29 @@
+
+<?php
+        
+        
+        $maquinaria_mantenimiento = DB::table('insumos_maquinaria')
+        ->whereColumn('cantidad_actual', '<=', 'cantidad_minima')
+        ->get();
+
+        $cantidad_maquinas=count($maquinaria_mantenimiento);
+
+
+        $prestamos_pendientes=DB::table('prestamo')
+        ->whereColumn('fecha_devolucion', '<=', DB::raw('DATE_ADD(CURDATE(), INTERVAL 1 DAY)'))
+        ->where('estatus','Pendiente')
+        ->get();
+        $cantidad_prestamos=count($prestamos_pendientes);
+
+
+        $total_notificaciones=$cantidad_maquinas + $cantidad_prestamos;
+
+
+
+?>
+
+
+
 <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center"
   style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px);">
@@ -21,7 +47,57 @@
         </a>
       </li><!-- End Search Icon-->
       <li class="nav-item dropdown">
+      <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+          <i class="bi bi-bell"></i>
+          <span class="badge bg-primary badge-number">{{$total_notificaciones}}</span>
+        </a><!-- End Notification Icon -->
 
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+          <li class="dropdown-header">
+        
+          Tienes {{$total_notificaciones}} nuevas notificaciones
+            
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+ 
+          @foreach ($maquinaria_mantenimiento as $maquina)
+            <li class="notification-item">
+              <i class="bi bi-exclamation-circle text-warning"></i>
+              <div>
+                <h4>Maquina:{{$maquina->maquinaria_id}}</h4>
+                <p>Se necesita brindarle mantenimiento urgente</p>
+                <p>Insumo:{{$maquina->insumo_id}} nivel bajo</p>
+              </div>
+          </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            @endforeach
+        
+
+          @foreach ($prestamos_pendientes as $prestamo)
+          <li class="notification-item">
+            <i class="bi bi-info-circle text-primary"></i>
+            <div>
+            <h4>Prestamo:{{$prestamo->id}} pendiente</h4>
+                <p>Fecha de entrega cerca : {{$prestamo->fecha_devolucion}}</p>
+                <p>Docente:{{$prestamo->id_docente}}</p>
+                <p>Herramienta:{{$prestamo->id_herramientas}}</p>
+
+              </div>
+          </li>
+
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          @endforeach
+        
+        </ul>
+        <!--  End Notification Dropdown Items -->
 
       </li><!-- End Notification Nav -->
 
@@ -50,6 +126,37 @@
             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
               @csrf
             </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            
           </li>
         </ul>
       </li><!-- End Profile Nav -->
