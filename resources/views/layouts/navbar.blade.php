@@ -1,18 +1,27 @@
-
 <?php
-        
+use Illuminate\Support\Facades\DB;
 
-        $maquinaria_mantenimiento = DB::table('insumos_maquinaria')
-        ->whereColumn('cantidad_actual', '<=', 'cantidad_minima')
-        ->get();
-        $cantidad_maquinas=count($maquinaria_mantenimiento);
-        $prestamos_pendientes=DB::table('prestamo')
-        ->whereColumn('fecha_devolucion', '<=', DB::raw('DATE_ADD(CURDATE(), INTERVAL 1 DAY)'))
-        ->where('estatus','Pendiente')
-        ->get();
-        $cantidad_prestamos=count($prestamos_pendientes);
-        $total_notificaciones=$cantidad_maquinas + $cantidad_prestamos;
+$maquinaria_mantenimiento = DB::table('insumos_maquinaria')
+    ->whereColumn('cantidad_actual', '<=', 'cantidad_minima')
+    ->get();
+$cantidad_maquinas = count($maquinaria_mantenimiento);
 
+$connection = DB::connection()->getPDO()->getAttribute(PDO::ATTR_DRIVER_NAME);
+
+if ($connection === 'sqlite') {
+    $prestamos_pendientes = DB::table('prestamo')
+        ->whereRaw('fecha_devolucion <= date("now", "+1 day")')
+        ->where('estatus', 'Pendiente')
+        ->get();
+} else {
+    $prestamos_pendientes = DB::table('prestamo')
+        ->whereRaw('fecha_devolucion <= DATE_ADD(CURDATE(), INTERVAL 1 DAY)')
+        ->where('estatus', 'Pendiente')
+        ->get();
+}
+
+$cantidad_prestamos = count($prestamos_pendientes);
+$total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
 ?>
 
 <!-- ======= Header ======= -->

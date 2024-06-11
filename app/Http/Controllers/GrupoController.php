@@ -38,10 +38,8 @@ class GrupoController extends Controller
             $grupo->clave_asignatura=$request->input('asignatura');
             $grupo->save();
 
-        
     
-
-        return redirect()->route('grupos.index');
+        return redirect()->route('grupos.index')->with('success','Grupo agregado correctamente');
     }
 
     public function destroy($id){
@@ -59,7 +57,7 @@ class GrupoController extends Controller
             $grupo->delete();
         }
 
-        return redirect()->route('grupos.index');
+        return redirect()->route('grupos.index')->with('success','Grupo eliminado correctamente');;
     }
 
 }

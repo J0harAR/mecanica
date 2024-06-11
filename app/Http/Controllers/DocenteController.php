@@ -108,7 +108,7 @@ class DocenteController extends Controller
         }
 
  
-        return redirect()->route('docentes.index');
+        return redirect()->route('docentes.index')->with('success','Docente agregado correctamente');
        
     }
 
@@ -247,7 +247,7 @@ class DocenteController extends Controller
            
             }
          
-          return redirect()->route('docentes.index');
+          return redirect()->route('docentes.index')->with('success','Asignatura añadida a docente correctamente');
     }
 
     public function eliminacion_asignacion(){
@@ -301,7 +301,7 @@ class DocenteController extends Controller
 
                
             }
-            return redirect()->route('docentes.index');
+            return redirect()->route('docentes.index')->with('success','Asignatura removida del docente correctamente');
     }
 
 }

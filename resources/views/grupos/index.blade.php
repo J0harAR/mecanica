@@ -30,11 +30,11 @@
 
             </div>
         </div>
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+        
+        @if (session('success'))
+                <div class="alert alert-success" id="error-alert">
+                    {{ session('success') }}
+                </div>
         @endif
 
         @if(session('error'))
@@ -140,4 +140,17 @@
         @endcan
         </div>
 @endcan
+
+
+<script>
+  // JavaScript para ocultar el mensaje de error después de 3 segundos
+  document.addEventListener('DOMContentLoaded', function () {
+        var errorAlert = document.getElementById('error-alert');
+        if (errorAlert) {
+            setTimeout(function () {
+                errorAlert.style.display = 'none';
+            }, 3000);
+        }
+    });
+</script>
     @endsection

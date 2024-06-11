@@ -26,7 +26,7 @@ class PeriodoController extends Controller
             $periodo->clave=$request->input('periodo');
             $periodo->save();
 
-            return redirect()->route('periodos.index');
+            return redirect()->route('periodos.index')->with('success','Periodo agregado correctamente');
 
         }
 
@@ -36,7 +36,7 @@ class PeriodoController extends Controller
             $periodo=Periodo::find($id);      
             $periodo->delete();
 
-            return redirect()->route('periodos.index');
+            return redirect()->route('periodos.index')->with('success','Periodo eliminado correctamente');
         }
 
 

@@ -79,7 +79,7 @@ class UserTest extends TestCase
 
         User::create([
             "name" =>"Test",
-            "email" => 'test@gmail.com',
+            "email" => 'test@itoaxaca.edu.mx',
             "password" => Hash::make('password22'),
         ]);
 
@@ -94,7 +94,7 @@ class UserTest extends TestCase
 
         //Acceso correcto
         $accesoCorrecto = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
+            "email" => 'test@itoaxaca.edu.mx',
             'password' => 'password22',
         
         ]);
@@ -132,12 +132,12 @@ class UserTest extends TestCase
         
         User::create([
             "name" =>"Test",
-            "email" => 'test@gmail.com',
+            "email" => 'test@itoaxaca.edu.mx',
             "password" => Hash::make('password22'),
         ]);
 
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
+            'email' => 'test@itoaxaca.edu.mx',
             'password' => 'password22',
         
         ]);
@@ -153,7 +153,7 @@ class UserTest extends TestCase
         
         $user = User::factory()->create([
             "name" => "Test",
-            "email" => 'test@gmail.com',
+            "email" => 'test@itoaxaca.edu.mx',
             "password" => Hash::make('password22'),
         ]);
         $roleAdministrador = Role::firstOrCreate(['name' => 'Administrador']);
@@ -162,7 +162,7 @@ class UserTest extends TestCase
        
 
         $this->post(route('login'), [
-            'email' => 'test@gmail.com',
+            'email' => 'test@itoaxaca.edu.mx',
             'password' => 'password22',
         ]);
         //Ver formulario de crear usuario
@@ -210,7 +210,7 @@ class UserTest extends TestCase
         
         $user = User::factory()->create([
             "name" => "Test",
-            "email" => 'test@gmail.com',
+            "email" => 'test@itoaxaca.edu.mx',
             "password" => Hash::make('password22'),
         ]);
         $roleAdministrador = Role::firstOrCreate(['name' => 'Administrador']);
@@ -219,7 +219,7 @@ class UserTest extends TestCase
        
 
         $this->post(route('login'), [
-            'email' => 'test@gmail.com',
+            'email' => 'test@itoaxaca.edu.mx',
             'password' => 'password22',
         ]);
         //Ver formulario de editar usuario

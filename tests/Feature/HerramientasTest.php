@@ -272,7 +272,7 @@ class HerramientasTest extends TestCase
         ];
 
         //Creacion correcta de una herramienta
-        $response = $this->post(route('inventario.store'), $data); 
+        $response = $this->post(route('herramientas.store'), $data); 
         
         $response->assertStatus(302);
         $response->assertRedirect(route('herramientas.index'));

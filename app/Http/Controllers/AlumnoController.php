@@ -93,7 +93,7 @@ class AlumnoController extends Controller
 
     
         
-            return redirect()->route('alumnos.index');
+            return redirect()->route('alumnos.index')->with('success','Alumno agregado correctamente');;
 
 
         }
@@ -143,7 +143,7 @@ class AlumnoController extends Controller
 
             }
             
-            return redirect()->route('alumnos.index');
+            return redirect()->route('alumnos.index')->with('success','Alumno actualizado correctamente');;
 
         }
 
@@ -151,7 +151,7 @@ class AlumnoController extends Controller
             $alumno=Alumno::find($id);
             $alumno->delete();
 
-            return redirect()->route('alumnos.index');
+            return redirect()->route('alumnos.index')->with('success','Alumno eliminado correctamente');;
 
         }
 

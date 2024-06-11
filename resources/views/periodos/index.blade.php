@@ -40,6 +40,12 @@
 
 </div>
 </div>
+    @if (session('success'))
+        <div class="alert alert-success" id="error-alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
 @can('crear-periodo')     
 <!-- Vertically centered Modal -->
 <div class="modal fade" id="modal" tabindex="-1">
@@ -113,4 +119,16 @@
 </div>
 @endcan
 @endcan
+
+<script>
+  // JavaScript para ocultar el mensaje de error después de 3 segundos
+  document.addEventListener('DOMContentLoaded', function () {
+        var errorAlert = document.getElementById('error-alert');
+        if (errorAlert) {
+            setTimeout(function () {
+                errorAlert.style.display = 'none';
+            }, 3000);
+        }
+    });
+</script>
 @endsection

@@ -30,6 +30,7 @@
             @endcan
         </div>
     </div>
+
     
     @can('crear-alumnos')            
     <!-- Vertically centered Modal -->
