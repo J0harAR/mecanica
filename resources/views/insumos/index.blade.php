@@ -135,17 +135,8 @@
         @endcan
     </div>
 
-    @if (session('success'))
-        <div class="alert alert-success" id="success-alert">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if (session('error'))
-    <div class="alert alert-danger" id="error-alert">
-        {{ session('error') }}
-    </div>
-    @endif      <div class="row">
+    
+    <div class="row">
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-body">
@@ -195,7 +186,17 @@
             </div>
             </div>
         </div>
-   
+        @if (session('success'))
+        <div class="alert alert-success" id="success-alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+    <div class="alert alert-danger" id="error-alert">
+        {{ session('error') }}
+    </div>
+    @endif  
     @can('ver-insumos')    
     <div class="card shadow-lg rounded-3 border-0">
         <div class="card-body p-4">

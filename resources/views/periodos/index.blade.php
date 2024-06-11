@@ -30,17 +30,16 @@
                 </ol>
             </nav>
         </div>
-    </div>
-
-
-
+  
+<div>
     @can('crear-periodo')
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
       <i class="ri-add-line"></i> Añadir periodo
     </button>
     @endcan
 
-
+</div>
+</div>
 @can('crear-periodo')     
 <!-- Vertically centered Modal -->
 <div class="modal fade" id="modal" tabindex="-1">

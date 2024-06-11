@@ -142,7 +142,7 @@
                             <label for="condicion_herramienta" class="form-label"><i
                                     class="bi bi-activity me-2"></i>Condición</label>
                             <input type="text" class="form-control" id="condicion_herramienta_input"
-                                name="condicion_herramienta">
+                                name="condicion_herramienta"required>
                         </div>
 
                         <div class="text-center mt-4">

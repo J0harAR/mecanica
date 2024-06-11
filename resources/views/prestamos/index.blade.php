@@ -35,8 +35,7 @@
     </div>
     
   </div>
-  </div>
-  
+
 
   @if (session('docente_no_encontrado')) 
   <div class="alert alert-danger" id="danger-alert">
