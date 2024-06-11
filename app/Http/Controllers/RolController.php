@@ -66,13 +66,8 @@ class RolController extends Controller
         return redirect()->route('roles.index')->with('success', 'El rol "' . $role->name .'" ha sido registrado exitosamente: ' );
 
     }
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+
+
 
     /**
      * Show the form for editing the specified resource.

@@ -180,8 +180,7 @@ class DocenteController extends Controller
         if ($e->getCode() == 23000) {
             return redirect()->route('docentes.index')->with('error', 'No es posible eliminar el docente porque tiene prácticas asociadas');
         }
-
-        return redirect()->route('docentes.index')->with('error', 'Ocurrió un error al intentar eliminar el docente');
+       
     }
 }
 

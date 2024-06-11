@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 class UserTest extends TestCase
 {
-    
+
     /**
     * Test para el registro de usuarios de laravel UI.
     */

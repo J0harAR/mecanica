@@ -126,14 +126,14 @@ class AlumnoTest extends TestCase
         ];
 
 
-        //Registro correcto
+        
         $acceso->assertStatus(302)->assertRedirect(route('home'));
 
         $response = $this->post(route('alumnos.store'), $data); 
         $response->assertStatus(302);
         $response->assertRedirect(route('alumnos.index'));
 
-        //Caso en el que el curpo le pertenezca a un docente osea la restriccion de inclusion
+        //Caso en el que el curpo le pertenezca a un docente  la restriccion de inclusion
         Persona::create([
             'curp'=>"AAAA",
             'nombre'=>"Johan",
@@ -197,6 +197,175 @@ class AlumnoTest extends TestCase
         $response = $this->post(route('alumnos.store'), $data); 
         $response->assertStatus(302);
         $response->assertRedirect(route('alumnos.index'));
+    }
+
+
+    public function test_edit_alumno():void{
+
+        Artisan::call('migrate');
+
+        User::create([
+            "name" =>"Test",
+            "email" => 'test@gmail.com',
+            "password" => Hash::make('password22'),
+        ]);
+        
+        
+        $acceso = $this->post(route('login'), [
+            'email' => 'test@gmail.com',
+            'password' => 'password22',
+        
+        ]);
+
+    
+        $acceso->assertStatus(302)->assertRedirect(route('home'));
+
+           
+         //Registro correcto con grupos
+        Asignatura::create([
+            'clave'=>'IA',
+            'nombre'=>'Inteligencia artificial'
+        ]);
+
+        Persona::create([
+            'curp'=>"AAAA",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+        ]);
+        Docente::create([
+            'rfc'=>"DDD",
+            'curp'=>"AAAA",
+            'area'=>"Sistemas",
+            'foto'=>"sdsada",
+            'telefono'=>"839213"
+        ]);
+
+
+        $docente=Docente::find("DDD");
+        $asignatura=Asignatura::find('IA');
+
+        Grupo::create([
+            'id_docente'=>$docente->rfc,
+            'clave_grupo'=>"IA1",
+            'clave_asignatura'=>$asignatura->clave,
+            'periodo'=>'2024'
+        ]);
+
+        Grupo::create([
+            'id_docente'=>$docente->rfc,
+            'clave_grupo'=>"IA12",
+            'clave_asignatura'=>$asignatura->clave,
+            'periodo'=>'2024'
+        ]);
+
+
+        $grupo=Grupo::find('IA1');
+        $this->assertNotNull($grupo);
+        
+        $data=[
+            'no_control'=>"19161299",
+            'curp'=>"AAAAR",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+            'grupos'=>[
+                $grupo->clave_grupo
+            ]
+
+        ];
+
+        $response = $this->post(route('alumnos.store'), $data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('alumnos.index'));
+        
+        //Actualizar
+
+        $data=[
+            'no_control'=>"19161299",
+            'curp'=>"AAAAR",
+            'nombre'=>"Johannnn",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+            'grupos'=>[
+                $grupo->clave_grupo,
+                'IA12'
+            ]
+
+        ];
+
+        $response = $this->put(route('alumnos.update',"19161299"), $data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('alumnos.index'));
+
+
+        //Validacion de inclusion
+
+        $data=[
+            'no_control'=>"19161299",
+            'curp'=>"AAAA",
+            'nombre'=>"Johannnn",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+            'grupos'=>[
+                $grupo->clave_grupo,
+                'IA12'
+            ]
+
+        ];
+        
+        $response = $this->put(route('alumnos.update',"19161299"), $data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('alumnos.index'));
+        $response->assertSessionHas('error');
+
+    }
+
+    public function test_delete_alumno():void{
+
+        Artisan::call('migrate');
+
+        User::create([
+            "name" =>"Test",
+            "email" => 'test@gmail.com',
+            "password" => Hash::make('password22'),
+        ]);
+        
+        
+        $acceso = $this->post(route('login'), [
+            'email' => 'test@gmail.com',
+            'password' => 'password22',
+        
+        ]);
+
+       
+        $data=[
+            'no_control'=>"19161229",
+            'curp'=>"AAA",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+        ];
+
+
+        
+        $acceso->assertStatus(302)->assertRedirect(route('home'));
+
+        $response = $this->post(route('alumnos.store'), $data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('alumnos.index'));
+
+
+        //Eliminar el alumno
+        $alumno=Alumno::find("19161229");
+        $this->assertNotNull($alumno);
+
+
+        $response = $this->delete(route('alumnos.destroy',$alumno->no_control)); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('alumnos.index'));
+
+        $this->assertDatabaseMissing('alumno', ['no_control' => $alumno->no_control]);
     }
 
 }

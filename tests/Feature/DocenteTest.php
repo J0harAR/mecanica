@@ -20,6 +20,7 @@ use App\Models\Asignatura;
 use App\Models\Persona;
 use App\Models\Alumno;
 use App\Models\Periodo;
+use App\Models\Herramientas;
 
 class DocenteTest extends TestCase
 {
@@ -130,6 +131,30 @@ class DocenteTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect(route('docentes.index'));
         $response->assertSessionHas('error');
+
+
+        //Caso en el que se elimine un profesor pero la persona sigue registrada
+        Persona::create([
+            'curp'=>"CURP2",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+        ]);
+
+        $persona=Persona::find('CURP2');
+        $this->assertNotNull($persona);
+
+        $data=[
+            'curp'=>$persona->curp,        
+            'rfc'=>"BBB",
+            'area'=>"Sistemas",
+            'telefono'=>"1234",
+            'foto'=>  $file,
+        ];
+
+        $response = $this->post(route('docentes.store'), $data);
+        $response->assertStatus(302)->assertRedirect(route('docentes.index')); 
+        
     }
 
 
@@ -203,6 +228,224 @@ class DocenteTest extends TestCase
 
 
     }
+
+    public function test_edit_docente():void{
+        Artisan::call('migrate');
+        Storage::fake('local');
+
+        User::create([
+            "name" =>"Test",
+            "email" => 'test@gmail.com',
+            "password" => Hash::make('password22'),
+        ]);
+        
+        
+        $acceso = $this->post(route('login'), [
+            'email' => 'test@gmail.com',
+            'password' => 'password22',
+        
+        ]);
+
+        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $file = UploadedFile::fake()->image('foto.jpg');
+        Persona::create([
+            'curp'=>"AAA",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+        ]);
+
+        Docente::create([
+            'rfc'=>"DDD",
+            'curp'=>"AAA",
+            'area'=>"Sistemas",
+            'foto'=>$file,
+            'telefono'=>"839213"
+        ]);
+
+        $docente=Docente::find("DDD");
+        $this->assertNotNull($docente);
+        
+        $data=[
+            'nombre'=>"pepe",
+            'rfc'=>"pepe",
+            'curp'=>"DDD",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+            'area'=>"Sistemas",
+            'foto'=>$file,
+            'telefono'=>"839213"
+        ];  
+
+        $response =$this->put(route('docentes.update',$docente->rfc),$data);
+        $response->assertStatus(302);
+        $response->assertRedirect(route('docentes.index'));
+
+        //Validacion de iunclusion curp le pertenece a un alumno
+        Persona::create([
+            'curp'=>"PPP",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+        ]);
+        Persona::create([
+            'curp'=>"CURPPPPP",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+        ]);
+
+        Alumno::create([
+            'no_control'=>"19161229",
+            'curp'=>"PPP"
+        ]);
+
+        Docente::create([
+            'rfc'=>"DDDRR",
+            'curp'=>"CURPPPPP",
+            'area'=>"Sistemas",
+            'foto'=>$file,
+            'telefono'=>"839213"
+        ]);
+        $docente=Docente::find("DDDRR");
+
+        $data=[
+            'curp'=>"PPP",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+            'rfc'=>"BBB",
+            'area'=>"Sistemas",
+            'telefono'=>"1234",
+            'foto'=>  $file,
+        ];
+
+        $response =$this->put(route('docentes.update',$docente->rfc),$data);
+        $response->assertStatus(302);
+        $response->assertRedirect(route('docentes.index'));
+        $response->assertSessionHas('error');
+    }
+
+    public function test_delete_docente():void{
+        Artisan::call('migrate');
+        Storage::fake('local');
+
+        User::create([
+            "name" =>"Test",
+            "email" => 'test@gmail.com',
+            "password" => Hash::make('password22'),
+        ]);
+        
+        
+        $acceso = $this->post(route('login'), [
+            'email' => 'test@gmail.com',
+            'password' => 'password22',
+        
+        ]);
+
+        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $file = UploadedFile::fake()->image('foto.jpg');
+        Persona::create([
+            'curp'=>"CURPPPPP",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+        ]);
+
+        Docente::create([
+            'rfc'=>"DDDRR",
+            'curp'=>"CURPPPPP",
+            'area'=>"Sistemas",
+            'foto'=>$file,
+            'telefono'=>"839213"
+        ]);
+
+        $docente=Docente::find('DDDRR');
+
+        $response =$this->delete(route('docentes.destroy',$docente->rfc));
+        $response->assertStatus(302);
+        $response->assertRedirect(route('docentes.index'));
+
+
+
+        //Eliminar un docente que tiene registrada una practica
+        Persona::create([
+            'curp'=>"AAA",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+        ]);
+
+        Docente::create([
+            'rfc'=>"DDD",
+            'curp'=>"AAA",
+            'area'=>"Sistemas",
+            'foto'=>"sdsada",
+            'telefono'=>"839213"
+        ]);
+
+        Asignatura::create([
+            'clave'=>'IA',
+            'nombre'=>'Inteligencia artificial'
+        ]);
+
+
+        $docente=Docente::find("DDD");
+        $asignatura=Asignatura::find('IA');
+
+        Grupo::create([
+            'id_docente'=>$docente->rfc,
+            'clave_grupo'=>"IA1",
+            'clave_asignatura'=>$asignatura->clave,
+            'periodo'=>'2024'
+        ]);
+
+        $grupo=Grupo::find('IA1');
+
+        $data_herramienta=[
+            'nombre' => 'Torno',
+            'seccion' => 03,
+            'estatus' => 'Disponible',
+            'tipo' => 'Herramientas',
+            'cantidad' => 1,
+            'tipo_herramienta' => 'Herramienta manual',
+            'dimension_herramienta' => 234,
+            'condicion_herramienta' => 'Nueva',
+            'tipo_insumo' => null, 
+            'capacidad_insumo' => null 
+
+
+        ];
+
+        $response = $this->post(route('herramientas.store'), $data_herramienta); 
+        $herramienta=Herramientas::find('HM-T-0234-01');
+       
+        $this->assertNotNull($herramienta);
+        $this->assertNotNull($grupo);
+        $this->assertNotNull($docente);
+        $this->assertNotNull($asignatura);
+
+
+        Practica::create([
+            'id_practica'=>"001",
+            'id_docente'=>$docente->rfc,
+            'clave_grupo'=>$grupo->clave_grupo,
+            'nombre'=>"Practica 1",
+            'objetivo'=>"Objectivo practica 1",
+            'introduccion'=>"Introduccion practica 1",
+            'fundamento'=>"fundamento practica 1",
+            'referencias'=>"referencias practica 1",
+            'estatus'=>0,
+        ]);
+        $response =$this->delete(route('docentes.destroy',$docente->rfc));
+        $response->assertStatus(302);
+        $response->assertRedirect(route('docentes.index'));
+        $response->assertSessionHas('error');
+
+
+
+    }
+
 
     public function test_view_filtro():void {
        

@@ -84,4 +84,101 @@ class GrupoTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect(route('grupos.index'));
     }
+
+
+    public function test_delete_grupo():void{
+        Artisan::call('migrate');
+
+        User::create([
+            "name" =>"Test",
+            "email" => 'test@gmail.com',
+            "password" => Hash::make('password22'),
+        ]);
+        
+        
+        $acceso = $this->post(route('login'), [
+            'email' => 'test@gmail.com',
+            'password' => 'password22',
+        
+        ]);
+
+        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        
+        Asignatura::create([
+            'clave'=>'IA',
+            'nombre'=>'Inteligencia artificial'
+        ]);
+
+        $asignatura=Asignatura::find('IA');
+
+        Grupo::create([
+            'clave_grupo'=>"B1",
+            'clave_asignatura'=>$asignatura->clave,
+        ]);
+
+        $response = $this->delete(route('grupos.destroy',"B1")); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('grupos.index'));
+
+
+        //Eliminar grupo con alumnos 
+        Persona::create([
+            'curp'=>"AAAA",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+        ]);
+
+        Docente::create([
+            'rfc'=>"DDD",
+            'curp'=>"AAAA",
+            'area'=>"Sistemas",
+            'foto'=>"sdsada",
+            'telefono'=>"839213"
+        ]);
+
+        Asignatura::create([
+            'clave'=>'IAR',
+            'nombre'=>'Inteligencia artificial'
+        ]);
+
+
+        $docente=Docente::find("DDD");
+        $asignatura=Asignatura::find('IAR');
+
+
+
+        Grupo::create([
+            'id_docente'=>$docente->rfc,
+            'clave_grupo'=>"IA1",
+            'clave_asignatura'=>$asignatura->clave,
+            'periodo'=>'2024'
+        ]);
+
+        $grupo=Grupo::find('IA1');
+        $this->assertNotNull($grupo);
+
+        $data=[
+            'no_control'=>"19161299",
+            'curp'=>"AAAAR",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+            'grupos'=>[
+                $grupo->clave_grupo
+            ]
+
+        ];
+        $response = $this->post(route('alumnos.store'), $data); 
+       
+
+
+        $response = $this->delete(route('grupos.destroy',$grupo->clave_grupo)); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('grupos.index'));
+        
+        $this->assertDatabaseMissing('alumno_grupo', ['clave_grupo' => $grupo->clave_grupo]);
+
+
+    }
 }
