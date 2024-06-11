@@ -7,6 +7,7 @@ use  App\Models\Grupo;
 use  App\Models\Alumno;
 use  App\Models\Asignatura;
 use  App\Models\Periodo;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -170,12 +171,19 @@ class DocenteController extends Controller
     }
 
     public function destroy($id){
-       
-        $docente=Docente::find($id);
+    try {
+        $docente = Docente::findOrFail($id);
         $docente->delete();
-        return redirect()->route('docentes.index')->with('success','Docente eliminado correctamente');
 
+        return redirect()->route('docentes.index')->with('success', 'Docente eliminado correctamente');
+    } catch (QueryException $e) {
+        if ($e->getCode() == 23000) {
+            return redirect()->route('docentes.index')->with('error', 'No es posible eliminar el docente porque tiene prácticas asociadas');
+        }
+
+        return redirect()->route('docentes.index')->with('error', 'Ocurrió un error al intentar eliminar el docente');
     }
+}
 
     public function asigna(){
         $periodos=Periodo::all();
@@ -249,21 +257,29 @@ class DocenteController extends Controller
         return view('docentes.desasignar',compact('docentes','asignaturas','periodos'));
     }
 
-    public function filtrar(Request $request ){
+    public function filtrar(Request $request) {
 
         $docente=Docente::find($request->input('rfc'));
         $asignatura=Asignatura::find($request->input('id_asignatura'));
         $periodo=Periodo::find($request->input('periodo'));
-
+    
+        if (!$docente || !$asignatura || !$periodo) {
+            return redirect()->route('docentes.eliminacion_asignacion')->with('error', 'Todos los campos son requeridos');
+        }
+    
         $grupos=Grupo::
         where('clave_asignatura',$asignatura->clave)
-        ->where('id_docente',$docente->rfc)
-        ->get();
-       
-
-        return redirect()->route('docentes.eliminacion_asignacion')->with(['grupos' => $grupos,'asignatura'=>$asignatura,'docente'=>$docente,'periodo'=>$periodo]);
-        
+                       ->where('id_docente',$docente->rfc)
+                       ->get();
+    
+        return redirect()->route('docentes.eliminacion_asignacion')->with([
+            'grupos' => $grupos,
+            'asignatura' => $asignatura,
+            'docente' => $docente,
+            'periodo' => $periodo
+        ]);
     }
+    
 
 
 

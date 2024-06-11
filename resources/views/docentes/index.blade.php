@@ -129,5 +129,16 @@
   </div>
   @endcan
 </div>
+<script>
+  // JavaScript para ocultar el mensaje de error después de 3 segundos
+  document.addEventListener('DOMContentLoaded', function () {
+        var errorAlert = document.getElementById('error-alert');
+        if (errorAlert) {
+            setTimeout(function () {
+                errorAlert.style.display = 'none';
+            }, 3000);
+        }
+    });
+</script>
 @endcan
 @endsection

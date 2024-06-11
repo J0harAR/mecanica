@@ -26,6 +26,12 @@
             </li>
         </ol>
     </nav>
+    @if (session('error'))
+        <div class="alert alert-danger mt-4" id="error-alert">
+            {{ session('error') }}
+        </div>
+    @endif
+
 
     <form action="{{ route('docentes.filtrar_grupos') }}" method="POST" class="row g-3 needs-validation" novalidate>
         @csrf
@@ -124,6 +130,15 @@
                 }, false)
             })
     })()
+    // JavaScript para ocultar el mensaje de error después de 3 segundos
+    document.addEventListener('DOMContentLoaded', function () {
+        var errorAlert = document.getElementById('error-alert');
+        if (errorAlert) {
+            setTimeout(function () {
+                errorAlert.style.display = 'none';
+            }, 3000);
+        }
+    });
 </script>
 @endcan
 @endsection
