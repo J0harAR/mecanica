@@ -131,16 +131,23 @@ class AlumnoController extends Controller
                 $alumno->save();
                 $persona->save();  
 
-                $grupos = $request->input('grupos', []);
-                $grupos_alumno = $alumno->grupos->pluck('clave_grupo')->toArray();
+               // $grupos = $request->input('grupos', []);
+               // $grupos_alumno = $alumno->grupos->pluck('clave_grupo')->toArray();
 
+               
+               $grupos=$request->input('grupos',[]);
+                foreach ($grupos as $grupo) {
+    
+                    $alumno->grupos()->attach($alumno->no_control,['clave_grupo'=>$grupo]);
+                }
               
+                /*
                 foreach ($grupos as $grupo) {
                     if (!in_array($grupo, $grupos_alumno)) {
                         $alumno->grupos()->attach($grupo, ['clave_grupo' => $grupo]);
                     }
                 }
-
+                */
             }
             
             return redirect()->route('alumnos.index')->with('success','Alumno actualizado correctamente');;

@@ -77,10 +77,6 @@
         </div><!-- End Modal -->
 @endcan
 
-
-
-    
-
     @can('crear-insumo')
         <!-- Vertically centered Modal -->
         <div class="modal fade" id="modal" tabindex="-1">
@@ -131,11 +127,10 @@
                     </form>
                 </div>
             </div>
-        </div>
-        @endcan
+        </div>       
     </div>
-
-    
+    @endcan
+    @can('ver-herramientas')
     <div class="row">
         <div class="col-lg-4">
             <div class="card">
@@ -152,8 +147,9 @@
                 </div>
             </div>
         </div>
+        @endcan
 
-
+        @can('ver-maquinarias')   
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-body">
@@ -169,8 +165,9 @@
                 </div>
             </div>
         </div>
+        @endcan
 
-
+        @can('ver-insumos')  
         <div class="col-lg-4">
             <div class="card card-seleccion">
                 <div class="card-body">
@@ -184,7 +181,8 @@
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
+        @endcan
         </div>
         @if (session('success'))
         <div class="alert alert-success" id="success-alert">

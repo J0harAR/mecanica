@@ -37,39 +37,159 @@ class ReportesController extends Controller
 
     }
 
-    public function generar_reporte_inventario(Request $request){
-
-        $periodo=$request->input('periodo');
-        $inventario=Catalogo_articulo::whereYear('created_at', $periodo)->get();
-        $pdf = Pdf::loadView('reportes.inventario',['inventario'=>$inventario,'periodo'=>$periodo]);
+    public function generar_reporte_inventario(Request $request) {
+        //2024-1,2024-2,2024-3
+    
+        $clave_periodo = $request->input('periodo');
+        $no_semestre = explode("-", $clave_periodo);
+        $inventario = collect(); 
+    
+        switch ($no_semestre[1]) {
+            // Febrero-junio
+            case 1:
+                $mes_inicial = 2;
+                $mes_final = 6;
+                $inventario = Catalogo_articulo::whereYear('created_at', $no_semestre[0])
+                    ->whereMonth('created_at', '>=', $mes_inicial)
+                    ->whereMonth('created_at', '<=', $mes_final)
+                    ->get();
+                break;
+            // Julio
+            case 2:
+                $mes = 7;
+                $inventario = Catalogo_articulo::whereYear('created_at', $no_semestre[0])
+                    ->whereMonth('created_at', $mes)
+                    ->get();
+                break;
+            // Agosto-diciembre
+            case 3:
+                $mes_inicial = 8;
+                $mes_final = 12;
+                $inventario = Catalogo_articulo::whereYear('created_at', $no_semestre[0])
+                    ->whereMonth('created_at', '>=', $mes_inicial)
+                    ->whereMonth('created_at', '<=', $mes_final)
+                    ->get();
+                break;
+        }
+    
+        $pdf = Pdf::loadView('reportes.inventario', ['inventario' => $inventario, 'periodo' => $clave_periodo]);
         return $pdf->stream();
-
     }
 
 
     public function generar_reporte_herramientas(Request $request){
-
-        $periodo=$request->input('periodo');
-        $herramientas=Herramientas::whereYear('created_at', $periodo)->get();
-        $pdf = Pdf::loadView('reportes.herramientas',['herramientas'=>$herramientas,'periodo'=>$periodo]);
+        $clave_periodo = $request->input('periodo');
+        $no_semestre = explode("-", $clave_periodo);
+        $herramientas = collect();
+       
+        switch ($no_semestre[1]) {
+            // Febrero-junio
+            case 1:
+                $mes_inicial = 2;
+                $mes_final = 6;
+                $herramientas = Herramientas::whereYear('created_at', $no_semestre[0])
+                    ->whereMonth('created_at', '>=', $mes_inicial)
+                    ->whereMonth('created_at', '<=', $mes_final)
+                    ->get();
+                break;
+            // Julio
+            case 2:
+                $mes = 7;
+                $herramientas = Herramientas::whereYear('created_at', $no_semestre[0])
+                    ->whereMonth('created_at', $mes)
+                    ->get();
+                break;
+            // Agosto-diciembre
+            case 3:
+                $mes_inicial = 8;
+                $mes_final = 12;
+                $herramientas = Herramientas::whereYear('created_at', $no_semestre[0])
+                    ->whereMonth('created_at', '>=', $mes_inicial)
+                    ->whereMonth('created_at', '<=', $mes_final)
+                    ->get();
+                break;
+        }
+       
+        $pdf = Pdf::loadView('reportes.herramientas',['herramientas'=>$herramientas,'periodo'=>$clave_periodo]);
         return $pdf->stream();
 
     }
 
     public function generar_reporte_maquinaria(Request $request){
 
-        $periodo=$request->input('periodo');
-        $maquinarias=Maquinaria::whereYear('created_at', $periodo)->get();
-        $pdf = Pdf::loadView('reportes.maquinaria',['maquinarias'=>$maquinarias,'periodo'=>$periodo]);
+        $clave_periodo = $request->input('periodo');
+        $no_semestre = explode("-", $clave_periodo);
+        $maquinarias = collect();
+        
+        switch ($no_semestre[1]) {
+            // Febrero-junio
+            case 1:
+                $mes_inicial = 2;
+                $mes_final = 6;
+                $maquinarias = Maquinaria::whereYear('created_at', $no_semestre[0])
+                    ->whereMonth('created_at', '>=', $mes_inicial)
+                    ->whereMonth('created_at', '<=', $mes_final)
+                    ->get();
+                break;
+            // Julio
+            case 2:
+                $mes = 7;
+                $maquinarias = Maquinaria::whereYear('created_at', $no_semestre[0])
+                    ->whereMonth('created_at', $mes)
+                    ->get();
+                break;
+            // Agosto-diciembre
+            case 3:
+                $mes_inicial = 8;
+                $mes_final = 12;
+                $maquinarias = Maquinaria::whereYear('created_at', $no_semestre[0])
+                    ->whereMonth('created_at', '>=', $mes_inicial)
+                    ->whereMonth('created_at', '<=', $mes_final)
+                    ->get();
+                break;
+        }
+
+
+        $pdf = Pdf::loadView('reportes.maquinaria',['maquinarias'=>$maquinarias,'periodo'=>$clave_periodo]);
         return $pdf->stream();
 
     }
 
     public function generar_reporte_insumos(Request $request){
+        $clave_periodo = $request->input('periodo');
+        $no_semestre = explode("-", $clave_periodo);
+        $Insumos = collect();
 
-        $periodo=$request->input('periodo');
-        $Insumos=Insumos::whereYear('created_at', $periodo)->get();
-        $pdf = Pdf::loadView('reportes.insumos',['Insumos'=>$Insumos,'periodo'=>$periodo]);
+        switch ($no_semestre[1]) {
+            // Febrero-junio
+            case 1:
+                $mes_inicial = 2;
+                $mes_final = 6;
+                $Insumos = Insumos::whereYear('created_at', $no_semestre[0])
+                    ->whereMonth('created_at', '>=', $mes_inicial)
+                    ->whereMonth('created_at', '<=', $mes_final)
+                    ->get();
+                break;
+            // Julio
+            case 2:
+                $mes = 7;
+                $Insumos = Insumos::whereYear('created_at', $no_semestre[0])
+                    ->whereMonth('created_at', $mes)
+                    ->get();
+                break;
+            // Agosto-diciembre
+            case 3:
+                $mes_inicial = 8;
+                $mes_final = 12;
+                $Insumos = Insumos::whereYear('created_at', $no_semestre[0])
+                    ->whereMonth('created_at', '>=', $mes_inicial)
+                    ->whereMonth('created_at', '<=', $mes_final)
+                    ->get();
+                break;
+        }
+
+      
+        $pdf = Pdf::loadView('reportes.insumos',['Insumos'=>$Insumos,'periodo'=>$clave_periodo]);
         return $pdf->stream();
 
     }

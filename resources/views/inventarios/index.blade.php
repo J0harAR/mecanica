@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-@can('ver-inventario')
+@canany(['ver-inventario','ver-insumos','ver-maquinarias','ver-herramientas'])  
 
 
     <div class="container py-4">
@@ -127,6 +127,7 @@
             </div>
         @endif
 
+        @can('ver-herramientas')
         <div class="row">
             <div class="col-lg-4">
                 <div class="card">
@@ -142,8 +143,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
+            </div>                       
+            @endcan
+            @can('ver-maquinarias')                         
             <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
@@ -158,7 +160,8 @@
                     </div>
                 </div>
             </div>
-
+            @endcan    
+            @can('ver-insumos')                     
             <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
@@ -173,6 +176,7 @@
                     </div>
                 </div>
             </div>
+            @endcan
         </div>
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
@@ -204,7 +208,7 @@
                 });
             </script>
         @endif
-
+        @can('ver-inventario') 
         <div class="card shadow-lg rounded-3 border-0">
             <div class="card-body p-4">
                 <div class="table-responsive">
@@ -269,8 +273,10 @@
                     </table>
                 </div>
             </div>
-@endcan
+            @endcan
+            @endcanany
         </>
+       
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {

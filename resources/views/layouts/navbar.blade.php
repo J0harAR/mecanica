@@ -283,7 +283,7 @@ $total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
       </li><!-- End Role Page Nav -->
     @endcan
 
-      @can('ver-inventario')       
+      @canany(['ver-inventario','ver-insumos','ver-maquinarias','ver-herramientas'])       
       <li class="nav-item">
         <a class="nav-link {{ request()->routeIs('inventario.*') ? 'active' : 'collapsed' }}"
           href="{{ route('inventario.index') }}">
@@ -291,7 +291,7 @@ $total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
           <span>Inventario</span>
         </a>
       </li><!-- End Role Page Nav -->
-      @endcan
+      @endcanany
 
       @can('ver-mantenimientos')      
       <li class="nav-item">

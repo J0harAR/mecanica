@@ -148,7 +148,7 @@ Route::post('/docentes/filtrar_grupos', [DocenteController::class, 'filtrar'])->
 
 
 //Parte de grupos
-Route::get('/grupos', [GrupoController::class, 'index'])->name('grupos.index');
+Route::get('/grupos', [GrupoController::class, 'index'])->middleware('can:grupos.index')->name('grupos.index');
 Route::get('/grupos/create', [GrupoController::class, 'create'])->name('grupos.create');
 Route::post('/grupos', [GrupoController::class, 'store'])->name('grupos.store');
 Route::match(['put', 'patch'],'/grupos/{id}', [GrupoController::class, 'update'])->name('grupos.update');
