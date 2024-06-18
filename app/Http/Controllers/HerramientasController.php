@@ -182,6 +182,13 @@ class HerramientasController extends Controller
     {
 
 
+        $this->validate($request, [
+            'condicion_herramienta' => 'required',
+            'estatus' => 'required',
+        ]);
+
+        
+
         //Request
         $condicion_herramienta=$request->input('condicion_herramienta');
         $estatus_herramienta=$request->input('estatus');

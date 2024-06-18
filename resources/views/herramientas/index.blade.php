@@ -219,6 +219,12 @@
         </div>
     @endif 
 
+    @if ($errors->any())
+    <div class="alert alert-danger" id="error-alert">
+        Todos los campos son requeridos  
+    </div>
+    @endif
+
     @if (session('tipo_vacia'))
         <div class="alert alert-danger" id="error-alert">
             {{ session('tipo_vacia') }}
