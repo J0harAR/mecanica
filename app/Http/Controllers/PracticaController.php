@@ -224,7 +224,7 @@ class PracticaController extends Controller
 
     public function create_practica_alumno (){
         $practicas=Practica::with(['catalogo_articulos'])->get();
-        $articulos_inventariados=Articulo_inventariado::all();
+        $articulos_inventariados=Articulo_inventariado::where('estatus','Disponible')->get();
         $docentes=Docente::all();
         return view('practicas.alumnos',compact('practicas','articulos_inventariados','docentes'));
     }
