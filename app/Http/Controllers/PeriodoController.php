@@ -22,11 +22,37 @@ class PeriodoController extends Controller
         }
 
         public function store(Request $request){
+
+            $this->validate($request, [
+                'periodo' => 'required',
+                'fecha_inicio' => 'required',
+                'fecha_final' => 'required',
+            ]);
+            $duplicado=Periodo::find($request->input('periodo'));
+            
+            if($duplicado){
+                return redirect()->route('periodos.index')->with('error','Periodo con clave duplicada');
+            }
+
             $periodo=new Periodo;
             $periodo->clave=$request->input('periodo');
+            $periodo->fecha_inicio=$request->input('fecha_inicio');
+            $periodo->fecha_final=$request->input('fecha_final');
             $periodo->save();
 
+
             return redirect()->route('periodos.index')->with('success','Periodo agregado correctamente');
+
+        }
+
+        public function update(Request $request ,$id){
+            $periodo=Periodo::find($id);
+            if($periodo){
+                $periodo->fecha_inicio=$request->input('fecha_inicio');
+                $periodo->fecha_final=$request->input('fecha_final');
+                $periodo->save();
+                return redirect()->route('periodos.index')->with('success','Periodo actualizado correctamente');
+            }
 
         }
 

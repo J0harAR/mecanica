@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('periodo', function (Blueprint $table) {
             $table->string('clave')->primary();
+            $table->date('fecha_inicio')->nullable();
+            $table->date('fecha_final')->nullable(); 
             $table->timestamps();
         });
     }

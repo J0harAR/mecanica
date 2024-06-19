@@ -174,6 +174,7 @@ Route::match(['put', 'patch'], '/prestamos/finalizar/{id}', [PrestamoController:
 
 Route::get('/periodos', [PeriodoController::class, 'index'])->name('periodos.index');
 Route::post('/periodos', [PeriodoController::class, 'store'])->name('periodos.store');
+Route::match(['put', 'patch'], '/periodos/{id}', [PeriodoController::class, 'update'])->name('periodos.update');
 Route::delete('/periodos/{id}', [PeriodoController::class, 'destroy'])->name('periodos.destroy');
 
 
