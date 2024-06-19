@@ -108,14 +108,14 @@
       <div class="card-body">
           <div class="card-body">
             <table class="table table-responsive-md data-table">
-            <h5 class="fw-bold mb-0 text-primary">Listado de periodos</h5>
+            <h5 class="fw-bold mb-0 text-primary mt-5">Listado de periodos</h5>
         </div>
         <div class="card-body">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th >Clave de periodo</th>
-                        <th>Eliminar</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
