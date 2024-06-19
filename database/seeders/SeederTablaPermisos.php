@@ -85,6 +85,7 @@ class SeederTablaPermisos extends Seeder
             //Periodo
             'ver-periodos',
             'crear-periodo',
+            'editar-periodo',
             'borrar-periodo',
             
             //Practicas

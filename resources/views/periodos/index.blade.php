@@ -130,12 +130,17 @@
                                     <i class="fas fa-trash"></i>
                                 </button>
                                 @endcan
+
+                                @can('editar-periodo')                                                                 
                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-{{$periodo->clave}}">
                                     <i class="bi bi-pencil-square "></i>
-                                </button>                          
+                                </button>
+                                @endcan                          
                             </td>
                         </tr>
-      <!-- Vertically centered Modal -->
+@can('editar-periodo')
+                                            
+   <!-- Vertically centered Modal -->
 <div class="modal fade" id="modal-{{$periodo->clave}}" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
@@ -172,7 +177,9 @@
     </div>
 </div>
 <!-- End Vertically centered Modal -->
+@endcan
 
+@can('borrar-periodo') 
 <!-- Modal Eliminar -->
 <div class="modal fade" id="modal-delete{{ $periodo->clave }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -196,7 +203,7 @@
         </div>
       </div>
       <!-- End Modal Eliminar -->
-                  
+      @endcan             
                         @endforeach
                 </tbody>
             </table>

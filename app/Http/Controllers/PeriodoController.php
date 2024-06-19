@@ -11,6 +11,7 @@ class PeriodoController extends Controller
     {
         $this->middleware('permission:ver-periodos', ['only' => ['index']]);
         $this->middleware('permission:crear-periodo', ['only' => ['store']]);
+        $this->middleware('permission:editar-periodo', ['only' => ['update']]);
         $this->middleware('permission:borrar-periodo', ['only' => ['destroy']]);
     }
     
