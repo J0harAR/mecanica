@@ -26,6 +26,7 @@
                 </ol>
             </nav>
             <div class="container mt-4">
+
                 @can('crear-practica')
                               
                 <form class="row g-3 needs-validation" action="{{ route('practicas.store') }}" method="POST" novalidate>

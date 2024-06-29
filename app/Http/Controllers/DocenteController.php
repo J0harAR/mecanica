@@ -266,9 +266,9 @@ class DocenteController extends Controller
             return redirect()->route('docentes.eliminacion_asignacion')->with('error', 'Todos los campos son requeridos');
         }
     
-        $grupos=Grupo::
-        where('clave_asignatura',$asignatura->clave)
+        $grupos=Grupo::where('clave_asignatura',$asignatura->clave)
                        ->where('id_docente',$docente->rfc)
+                       ->where('clave_periodo',$periodo->clave)
                        ->get();
     
         return redirect()->route('docentes.eliminacion_asignacion')->with([
@@ -287,8 +287,11 @@ class DocenteController extends Controller
             $grupos=$request->input('grupos');
             $docente=Docente::find($request->input('rfc'));
             $clave_periodo=$request->input('periodo');
-            foreach($grupos as $clave_grupo=>$datos_grupo){
 
+            if(!$grupos){
+                return redirect()->route('docentes.eliminacion_asignacion')->with('error','No se selecciono ningun grupo');
+            }
+            foreach($grupos as $clave_grupo=>$datos_grupo){
 
                 DB::table('grupo')
                 ->where('id_docente', $docente->rfc)
@@ -296,9 +299,7 @@ class DocenteController extends Controller
                 ->where('clave_grupo',$clave_grupo)              
                 ->where('clave_periodo',$clave_periodo)              
                 ->update(['id_docente'=>null,'clave_periodo'=>null]);
-
-
-               
+             
             }
             return redirect()->route('docentes.index')->with('success','Asignatura removida del docente correctamente');
     }

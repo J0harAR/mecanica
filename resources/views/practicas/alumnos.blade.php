@@ -27,17 +27,25 @@
                 </ol>
             </nav>
             <div class="container mt-4"></div>
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+            
             @can('crear-practica-alumno')          
             <form class="row g-3 needs-validation" action="{{ route('practicasAlumno.store') }}" method="post" novalidate>
                 @csrf
                 <div class="col-md-6">
-                    <label for="no_control" class="form-label"><i class="fas fa-id-card" ></i> Número de control</label>
-                    <input type="text" class="form-control" name="no_control" id="no_control"required
-                                autocomplete="no_control" autofocus>
-                                <div class="invalid-feedback">
-                            Ingrese el número de control del estudiante.
-                        </div>
+                        <label for="alumnos" class="form-label"><i class="fas fa-boxes me-2"></i>Alumnos</label>
+                        <select class="form-select" multiple="multiple" id="alumnos" name="alumnos[]">
+                            @foreach ($alumnos as $alumno)
+                                <option value="{{ $alumno->no_control }}">{{ $alumno->no_control}}</option>
+                            @endforeach
+                        </select>
                 </div>
+
                 <div class="col-md-6">
                     <label for="no_equipo" class="form-label"><i class="fas fa-tag" ></i> Número de equipo</label>
                     <input type="number" class="form-control" name="no_equipo" id="no_equipo"required
@@ -116,18 +124,16 @@
                 </div>
             </form>
             @endcan
-            @if(session('error'))
-                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
+          
 
-            @if(session('alumno_no_encontrado'))
-                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                    {{ session('alumno_no_encontrado') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
+          
 @endcan
+
+            <script>
+                $(document).ready(function () {
+                    $('#alumnos').select2({
+                        placeholder: "Seleccionar"
+                    });
+                });
+            </script>
             @endsection

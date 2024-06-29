@@ -11,6 +11,7 @@ use  App\Models\Alumno;
 use  App\Models\Grupo;
 use  App\Models\Persona;
 use App\Models\Asignatura;
+use Illuminate\Support\Facades\DB;
 
 class PracticaController extends Controller
 {
@@ -62,6 +63,16 @@ class PracticaController extends Controller
         $fundamento = $request->input('fundamento');
         $referencias = $request->input('referencias');
     
+        //Verificar que el docente tenga su grupo asignado
+        $asigacion_correcta=DB::table('grupo')                   
+        ->where('clave_grupo',$clave_grupo)
+        ->where('id_docente',$id_docente)
+        ->first();
+
+        if(!$asigacion_correcta){
+            return redirect()->route('practicas.create')->with('error', 'El grupo y el docente no coinciden');
+        }
+
         $practica = new Practica;
     
         $practica->id_practica = $id_practica;
@@ -107,7 +118,17 @@ class PracticaController extends Controller
         $fundamento = $request->input('fundamento');
         $referencias = $request->input('referencias');
         
+        
         $practica = Practica::find($id);
+        
+        $asigacion_correcta=DB::table('grupo')                   
+        ->where('clave_grupo',$clave_grupo)
+        ->where('id_docente',$id_docente)
+        ->first();
+
+        if(!$asigacion_correcta){
+            return redirect()->route('practicas.index')->with('error', 'El grupo y el docente no coinciden');
+        }
 
         if($id_practica === $practica->id_practica ){
             $practica->id_practica = $id_practica;
@@ -223,15 +244,17 @@ class PracticaController extends Controller
 
 
     public function create_practica_alumno (){
+        $alumnos=Alumno::all();
         $practicas=Practica::with(['catalogo_articulos'])->get();
         $articulos_inventariados=Articulo_inventariado::where('estatus','Disponible')->get();
         $docentes=Docente::all();
-        return view('practicas.alumnos',compact('practicas','articulos_inventariados','docentes'));
+        return view('practicas.alumnos',compact('practicas','articulos_inventariados','docentes','alumnos'));
     }
 
 
     public function store_practica_Alumno(Request $request){
-        $alumno=Alumno::find($request->input('no_control'));
+        
+        $alumnos=$request->input('alumnos');
         $practica=Practica::find($request->input('practica'));
         $practica_articulos=$practica->catalogo_articulos()->pluck('id_articulo')->toArray();
         $articulos_inventariados=$request->input('articulos');
@@ -241,9 +264,10 @@ class PracticaController extends Controller
         $hora_entrada=$request->input('hora_entrada');
         $hora_salida=$request->input('hora_salida');
 
-        if($alumno==null){
-            return redirect()->route('practicasAlumno.create')->with('alumno_no_encontrado', 'Alumno no encontrado.');
+        if(!$alumnos){
+            return redirect()->route('practicasAlumno.create')->with('error', 'Ningun alumno seleccionado');
         }
+
 
         $articulo_presente = false;
         foreach ($articulos_inventariados as $id_articulo_inventariado) {
@@ -269,8 +293,9 @@ class PracticaController extends Controller
             $articulo->save();
         }
 
+
    
-        $practica->alumnos()->attach($alumno->no_control,['fecha'=>$fecha,'no_equipo'=>$no_equipo,'hora_entrada'=>$hora_entrada,'hora_salida'=>$hora_salida]);
+        $practica->alumnos()->syncWithPivotValues($alumnos,['fecha'=>$fecha,'no_equipo'=>$no_equipo,'hora_entrada'=>$hora_entrada,'hora_salida'=>$hora_salida]);
         $practica->articulo_inventariados()->sync($articulos_inventariados);
      
 
