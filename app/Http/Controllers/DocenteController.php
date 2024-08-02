@@ -208,7 +208,7 @@ class DocenteController extends Controller
         $docente=Docente::find($id_docente);
         $asignatura=Asignatura::find($clave_asignatura);
         $periodo=Periodo::find($periodo);
-        $grupos=Grupo::where('clave_asignatura',$asignatura->clave)->get();
+        $grupos=Grupo::where('clave_asignatura',$asignatura->clave)->where('id_docente',null)->get();
         
        
         return redirect()->route('docentes.asigna')->with(['grupos' => $grupos, 'docente' => $docente, 'periodo' => $periodo]);
@@ -217,13 +217,16 @@ class DocenteController extends Controller
 
 
     public function asignar(Request $request){
+
             $clave_periodo=$request->input('clave_periodo');
             $grupos=$request->input('grupos');
         
             $docente=Docente::find($request->input('rfc_docente'));
             $periodo=Periodo::find($clave_periodo);
             
-           
+            if(!$grupos){
+                return redirect()->route('docentes.asigna')->with('error','No se selecciono ningun grupo');
+            }   
         
             foreach($grupos as $clave_grupo=>$datos_grupo){
                 //Checar si tiene docente asignado el grupo

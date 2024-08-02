@@ -23,9 +23,11 @@
                 </nav>
             </div>
             <div>
+                 <!-- BOTON DE HISTORIAL -->
                 <button type="button" class="btn btn-tecnm" data-bs-toggle="modal" data-bs-target="#ExtralargeModal">
                     <i class="fas fa-history me-1"></i>
                 </button>
+                
 
                 @can('generar_reporte_inventario')
                     <button class="btn btn btn-tecnm" type="button" data-bs-toggle="modal" data-bs-target="#modal-download">

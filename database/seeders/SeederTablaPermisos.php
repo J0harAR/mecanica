@@ -54,8 +54,7 @@ class SeederTablaPermisos extends Seeder
             'borrar-grupo',
 
             //Inventario
-            'ver-inventario',
-            'agregar-inventario',
+            'ver-inventario',           
             'borrar-inventario',
 
             //Herramientas

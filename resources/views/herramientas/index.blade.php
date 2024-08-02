@@ -156,56 +156,60 @@
         </div>
     </div>
     <div class="row">
-    <div class="col-lg-4">
-    <div class="card card-seleccion">
-                <div class="card-body">
-                    <h5 class="card-title1">Herramientas</h5>
-                    <div class="d-flex justify-content-between">
-                        <h2 class="text-right"><i class="bi bi-hammer"></i></h2>
-                        <div class="d-flex flex-column justify-content-between align-items-center">
-                            <h2><span></span></h2>
-                            <p class="m-b-o text-right"><a href="{{route('herramientas.index')}}">Ver mas...</a></p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-
-        <div class="col-lg-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title1">Maquinaria</h5>
-                    <div class="d-flex justify-content-between">
-                        <h2 class="text-right"><i class="bi bi-gear"></i></h2>
-                        <div class="d-flex flex-column justify-content-between align-items-center">
-                            <h2><span></span></h2>
-                            <p class="m-b-o text-right"><a href="{{route('maquinaria.index')}}">Ver mas...</a></p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title1">Insumos</h5>
-                    <div class="d-flex justify-content-between">
-                        <h2 class="text-right"><i class="bi bi-droplet"></i></h2>
-                        <div class="d-flex flex-column justify-content-between align-items-center">
-                            <h2><span></span></h2>
-                            <p class="m-b-o text-right"><a href="{{route('insumos.index')}}">Ver mas...</a></p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
     @endcan
+   
+    @can('ver-herramientas')
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card card-seleccion">
+                    <div class="card-body">
+                        <h5 class="card-title1">Herramientas</h5>
+                        <div class="d-flex justify-content-between">
+                            <h2 class="text-right"><i class="fas fa-wrench me-1"></i></h2>
+                            <div class="d-flex flex-column justify-content-between align-items-center">
+                                <h2><span></span></h2>
+                                <p class="m-b-0 text-right"><a href="{{ route('herramientas.index') }}">Ver más...</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>                       
+            @endcan
+            @can('ver-maquinarias')                         
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title1">Maquinaria</h5>
+                        <div class="d-flex justify-content-between">
+                            <h2 class="text-right"><i class="bi bi-gear"></i></h2>
+                            <div class="d-flex flex-column justify-content-between align-items-center">
+                                <h2><span></span></h2>
+                                <p class="m-b-0 text-right"><a href="{{ route('maquinaria.index') }}">Ver más...</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endcan    
+            @can('ver-insumos')                     
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title1">Insumos</h5>
+                        <div class="d-flex justify-content-between">
+                            <h2 class="text-right"><i class="bi bi-droplet"></i></h2>
+                            <div class="d-flex flex-column justify-content-between align-items-center">
+                                <h2><span></span></h2>
+                                <p class="m-b-0 text-right"><a href="{{ route('insumos.index') }}">Ver más...</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endcan
+        </div>
+ 
 
     @if (session('success'))
         <div class="alert alert-success" id="success-alert">

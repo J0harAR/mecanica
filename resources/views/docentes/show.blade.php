@@ -47,9 +47,11 @@
                 <button class="nav-link active" data-bs-toggle="tab"
                   data-bs-target="#profile-overview">Descripción</button>
               </li>
+              @can('editar-docente')
               <li class="nav-item">
                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Editar</button>
               </li>
+              @endcan
             </ul>
             <div class="tab-content pt-2">
               <div class="tab-pane fade show active" id="profile-overview">
@@ -76,6 +78,8 @@
                   <div class="col-lg-9 col-md-8">{{ $docente->telefono }}</div>
                 </div>
               </div>
+
+              @can('editar-docente')
               <div class="tab-pane fade" id="profile-edit">
                 <form action="{{ route('docentes.update', ['id' => $docente->rfc]) }}" method="POST"
                   enctype="multipart/form-data" class="mt-3">
@@ -134,6 +138,7 @@
                   </div>
                 </form>
               </div>
+              @endcan
             </div>
           </div>
         </div>
@@ -150,6 +155,7 @@
               <th scope="col" class="text-center">Clave de la materia</th>
               <th scope="col" class="text-center">Nombre completo</th>
               <th scope="col" class="text-center">Grupo</th>
+              <th scope="col" class="text-center">Periodo</th>
             </tr>
           </thead>
           <tbody>
@@ -158,6 +164,7 @@
           <td>{{ $asig->asignatura->clave }}</td>
           <td>{{ $asig->asignatura->nombre }}</td>
           <td>{{ $asig->clave_grupo }}</td>
+          <td>{{ $asig->clave_periodo}}</td>
         </tr>
       @endforeach
           </tbody>

@@ -146,7 +146,7 @@
 
         @if ($prestamo->pivot->estatus == "Pendiente")
           @can('editar-prestamo')
-          <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update-{{ $prestamo->pivot->id }}">
+          <button type="button" class="btn btn-outline btn-tecnm btn-sm" data-bs-toggle="modal" data-bs-target="#modal-update-{{ $prestamo->pivot->id }}">
             <i class="fas fa-pencil-alt"></i>
           </button>
           @endcan

@@ -78,6 +78,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
+                                    <th scope="col">Periodo</th>
                                     <th scope="col">Asignatura</th>
                                     <th scope="col">Clave del Grupo</th>
                                     <th scope="col">Acciones</th>
@@ -87,6 +88,7 @@
                                 @foreach ($grupos as $grupo)
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
+                                        <td>{{$grupo->clave_periodo}}</td>
                                         <td>
                                             {{$grupo->asignatura->nombre}}
                                         </td>

@@ -22,9 +22,12 @@
                 </ol>
             </nav>
         </div>
+        @can('crear-practica')
         <a href="{{ route('practicas.create') }}" class="btn btn-tecnm">
             <i class="fas fa-plus-circle me-1"></i>Registrar práctica
         </a>
+        @endcan
+        
     </div>
 
     @if(session('success'))
@@ -78,13 +81,18 @@
                 </div>
             </div>
         </div>
+       
+            
         <div class="d-flex justify-content-end mt-3">
             <button type="submit" class="btn btn-primary me-2"
                 onclick="submitForm('{{ route('practicas.filtrar') }}')">Filtrar</button>
+                @can('generar_reporte_practicas')
             <button type="button" class="btn btn-tecnm" onclick="submitForm('{{ route('reporte.practicas') }}')">
                 <i class="bi bi-download"></i> Descargar
             </button>
+            @endcan
         </div>
+        
     </form>
     @endcanany
 

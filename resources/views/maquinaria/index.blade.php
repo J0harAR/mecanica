@@ -166,6 +166,7 @@
     @endcan
 
     <div class="row">
+        @can('ver-herramientas')
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-body">
@@ -180,6 +181,9 @@
                 </div>
             </div>
         </div>
+        @endcan
+       
+        @can('ver-maquinarias')
         <div class="col-lg-4">
             <div class="card card-seleccion">
                 <div class="card-body">
@@ -194,6 +198,9 @@
                 </div>
             </div>
         </div>
+        @endcan
+        
+        @can('ver-insumos')
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-body">
@@ -208,6 +215,7 @@
                 </div>
             </div>
         </div>
+        @endcan
     </div>
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">

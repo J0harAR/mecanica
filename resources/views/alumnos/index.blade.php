@@ -72,7 +72,7 @@
                             <label for="grupos" class="form-label"><i class="bi bi-people me-2"></i>Grupo</label>
                             <select multiple class="form-control" id="grupos" name="grupos[]" required>
                                 @foreach ($grupos as $grupo)
-                                    <option value="{{ $grupo->clave_grupo }}">{{ $grupo->clave_grupo }}</option>
+                                    <option value="{{ $grupo->clave_grupo }}">{{ $grupo->clave_grupo }}//{{$grupo->clave_periodo}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -216,7 +216,7 @@
                                                                 required>
                                                                 @foreach ($grupos as $grupo)
                                                                     <option value="{{ $grupo->clave_grupo }}" {{ in_array($grupo->clave_grupo, $alumno->grupos->pluck('clave_grupo')->toArray()) ? 'selected' : '' }}>
-                                                                        {{ $grupo->clave_grupo }}
+                                                                        {{ $grupo->clave_grupo }} //{{$grupo->clave_periodo}}
                                                                     </option>
                                                                 @endforeach
                                                             </select>

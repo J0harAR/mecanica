@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-@can('ver-asignaturas')
+@can('crear-asignatura')
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
@@ -26,7 +26,7 @@
                     </ol>
                 </nav>
             </div>
-            @can('crear-asignaturas')
+            @can('crear-asignatura')
                 <a href="{{ route('asignatura.index') }}" class="btn btn-primary shadow">
                     <i class="fas fa-book "></i> Asignaturas 
                 </a>

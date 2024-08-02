@@ -273,7 +273,7 @@ $total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
     @endcan
 
 
-      @can('ver-roles')
+      @can('ver-rol')
       <li class="nav-item">
       <a class="nav-link {{ request()->routeIs('roles.*') ? 'active' : 'collapsed' }}"
         href="{{ route('roles.index') }}">

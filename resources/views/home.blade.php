@@ -12,36 +12,44 @@
 
     <!-- Accesos rápidos -->
     <div class="row text-center mb-4">
+      
+      @can('ver-practicas')
       <div class="col-lg-2 col-md-4 mb-4">
         <a href="/practicas" class="btn btn-outline-light btn-block py-4 shadow-sm rounded-lg">
           <i class="bi bi-people display-3"></i>
           <h5 class="mt-3">Prácticas</h5>
         </a>
       </div>
+      @endcan
+
+      @can('ver-docentes')
       <div class="col-lg-2 col-md-4 mb-4">
         <a href="/docentes" class="btn btn-outline-light btn-block py-4 shadow-sm rounded-lg">
           <i class="bi bi-person-lock display-3"></i>
           <h5 class="mt-3">Docentes</h5>
         </a>
       </div>
+      @endcan
+
+      @can('ver-inventario')
       <div class="col-lg-2 col-md-4 mb-4">
         <a href="/inventario" class="btn btn-outline-light btn-block py-4 shadow-sm rounded-lg">
           <i class="bi bi-box-seam display-3"></i>
           <h5 class="mt-3">Inventario</h5>
         </a>
       </div>
+      @endcan
+
+      @can('ver-mantenimientos')
       <div class="col-lg-2 col-md-4 mb-4">
         <a href="/mantenimiento" class="btn btn-outline-light btn-block py-4 shadow-sm rounded-lg">
           <i class="bi bi-tools display-3"></i>
           <h5 class="mt-3">Mantenimiento</h5>
         </a>
       </div>
-      <div class="col-lg-2 col-md-4 mb-4">
-        <a href="/reportes" class="btn btn-outline-light btn-block py-4 shadow-sm rounded-lg">
-          <i class="bi bi-clipboard-data display-3"></i>
-          <h5 class="mt-3">Reportes</h5>
-        </a>
-      </div>
+      @endcan
+
+      @can('ver-prestamos')
       <div class="col-lg-2 col-md-4 mb-4">
         <a href="/prestamos" class="btn btn-outline-light btn-block py-4 shadow-sm rounded-lg">
           <i class="bi bi-arrow-left-right display-3"></i>
@@ -49,6 +57,7 @@
         </a>
       </div>
     </div>
+    @endcan
 
     <!-- Tarjetas informativas -->
     <div class="row">
