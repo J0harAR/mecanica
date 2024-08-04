@@ -118,9 +118,13 @@ Route::post('/alumnos/practicas/', [PracticaController::class, 'store_practica_A
 
 //Parte de alumnos
 Route::get('/alumnos', [AlumnoController::class, 'index'])->name('alumnos.index');
+Route::post('/alumnos-asignar-grupo', [AlumnoController::class, 'asignarGrupo'])->name('alumnos.asignar-grupo');
+Route::post('/alumnos-desasignar-grupo', [AlumnoController::class, 'desasignarGrupo'])->name('alumnos.desasignar-grupo');
 Route::post('/alumnos', [AlumnoController::class, 'store'])->name('alumnos.store');
 Route::match(['put', 'patch'], '/alumnos/{id}', [AlumnoController::class, 'update'])->name('alumnos.update');
 Route::delete('/alumnos/{id}', [AlumnoController::class, 'destroy'])->name('alumnos.destroy');
+
+
 
 
 //Parte de asignatura

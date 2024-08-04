@@ -26,7 +26,7 @@ class AlumnoController extends Controller
         {
             $alumnos = Alumno::with('persona', 'grupos')->get();
             $grupos = Grupo::all();
-          
+            $TodosAlumnos=Alumno::all();
            
 
            $alumnosPorGrupo = [];
@@ -38,7 +38,7 @@ class AlumnoController extends Controller
             }
          
 
-         return view('alumnos.index', compact('alumnosPorGrupo', 'grupos'));
+         return view('alumnos.index', compact('alumnosPorGrupo', 'grupos','TodosAlumnos'));
         }
 
 
@@ -150,7 +150,7 @@ class AlumnoController extends Controller
                 */
             }
             
-            return redirect()->route('alumnos.index')->with('success','Alumno actualizado correctamente');;
+            return redirect()->route('alumnos.index')->with('success','Alumno actualizado correctamente');
 
         }
 
@@ -158,11 +158,73 @@ class AlumnoController extends Controller
             $alumno=Alumno::find($id);
             $alumno->delete();
 
-            return redirect()->route('alumnos.index')->with('success','Alumno eliminado correctamente');;
+            return redirect()->route('alumnos.index')->with('success','Alumno eliminado correctamente');
 
         }
 
 
+
+
+        public function asignarGrupo(Request $request){
+            $alumno=Alumno::find($request->input('no_control'));
+            $grupo=Grupo::find($request->input('grupo'));
+            if(!$alumno){
+                return redirect()->route('alumnos.index')->with('error','Alumno no encontrado');
+            }
+
+            if(!$grupo){
+                return redirect()->route('alumnos.index')->with('error','Grupo no encontrado');
+            }
+
+            $grupos_alumno=$alumno->grupos->pluck('clave_grupo')->toArray();
+
+
+            if($grupos_alumno){
+                
+                foreach ($grupos_alumno as $grupo_alumno) {
+                    if ($grupo_alumno === $grupo->clave_grupo) {
+                       return redirect()->route('alumnos.index')->with('error','Alumno ya pertence al grupo: '.$grupo->clave_grupo);
+                    }                          
+                }
+
+            }
+
+            $alumno->grupos()->attach($alumno->no_control, ['clave_grupo' => $grupo->clave_grupo]);
+            
+            return redirect()->route('alumnos.index')->with('success','Grupo asignado correctamente');
+
+        }
+        public function desasignarGrupo(Request $request){
+
+
+            $alumno=Alumno::find($request->input('no_control'));
+            $grupo=Grupo::find($request->input('grupo'));
+            if(!$alumno){
+                return redirect()->route('alumnos.index')->with('error','Alumno no encontrado');
+            }
+
+            if(!$grupo){
+                return redirect()->route('alumnos.index')->with('error','Grupo no encontrado');
+            }
+
+            $grupos_alumno=$alumno->grupos->pluck('clave_grupo')->toArray();
+
+
+            if($grupos_alumno){
+                
+                foreach ($grupos_alumno as $grupo_alumno) {
+                    if ($grupo_alumno === $grupo->clave_grupo) {    
+                        $alumno->grupos()->detach($grupo->clave_grupo);
+                        
+                        return redirect()->route('alumnos.index')->with('success','Grupo desasignado correctamente');
+                    }                        
+                }
+
+            }
+            return redirect()->route('alumnos.index')->with('error','Alumno no pertenece a ese grupo');
+
+             
+        }
 
 
 

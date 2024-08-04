@@ -3,6 +3,8 @@
 @section('content')
 
 @can('ver-alumnos')
+
+
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -22,14 +24,117 @@
                 </ol>
             </nav>
         </div>
-        <div>
+        <div class="btn-group" role="group">
             @can('crear-alumnos')                          
-            <button type="button" class="btn btn-tecnm" data-bs-toggle="modal" data-bs-target="#modal">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
                 <i class="fas fa-plus-circle me-1"></i> Agregar Alumno
             </button>
             @endcan
+
+            @can('crear-alumnos') 
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-asignar">
+            <i class="fas fa-chalkboard-teacher me-1"></i> Asignar grupo
+            </button>                        
+           
+            @endcan
+
+            @can('crear-alumnos')                          
+            <button type="button"class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-desasignar">
+                <i class="fas fa-trash-alt"></i> Desasignar alumno del grupo
+            </button>
+            @endcan
+        </div>
+
+
+        
+    </div>
+
+    <!-- Vertically centered Modal -->
+    <div class="modal fade" id="modal-asignar" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header" style="background-color: #002855; color: #ffffff;">
+                    <h5 class="modal-title"><i class="fas fa-chalkboard-teacher me-1"></i>Asignar grupo al alumno</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="row g-3" action="{{ route('alumnos.asignar-grupo') }}" method="POST">
+                        @csrf
+                        <div class="col-md-12 mb-3">
+                            <label for="no_control" class="form-label"><i class="bi bi-card-text me-2"></i>Número de
+                                Control</label>
+                            <input type="text" class="form-control" id="no_control" name="no_control" required>
+                        </div>
+                        
+                        <div class="col-md-12 mb-3">
+                            <label for="grupos" class="form-label"><i class="bi bi-people me-2"></i>Grupo</label>
+                            <select class="form-control" id="grupo" name="grupo" required>
+                                @foreach ($grupos as $grupo)
+                                    <option value="{{ $grupo->clave_grupo }}">{{ $grupo->clave_grupo }}//{{$grupo->clave_periodo}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary"
+                                style="background-color: #002855; border-color: #002855;">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+    <!-- End Vertically centered Modal -->
+
+
+
+
+
+  <!-- Vertically centered Modal -->
+  <div class="modal fade" id="modal-desasignar" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header" style="background-color: #002855; color: #ffffff;">
+                    <h5 class="modal-title"> <i class="fas fa-trash-alt"></i> Desasignar grupo al alumno</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="row g-3" action="{{ route('alumnos.desasignar-grupo') }}" method="POST">
+                        @csrf
+                        <div class="col-md-12 mb-3">
+                            <label for="no_control" class="form-label"><i class="bi bi-card-text me-2"></i>Número de
+                                Control</label>
+                            <input type="text" class="form-control" id="no_control" name="no_control" required>
+                        </div>
+                        
+                        <div class="col-md-12 mb-3">
+                            <label for="grupos" class="form-label"><i class="bi bi-people me-2"></i>Grupo</label>
+                            <select class="form-control" id="grupo" name="grupo" required>
+                                @foreach ($grupos as $grupo)
+                                    <option value="{{ $grupo->clave_grupo }}">{{ $grupo->clave_grupo }}//{{$grupo->clave_periodo}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary"
+                                style="background-color: #002855; border-color: #002855;">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Vertically centered Modal -->
+
+
+
+
+
+
+
+
+
 
     
     @can('crear-alumnos')            
@@ -269,5 +374,7 @@
         </div>
         <!-- End Tabla de alumnos -->
     </div>
+
+
     @endcan
     @endsection
