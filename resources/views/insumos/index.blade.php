@@ -219,11 +219,15 @@
                             <td>{{$insumo->capacidad}}</td>
                             <td>{{$insumo->Articulo_inventariados->estatus}}</td>
                             <td class="text-center">
+                                @can('editar-insumo')
                                 <button type="button" class="btn btn-outline-primary btn-sm " data-bs-toggle="modal"
                                     data-bs-target="#modal-update-{{ $insumo->id_insumo}}"><i
                                         class="fas fa-edit bt"></i></button>
+                                @endcan
+                                @can('borrar-insumo')     
                                 <button type="button" class="btn btn-outline-danger btn-sm " data-bs-toggle="modal"
                                     data-bs-target="#modal-{{ $insumo->id_insumo}}"><i class="fas fa-trash"></i></button>
+                                @endcan
                             </td>
 
                         </tr>

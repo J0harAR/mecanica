@@ -7,7 +7,8 @@ use  App\Models\Alumno;
 use  App\Models\Persona;
 use  App\Models\Docente;
 use  App\Models\Grupo;
-
+use  App\Models\Periodo;
+use Illuminate\Support\Facades\DB;
 
 class AlumnoController extends Controller
 {
@@ -27,6 +28,7 @@ class AlumnoController extends Controller
             $alumnos = Alumno::with('persona', 'grupos')->get();
             $grupos = Grupo::all();
             $TodosAlumnos=Alumno::all();
+            $periodos=Periodo::all();
            
 
            $alumnosPorGrupo = [];
@@ -38,7 +40,7 @@ class AlumnoController extends Controller
             }
          
 
-         return view('alumnos.index', compact('alumnosPorGrupo', 'grupos','TodosAlumnos'));
+         return view('alumnos.index', compact('alumnosPorGrupo', 'grupos','TodosAlumnos','periodos'));
         }
 
 
@@ -135,11 +137,11 @@ class AlumnoController extends Controller
                // $grupos_alumno = $alumno->grupos->pluck('clave_grupo')->toArray();
 
                
-               $grupos=$request->input('grupos',[]);
-                foreach ($grupos as $grupo) {
+            //    $grupos=$request->input('grupos',[]);
+            //     foreach ($grupos as $grupo) {
     
-                    $alumno->grupos()->attach($alumno->no_control,['clave_grupo'=>$grupo]);
-                }
+            //         $alumno->grupos()->attach($alumno->no_control,['clave_grupo'=>$grupo]);
+            //     }
               
                 /*
                 foreach ($grupos as $grupo) {
@@ -226,6 +228,20 @@ class AlumnoController extends Controller
              
         }
 
+        public function filtraGrupo(Request $request){
 
+            $grupo = Grupo::where('clave_periodo', $request->input('periodo'))
+            ->where('clave_grupo', $request->input('grupo'))
+            ->first();
+
+            if(!$grupo){
+                return redirect()->route('alumnos.index')->with('error','Grupo no encontrado');
+            }
+
+            $alumnos=$grupo->alumnos;
+
+             return redirect()->route('alumnos.index')->with(['alumnos' => $alumnos,'grupo'=>$grupo]);
+
+        }
 
 }

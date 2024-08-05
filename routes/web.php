@@ -123,6 +123,7 @@ Route::post('/alumnos-desasignar-grupo', [AlumnoController::class, 'desasignarGr
 Route::post('/alumnos', [AlumnoController::class, 'store'])->name('alumnos.store');
 Route::match(['put', 'patch'], '/alumnos/{id}', [AlumnoController::class, 'update'])->name('alumnos.update');
 Route::delete('/alumnos/{id}', [AlumnoController::class, 'destroy'])->name('alumnos.destroy');
+Route::post('/grupos-alumno', [AlumnoController::class, 'filtraGrupo'])->name('alumnos.filtrar-grupos');
 
 
 

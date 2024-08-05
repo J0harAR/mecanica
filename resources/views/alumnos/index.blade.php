@@ -215,13 +215,51 @@
         <div class="alert alert-danger">Numero de control duplicado</div>
     @enderror
 
-    <!-- Tabla de alumnos -->
-    <div class="card shadow-lg rounded-3 border-0">
+    <form action="{{route('alumnos.filtrar-grupos')}}" method="POST" class="border p-4 rounded shadow-sm">
+        @csrf
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label for="periodo" class="form-label">Periodo</label>
+                
+                <select name="periodo" id="periodo" class="form-control" required>
+                    <option value=""disabled selected>Seleccione el periodo</option>
+                @foreach ($periodos as $periodo)
+                    <option value="{{$periodo->clave}}">{{$periodo->clave}}</option>
+                    
+                @endforeach
+                </select>
+               
+            </div>
+            
+            <div class="col-md-6 mb-3">
+                <label for="grupos" class="form-label"><i class="bi bi-people me-2"></i>Grupo</label>
+                <select  class="form-control" id="grupo" name="grupo" required>
+                        <option value=""disabled selected>Seleccione el grupo</option>
+                    @foreach ($grupos as $grupo)
+                        <option value="{{ $grupo->clave_grupo }}">{{ $grupo->clave_grupo }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+       
+            
+        <div class="d-flex justify-content-end mt-3">
+            <button type="submit" class="btn btn-primary me-2">Filtrar</button>
+                   
+        </div>
+        
+    </form>
+
+ <!-- Tabla de alumnos -->
+ <div class="card shadow-lg rounded-3 border-0">
         <div class="card-body p-4">
             <div class="table-responsive">
-                @foreach($alumnosPorGrupo as $grupo => $alumnos)
-                    <h5 class="card-title1 text-primary1 mb-2 fw-bold ">{{ $grupo }}</h5>
+                 @if (session('alumnos'))
                     <table class="table table-hover">
+                        @if (session('grupo'))
+                            <h5>Grupo:{{session('grupo')->clave_grupo}}</h5>
+                        @endif
+                        
                         <table class="table table-striped table-hover table-bordered shadow-sm rounded align-middle"
                             style="border-collapse: separate; border-spacing: 0 10px;">
                             <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
@@ -237,7 +275,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($alumnos as $alumno)
+                                @foreach(session('alumnos') as $alumno)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $alumno->no_control }}</td>
@@ -314,18 +352,7 @@
                                                             <input type="text" class="form-control" id="curp" name="curp"
                                                                 value="{{ $alumno->persona->curp }}" required>
                                                         </div>
-                                                        <div class="col-md-12 mb-3">
-                                                            <label for="grupos" class="form-label"><i
-                                                                    class="bi bi-people me-2"></i>Grupo</label>
-                                                            <select multiple class="form-control" id="grupos" name="grupos[]"
-                                                                required>
-                                                                @foreach ($grupos as $grupo)
-                                                                    <option value="{{ $grupo->clave_grupo }}" {{ in_array($grupo->clave_grupo, $alumno->grupos->pluck('clave_grupo')->toArray()) ? 'selected' : '' }}>
-                                                                        {{ $grupo->clave_grupo }} //{{$grupo->clave_periodo}}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
+                                                        
                                                         <div class="text-center mt-4">
                                                             <button type="submit" class="btn btn-primary"
                                                                 style="background-color: #002855; border-color: #002855;">Guardar</button>
@@ -369,12 +396,11 @@
                                 @endforeach
                             </tbody>
                         </table>
-                @endforeach
+                @endif
             </div>
         </div>
         <!-- End Tabla de alumnos -->
     </div>
-
-
+</div>
     @endcan
     @endsection

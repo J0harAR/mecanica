@@ -268,7 +268,25 @@ class PracticaController extends Controller
             return redirect()->route('practicasAlumno.create')->with('error', 'Ningun alumno seleccionado');
         }
 
+        
+        foreach ($alumnos as $alumno) { 
+            $aparece_grupo=0; 
 
+            $alumno_encontrado=Alumno::find($alumno);  
+                
+            foreach ($alumno_encontrado->grupos as $grupo_alumno) {
+                if($grupo_alumno->clave_grupo === $practica->grupo->clave_grupo){
+                        $aparece_grupo++;
+                }
+            }
+
+            if($aparece_grupo == 0){
+                return redirect()->route('practicasAlumno.create')->with('error', 'Alumno no pertenece al grupo');
+            }
+            $aparece_grupo=0;
+        }
+        
+       
         $articulo_presente = false;
         foreach ($articulos_inventariados as $id_articulo_inventariado) {
             $articulo_presente = false;
@@ -281,7 +299,8 @@ class PracticaController extends Controller
                     break; 
                    }
                 }
-                if (!$articulo_presente) {         
+                if (!$articulo_presente) {    
+                  
                     return redirect()->route('practicasAlumno.create')->with('error', 'Articulos no están asociados a la practica.');
                }
         }
