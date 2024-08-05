@@ -36,7 +36,20 @@
         <div class="card-body">
             <form class="row g-3 needs-validation" action="{{ route('grupos.store') }}" method="POST" novalidate>
                 @csrf
-                <div class="col-md-8">
+                <div class="col-md-4">
+                    <label for="floatingSelect" class="form-label"><i class="fas fa-book me-2"></i> Periodo</label>
+                    <select class="form-select" id="floatingSelect" name="periodo" required>
+                        <option selected disabled>Selecciona el periodo</option>
+                        @foreach ($periodos as $periodo)
+                            <option value="{{ $periodo->clave }}">{{ $periodo->clave }}</option>
+                        @endforeach
+                    </select>
+                    <div class="invalid-feedback">
+                        Seleccione un periodo
+                    </div>
+                </div>
+
+                <div class="col-md-4">
                     <label for="floatingSelect" class="form-label"><i class="fas fa-book me-2"></i> Asignatura</label>
                     <select class="form-select" id="floatingSelect" name="asignatura" required>
                         <option selected disabled>Selecciona una asignatura</option>

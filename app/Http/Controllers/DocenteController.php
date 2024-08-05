@@ -234,14 +234,14 @@ class DocenteController extends Controller
                         ->Where('clave_asignatura', $datos_grupo['asignatura'])
                         ->where('clave_grupo',$clave_grupo)
                         ->where('id_docente',null)
-                        ->where('clave_periodo',null)
+                        ->where('clave_periodo',$periodo->clave)
                         ->first();
 
            
                     if($grupo_disponible){
                         $grupo=Grupo::Where('clave_asignatura', $datos_grupo['asignatura'])
                          ->where('clave_grupo',$clave_grupo)
-                        ->update(['id_docente'=>$docente->rfc,'clave_periodo'=>$periodo->clave]);  
+                        ->update(['id_docente'=>$docente->rfc]);  
                     }else{
                         return redirect()->route('docentes.asigna')->with('error','El grupo ya cuenta con docente');
                     }
@@ -301,7 +301,7 @@ class DocenteController extends Controller
                 ->Where('clave_asignatura', $datos_grupo['asignatura'])
                 ->where('clave_grupo',$clave_grupo)              
                 ->where('clave_periodo',$clave_periodo)              
-                ->update(['id_docente'=>null,'clave_periodo'=>null]);
+                ->update(['id_docente'=>null]);
              
             }
             return redirect()->route('docentes.index')->with('success','Asignatura removida del docente correctamente');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use  App\Models\Grupo;
 use  App\Models\Asignatura;
+use  App\Models\Periodo;
 class GrupoController extends Controller
 {
 
@@ -23,7 +24,8 @@ class GrupoController extends Controller
 
     public function create(){
         $asignaturas=Asignatura::all();
-        return view('grupos.create',compact('asignaturas'));
+        $periodos=Periodo::all();
+        return view('grupos.create',compact('asignaturas','periodos'));
 
     }
 
@@ -32,10 +34,12 @@ class GrupoController extends Controller
         $validated = $request->validate([
             'clave_grupo' => 'required',
             'asignatura' => 'required',
+            'periodo' => 'required',
         ]);
             $grupo=new Grupo;
             $grupo->clave_grupo=$request->input('clave_grupo');
             $grupo->clave_asignatura=$request->input('asignatura');
+            $grupo->clave_periodo=$request->input('periodo');
             $grupo->save();
 
     

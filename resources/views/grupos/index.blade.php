@@ -90,7 +90,7 @@
                                         <th scope="row">{{ $loop->iteration }}</th>
                                         <td>{{$grupo->clave_periodo}}</td>
                                         <td>
-                                            {{$grupo->asignatura->nombre}}
+                                            {{$grupo->asignatura->clave}}//{{$grupo->asignatura->nombre}}
                                         </td>
                                         <td>{{ $grupo->clave_grupo }}</td>
                                         <td>
