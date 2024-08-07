@@ -360,11 +360,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 mb-3">
-                                                    <label for="estatus" class="form-label"><i
-                                                            class="bi bi-check-circle me-2"></i>Estatus</label>
-                                                    <input type="text" class="form-control" id="estatus" name="estatus"
-                                                        value="{{ $maquina->Articulo_inventariados->estatus }}">
-                                                </div>
+                                                <label for="estatus" class="form-label"><i
+                                                        class="bi bi-check-circle me-2"></i>Estatus</label>
+                                                <select id="estatus" class="form-select" name="estatus">
+                                                    <option value="Disponible" {{ $maquina->Articulo_inventariados->estatus == 'Disponible' ? 'selected' : '' }}>Disponible</option>
+                                                    <option value="No disponible" {{ $maquina->Articulo_inventariados->estatus == 'No disponible' ? 'selected' : '' }}>No disponible</option>
+                                                </select>
+                                            </div>
 
                                                 <div class="col-md-12 mb-3">
                                                     <label for="insumos" class="form-label"><i

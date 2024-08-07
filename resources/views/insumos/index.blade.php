@@ -274,21 +274,25 @@
                                         <form class="row g-3" action="{{ route('insumos.update', $insumo->id_insumo) }}" method="POST">
                                             @csrf
                                             @method('PUT')
-                                            <div class="col-md-4 mb-3">
+                                            <div class="col-md-12 mb-3">
                                                 <label for="id_insumo" class="form-label"><i class="bi bi-gear me-2"></i>Código de insumo</label>
                                                 <input type="text" class="form-control" id="id_insumo" name="id_insumo" value="{{ $insumo->id_insumo }}" disabled>
                                             </div>
-                                            <div class="col-md-8 mb-3">
+                                            <div class="col-md-12 mb-3">
                                                 <label for="nombre" class="form-label"><i class="bi bi-box-seam me-2"></i>Nombre del artículo</label>
                                                 <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}" disabled>
                                             </div>
-                                            <div class="col-md-4 mb-3">
+                                            <div class="col-md-12 mb-3">
                                                 <label for="capacidad" class="form-label"><i class="bi bi-bar-chart me-2"></i>Capacidad</label>
                                                 <input type="number" class="form-control" id="capacidad" name="capacidad" value="{{ $insumo->capacidad }}">
                                             </div>
                                             <div class="col-md-12 mb-3">
-                                                <label for="estatus" class="form-label"><i class="bi bi-check-circle me-2"></i>Estatus</label>
-                                                <input type="text" class="form-control" id="estatus" name="estatus" value="{{ $insumo->Articulo_inventariados->estatus }}">
+                                                <label for="estatus" class="form-label"><i
+                                                        class="bi bi-check-circle me-2"></i>Estatus</label>
+                                                <select id="estatus" class="form-select" name="estatus">
+                                                    <option value="Disponible" {{ $insumo->Articulo_inventariados->estatus == 'Disponible' ? 'selected' : '' }}>Disponible</option>
+                                                    <option value="No disponible" {{ $insumo->Articulo_inventariados->estatus == 'No disponible' ? 'selected' : '' }}>No disponible</option>
+                                                </select>
                                             </div>
                                             <div class="text-center mt-4">
                                                 <button type="submit" class="btn btn-primary" style="background-color: #002855; border-color: #002855;">Guardar</button>
