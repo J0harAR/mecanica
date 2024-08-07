@@ -61,7 +61,7 @@ class ReportesController extends Controller
         }
 
 
-        $pdf = Pdf::loadView('reportes.inventario', ['inventario' => $inventario, 'periodo' => $periodo]);
+        $pdf = Pdf::loadView('reportes.inventario', ['inventario' => $inventario, 'periodo' => $periodo,'año'=>$año[0]]);
         return $pdf->stream();
     }
 
@@ -87,7 +87,7 @@ class ReportesController extends Controller
     
         
        
-       $pdf = Pdf::loadView('reportes.herramientas',['herramientas'=>$herramientas,'periodo'=>$periodo]);
+       $pdf = Pdf::loadView('reportes.herramientas',['herramientas'=>$herramientas,'periodo'=>$periodo ,'año'=>$año[0]]);
        return $pdf->stream();
 
     }
@@ -109,7 +109,7 @@ class ReportesController extends Controller
                     ->get();
         }
 
-        $pdf = Pdf::loadView('reportes.maquinaria',['maquinarias'=>$maquinarias,'periodo'=>$periodo]);
+        $pdf = Pdf::loadView('reportes.maquinaria',['maquinarias'=>$maquinarias,'periodo'=>$periodo ,'año'=>$año[0]]);
         return $pdf->stream();
 
     }
@@ -130,7 +130,7 @@ class ReportesController extends Controller
                     ->get();
         }
 
-        $pdf = Pdf::loadView('reportes.insumos',['Insumos'=>$Insumos,'periodo'=>$periodo]);
+        $pdf = Pdf::loadView('reportes.insumos',['Insumos'=>$Insumos,'periodo'=>$periodo ,'año'=>$año[0]]);
         return $pdf->stream();
 
     }

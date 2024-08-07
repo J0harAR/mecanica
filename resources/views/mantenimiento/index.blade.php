@@ -103,7 +103,11 @@
             </div>
             <div class="col-md-12 mb-3">
               <label for="insumos" class="form-label"><i class="bi bi-box-seam me-2"></i>Insumos</label>
-              @foreach ($insumos as $insumo)
+              <div id ="insumos-container">
+
+
+              </div>
+              <!-- @foreach ($insumos as $insumo)
         <div class="row align-items-center mb-2">
           <div class="col-md-5">
           <input type="checkbox" name="{{ $insumo->id_insumo }}" data-id="{{ $insumo->id_insumo }}"
@@ -118,7 +122,10 @@
           </div>
           </div>
         </div>
-      @endforeach
+      @endforeach -->
+     
+
+
             </div>
             <div class="text-center mt-4">
               <button type="submit" class="btn btn-primary"
@@ -251,15 +258,50 @@
   @endcan
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
-    $(document).ready(function () {
-      $('.insumo-enable').on('click', function () {
-        let id = $(this).attr('data-id');
-        let enable = $(this).is(":checked");
-        $('.insumo-cantidad[data-id="' + id + '"]').attr('disabled', !enable).attr('required', enable);
-        $('.insumo-cantidad[data-id="' + id + '"]').val(null);
-      });
-    });
-  </script>
+        $(document).ready(function () {
+            $('#maquina').on('change', function () {
+                let maquinaId = $(this).val();
+                if (maquinaId) {
+                    $.ajax({
+                        url: '{{ route("get-insumos-por-maquinaria") }}',
+                        type: 'GET',
+                        data: { id: maquinaId },
+                        success: function (data) {
+                            let container = $('#insumos-container');
+                            container.empty(); // Limpiar el contenedor
+
+                            data.forEach(function (insumo) {
+                                let insumoHtml = `
+                                    <div class="row align-items-center mb-2">
+                                        <div class="col-md-5">
+                                            <input type="checkbox" name="${insumo.id_insumo}" data-id="${insumo.id_insumo}"
+                                                class="insumo-enable me-2">
+                                            <span> ${insumo.id_insumo} ${insumo.articulo_inventariados.catalogo_articulos.nombre}</span>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="input-group">
+                                                <input type="text" name="insumos[${insumo.id_insumo}]" placeholder="Cantidad"
+                                                    data-id="${insumo.id_insumo}" class="insumo-cantidad form-control" disabled>
+                                                <span class="input-group-text">Litros</span>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                                container.append(insumoHtml);
+                            });
+
+                            // Volver a asociar el evento click después de agregar nuevos elementos
+                            $('.insumo-enable').on('click', function () {
+                                let id = $(this).attr('data-id');
+                                let enable = $(this).is(":checked");
+                                $('.insumo-cantidad[data-id="' + id + '"]').attr('disabled', !enable).attr('required', enable);
+                                $('.insumo-cantidad[data-id="' + id + '"]').val(null);
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 
 
   </script>

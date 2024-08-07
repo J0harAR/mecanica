@@ -10,7 +10,7 @@ use  App\Models\Periodo;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Carbon\Carbon;
 class DocenteController extends Controller
 {
 
@@ -44,8 +44,8 @@ class DocenteController extends Controller
         $apellido_p=$request->input('apellido_p');   
         $apellido_m=$request->input('apellido_m');   
         $rfc=$request->input('rfc');   
-        $area=$request->input('area');   
-
+        $area=$request->input('area');
+        
         $telefono=$request->input('telefono');
         
         $persona_existente=Alumno::where('curp',$curp)->first();
@@ -63,6 +63,12 @@ class DocenteController extends Controller
 
       
         if($request->has('foto')){
+
+            $request->validate([
+                'foto' => 'file|mimes:jpg,png|max:512',
+            ]);
+          
+
 
             $file=$request->file('foto');
             $extension=$file->getClientOriginalExtension();
@@ -147,6 +153,10 @@ class DocenteController extends Controller
             $docente->area=$area;
 
             if($request->has('foto')){
+                
+                $request->validate([
+                    'foto' => 'file|mimes:jpg,png|max:512',
+                ]);
                        
                 $file=$request->file('foto');
                 $extension=$file->getClientOriginalExtension();
@@ -185,7 +195,17 @@ class DocenteController extends Controller
 }
 
     public function asigna(){
-        $periodos=Periodo::all();
+       
+        $currentYear = Carbon::now()->year;
+        
+        $currentMonth = Carbon::now()->month;
+            
+        $periodos = Periodo::whereYear('created_at',$currentYear)
+            ->whereMonth('fecha_inicio', '>=',  $currentMonth)
+            ->get();
+           
+            
+
         $docentes=Docente::all();
         $asignaturas=Asignatura::all();
         return view('docentes.asignar',compact('docentes','asignaturas','periodos'));

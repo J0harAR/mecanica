@@ -27,6 +27,19 @@
       </nav>
     </div>
   </div>
+  @if($errors->any())
+  <div class="alert alert-danger" id="success-alert">
+            @foreach ($errors->all() as $error)
+                  @if ($error === "validation.mimes")
+                      Formato del archivo no valido
+                  @endif
+
+                  @if ($error === "validation.max.file")
+                      Archivo excedio el peso permitido
+                  @endif        
+            @endforeach
+  </div>
+  @endif
 
   <section class="section profile">
     <div class="row">
@@ -90,7 +103,12 @@
                       style="width: 120px; height: 120px;">
                     <div class=" col-md-10 center">
                       <input type="file" class="form-control" id="profileImage" name="foto">
+                      <div class="text-xs">
+                          Peso máximo 512 KBs
+                      </div>
                     </div>
+                    
+
                   </div>
                   <div class="mb-3 row">
                     <label for="fullName" class="col-md-4 col-form-label">Nombre</label>
@@ -117,8 +135,12 @@
                     <label for="curp" class="col-md-4 col-form-label">CURP</label>
                     <div class="col-md-6">
                       <input name="curp" type="text" class="form-control" id="curp"
-                        value="{{ $docente->persona->curp }}">
+                        value="{{ $docente->persona->curp }}" pattern="[A-Z]{4}[0-9]{6}[HM][A-Z]{5}[0-9]{2}">
+                        <div class="invalid-feedback">
+                          Ingrese el CURP.
+                        </div>
                     </div>
+
                   </div>
                   <div class="mb-3 row">
                     <label for="area" class="col-md-4 col-form-label">Área</label>
@@ -129,8 +151,12 @@
                   <div class="mb-3 row">
                     <label for="telefono" class="col-md-4 col-form-label">Teléfono</label>
                     <div class="col-md-6">
-                      <input name="telefono" type="text" class="form-control" id="telefono"
-                        value="{{ $docente->telefono }}">
+                      <input name="telefono" type="tel" class="form-control" id="telefono"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                        value="{{ $docente->telefono }}" >
+                        <div class="invalid-feedback">
+                          Ingrese el teléfono.
+                        </div>
+
                     </div>
                   </div>
                   <div class="text-center">
@@ -173,5 +199,13 @@
     </div>
   </div>
 </div>
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            window.setTimeout(function () {
+                const successAlert = document.getElementById("success-alert");
+                if (successAlert) successAlert.style.display = 'none';
+            }, 3000);
+        });
+    </script>
 @endcan
 @endsection

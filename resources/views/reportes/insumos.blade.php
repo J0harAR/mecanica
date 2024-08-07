@@ -37,6 +37,7 @@
             border: 1px solid #000;
             padding: 8px;
             text-align: left;
+            text-transform: uppercase;
         }
         .content-table th {
             background-color: #f2f2f2;
@@ -55,7 +56,7 @@
                     <p>TECNOLÓGICO NACIONAL DE MÉXICO</p>
                     <p>Instituto Tecnológico de Oaxaca</p>
                     <p>Reporte de insumos del periodo {{mb_strtoupper(\Carbon\Carbon::parse($periodo->fecha_inicio)->locale('es')->isoFormat('MMMM')) }} -
-                    {{ mb_strtoupper(\Carbon\Carbon::parse($periodo->fecha_final)->locale('es')->isoFormat('MMMM')) }}</p>
+                    {{ mb_strtoupper(\Carbon\Carbon::parse($periodo->fecha_final)->locale('es')->isoFormat('MMMM')) }}/{{$año}}</p>
                     
                 </td>
                 <td class="right">

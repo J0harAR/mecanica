@@ -2,6 +2,13 @@
 
 @section('content')
 @can('crear-docente')
+
+
+
+
+  
+
+
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
@@ -28,6 +35,20 @@
     </div>
   </div>
   <div>
+
+  @if($errors->any())
+  <div class="alert alert-danger" id="success-alert">
+            @foreach ($errors->all() as $error)
+                  @if ($error === "validation.mimes")
+                      Formato del archivo no valido
+                  @endif
+
+                  @if ($error === "validation.max.file")
+                      Archivo excedio el peso permitido
+                  @endif        
+            @endforeach
+  </div>
+  @endif
   <div class="card custom-card">
   <form action="{{ route('docentes.store') }}" method="POST" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
     @csrf
@@ -57,7 +78,7 @@
 
     <div class="col-md-6">
       <label for="curp" class="form-label"><i class="fas fa-id-card me-2"></i>Curp</label>
-      <input type="text" class="form-control" id="curp" name="curp" required>
+      <input type="text" class="form-control" id="curp" name="curp" required pattern="[A-Z]{4}[0-9]{6}[HM][A-Z]{5}[0-9]{2}">
       <div class="invalid-feedback">
         Ingrese el CURP.
       </div>
@@ -81,7 +102,8 @@
 
     <div class="col-md-6">
       <label for="telefono" class="form-label"><i class="fas fa-phone me-2"></i>Teléfono</label>
-      <input type="text" class="form-control" id="telefono" name="telefono" required>
+      <input  class="form-control" type="tel" id="telefono" name="telefono" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+      <small>Formato: 123-456-7890</small>
       <div class="invalid-feedback">
         Ingrese el teléfono.
       </div>
@@ -90,6 +112,9 @@
     <div class="col-md-6">
       <label for="foto" class="form-label"><i class="fas fa-camera me-2"></i>Foto</label>
       <input type="file" class="form-control" id="foto" name="foto" required>
+      <div class="text-xs">
+          Peso máximo 512 KBs
+      </div>
       <div class="invalid-feedback">
         Suba una foto.
       </div>
@@ -118,5 +143,14 @@
       })
   })()
 </script>
+
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            window.setTimeout(function () {
+                const successAlert = document.getElementById("success-alert");
+                if (successAlert) successAlert.style.display = 'none';
+            }, 3000);
+        });
+    </script>
 @endcan
 @endsection

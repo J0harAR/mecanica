@@ -17,6 +17,26 @@ class MantenimientoController extends Controller
         $this->middleware('permission:borrar-mantenimiento', ['only' => ['destroy']]);
     }
 
+    public function getInsumosPorMaquinaria(Request $request)
+    {
+        $maquinariaId = $request->input('id');
+        // Suponiendo que tienes una relación definida en tu modelo de Maquinaria para obtener sus insumos
+        
+        
+        $maquinaria = Maquinaria::find($maquinariaId);
+        $insumos=[];
+
+
+        foreach ($maquinaria->insumos as  $insumo_maquina) {
+         // $insumos[]= Insumos::find($insumo_maquina->id_insumo);
+          $insumos[] = Insumos::with('Articulo_inventariados','Articulo_inventariados.Catalogo_articulos')->find($insumo_maquina->id_insumo);
+         
+        }
+        
+       
+        return response()->json($insumos);
+    }
+
 
     public function index()
     {

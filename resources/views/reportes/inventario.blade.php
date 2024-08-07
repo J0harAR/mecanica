@@ -37,6 +37,7 @@
             border: 1px solid #000;
             padding: 8px;
             text-align: left;
+            text-transform: uppercase;
         }
         .content-table th {
             background-color: #f2f2f2;
@@ -57,7 +58,7 @@
                     <p>TECNOLÓGICO NACIONAL DE MÉXICO</p>
                     <p>Instituto Tecnológico de Oaxaca</p>
                     <p>Reporte de inventario del periodo {{mb_strtoupper(\Carbon\Carbon::parse($periodo->fecha_inicio)->locale('es')->isoFormat('MMMM')) }} -
-                    {{ mb_strtoupper(\Carbon\Carbon::parse($periodo->fecha_final)->locale('es')->isoFormat('MMMM')) }}</p>
+                    {{ mb_strtoupper(\Carbon\Carbon::parse($periodo->fecha_final)->locale('es')->isoFormat('MMMM')) }}/{{$año}}</p>
                     
                 </td>
                 <td class="right">
@@ -81,8 +82,13 @@
         <tr>
             <td>{{$i->id_articulo}}</td>
             <td>{{$i->nombre}}</td>
-            <td>{{$i->cantidad}}</td>
-            <td>{{$i->seccion}}</td>
+            <td>{{$i->cantidad}}</td> 
+                @if ($i->seccion)
+                    <td>{{$i->seccion}}</td>
+                @else
+                    <td>N/A</td>
+                @endif              
+            
             <td>{{$i->tipo}}</td>
         </tr>
         @endforeach
