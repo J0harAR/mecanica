@@ -54,6 +54,7 @@
                             <input id="email" type="email"
                                 class="form-control form-control1 @error('email') is-invalid @enderror" name="email"
                                 value="{{ old('email') }}" required autocomplete="email"
+                                
                                 pattern="^[\w\.-]+@itoaxaca\.edu\.mx$"
                                 title="El correo electrónico debe finalizar con @itoaxaca.edu.mx">
                             @error('email')

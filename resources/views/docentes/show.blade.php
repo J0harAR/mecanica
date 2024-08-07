@@ -135,7 +135,7 @@
                     <label for="curp" class="col-md-4 col-form-label">CURP</label>
                     <div class="col-md-6">
                       <input name="curp" type="text" class="form-control" id="curp"
-                        value="{{ $docente->persona->curp }}" pattern="[A-Z]{4}[0-9]{6}[HM][A-Z]{5}[0-9]{2}">
+                        value="{{ $docente->persona->curp }}" >
                         <div class="invalid-feedback">
                           Ingrese el CURP.
                         </div>

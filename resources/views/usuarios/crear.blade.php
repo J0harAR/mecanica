@@ -69,9 +69,13 @@
           <label for="inputEmail4" class="form-label">Email 
             <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Ingrese el correo electrónico del usuario."></i>
           </label>
-          <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" required autocomplete="email" value="{{ old('email') }}">
+          <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" required autocomplete="email" value="{{ old('email') }}"
+          pattern="^[\w\.-]+@itoaxaca\.edu\.mx$"
+                                title="El correo electrónico debe finalizar con @itoaxaca.edu.mx">
+                                  
+          
           @error('email')
-          <div class="invalid-feedback mt-2">El correo proporcionado ya pertenece a una cuenta</div>
+          <div class="invalid-feedback mt-2">El correo electrónico debe finalizar con @itoaxaca.edu.mx </div>
           @enderror
         </div>
         <div class="col-12">

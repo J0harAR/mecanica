@@ -49,7 +49,7 @@ class UsuarioController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'required | email |unique:users,email',
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email', 'regex:/^[\w\.-]+@itoaxaca\.edu\.mx$/'],
             'password' => 'required | same:confirm-password',
             'roles' => 'required'
 
@@ -82,7 +82,7 @@ class UsuarioController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'required | email |unique:users,email,' . $id,
+            'email' => 'required | email |regex:/^[\w\.-]+@itoaxaca\.edu\.mx$/|unique:users,email,' . $id,
             'password' => 'same:confirm-password',
             'roles' => 'required'
 
