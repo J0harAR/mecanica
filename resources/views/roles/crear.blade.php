@@ -17,7 +17,7 @@
             </a>
           </li>
           <li class="breadcrumb-item">
-            <a href="/roles" class="text-decoration-none text-primary">
+            <a href="{{ route('roles.index') }}" class="text-decoration-none text-primary">
               <i class="fas fa-user-shield me-1"></i>Roles
             </a>
           </li>
@@ -34,14 +34,14 @@
     @endcan
   </div>
 
-  <div class="card custom-card">
+  <div class="card custom-card shadow-lg">
     <div class="card-body">
-      <h5 class="card-title">Registrar Rol</h5>
+      <h5 class="card-title text-primary">Registrar Rol</h5>
+      
 
-      <!-- Vertical Form -->
       <form class="row g-3 needs-validation" action="{{ route('roles.store') }}" method="POST">
         @csrf
-        <div class="col-12">
+        <div class="col-12 mb-3">
           <label for="inputName4" class="form-label">Nombre del rol <i class="bi bi-info-circle ms-1"
             data-bs-toggle="tooltip" data-bs-placement="top" title="Ingrese el nombre del nuevo rol."></i></label>
           <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" required>
@@ -54,19 +54,51 @@
           <div class="form-group">
             <label class="form-label">Permisos del rol <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip"
               data-bs-placement="top" title="Seleccione los permisos aplicables a este rol."></i></label>
-            @foreach ($permission as $value)
-            <div class="form-check">
-              <input type="checkbox" name="permission[]" value="{{ $value->name }}"
-                class="form-check-input @error('permission') is-invalid @enderror">
-              <label class="form-check-label">{{ $value->name }}</label>
+
+            @php
+            $groupedPermissions = [];
+            foreach ($permission as $perm) {
+                $parts = explode('-', $perm->name);
+                $prefix = $parts[0];
+                if (!isset($groupedPermissions[$prefix])) {
+                    $groupedPermissions[$prefix] = [];
+                }
+                $groupedPermissions[$prefix][] = $perm;
+            }
+            @endphp
+
+            <!-- Tabs navigation -->
+            <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+              @foreach ($groupedPermissions as $prefix => $perms)
+              <li class="nav-item" role="presentation">
+                <a class="nav-link @if ($loop->first) active @endif" id="tab-{{ $prefix }}" data-bs-toggle="tab" href="#category-{{ $prefix }}" role="tab" aria-controls="category-{{ $prefix }}" aria-selected="true">
+                  {{ ucfirst($prefix) }}
+                </a>
+              </li>
+              @endforeach
+            </ul>
+
+            <!-- Tabs content -->
+            <div class="tab-content" id="myTabContent">
+              @foreach ($groupedPermissions as $prefix => $perms)
+              <div class="tab-pane fade @if ($loop->first) show active @endif" id="category-{{ $prefix }}" role="tabpanel" aria-labelledby="tab-{{ $prefix }}">
+                @foreach ($perms as $perm)
+                <div class="form-check form-check-inline mb-2">
+                  <input type="checkbox" name="permission[]" value="{{ $perm->name }}" class="form-check-input @error('permission') is-invalid @enderror">
+                  <label class="form-check-label">{{ $perm->name }}</label>
+                </div>
+                @endforeach
+              </div>
+              @endforeach
             </div>
-            @endforeach
+
             <small class="form-text text-muted">Seleccione uno o más permisos para este rol.</small>
           </div>
         </div>
 
         <div class="text-center">
-          <button type="submit" class="btn btn-primary">Registrar
+          <button type="submit" class="btn btn-primary">
+            Registrar <i class="fas fa-save ms-1"></i>
             <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
           </button>
         </div>
