@@ -22,9 +22,11 @@
         </nav>
       </div>
       @can('crear-asignatura')
-      <a href="{{ route('asignatura.create') }}" class="btn btn-primary shadow">
-        <i class="fas fa-plus"></i> Nueva Asignatura
-      </a>
+      <button type="button" class="btn btn-primary"
+             data-bs-toggle="modal" data-bs-target="#createModal">
+             <i class="fas fa-user-plus"></i> Registrar Asignatura
+       </button>
+
       @endcan
     </div>
 
@@ -49,7 +51,7 @@
         </div>
     @endif
 
-    <div class="card custom-card">
+    <div class="card">
       <div class="card-body">
         <div class="card shadow-sm mt-4">
           <div class="card-body">
@@ -63,25 +65,79 @@
               </thead>
               <tbody>
                 @foreach ($asignaturas as $asignatura)
-                <tr class="text-center">
+                <tr>
                   <td scope="row">{{ $asignatura->clave }}</td>
                   <td>{{ $asignatura->nombre }}</td>
                   <td>
                     @can('editar-asignatura')
-                    <a href="{{ route('asignatura.edit', ['id' => $asignatura->clave]) }}"
-                       class="btn btn-outline-primary btn-sm">
-                      <i class="fas fa-edit mr-2"></i>
-                    </a>
+                    <button type="button" class="btn btn-primary " data-bs-toggle="modal"
+                            data-bs-target="#editModal-{{$asignatura->clave}}" data-asignatura="{{ $asignatura->clave }}">
+                            <i class="fas fa-edit bt"></i>
+                    </button>
+                    
                     @endcan
 
                     @can('borrar-asignatura')
-                    <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                             data-bs-target="#deleteModal" data-asignatura="{{ $asignatura->clave }}">
                       <i class="fas fa-trash mr-2"></i>
                     </button>
                     @endcan
                   </td>
                 </tr>
+                                 
+
+                @can('editar-asignatura')
+<!-- Modal de Editar -->
+<div class="modal fade" id="editModal-{{$asignatura->clave}}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header" style="background-color: #002855; color: #ffffff;">
+                <h5 class="modal-title" id="editModalLabel"><i class="bi bi-pencil me-2"></i> Editar Asignatura</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('asignatura.update', ['id' => $asignatura->clave]) }}" method="POST" class="row g-3 needs-validation" novalidate>
+                    @csrf
+                    @method('PATCH')
+                    
+                    <div class="col-md-12">
+                        <label for="nombre" class="form-label"><i class="fas fa-book me-2"></i> Nombre Completo</label>
+                        <input type="text" name="nombre" id="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ $asignatura->nombre }}" required>
+                        @error('nombre')
+                         <div class="invalid-feedback">
+                         {{ $message }}
+                          </div>
+                             @else
+                             <div class="invalid-feedback">
+                                 Ingrese el nombre completo de la asignatura.
+                              </div>
+                          @enderror
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="clave" class="form-label"><i class="fas fa-key me-2"></i> Clave de Asignatura</label>
+                        <input type="text" name="clave" id="clave" class="form-control" value="{{ $asignatura->clave }}" required>
+                        <div class="invalid-feedback">
+                            Ingrese la clave de la asignatura.
+                        </div>
+                    </div>
+
+                    <div class="col-12 d-flex justify-content-end mt-3">
+                        <button type="submit" class="btn btn-primary btn-sm shadow">
+                            <i class="bi bi-check2"></i> Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@endcan
+
+
+
+
                 @endforeach
               </tbody>
             </table>
@@ -89,7 +145,54 @@
         </div>
       </div>
     </div>
+    
+                                @can('crear-asignatura')
+                                  <!-- Modal de create -->
+                                    <div class="modal fade" id="createModal" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content border-0 shadow-lg">
+                                                <div class="modal-header" style="background-color: #002855; color: #ffffff;">
+                                                    <h5 class="modal-title" id="exampleModalLabel"><i
+                                                            class="bi bi-person-plus me-2"></i>Crear asignatura</h5>
+                                                    <button type="button" class="btn-close btn-close-white"
+                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                <form class="row g-3 needs-validation" action="{{ route('asignatura.store') }}" method="POST" novalidate>
+                                                      @csrf
+                                                      <div class="col-md-12">
+                                                          <label for="floatingSelect" class="form-label"><i class="fas fa-book me-2"></i>Nombre Completo</label>
+                                                          <input type="text" name="nombre" id="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}" required>
+                                                                @error('nombre')
+                                                                    <div class="invalid-feedback">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @else
+                                                                    <div class="invalid-feedback">
+                                                                        Ingrese el nombre completo de la asignatura.
+                                                                    </div>
+                                                                @enderror
+                                                        </div>
 
+                                                              <div class="col-md-12">
+                                                                  <label for="clave" class="form-label"><i class="fas fa-key me-2"></i> Clave de Asignatura</label>
+                                                                  <input type="text" name="clave" id="clave" class="form-control" required>
+                                                                  <div class="invalid-feedback">
+                                                                      Ingrese la clave de la asignatura.
+                                                                  </div>
+                                                              </div>
+                                                              <div class="col-12 d-flex justify-content-end mt-3">
+                                                                  <button type="submit" class="btn btn-primary btn-sm shadow">
+                                                                      <i class="bi bi-check2"></i> Guardar
+                                                                  </button>
+                                                              </div>
+                                                          </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endcan
 
 @can('borrar-asignatura')
     <!-- Modal -->

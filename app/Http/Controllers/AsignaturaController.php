@@ -59,7 +59,7 @@ class AsignaturaController extends Controller
 }
 
     public function edit($id){
-
+        
         $asignatura=Asignatura::find($id);
 
         return view('asignatura.editar',compact('asignatura'));
@@ -69,7 +69,10 @@ class AsignaturaController extends Controller
 
 
     public function update(Request $request , $id){
-
+        $request->validate([
+            'nombre' => 'required',
+        ]);
+        
         $nombre=$request->input('nombre');
         $asignatura=Asignatura::find($id);
         $asignatura->nombre=$nombre;
