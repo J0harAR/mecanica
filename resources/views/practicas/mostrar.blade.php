@@ -93,7 +93,7 @@
 
           <div class="col-12">
             <label for="estatus" class="form-label"><i class="fas fa-clipboard-check me-2"></i>Estatus</label>
-            <input type="text" class="form-control" name="estatus" required value="{{ $practica->estatus }}" disabled>
+            <input type="text" class="form-control" name="estatus" required value="{{ $practica->estatus == 0 ? 'No completada' : 'Completada' }}" {{ $practica->estatus == 0 ? 'disabled' : 'disabled' }}>
           </div>
         </form>
       </div>
