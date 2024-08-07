@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    @can('generar_reporte_herramientas') 
+    @can('generar_reporte_herramientas')
  <!-- Modal -->
  <div class="modal fade" id="modal-download" tabindex="-1"
         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -138,12 +138,15 @@
                             <input type="number" class="form-control" id="dimension_herramienta"
                                 name="dimension_herramienta"required>
                         </div>
-                        <div class="col-md-12 mb-3" id="condicionHerramienta" >
-                            <label for="condicion_herramienta" class="form-label"><i
-                                    class="bi bi-activity me-2"></i>Condición</label>
-                            <input type="text" class="form-control" id="condicion_herramienta_input"
-                                name="condicion_herramienta"required>
-                        </div>
+                        <div class="col-md-12 mb-3" id="condicionHerramienta">
+    <label for="condicion_herramienta" class="form-label"><i class="bi bi-activity me-2"></i>Condición</label>
+    <select id="condicion_herramienta" class="form-select" name="condicion_herramienta" required>
+        <option value="Buen estado">Buen estado</option>
+        <option value="Mal estado">Mal estado</option>
+    </select>
+</div>
+
+                        
 
                         <div class="text-center mt-4">
                             <button type="submit" class="btn btn-primary"
@@ -155,7 +158,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+</div>
     @endcan
    
     @can('ver-herramientas')
@@ -192,7 +195,7 @@
                 </div>
             </div>
             @endcan    
-            @can('ver-insumos')                     
+            @can('ver-insumos')   
             <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
@@ -341,11 +344,13 @@
                                                     disabled>
                                             </div>
                                             <div class="col-md-12 mb-3">
-                                                <label for="condicion_herramienta" class="form-label"><i
-                                                        class="bi bi-activity me-2"></i>Condición</label>
-                                                <input type="text" class="form-control" id="condicion_herramienta"
-                                                    name="condicion_herramienta" value="{{ $herramienta->condicion }}">
-                                            </div>
+    <label for="condicion_herramienta" class="form-label"><i class="bi bi-activity me-2"></i>Condición</label>
+    <select id="condicion_herramienta" class="form-select" name="condicion_herramienta">
+        <option value="Buen estado" {{ $herramienta->condicion == 'Buen estado' ? 'selected' : '' }}>Buen estado</option>
+        <option value="Mal estado" {{ $herramienta->condicion == 'Mal estado' ? 'selected' : '' }}>Mal estado</option>
+    </select>
+</div>
+
                                             <div class="col-md-12 mb-3">
                                                 <label for="estatus" class="form-label"><i
                                                         class="bi bi-check-circle me-2"></i>Estatus</label>
@@ -379,7 +384,7 @@
 
   @endcan
 
-</div>
+
 
 @if(session('success'))
     <script>

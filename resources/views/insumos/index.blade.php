@@ -28,6 +28,9 @@
             </nav>
         </div>
         <div>
+
+
+
             @can('crear-insumo')                   
             <button type="button" class="btn btn-tecnm" data-bs-toggle="modal" data-bs-target="#modal">
                 <i class="fas fa-plus-circle me-1"></i>Agregar insumo
@@ -307,17 +310,17 @@
 
 
 
-                    @endforeach
+                        @endforeach
 
-                </tbody>
+                    </tbody>
             </table>
         </div>
     </div>
 
 
 
-</div>
-@endcan
+
+    @endcan
 
 @if(session('success'))
     <script>

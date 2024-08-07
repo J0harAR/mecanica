@@ -45,7 +45,6 @@
   @if(session('success'))
   <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
     {{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
