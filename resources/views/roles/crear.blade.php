@@ -98,7 +98,7 @@
 
         <div class="text-center">
           <button type="submit" class="btn btn-primary">
-            Registrar <i class="fas fa-save ms-1"></i>
+            Registrar 
             <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
           </button>
         </div>
