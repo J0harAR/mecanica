@@ -121,9 +121,15 @@ class DocenteController extends Controller
     public function show($id){
         $docente=Docente::find($id);
 
-        $asignaturas=Grupo::where('id_docente',$docente->rfc)->get();
-        return view('docentes.show',compact('docente','asignaturas'));
+        $asignaturas = Grupo::where('id_docente', $docente->rfc)
+        ->whereNotNull('clave_asignatura')
+        ->get();
+        
+        if($asignaturas){
+            return view('docentes.show',compact('docente','asignaturas'));
 
+        }
+      
     }   
 
     public function update(Request $request ,$id){

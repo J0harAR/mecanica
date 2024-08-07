@@ -117,7 +117,7 @@
 
                     <div class="col-md-12">
                         <label for="clave" class="form-label"><i class="fas fa-key me-2"></i> Clave de Asignatura</label>
-                        <input type="text" name="clave" id="clave" class="form-control" value="{{ $asignatura->clave }}" required>
+                        <input type="text" name="clave" id="clave" class="form-control" value="{{ $asignatura->clave }}" disabled>
                         <div class="invalid-feedback">
                             Ingrese la clave de la asignatura.
                         </div>

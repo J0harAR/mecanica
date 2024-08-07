@@ -237,13 +237,7 @@ $total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
                 </a>
               </li>
               @endcan
-              @can('crear-grupo')     
-              <li>
-                <a href="{{route('grupos.create')}}">
-                  <span>Registrar grupo</span>
-                </a>
-              </li>
-              @endcan
+             
             </ul>
           </li>
 

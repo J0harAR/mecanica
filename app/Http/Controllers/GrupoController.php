@@ -46,6 +46,21 @@ class GrupoController extends Controller
         return redirect()->route('grupos.index')->with('success','Grupo agregado correctamente');
     }
 
+
+    public function update(Request $request,$id){
+
+        $grupo=Grupo::find($id);
+
+        $asignatura=Asignatura::find($request->input('asignatura'));
+        
+        if($asignatura){
+            $grupo->clave_asignatura=$request->input('asignatura');
+            $grupo->save();
+        }
+
+        return redirect()->route('grupos.index')->with('success','Grupo actualizado correctamente');
+    }
+
     public function destroy($id){
 
         $grupo=Grupo::find($id);
