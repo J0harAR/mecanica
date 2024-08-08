@@ -92,7 +92,7 @@
 
                         <div class="col-md-6 mb-3">
                             <label for="nombre" class="form-label"><i class="bi bi-box-seam me-2"></i>Nombre de la
-                                maquina</label>
+                                máquina</label>
                             <input type="text" class="form-control" id="nombre" name="nombre" required
                                 autocomplete="nombre" autofocus>
                         </div>
@@ -383,7 +383,7 @@
                                                                     <input type="number" id="capacidad-{{ $insumo->id_articulo }}"
                                                                         name="insumos[{{ $insumo->id_articulo }}]"
                                                                         class="form-control"
-                                                                        value="{{ $insumo->pivot->capacidad }}">
+                                                                        value="{{ $insumo->pivot->capacidad }}" >
                                                                     <div class="input-group-append">
                                                                         <span class="input-group-text">Mililitros</span>
                                                                     </div>
@@ -484,13 +484,14 @@
                                                 <div class="mb-3">
                                                     <label for="insumos" class="form-label"><i class="bi bi-box-seam me-2"></i>Insumos</label>
                                                     <select class="form-select" multiple aria-label="multiple select example" id="insumos" name="insumos[]">
-                                                        @foreach ($insumos as $insumo)
-                                                            @if (!in_array($insumo->id_articulo, $maquina->insumos->pluck('id_articulo')->toArray()))
-                                                                <option value="{{ $insumo->id_articulo }}">
-                                                                    {{ $insumo->id_articulo }} // {{ $insumo->Catalogo_articulos->nombre }}
-                                                                </option>
-                                                            @endif
-                                                        @endforeach
+                                                        
+                                                    @foreach ($insumos->unique('id_articulo') as $insumo)
+                                                        @if (!in_array($insumo->id_articulo, $maquina->insumos->pluck('id_articulo')->toArray()))
+                                                            <option value="{{ $insumo->id_articulo }}">
+                                                                {{ $insumo->id_articulo }} // {{ $insumo->Catalogo_articulos->nombre }}
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="modal-footer d-flex justify-content-center">

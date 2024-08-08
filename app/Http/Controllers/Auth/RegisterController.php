@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Validation\Rules\Password;
 class RegisterController extends Controller
 {
     /*
@@ -48,15 +48,24 @@ class RegisterController extends Controller
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'regex:/^[\w\.-]+@itoaxaca\.edu\.mx$/'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ], [
-            'email.regex' => 'El correo electrónico debe terminar con @itoaxaca.edu.mx',
-        ]);
-    }
+{
+    return Validator::make($data, [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'regex:/^[\w\.-]+@itoaxaca\.edu\.mx$/'],
+        'password' => [
+            'required', 
+            'string', 
+            'min:8', 
+            'confirmed', 
+            Password::min(8)
+                ->mixedCase()  // Asegura que la contraseña tenga al menos una letra mayúscula
+                ->numbers()    // Asegura que la contraseña tenga al menos un número
+                ->symbols(),   // Asegura que la contraseña tenga al menos un símbolo
+        ],
+    ], [
+        'email.regex' => 'El correo electrónico debe terminar con @itoaxaca.edu.mx',
+    ]);
+}
 
     /**
      * Create a new user instance after a valid registration.
