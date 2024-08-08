@@ -86,7 +86,7 @@ Route::delete('/inventario/maquinaria/{id}', [MaquinariaController::class, 'dest
 Route::put('/inventario/maquinaria/{id}', [MaquinariaController::class, 'update'])->name('maquinaria.update');
 Route::match(['put', 'patch'], '/inventario/maquinaria/asignar/{id}', [MaquinariaController::class, 'asignar_cantidad_insumos'])->name('maquinaria.cantidad');
 Route::match(['put', 'patch'], '/inventario/maquinaria/asignar_insumos/{id}', [MaquinariaController::class, 'asignar_insumos'])->name('maquinaria.insumos_asignar');
-
+Route::match(['put', 'patch'], '/inventario/maquinaria/desasignar_insumos/{id}', [MaquinariaController::class, 'desasignar_insumo'])->name('maquinaria.insumos_desasignar');
 
 
 //Parte de mantenimiento

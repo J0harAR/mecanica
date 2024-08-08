@@ -281,6 +281,16 @@ class MaquinariaController extends Controller
 
   }
 
+  public function desasignar_insumo(Request $request,$id_maquinaria){
+    
+    $maquina=Maquinaria::find($id_maquinaria);
+    if(!$request->input('insumos',[])){
+        return redirect()->route('maquinaria.index');
+    }
+    $maquina->insumos()->detach($request->input('insumos',[]));
+    return redirect()->route('maquinaria.index')->with('success', 'Insumo desasignado correctamente a la máquina: ' . $id_maquinaria . '.');
+  }
+
 
 
   public function destroy($id_maquinaria)

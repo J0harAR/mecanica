@@ -284,6 +284,7 @@
                             <th>Insumos</th>
                             <th>Acciones</th>
                             <th>Asignar insumos</th>
+                            <th>Designar insumos</th>
                         </tr>
                     </thead>
                     <tbody class="bg-light">
@@ -320,7 +321,16 @@
                                     </button>
                                     @endcan
 
-                                    </th>
+                                </th>
+
+                                <td>
+                                    <button type="button"
+                                        class="btn btn-outline-danger  d-flex align-items-center mx-auto "
+                                        data-bs-toggle="modal" data-bs-target="#modal-insumos-desasignar-{{ $maquina->id_maquinaria }}">
+                                        <i class="fas fa-boxes me-2"></i>
+                                    </button>
+                               
+                                </td>
                             </tr>
                             @can('editar-maquinaria')                                                         
                             <!-- Modal Update -->
@@ -479,7 +489,7 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content border-0 shadow-lg">
                                         <div class="modal-header" style="background-color: #002855; color: #ffffff;">
-                                            <h5 class="modal-title" id="modalLabel{{ $maquina->id_maquinaria }}"><i class="bi bi-check-circle me-2"></i>Confirmación</h5>
+                                            <h5 class="modal-title" id="modalLabel{{ $maquina->id_maquinaria }}"><i class="bi bi-check-circle me-2"></i>Asignación de insumos</h5>
                                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -508,7 +518,45 @@
                                     </div>
                                 </div>
                             </div>
-                                                        @endcan
+                              @endcan
+
+
+                            <!-- Modal Desasignar Insumos -->
+                            <div class="modal fade" id="modal-insumos-desasignar-{{ $maquina->id_maquinaria }}" tabindex="-1" aria-labelledby="modalLabel{{ $maquina->id_maquinaria }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content border-0 shadow-lg">
+                                        <div class="modal-header" style="background-color: #002855; color: #ffffff;">
+                                            <h5 class="modal-title" id="modalLabel{{ $maquina->id_maquinaria }}"><i class="bi bi-check-circle me-2"></i>Desasignar insumos</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ route('maquinaria.insumos_desasignar', $maquina->id_maquinaria) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="mb-3">
+                                                    <label for="insumos" class="form-label"><i class="bi bi-box-seam me-2"></i>Insumos</label>
+                                                    <select class="form-select" multiple aria-label="multiple select example" id="insumos" name="insumos[]">
+                                                        
+                                                    @foreach ($maquina->insumos as $insumo)
+                                                       
+                                                            <option value="{{ $insumo->id_articulo }}">
+                                                                {{ $insumo->id_articulo }} // {{$insumo->nombre}}
+                                                            </option>
+                                                       
+                                                    @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="modal-footer d-flex justify-content-center">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" class="btn btn-danger">Guardar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         @endforeach
                     </tbody>
                 </table>
