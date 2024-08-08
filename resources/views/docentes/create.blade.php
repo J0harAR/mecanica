@@ -6,7 +6,7 @@
 
 
 
-  
+
 
 
 <div class="container py-4">
@@ -50,7 +50,7 @@
   </div>
   @endif
   <div class="card custom-card">
-  <form action="{{ route('docentes.store') }}" method="POST" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
+  <form id="docenteForm" action="{{ route('docentes.store') }}" method="POST" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
     @csrf
     <div class="col-md-6">
       <label for="nombre" class="form-label"><i class="fas fa-user me-2"></i>Nombre</label>
@@ -78,17 +78,20 @@
 
     <div class="col-md-6">
       <label for="curp" class="form-label"><i class="fas fa-id-card me-2"></i>Curp</label>
-      <input type="text" class="form-control" id="curp" name="curp" required pattern="[A-Z]{4}[0-9]{6}[HM][A-Z]{5}[0-9]{2}">
+      <input type="text" class="form-control" id="curp" name="curp" required pattern="^[A-Z]{4}[0-9]{6}[HM][A-Z]{5}[A-Z0-9]{2}$">
       <div class="invalid-feedback">
-        Ingrese el CURP.
+        Ingrese una CURP válida.
       </div>
     </div>
 
     <div class="col-md-6">
       <label for="rfc" class="form-label"><i class="fas fa-id-card me-2"></i>RFC</label>
-      <input type="text" class="form-control" id="rfc" name="rfc" required>
+      <input type="text" class="form-control" id="rfc" name="rfc" required pattern="^[A-Z]{4}[0-9]{6}[A-Z0-9]{3}$">
       <div class="invalid-feedback">
-        Ingrese el RFC.
+        Ingrese un RFC válido.
+      </div>
+      <div class="custom-error-message text-danger" id="rfc-error-message" style="display:none;">
+        El RFC no coincide con la CURP.
       </div>
     </div>
 
@@ -127,30 +130,45 @@
 </div>
 
 <script>
-  // JavaScript para la validación del formulario
+// JavaScript para la validación del formulario
   (function () {
     'use strict'
     var forms = document.querySelectorAll('.needs-validation')
     Array.prototype.slice.call(forms)
       .forEach(function (form) {
         form.addEventListener('submit', function (event) {
-          if (!form.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
+          if (!form.checkValidity() || !validateRFC()) {
+            event.preventDefault();
+            event.stopPropagation();
+            form.classList.add('was-validated');
+          } else {
+            form.classList.remove('was-validated');
           }
-          form.classList.add('was-validated')
         }, false)
       })
   })()
-</script>
 
-<script>
-        document.addEventListener("DOMContentLoaded", function () {
-            window.setTimeout(function () {
-                const successAlert = document.getElementById("success-alert");
-                if (successAlert) successAlert.style.display = 'none';
-            }, 3000);
-        });
-    </script>
+  function validateRFC() {
+    const curp = document.getElementById('curp').value;
+    const rfc = document.getElementById('rfc').value;
+    const errorMessage = document.getElementById('rfc-error-message');
+    
+    if (curp.substring(0, 10) !== rfc.substring(0, 10)) {
+      errorMessage.style.display = 'block';
+      return false;
+    } else {
+      errorMessage.style.display = 'none';
+      return true;
+    }
+  }
+
+  // JavaScript adicional para mostrar mensajes de éxito
+  document.addEventListener("DOMContentLoaded", function () {
+    window.setTimeout(function () {
+      const successAlert = document.getElementById("success-alert");
+      if (successAlert) successAlert.style.display = 'none';
+    }, 3000);
+  });
+</script>
 @endcan
 @endsection

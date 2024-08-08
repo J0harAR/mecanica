@@ -3,12 +3,10 @@
 @section('content')
 
 @can('crear-rol')
-<div class="container py-4">
+<div class="container-fluid py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-      <h1 class="fw-bold mb-0 text-primary">
-        <i class="fas fa-plus-circle me-1"></i>Crear Rol
-      </h1>
+      <h1 class="fw-bold mb-0 text-primary text-uppercase text-center">Registrar Rol</h1>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-light shadow-sm p-3 mb-4 rounded">
           <li class="breadcrumb-item">
@@ -34,16 +32,13 @@
     @endcan
   </div>
 
-  <div class="card custom-card shadow-lg">
+  <div class="card custom-card shadow-sm border-0 mx-auto" style="max-width: 80%;">
     <div class="card-body">
-      <h5 class="card-title text-primary">Registrar Rol</h5>
-      
-
+      <h5 class="card-title text-center text-uppercase fw-bold">Registrar Rol</h5>
       <form class="row g-3 needs-validation" action="{{ route('roles.store') }}" method="POST">
         @csrf
-        <div class="col-12 mb-3">
-          <label for="inputName4" class="form-label">Nombre del rol <i class="bi bi-info-circle ms-1"
-            data-bs-toggle="tooltip" data-bs-placement="top" title="Ingrese el nombre del nuevo rol."></i></label>
+        <div class="col-12 mb-4">
+          <label for="inputName4" class="form-label fw-bold">Nombre del rol <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Ingrese el nombre del nuevo rol."></i></label>
           <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" required>
           @error('name')
           <div class="invalid-feedback mt-2">{{ $message }}</div>
@@ -51,54 +46,67 @@
         </div>
 
         <div class="col-12">
-          <div class="form-group">
-            <label class="form-label">Permisos del rol <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip"
-              data-bs-placement="top" title="Seleccione los permisos aplicables a este rol."></i></label>
+          <label class="form-label fw-bold">Permisos del rol <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Seleccione los permisos aplicables a este rol."></i></label>
 
-            @php
-            $groupedPermissions = [];
-            foreach ($permission as $perm) {
-                $parts = explode('-', $perm->name);
-                $prefix = $parts[0];
-                if (!isset($groupedPermissions[$prefix])) {
-                    $groupedPermissions[$prefix] = [];
-                }
-                $groupedPermissions[$prefix][] = $perm;
-            }
-            @endphp
+          @php
+          $permissions = [
+              'Usuarios' => ['ver-usuarios', 'crear-usuarios', 'editar-usuarios', 'borrar-usuarios'],
+              'Rol' => ['ver-rol', 'crear-rol', 'editar-rol', 'borrar-rol'],
+              'Alumnos' => ['ver-alumnos', 'crear-alumnos', 'editar-alumnos', 'borrar-alumnos'],
+              'Asignaturas' => ['ver-asignaturas', 'crear-asignatura', 'editar-asignatura', 'borrar-asignatura'],
+              'Docentes' => ['ver-docentes', 'crear-docente', 'ver-docente', 'editar-docente', 'borrar-docente', 'asignar-grupos-docente', 'eliminar-grupos-docente'],
+              'Grupos' => ['ver-grupos', 'crear-grupo', 'borrar-grupo'],
+              'Inventario' => ['ver-inventario', 'borrar-inventario'],
+              'Herramientas' => ['ver-herramientas', 'crear-herramienta', 'editar-herramienta', 'borrar-herramienta'],
+              'Insumos' => ['ver-insumos', 'crear-insumo', 'editar-insumo', 'borrar-insumo'],
+              'Maquinarias' => ['ver-maquinarias', 'crear-maquinaria', 'editar-maquinaria', 'asignar-insumos-maquinaria', 'borrar-maquinaria'],
+              'Mantenimientos' => ['ver-mantenimientos', 'crear-mantenimiento', 'borrar-mantenimiento'],
+              'Periodos' => ['ver-periodos', 'crear-periodo', 'editar-periodo', 'borrar-periodo'],
+              'Practicas' => ['ver-practicas', 'crear-practica', 'ver-practica', 'editar-practica', 'borrar-practica', 'completar-practica', 'crear-practica-alumno'],
+              'Prestamos' => ['ver-prestamos', 'crear-prestamo', 'editar-prestamo', 'borrar-prestamo', 'finalizar-prestamo'],
+              'Reportes' => ['generar_reporte_prestamo', 'generar_reporte_inventario', 'generar_reporte_herramientas', 'generar_reporte_maquinaria', 'generar_reporte_insumos', 'generar_reporte_practicas']
+          ];
+          @endphp
 
-            <!-- Tabs navigation -->
-            <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
-              @foreach ($groupedPermissions as $prefix => $perms)
-              <li class="nav-item" role="presentation">
-                <a class="nav-link @if ($loop->first) active @endif" id="tab-{{ $prefix }}" data-bs-toggle="tab" href="#category-{{ $prefix }}" role="tab" aria-controls="category-{{ $prefix }}" aria-selected="true">
-                  {{ ucfirst($prefix) }}
-                </a>
-              </li>
-              @endforeach
-            </ul>
-
-            <!-- Tabs content -->
-            <div class="tab-content" id="myTabContent">
-              @foreach ($groupedPermissions as $prefix => $perms)
-              <div class="tab-pane fade @if ($loop->first) show active @endif" id="category-{{ $prefix }}" role="tabpanel" aria-labelledby="tab-{{ $prefix }}">
-                @foreach ($perms as $perm)
-                <div class="form-check form-check-inline mb-2">
-                  <input type="checkbox" name="permission[]" value="{{ $perm->name }}" class="form-check-input @error('permission') is-invalid @enderror">
-                  <label class="form-check-label">{{ $perm->name }}</label>
-                </div>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Categoría</th>
+                  <th>
+                    Permisos 
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($permissions as $entity => $actions)
+                <tr>
+                  <td class="fw-bold text-uppercase">{{ $entity }}</td>
+                  <td>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input select-all-checkbox" type="checkbox" id="selectAll{{ $entity }}" onclick="toggleSelectAll('{{ $entity }}')">
+                      <label class="form-check-label" for="selectAll{{ $entity }}">Seleccionar Todo</label>
+                    </div>
+                    <div class="d-flex flex-column">
+                      @foreach ($actions as $action)
+                      <div class="form-check">
+                        <input type="checkbox" name="permission[]" value="{{ $action }}" class="form-check-input {{ $entity }}-checkbox @error('permission') is-invalid @enderror">
+                        <label class="form-check-label">{{ ucfirst(str_replace('-', ' ', $action)) }}</label>
+                      </div>
+                      @endforeach
+                    </div>
+                  </td>
+                </tr>
                 @endforeach
-              </div>
-              @endforeach
-            </div>
-
-            <small class="form-text text-muted">Seleccione uno o más permisos para este rol.</small>
+              </tbody>
+            </table>
           </div>
+
+          <small class="form-text text-muted">Seleccione uno o más permisos para este rol.</small>
         </div>
 
         <div class="text-center">
-          <button type="submit" class="btn btn-primary">
-            Registrar 
+          <button type="submit" class="btn btn-primary">Registrar
             <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
           </button>
         </div>
@@ -107,5 +115,15 @@
   </div>
 </div>
 @endcan
+
+<script>
+  function toggleSelectAll(entity) {
+    var checkboxes = document.querySelectorAll('.' + entity + '-checkbox');
+    var selectAll = document.getElementById('selectAll' + entity);
+    checkboxes.forEach(checkbox => {
+      checkbox.checked = selectAll.checked;
+    });
+  }
+</script>
 
 @endsection
