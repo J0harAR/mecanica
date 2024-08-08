@@ -144,9 +144,14 @@
                                 </div>
                                 <select class="form-select" multiple aria-label="multiple select example"
                                     name="insumos[]" id="insumos">
-                                    @foreach ($insumos as $insumo)
-                                        <option value="{{ $insumo->id_articulo }}">Código:{{ $insumo->Catalogo_articulos->id_articulo }} //
-                                            {{ $insumo->Catalogo_articulos->nombre }}
+                                    @foreach ($insumos->groupBy('id_articulo') as $id_articulo => $group)
+                                        @php
+                                            // Get the first insumo in the group for displaying information
+                                            $firstInsumo = $group->first();
+                                        @endphp
+                                        <option value="{{ $id_articulo }}">
+                                            Código: {{ $firstInsumo->Catalogo_articulos->id_articulo }} //
+                                            {{ $firstInsumo->Catalogo_articulos->nombre }}
                                         </option>
                                     @endforeach
                                 </select>
