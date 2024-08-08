@@ -38,6 +38,7 @@ class InsumosController extends Controller
 
 
     public function store(Request $request){
+        set_time_limit(180);
         $nombre_articulo=$request->input('nombre');
         $seccion_articulo=$request->input('seccion');
         $estatus=$request->input('estatus');

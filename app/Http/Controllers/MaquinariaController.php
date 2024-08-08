@@ -28,7 +28,7 @@ class MaquinariaController extends Controller
 
       $maquinaria = Maquinaria::with(['Articulo_inventariados.Catalogo_articulos','insumos'])->get();
       $insumos=Articulo_inventariado::where('tipo','Insumos')->get();
-        
+
       $periodos=Periodo::all();
       //foreach ($herramientas as $herramienta) {
         //  echo $herramienta->Articulo_inventariados->Catalogo_articulos->nombre;
@@ -38,6 +38,7 @@ class MaquinariaController extends Controller
   }
 
   public function store(Request $request){
+    set_time_limit(180);
     //Obtengo los inputs
     $nombre_articulo=$request->input('nombre');
     $seccion_articulo=$request->input('seccion');

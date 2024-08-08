@@ -34,7 +34,10 @@ class HerramientasController extends Controller
         return view('herramientas.index',compact('herramientas','insumos','periodos'));
     }
 
-    public function store(Request $request){    
+    public function store(Request $request){   
+        
+        set_time_limit(180);
+
         $nombre_articulo=$request->input('nombre');
         $seccion_articulo=$request->input('seccion');
         $estatus=$request->input('estatus');
