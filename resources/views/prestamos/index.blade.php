@@ -78,7 +78,7 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form class="row g-3" action="{{ route('prestamos.store') }}" method="POST" onsubmit="return validateDates()">
+          <form class="row g-3 miFormulario" action="{{ route('prestamos.store') }}" method="POST" onsubmit="return validateDates()">
             @csrf
             <div class="col-md-6 mb-3">
               <label for="rfc" class="form-label"><i class="bi bi-calendar me-2"></i>RFC del docente</label>
@@ -252,7 +252,7 @@
                 </div>
            
                 <div class="text-center mt-4">
-                  <button type="submit" class="btn btn-primary" style="background-color: #002855; border-color: #002855;">Guardar</button>
+                  <button type="submit" class="btn btn-primary miBoton" style="background-color: #002855; border-color: #002855;">Guardar</button>
                 </div>
               </form>
             </div>
@@ -301,12 +301,24 @@
             const fechaPrestamo = document.getElementById('fecha_prestamo').value;
             const fechaDevolucion = document.getElementById('fecha_devolucion').value;
 
-            if (new Date(fechaDevolucion) <= new Date(fechaPrestamo)) {
+            if (new Date(fechaDevolucion) < new Date(fechaPrestamo)) {
                 alert("La fecha de devolución debe ser mayor que la fecha del préstamo.");
                 return false;
             }
             return true;
         }
     </script>
+
+
+<script>
+    
+    var formularios = document.querySelectorAll('.miFormulario');
+    formularios.forEach(function(formulario) {
+        formulario.addEventListener('submit', function(event) {
+            var boton = formulario.querySelector('.miBoton');
+            boton.disabled = true; 
+        });
+    });
+</script>
 @endcan
 @endsection

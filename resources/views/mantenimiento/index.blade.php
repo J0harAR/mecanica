@@ -82,7 +82,7 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form class="row g-3" action="{{ route('mantenimiento.store') }}" method="POST">
+          <form class="row g-3 miFormulario" action="{{ route('mantenimiento.store') }}" method="POST">
             @csrf
             <div class="col-md-6 mb-3">
               <label for="maquina" class="form-label"><i class="bi bi-tools me-2"></i>Seleccione máquina</label>
@@ -127,7 +127,7 @@
 
             </div>
             <div class="text-center mt-4">
-              <button type="submit" class="btn btn-primary"
+              <button type="submit" class="btn btn-primary miBoton"
                 style="background-color: #002855; border-color: #002855;">Guardar</button>
             </div>
           </form>
@@ -310,5 +310,15 @@
 
   </script>
 
+  <script>
+    
+    var formularios = document.querySelectorAll('.miFormulario');
+    formularios.forEach(function(formulario) {
+        formulario.addEventListener('submit', function(event) {
+            var boton = formulario.querySelector('.miBoton');
+            boton.disabled = true; 
+        });
+    });
+</script>
 
   @endsection
