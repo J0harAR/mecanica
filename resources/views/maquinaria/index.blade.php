@@ -98,7 +98,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="cantidad" class="form-label"><i class="bi bi-stack me-2"></i>Cantidad</label>
-                            <input type="number" class="form-control" id="cantidad" name="cantidad" required>
+                            <input type="number" class="form-control" id="cantidad" name="cantidad" required min="1" max="1000">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="estatus" class="form-label"><i
@@ -145,8 +145,8 @@
                                 <select class="form-select" multiple aria-label="multiple select example"
                                     name="insumos[]" id="insumos">
                                     @foreach ($insumos as $insumo)
-                                        <option value="{{ $insumo->id_insumo }}">Código:{{ $insumo->id_insumo }} //
-                                            {{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}
+                                        <option value="{{ $insumo->id_articulo }}">Código:{{ $insumo->Catalogo_articulos->id_articulo }} //
+                                            {{ $insumo->Catalogo_articulos->nombre }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -290,7 +290,7 @@
                                 <td>{{ $maquina->Articulo_inventariados->estatus }}</td>
                                 <td>
                                     @foreach ($maquina->insumos as $insumo)
-                                        {{ $insumo->id_insumo }}
+                                        {{ $insumo->id_articulo}}
                                     @endforeach
                                 </td>
                                 <td class="text-center">
@@ -320,7 +320,7 @@
                             @can('editar-maquinaria')                                                         
                             <!-- Modal Update -->
                             <div class="modal fade" id="modal-update-{{ $maquina->id_maquinaria }}" tabindex="-1">
-                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-dialog  modal-xl">
                                     <div class="modal-content border-0 shadow-lg">
                                         <div class="modal-header" style="background-color: #002855; color: #ffffff;">
                                             <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Editar
@@ -374,49 +374,53 @@
                                                     @foreach ($maquina->insumos as $insumo)
                                                         <div class="row align-items-center mb-2">
                                                             <div class="col-md-3">
-                                                                <span>{{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}</span>
+                                                                <span>{{ $insumo->nombre }}</span>
                                                             </div>
                                                             <div class="col-md-3">
-                                                                <label for="capacidad-{{ $insumo->id_insumo }}"
+                                                                <label for="capacidad-{{ $insumo->id_articulo }}"
                                                                     class="form-label">Capacidad</label>
                                                                 <div class="input-group">
-                                                                    <input type="text" id="capacidad-{{ $insumo->id_insumo }}"
-                                                                        name="insumos[{{ $insumo->id_insumo }}]"
+                                                                    <input type="number" id="capacidad-{{ $insumo->id_articulo }}"
+                                                                        name="insumos[{{ $insumo->id_articulo }}]"
                                                                         class="form-control"
                                                                         value="{{ $insumo->pivot->capacidad }}">
                                                                     <div class="input-group-append">
-                                                                        <span class="input-group-text">Litros</span>
+                                                                        <span class="input-group-text">Mililitros</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
-                                                                <label for="cantidad-actual-{{ $insumo->id_insumo }}"
+                                                                <label for="cantidad-actual-{{ $insumo->id_articulo }}"
                                                                     class="form-label">Cantidad Actual</label>
                                                                 <div class="input-group">
-                                                                    <input type="text"
-                                                                        id="cantidad-actual-{{ $insumo->id_insumo }}"
-                                                                        name="insumos-cantidad-actual[{{ $insumo->id_insumo }}]"
+                                                                    <input type="number"
+                                                                        id="cantidad-actual-{{ $insumo->id_articulo }}"
+                                                                        name="insumos-cantidad-actual[{{ $insumo->id_articulo }}]"
                                                                         class="form-control"
                                                                         value="{{ $insumo->pivot->cantidad_actual }}">
                                                                     <div class="input-group-append">
-                                                                        <span class="input-group-text">Litros</span>
+                                                                        <span class="input-group-text">Mililitros</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
-                                                                <label for="cantidad-minima-{{ $insumo->id_insumo }}"
+                                                                <label for="cantidad-minima-{{ $insumo->id_articulo }}"
                                                                     class="form-label">Cantidad Mínima</label>
                                                                 <div class="input-group">
-                                                                    <input type="text"
-                                                                        id="cantidad-minima-{{ $insumo->id_insumo }}"
-                                                                        name="insumos-cantidad-minima[{{ $insumo->id_insumo }}]"
+                                                                    <input type="number"
+                                                                        id="cantidad-minima-{{ $insumo->id_articulo }}"
+                                                                        name="insumos-cantidad-minima[{{ $insumo->id_articulo }}]"
                                                                         class="form-control"
                                                                         value="{{ $insumo->pivot->cantidad_minima }}">
                                                                     <div class="input-group-append">
-                                                                        <span class="input-group-text">Litros</span>
+                                                                        <span class="input-group-text">Mililitros</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <div class="col-md-1">
+                                                                
+                                                            </div>
+
                                                         </div>
                                                     @endforeach
                                                 </div>
@@ -466,37 +470,31 @@
 
                             @can('asignar-insumos-maquinaria')                                                         
                             <!-- Modal Asignar Insumos -->
-                            <div class="modal fade" id="modal-insumos{{ $maquina->id_maquinaria }}" tabindex="-1"
-                                aria-labelledby="modalLabel{{ $maquina->id_maquinaria }}" aria-hidden="true">
+                            <div class="modal fade" id="modal-insumos{{ $maquina->id_maquinaria }}" tabindex="-1" aria-labelledby="modalLabel{{ $maquina->id_maquinaria }}" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content border-0 shadow-lg">
                                         <div class="modal-header" style="background-color: #002855; color: #ffffff;">
-                                            <h5 class="modal-title" id="modalLabel{{ $maquina->id_maquinaria }}"><i
-                                                    class="bi bi-check-circle me-2"></i>Confirmación</h5>
-                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
+                                            <h5 class="modal-title" id="modalLabel{{ $maquina->id_maquinaria }}"><i class="bi bi-check-circle me-2"></i>Confirmación</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form
-                                                action="{{ route('maquinaria.insumos_asignar', $maquina->id_maquinaria) }}"
-                                                method="POST">
+                                            <form action="{{ route('maquinaria.insumos_asignar', $maquina->id_maquinaria) }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                                 <div class="mb-3">
-                                                    <label for="insumos" class="form-label"><i
-                                                            class="bi bi-box-seam me-2"></i>Insumos</label>
-                                                    <select class="form-select" multiple
-                                                        aria-label="multiple select example" id="insumos" name="insumos[]">
+                                                    <label for="insumos" class="form-label"><i class="bi bi-box-seam me-2"></i>Insumos</label>
+                                                    <select class="form-select" multiple aria-label="multiple select example" id="insumos" name="insumos[]">
                                                         @foreach ($insumos as $insumo)
-                                                            <option value="{{ $insumo->id_insumo }}">
-                                                                {{$insumo->id_insumo}}//{{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}
-                                                            </option>
+                                                            @if (!in_array($insumo->id_articulo, $maquina->insumos->pluck('id_articulo')->toArray()))
+                                                                <option value="{{ $insumo->id_articulo }}">
+                                                                    {{ $insumo->id_articulo }} // {{ $insumo->Catalogo_articulos->nombre }}
+                                                                </option>
+                                                            @endif
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="modal-footer d-flex justify-content-center">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Cerrar</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                                     <button type="submit" class="btn btn-danger">Asignar</button>
                                                 </div>
                                             </form>
@@ -504,7 +502,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @endcan
+                                                        @endcan
                         @endforeach
                     </tbody>
                 </table>

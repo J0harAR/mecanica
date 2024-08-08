@@ -91,7 +91,7 @@
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="row g-3" action="{{ route('herramientas.store') }}" method="POST">
+                    <form class="row g-3 miFormulario" action="{{ route('herramientas.store') }}" method="POST">
                         @csrf
 
                         <div class="col-md-12 mb-3">
@@ -101,7 +101,7 @@
                         </div>
                         <div class="col-md-12 mb-3">
                             <label for="cantidad" class="form-label"><i class="bi bi-stack me-2"></i>Cantidad</label>
-                            <input type="number" class="form-control" id="cantidad" name="cantidad"required>
+                            <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" max="1000" required>
                         </div>
                         <div class="col-md-12 mb-3">
                             <label for="estatus" class="form-label"><i
@@ -149,7 +149,7 @@
                         
 
                         <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-primary"
+                            <button type="submit" class="btn btn-primary miBoton"
                                 style="background-color: #002855; border-color: #002855;">Guardar
                             </button>
                         </div>
@@ -295,14 +295,14 @@
                                         ¿Estás seguro de querer eliminar la herramienta:
                                         {{$herramienta->Articulo_inventariados->Catalogo_articulos->nombre}}?
                                     </div>
-                                    <div class="modal-footer">
+                                    <div class="modal-footer miFormulario">
                                         <form action="{{ route('herramientas.destroy', $herramienta->id_herramientas) }}"
                                             method="POST">
                                             @csrf
                                             @method('delete')
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                            <button type="submit" class="btn btn-danger miBoton">Eliminar</button>
                                         </form>
                                     </div>
                                 </div>
@@ -323,7 +323,7 @@
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form class="row g-3"
+                                        <form class="row g-3 miFormulario"
                                             action="{{ route('herramientas.update', $herramienta->id_herramientas) }}"
                                             method="POST">
                                             @csrf
@@ -344,12 +344,12 @@
                                                     disabled>
                                             </div>
                                             <div class="col-md-12 mb-3">
-    <label for="condicion_herramienta" class="form-label"><i class="bi bi-activity me-2"></i>Condición</label>
-    <select id="condicion_herramienta" class="form-select" name="condicion_herramienta">
-        <option value="Buen estado" {{ $herramienta->condicion == 'Buen estado' ? 'selected' : '' }}>Buen estado</option>
-        <option value="Mal estado" {{ $herramienta->condicion == 'Mal estado' ? 'selected' : '' }}>Mal estado</option>
-    </select>
-</div>
+                                                <label for="condicion_herramienta" class="form-label"><i class="bi bi-activity me-2"></i>Condición</label>
+                                                <select id="condicion_herramienta" class="form-select" name="condicion_herramienta">
+                                                    <option value="Buen estado" {{ $herramienta->condicion == 'Buen estado' ? 'selected' : '' }}>Buen estado</option>
+                                                    <option value="Mal estado" {{ $herramienta->condicion == 'Mal estado' ? 'selected' : '' }}>Mal estado</option>
+                                                </select>
+                                            </div>
 
                                             <div class="col-md-12 mb-3">
                                                 <label for="estatus" class="form-label"><i
@@ -360,7 +360,7 @@
                                                 </select>
                                             </div>
                                             <div class="text-center mt-4">
-                                                <button type="submit" class="btn btn-primary"
+                                                <button type="submit" class="btn btn-primary miBoton"
                                                     style="background-color: #002855; border-color: #002855;">
                                                     Guardar
                                                 </button>
@@ -397,5 +397,15 @@
     </script>
 @endif
 
+<script>
+    
+        var formularios = document.querySelectorAll('.miFormulario');
+        formularios.forEach(function(formulario) {
+            formulario.addEventListener('submit', function(event) {
+                var boton = formulario.querySelector('.miBoton');
+                boton.disabled = true; 
+            });
+        });
+    </script>
 @endcan
 @endsection

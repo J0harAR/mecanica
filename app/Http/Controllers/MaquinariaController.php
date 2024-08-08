@@ -27,7 +27,8 @@ class MaquinariaController extends Controller
     
 
       $maquinaria = Maquinaria::with(['Articulo_inventariados.Catalogo_articulos','insumos'])->get();
-      $insumos=Insumos::all();
+      $insumos=Articulo_inventariado::where('tipo','Insumos')->get();
+     
       $periodos=Periodo::all();
       //foreach ($herramientas as $herramienta) {
         //  echo $herramienta->Articulo_inventariados->Catalogo_articulos->nombre;
@@ -265,9 +266,13 @@ class MaquinariaController extends Controller
 
   public function asignar_insumos( Request $request,$id_maquinaria){
 
+    if(!$request->input('insumos',[])){
+        return redirect()->route('maquinaria.index')->with('error',' No se selecciono ningun insumo');
+    }
+
     $maquina=Maquinaria::find($id_maquinaria);
 
-    $maquina->insumos()->sync($request->input('insumos',[]));
+    $maquina->insumos()->syncWithoutDetaching($request->input('insumos',[]));
   
     
     return redirect()->route('maquinaria.index')->with('success', 'Insumo asignado correctamente a la máquina: ' . $id_maquinaria . '.');

@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use  App\Models\Insumos;
+use  App\Models\Catalogo_articulo;
+
+
 class Maquinaria extends Model
 {
     use HasFactory;
@@ -19,7 +22,7 @@ class Maquinaria extends Model
       //Relacion N a N
       public function insumos()
       {
-          return $this->belongsToMany(Insumos::class, 'insumos_maquinaria', 'maquinaria_id', 'insumo_id')
+          return $this->belongsToMany(Catalogo_articulo::class, 'insumos_maquinaria', 'maquinaria_id', 'insumo_id')
           ->withPivot(['capacidad','cantidad_actual','cantidad_minima']);
       }
 }

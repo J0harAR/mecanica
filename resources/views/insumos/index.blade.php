@@ -91,7 +91,7 @@
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="row g-3" action="{{ route('insumos.store') }}" method="POST">
+                    <form class="row g-3 miFormulario" action="{{ route('insumos.store') }}" method="POST">
                         @csrf
                         <div class="col-md-12 mb-3">
                             <label for="nombre" class="form-label"><i class="bi bi-box-seam me-2"></i>Nombre del
@@ -101,7 +101,7 @@
                         </div>
                         <div class="col-md-12 mb-3">
                             <label for="cantidad" class="form-label"><i class="bi bi-stack me-2"></i>Cantidad</label>
-                            <input type="number" class="form-control" id="cantidad" name="cantidad" required>
+                            <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" max="1000" required>
                         </div>
                         <div class="col-md-12 mb-3">
                             <label for="estatus" class="form-label"><i
@@ -113,18 +113,30 @@
                         </div>
 
 
-                        <div class="col-md-8 mb-3" id="tipoInsumo">
+                        <div class="col-md-7 mb-3" id="tipoInsumo">
                             <label for="tipo_insumo" class="form-label"><i class="bi bi-fuel-pump me-2"></i>Tipo de
                                 insumo</label>
                             <input type="text" class="form-control" id="tipo_insumo" name="tipo_insumo"required>
                         </div>
-                        <div class="col-md-4 mb-3" id="capacidadInsumo">
-                            <label for="capacidad_insumo" class="form-label"><i
-                                    class="bi bi-speedometer2 me-2"></i>Capacidad</label>
-                            <input type="number" class="form-control" id="capacidad_insumo" name="capacidad_insumo"required>
-                        </div>
+                        
+                            <div class="col-md-5 mb-3" id="capacidadInsumo">
+                                    <label for="capacidad_insumo" class="form-label"><i
+                                            class="bi bi-speedometer2 me-2"></i>Capacidad</label>
+                                    
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="capacidad_insumo" name="capacidad_insumo"required>
+                                        <span class="input-group-text">Mililitros</span>
+                                    </div>                                                 
+                            </div>
+
+                            
+                        
+                        
+
+                        
+
                         <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-primary"
+                            <button type="submit" class="btn btn-primary miBoton"
                                 style="background-color: #002855; border-color: #002855;">Guardar</button>
                         </div>
                     </form>
@@ -251,12 +263,12 @@
                                         {{$insumo->Articulo_inventariados->Catalogo_articulos->nombre}}?
                                     </div>
                                     <div class="modal-footer">
-                                        <form action="{{ route('insumos.destroy', $insumo->id_insumo) }}" method="POST">
+                                        <form action="{{ route('insumos.destroy', $insumo->id_insumo) }}" method="POST" class="miFormulario">
                                             @csrf
                                             @method('delete')
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                            <button type="submit" class="btn btn-danger miBoton">Eliminar</button>
                                         </form>
                                     </div>
                                 </div>
@@ -274,7 +286,7 @@
                                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form class="row g-3" action="{{ route('insumos.update', $insumo->id_insumo) }}" method="POST">
+                                        <form class="row g-3 miFormulario" action="{{ route('insumos.update', $insumo->id_insumo) }}" method="POST">
                                             @csrf
                                             @method('PUT')
                                             <div class="col-md-12 mb-3">
@@ -287,7 +299,10 @@
                                             </div>
                                             <div class="col-md-12 mb-3">
                                                 <label for="capacidad" class="form-label"><i class="bi bi-bar-chart me-2"></i>Capacidad</label>
-                                                <input type="number" class="form-control" id="capacidad" name="capacidad" value="{{ $insumo->capacidad }}">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="capacidad" name="capacidad" value="{{ $insumo->capacidad }}">
+                                                    <span class="input-group-text">Mililitros</span>
+                                                </div>
                                             </div>
                                             <div class="col-md-12 mb-3">
                                                 <label for="estatus" class="form-label"><i
@@ -298,7 +313,7 @@
                                                 </select>
                                             </div>
                                             <div class="text-center mt-4">
-                                                <button type="submit" class="btn btn-primary" style="background-color: #002855; border-color: #002855;">Guardar</button>
+                                                <button type="submit" class="btn btn-primary miBoton" style="background-color: #002855; border-color: #002855;">Guardar</button>
                                             </div>
                                         </form>
                                     </div>
@@ -332,5 +347,16 @@
         });
     </script>
 @endif
+
+<script>
+    
+        var formularios = document.querySelectorAll('.miFormulario');
+        formularios.forEach(function(formulario) {
+            formulario.addEventListener('submit', function(event) {
+                var boton = formulario.querySelector('.miBoton');
+                boton.disabled = true; 
+            });
+        });
+    </script>
 @endcan
 @endsection

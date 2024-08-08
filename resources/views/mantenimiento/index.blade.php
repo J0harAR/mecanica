@@ -206,7 +206,7 @@
           value="{{ $insumo->pivot->cantidad }}" disabled>
         </div>
         <div class="col-md-2">
-        <p class="mb-0">Litros</p>
+        <p class="mb-0">Mililitros</p>
         </div>
         </div>
       @endforeach
@@ -257,50 +257,55 @@
   @endcan
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
-        $(document).ready(function () {
-            $('#maquina').on('change', function () {
-                let maquinaId = $(this).val();
-                if (maquinaId) {
-                    $.ajax({
-                        url: '{{ route("get-insumos-por-maquinaria") }}',
-                        type: 'GET',
-                        data: { id: maquinaId },
-                        success: function (data) {
-                            let container = $('#insumos-container');
-                            container.empty(); // Limpiar el contenedor
+    $(document).ready(function () {
+        $('#maquina').on('change', function () {
+            let maquinaId = $(this).val();
+            if (maquinaId) {
+                $.ajax({
+                    url: '{{ route("get-insumos-por-maquinaria") }}',
+                    type: 'GET',
+                    data: { id: maquinaId },
+                    success: function (data) {
+                        let container = $('#insumos-container');
+                        container.empty(); // Limpiar el contenedor
 
-                            data.forEach(function (insumo) {
-                                let insumoHtml = `
-                                    <div class="row align-items-center mb-2">
-                                        <div class="col-md-5">
-                                            <input type="checkbox" name="${insumo.id_insumo}" data-id="${insumo.id_insumo}"
-                                                class="insumo-enable me-2">
-                                            <span> ${insumo.id_insumo} ${insumo.articulo_inventariados.catalogo_articulos.nombre}</span>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <div class="input-group">
-                                                <input type="text" name="insumos[${insumo.id_insumo}]" placeholder="Cantidad"
-                                                    data-id="${insumo.id_insumo}" class="insumo-cantidad form-control" disabled>
-                                                <span class="input-group-text">Litros</span>
-                                            </div>
-                                        </div>
-                                    </div>`;
-                                container.append(insumoHtml);
-                            });
+                        // Aplanar el array
+                        let insumos = data.flat();
 
-                            // Volver a asociar el evento click después de agregar nuevos elementos
-                            $('.insumo-enable').on('click', function () {
-                                let id = $(this).attr('data-id');
-                                let enable = $(this).is(":checked");
-                                $('.insumo-cantidad[data-id="' + id + '"]').attr('disabled', !enable).attr('required', enable);
-                                $('.insumo-cantidad[data-id="' + id + '"]').val(null);
-                            });
-                        }
-                    });
-                }
-            });
+                        insumos.forEach(function (insumo) {
+                            let insumoHtml = `
+                                <div class="row align-items-center mb-2">
+                                    <div class="col-md-5">
+                                        <input type="checkbox" name="${insumo.id_inventario}" data-id="${insumo.id_inventario}"
+                                            class="insumo-enable me-2">
+                                        <span> ${insumo.id_inventario} ${insumo.catalogo_articulos.nombre}</span>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="input-group">
+                                            <input type="text" name="insumos[${insumo.id_inventario}]" placeholder="Cantidad"
+                                                data-id="${insumo.id_inventario}" class="insumo-cantidad form-control" disabled>
+                                            <span class="input-group-text">Mililitros</span>
+                                        </div>
+                                    </div>
+                                </div>`;
+                            container.append(insumoHtml);
+                            console.log(insumo.id_inventario);
+                        });
+
+                        // Volver a asociar el evento click después de agregar nuevos elementos
+                        $('.insumo-enable').on('click', function () {
+                            let id = $(this).attr('data-id');
+                            let enable = $(this).is(":checked");
+                            $('.insumo-cantidad[data-id="' + id + '"]').attr('disabled', !enable).attr('required', enable);
+                            $('.insumo-cantidad[data-id="' + id + '"]').val(null);
+                        });
+                    }
+                });
+            }
         });
-    </script>
+    });
+</script>
+
 
 
   </script>

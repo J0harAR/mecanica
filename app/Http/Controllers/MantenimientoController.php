@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Insumos;
 use App\Models\Maquinaria;
 use App\Models\Mantenimiento;
+use App\Models\Articulo_inventariado;
+use App\Models\Catalogo_articulo;
 use Illuminate\Support\Facades\DB;
 class MantenimientoController extends Controller
 {
@@ -19,21 +21,27 @@ class MantenimientoController extends Controller
 
     public function getInsumosPorMaquinaria(Request $request)
     {
+       
         $maquinariaId = $request->input('id');
-        // Suponiendo que tienes una relación definida en tu modelo de Maquinaria para obtener sus insumos
         
-        
+       
+       
         $maquinaria = Maquinaria::find($maquinariaId);
         $insumos=[];
+      
+     
 
 
         foreach ($maquinaria->insumos as  $insumo_maquina) {
-         // $insumos[]= Insumos::find($insumo_maquina->id_insumo);
-          $insumos[] = Insumos::with('Articulo_inventariados','Articulo_inventariados.Catalogo_articulos')->find($insumo_maquina->id_insumo);
-         
+    
+          //$insumos[] = Insumos::with('Articulo_inventariados','Articulo_inventariados.Catalogo_articulos')->find($insumo_maquina->id_articulo);
+          $insumos[] = Articulo_inventariado::with(['catalogo_articulos'])
+          ->where('tipo', 'Insumos')
+          ->where('id_articulo', $insumo_maquina->id_articulo)
+          ->get();
         }
         
-       
+       //dd($insumos);
         return response()->json($insumos);
     }
 
@@ -61,31 +69,15 @@ class MantenimientoController extends Controller
       $Mantenimiento->id_maquinaria=$request->input('maquina');
       
  
-    $maquinaria = Maquinaria::find($request->input('maquina'));
-    $insumos_maquinaria = $maquinaria->insumos()->pluck('id_insumo')->toArray();
-      
-  
+      $maquinaria = Maquinaria::find($request->input('maquina'));
+   
+
       $insumos=collect($request->input('insumos',[]))
       ->map(function($insumo){
         return ['cantidad'=>$insumo];
      });
 
-
-     $insumo_presente = false;
-     foreach ($insumos as $key => $insumo) {
-          $insumo_presente = false;
-          foreach ($insumos_maquinaria as $insumo_maquinaria) {
-                if ($key == $insumo_maquinaria) {               
-                      $insumo_presente = true;   
-                      break;                        
-                }
-          }
-      
-          if (!$insumo_presente) {         
-               return redirect()->route('mantenimiento.index')->with('error', 'Insumos no están asociados a la maquinaria.');
-          }
-      }
-
+    
 
      $errores = [];
 
@@ -101,30 +93,33 @@ class MantenimientoController extends Controller
           return redirect()->route('mantenimiento.index')->with('errores_cantidad', $errores);
       }
 
-      
-      foreach ($insumos as $key => $insumo) {
-          $insumo_temp = Insumos::find($key);
+        $pruebas=[];
+       foreach ($insumos as $key => $insumo) {
+
+           $insumo_temp = Insumos::find($key);
          
-           $insumo_maquinaria=$maquinaria->insumos()->where('insumo_id',$insumo_temp->id_insumo)->first();
-           $cantidad_actual=$insumo_maquinaria->pivot->cantidad_actual;
-           $capacidad_insumo=$insumo_maquinaria->pivot->capacidad;
-           $cantidad_final=$cantidad_actual+$insumo['cantidad'];
+           $insumo_maquinaria=$maquinaria->insumos()->where('insumo_id',$insumo_temp->Articulo_inventariados->Catalogo_articulos->id_articulo)->first();
+           
+            $cantidad_actual=$insumo_maquinaria->pivot->cantidad_actual;
+            $capacidad_insumo=$insumo_maquinaria->pivot->capacidad;
+            $cantidad_final=$cantidad_actual+$insumo['cantidad'];
 
-            if($cantidad_final > $capacidad_insumo){
+             if($cantidad_final > $capacidad_insumo){
                 return redirect()->route('mantenimiento.index')->with('error', 'Cantidad no valida , excedió la capacidad.');
-            } 
+              } 
             
-            $insumo_temp->capacidad -= $insumo['cantidad'];
-            $insumo_temp->save();
-          //aqui hago el actualizado del aumento de insumo en la maquina
-          $maquinaria->insumos()->syncWithoutDetaching([$insumo_temp->id_insumo => ['cantidad_actual' => $cantidad_final]]);
-      }
+           $insumo_temp->capacidad -= $insumo['cantidad'];
+           $insumo_temp->save();
+            //aqui hago el actualizado del aumento de insumo en la maquina
+          $maquinaria->insumos()->syncWithoutDetaching([$insumo_temp->Articulo_inventariados->Catalogo_articulos->id_articulo => ['cantidad_actual' => $cantidad_final]]);
+       }
+      
 
 
-      $Mantenimiento->save();
-      $Mantenimiento->insumos()->sync($insumos);
+          $Mantenimiento->save();
+          $Mantenimiento->insumos()->sync($insumos);
 
-     return redirect()->route('mantenimiento.index')->with('success', 'El registro del mantenimiento ha sido creado exitosamente,');
+      return redirect()->route('mantenimiento.index')->with('success', 'El registro del mantenimiento ha sido creado exitosamente,');
     
     }
 
