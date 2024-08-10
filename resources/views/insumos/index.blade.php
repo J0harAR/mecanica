@@ -94,14 +94,29 @@
                     <form class="row g-3 miFormulario" action="{{ route('insumos.store') }}" method="POST">
                         @csrf
                         <div class="col-md-12 mb-3">
-                            <label for="nombre" class="form-label"><i class="bi bi-box-seam me-2"></i>Nombre del
-                                insumo</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" required
-                                autocomplete="nombre" autofocus>
+                        <label for="nombre" class="form-label"><i class="bi bi-box-seam me-2"></i>Seleccion el articulo</label>
+                            <select name="id_articulo" id="id_articulo" class="form-select">
+                                
+                                @foreach ($articulos as $articulo)
+                                    <option value="{{$articulo->id_articulo}}">{{$articulo->id_articulo}}//{{$articulo->nombre}}</option>
+                                    
+                                @endforeach
+                            </select>
                         </div>
-                        <div class="col-md-12 mb-3">
+                        
+                        <div class="col-md-6 mb-3">
                             <label for="cantidad" class="form-label"><i class="bi bi-stack me-2"></i>Cantidad</label>
                             <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" max="1000" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3" id="capacidadInsumo">
+                                    <label for="capacidad_insumo" class="form-label"><i
+                                            class="bi bi-speedometer2 me-2"></i>Capacidad</label>
+                                    
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="capacidad_insumo" name="capacidad_insumo"required>
+                                        <span class="input-group-text">Mililitros</span>
+                                    </div>                                                 
                         </div>
                         <div class="col-md-12 mb-3">
                             <label for="estatus" class="form-label"><i
@@ -112,28 +127,7 @@
                             </select>
                         </div>
 
-
-                        <div class="col-md-7 mb-3" id="tipoInsumo">
-                            <label for="tipo_insumo" class="form-label"><i class="bi bi-fuel-pump me-2"></i>Tipo de
-                                insumo</label>
-                            <input type="text" class="form-control" id="tipo_insumo" name="tipo_insumo"required>
-                        </div>
-                        
-                            <div class="col-md-5 mb-3" id="capacidadInsumo">
-                                    <label for="capacidad_insumo" class="form-label"><i
-                                            class="bi bi-speedometer2 me-2"></i>Capacidad</label>
-                                    
-                                    <div class="input-group">
-                                        <input type="number" class="form-control" id="capacidad_insumo" name="capacidad_insumo"required>
-                                        <span class="input-group-text">Mililitros</span>
-                                    </div>                                                 
-                            </div>
-
-                            
-                        
-                        
-
-                        
+                           
 
                         <div class="text-center mt-4">
                             <button type="submit" class="btn btn-primary miBoton"

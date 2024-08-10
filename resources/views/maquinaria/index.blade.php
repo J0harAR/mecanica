@@ -89,13 +89,18 @@
                 <div class="modal-body">
                     <form class="row g-3" action="{{ route('maquinaria.store') }}" method="POST">
                         @csrf
-
-                        <div class="col-md-6 mb-3">
-                            <label for="nombre" class="form-label"><i class="bi bi-box-seam me-2"></i>Nombre de la
-                                máquina</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" required
-                                autocomplete="nombre" autofocus>
+                        
+                        <div class="col-md-12 mb-3">
+                        <label for="nombre" class="form-label"><i class="bi bi-box-seam me-2"></i>Seleccion el articulo</label>
+                            <select name="id_articulo" id="id_articulo" class="form-select">
+                                
+                                @foreach ($articulos as $articulo)
+                                    <option value="{{$articulo->id_articulo}}">{{$articulo->id_articulo}}//{{$articulo->nombre}}</option>
+                                    
+                                @endforeach
+                            </select>
                         </div>
+                
                         <div class="col-md-6 mb-3">
                             <label for="cantidad" class="form-label"><i class="bi bi-stack me-2"></i>Cantidad</label>
                             <input type="number" class="form-control" id="cantidad" name="cantidad" required min="1" max="1000">
@@ -108,30 +113,8 @@
                                 <option value="No disponible">No disponible</option>
                             </select>
                         </div>
-                        <div class="col-md-6 mb-3" id="tipoMaquina">
-                            <label for="tipo_maquina" class="form-label"><i class="bi bi-robot me-2"></i>Tipo de
-                                máquina</label>
-                            <input type="text" class="form-control" id="tipo_maquina" name="tipo_maquina" required>
-                        </div>
 
-
-
-                        <div class="col-md-6 mb-3" id="seccion">
-                            <label for="seccion" class="form-label"><i class="bi bi-tags me-2"></i>Sección</label>
-                            <select id="seccion" class="form-select" name="seccion">
-                                <option selected disabled>Selecciona una sección</option>
-                                <option value="03">03 Metrología II</option>
-                                <option value="04">04 Mecánica de materiales</option>
-                                <option value="05">05 Mantenimiento</option>
-                                <option value="06">06 Robots industriales</option>
-                                <option value="07">07 Mecánica de materiales</option>
-                                <option value="08">08 Manufactura sustractiva</option>
-                                <option value="09">09 Manufactura aditiva</option>
-                                <option value="12">12 Mecánica de fluidos y termodinámica</option>
-                                <option value="13">13 Neumática</option>
-                                <option value="20">20 Área de diseño digital</option>
-                            </select>
-                        </div>
+                       
                         <div class="row mb-3" id="todos_insumos">
                             <label class="col-sm-2 col-form-label d-flex align-items-center custom-label"><i
                                     class="bi bi-droplet me-2"></i>Insumos</label>

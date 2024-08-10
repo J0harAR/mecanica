@@ -23,10 +23,19 @@
                 </nav>
             </div>
             <div>
+
+                 <!-- BOTON DE HISTORIAL -->
+                 <button type="button" class="btn btn-tecnm" data-bs-toggle="modal" data-bs-target="#modal-catalogo">
+                    <i class="fas fa-history me-1"></i>Agregar al catalogo
+                </button>
+
                  <!-- BOTON DE HISTORIAL -->
                 <button type="button" class="btn btn-tecnm" data-bs-toggle="modal" data-bs-target="#ExtralargeModal">
                     <i class="fas fa-history me-1"></i>
                 </button>
+
+
+               
                 
 
                 @can('generar_reporte_inventario')
@@ -37,6 +46,110 @@
 
             </div>
         </div>
+
+
+        <!-- Modal Catalogo -->
+        <div class="modal fade" id="modal-catalogo" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Catalogo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    <form class="row" action="{{route('inventario.store')}}" method="POST">
+                        @csrf
+                        <!-- Selector de Tipo -->
+                       
+                        <div class="col-md-6" >
+                            <label for="tipo" class="form-label">Tipo de Producto:</label>
+                                <select name="tipo" id="tipo" required class="form-control">
+                                    <option value="default">Seleccione un tipo</option>
+                                    <option value="Herramientas">Herramientas</option>
+                                    <option value="Maquinaria">Maquinaria</option>
+                                    <option value="Insumos">Insumos</option>
+                                </select>
+
+                            </div>
+
+                        <div id="nombre" class="col-md-6 mb-3">
+                            <label for="tipoHerramienta" class="form-label">Nombre:</label>
+                            <input type="text" id="nombre" name="nombre" class="form-control">
+                        </div>
+
+                        <!-- Sección de Herramientas -->
+                        <div id="tipo_herramienta" style="display: none;" class="col-md-6">
+                            <label for="tipoHerramienta" class="form-label">Tipo de Herramienta:</label>
+                            <select id="tipo_herramienta" class="form-select" name="tipo_herramienta" >
+                                <option selected disabled>Selecciona un tipo</option>
+                                <option value="Herramienta de corte">Herramienta de corte</option>
+                                <option value="Herramienta de golpe">Herramienta de golpe</option>
+                                <option value="Herramienta de mantenimiento">Herramienta de mantenimiento</option>
+                                <option value="Herramienta de maquinado">Herramienta de maquinado</option>
+                                <option value="Herramienta de medición">Herramienta de medición</option>
+                                <option value="Herramienta de montaje">Herramienta de montaje</option>
+                                <option value="Herramienta de neumáticos">Herramienta de neumáticos</option>
+                                <option value="Herramienta de seguridad">Herramienta de seguridad</option>
+                                <option value="Herramienta de sujeción">Herramienta de sujeción</option>
+                                <option value="Herramienta de torno">Herramienta de torno</option>
+                                <option value="Herramienta eléctrica">Herramienta eléctrica</option>
+                                <option value="Herramienta manual">Herramienta manual</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3" id="dimensionHerramienta"  style="display: none;">
+                            <label for="dimension_herramienta" class="form-label"><i
+                                    class="bi bi-rulers me-2"></i>Dimensión</label>
+                            <input type="number" class="form-control" id="dimension_herramienta"
+                                name="dimension_herramienta"required>
+                        </div>
+
+                        <!-- Sección de Maquinaria -->
+                        <div class="col-md-6 mb-3" id="tipoMaquina" style="display: none;">
+                            <label for="tipo_maquina" class="form-label"><i class="bi bi-robot me-2"></i>Tipo de
+                                máquina</label>
+                            <input type="text" class="form-control" id="tipo_maquina" name="tipo_maquina" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3" id="seccion" style="display: none;">
+                            <label for="seccion" class="form-label"><i class="bi bi-tags me-2"></i>Sección</label>
+                            <select id="seccion" class="form-select" name="seccion">
+                                <option selected disabled>Selecciona una sección</option>
+                                <option value="03">03 Metrología II</option>
+                                <option value="04">04 Mecánica de materiales</option>
+                                <option value="05">05 Mantenimiento</option>
+                                <option value="06">06 Robots industriales</option>
+                                <option value="07">07 Mecánica de materiales</option>
+                                <option value="08">08 Manufactura sustractiva</option>
+                                <option value="09">09 Manufactura aditiva</option>
+                                <option value="12">12 Mecánica de fluidos y termodinámica</option>
+                                <option value="13">13 Neumática</option>
+                                <option value="20">20 Área de diseño digital</option>
+                            </select>
+                        </div>
+
+                        <!-- Sección de Insumos -->
+                        <div class="col-md-12 mb-3" id="tipoInsumo" style="display: none;">
+                            <label for="tipo_insumo" class="form-label"><i class="bi bi-fuel-pump me-2"></i>Tipo de
+                                insumo</label>
+                            <input type="text" class="form-control" id="tipo_insumo" name="tipo_insumo"required>
+                        </div>
+
+                        <!-- Botón de Envío -->
+                         <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                         </div>
+                        
+                    </form>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <!-- Extra Large Modal -->
         <div class="modal fade" id="ExtralargeModal" tabindex="-1">
             <div class="modal-dialog modal-xl">
@@ -285,37 +398,32 @@
                 var tipo_herramienta = document.getElementById('tipo_herramienta');
                 var tipo_maquina = document.getElementById('tipoMaquina');
                 var tipo_insumo = document.getElementById('tipoInsumo');
-                var capacidad_insumo = document.getElementById('capacidadInsumo');
-                var dimension_herramienta = document.getElementById('dimensionHerramienta');
-                var condicion_herramienta = document.getElementById('condicionHerramienta');
+                var dimension_herramienta = document.getElementById('dimensionHerramienta');       
                 var seccion = document.getElementById('seccion');
-                var todos_insumos = document.getElementById('todos_insumos');
-                var condicion_herramienta_input = document.getElementById('condicion_herramienta_input');
-
+                
                 tipoSelect.addEventListener('change', function () {
+                    
                     switch (this.value) {
                         case 'Herramientas':
                             showElement(tipo_herramienta);
-                            showElement(dimension_herramienta);
-                            showElement(condicion_herramienta);
-                            setRequired([tipo_herramienta, dimension_herramienta, condicion_herramienta_input], true);
-                            setRequired([tipo_maquina, tipo_insumo, capacidad_insumo, seccion, todos_insumos], false);
-                            hideElements([tipo_maquina, tipo_insumo, capacidad_insumo, seccion, todos_insumos]);
+                            showElement(dimension_herramienta);                      
+                            hideElements([tipo_maquina, tipo_insumo, seccion]);
                             break;
                         case 'Maquinaria':
                             showElement(tipo_maquina);
-                            showElement(seccion);
-                            showElement(todos_insumos);
-                            setRequired([tipo_maquina, seccion], true);
-                            setRequired([tipo_herramienta, tipo_insumo, capacidad_insumo, dimension_herramienta, condicion_herramienta_input], false);
-                            hideElements([tipo_herramienta, tipo_insumo, capacidad_insumo, dimension_herramienta, condicion_herramienta]);
+                            showElement(seccion);                       
+                            hideElements([tipo_herramienta, tipo_insumo, dimension_herramienta]);
                             break;
                         case 'Insumos':
-                            showElement(tipo_insumo);
-                            showElement(capacidad_insumo);
-                            setRequired([tipo_insumo, capacidad_insumo], true);
-                            setRequired([tipo_herramienta, tipo_maquina, dimension_herramienta, condicion_herramienta_input, seccion, todos_insumos], false);
-                            hideElements([tipo_herramienta, tipo_maquina, dimension_herramienta, condicion_herramienta, seccion, todos_insumos]);
+                            showElement(tipo_insumo);                          
+                            hideElements([tipo_herramienta, tipo_maquina, dimension_herramienta, seccion]);
+                            break;
+                        case 'default':
+                            hideElements([tipo_maquina, tipo_insumo, 
+                            seccion, 
+                            dimension_herramienta,
+                            seccion,
+                            tipo_herramienta]);
                             break;
                         default:
                             break;
@@ -338,13 +446,13 @@
                     });
                 }
 
-                function setRequired(elements, required) {
-                    elements.forEach(element => {
-                        if (element.querySelector('input, select')) {
-                            element.querySelector('input, select').required = required;
-                        }
-                    });
-                }
+                //function setRequired(elements, required) {
+                 //   elements.forEach(element => {
+                  //      if (element.querySelector('input, select')) {
+                       //     element.querySelector('input, select').required = required;
+                      //  }
+                  //  });
+                //}
             });
 
         </script>

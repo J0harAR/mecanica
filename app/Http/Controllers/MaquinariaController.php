@@ -28,27 +28,24 @@ class MaquinariaController extends Controller
 
       $maquinaria = Maquinaria::with(['Articulo_inventariados.Catalogo_articulos','insumos'])->get();
       $insumos=Articulo_inventariado::where('tipo','Insumos')->get();
-
+      $articulos=Catalogo_articulo::all();
       $periodos=Periodo::all();
       //foreach ($herramientas as $herramienta) {
         //  echo $herramienta->Articulo_inventariados->Catalogo_articulos->nombre;
     //  }
       
-      return view('maquinaria.index',compact('maquinaria','insumos','periodos'));
+      return view('maquinaria.index',compact('maquinaria','insumos','periodos','articulos'));
   }
 
   public function store(Request $request){
     set_time_limit(180);
     //Obtengo los inputs
-    $nombre_articulo=$request->input('nombre');
-    $seccion_articulo=$request->input('seccion');
     $estatus=$request->input('estatus');
     $cantidad_articulo=$request->input('cantidad');
-    $tipo_maquina=$request->input('tipo_maquina');
     $tipo="Maquinaria";
 
     //Agregar en la tabla de catalogo articulo 
-    $codigo=$this->generadorCodigoArticulo($nombre_articulo,$seccion_articulo);
+    $codigo=$request->input('id_articulo'); 
 
       if(Catalogo_articulo::where('id_articulo',$codigo)->exists()){
         $articulo = Catalogo_articulo::find($codigo);
@@ -110,81 +107,12 @@ class MaquinariaController extends Controller
 
         $auditoria->new_data=json_encode($articulo->toArray());
         $auditoria->save();
-        
-        
-  }else{
-    
-    $articulo_nuevo = new Catalogo_articulo;
-    $articulo_nuevo->id_articulo= $codigo;
-    $articulo_nuevo->nombre=$nombre_articulo;
-    $articulo_nuevo->cantidad=$cantidad_articulo;
-    $articulo_nuevo->seccion=$seccion_articulo;
-    $articulo_nuevo->tipo=$tipo_maquina;
-    $articulo_nuevo->save();
-    $articulo = Catalogo_articulo::find($codigo);
-
-
-      //Aqui creamos el historial de agregar cuando aun no existe ninguno en base de datos
-    $auditoria=new Auditoria;
-    $auditoria->event='created';
-    $auditoria->subject_type=Catalogo_articulo::class;
-    $auditoria->subject_id=$articulo->id_articulo;
-    $auditoria->cause_id=auth()->id();
-    $auditoria->old_data=json_encode([]);
-    $auditoria->new_data=json_encode($articulo->toArray());
-    $auditoria->save();
-
-
-    $codigos_inventario=$this->generadorCodigoInventario($articulo,$cantidad_articulo);
-    for ($i = 0; $i < $articulo->cantidad; $i++) {
-        $articulo_inventariado=new Articulo_inventariado;
-        $maquinaria=new Maquinaria;
-        $auditoria=new Auditoria;
-
-        $articulo_inventariado->id_inventario=$codigos_inventario[$i];
-        $articulo_inventariado->id_articulo=$codigo;
-        $articulo_inventariado->estatus=$estatus;
-        $articulo_inventariado->tipo=$tipo;   
-
-        $maquinaria->id_maquinaria=$codigos_inventario[$i]; 
-
-        $data = [
-            'id_inventario' => $codigos_inventario[$i],
-            'id_articulo' => $codigo,
-            'estatus' => $estatus,
-            'tipo'=>$tipo
-        ];
-
-
-                              
-        $articulo_inventariado->save();
-        $id_maquina=$codigos_inventario[$i];
-        $maquinaria->save();
-        
-
-        $maquinaria=Maquinaria::find($id_maquina);
-
-        if($request->input('insumos')!=null){
-            $maquinaria->insumos()->sync($request->input('insumos',[]));
-        }
-
-        $auditoria->event='created';
-        $auditoria->subject_type=Articulo_inventariado::class;
-        $auditoria->subject_id=$codigos_inventario[$i];
-        $auditoria->cause_id=auth()->id();
-        $auditoria->old_data=json_encode([]);
-        $auditoria->new_data=json_encode($data);
-        $auditoria->save();
+      
+        return redirect()->route('maquinaria.index')->with('success', 'Maquinaria registrada exitosamente: ' . $articulo->nombre);
     }
-
+   
   }
-  return redirect()->route('maquinaria.index')->with('success', 'Maquinaria registrada exitosamente: ' . $nombre_articulo);
 
-
-
-
-
-  }
 
   public function update(Request $request,$id_maquinaria)
   {

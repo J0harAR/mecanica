@@ -11,6 +11,14 @@ class Catalogo_articulo extends Model
     protected $table = "catalogo_articulo";
     protected $primaryKey = 'id_articulo';
     protected $keyType = 'string';
+
+    protected $fillable = [
+        'id_articulo',
+        'nombre',
+        'cantidad',
+        'seccion',
+        'tipo',
+    ];
     
     //Relacion n a n con practica
     public function practicas()
