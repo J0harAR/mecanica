@@ -95,6 +95,8 @@ Route::post('/mantenimiento', [MantenimientoController::class, 'store'])->name('
 Route::delete('/mantenimiento/{id}', [MantenimientoController::class, 'destroy'])->name('mantenimiento.destroy');
 Route::get('/get-insumos-por-maquinaria', [MantenimientoController::class, 'getInsumosPorMaquinaria'])->name('get-insumos-por-maquinaria');
 
+Route::get('/datos-maquinaria', [MantenimientoController::class, 'obtenerDatosMaquinaria'])->name('get-datos-maquinaria');
+
 
 
 //Parte de las practicas

@@ -100,30 +100,22 @@
               <label for="fecha" class="form-label"><i class="bi bi-calendar me-2"></i>Fecha</label>
               <input type="date" class="form-control" name="fecha" id="fecha">
             </div>
+            
+            <div class="col-md-12 mb-3">
+            <label for="insumos" class="form-label"><i class="bi bi-box-seam me-2"></i>Datos generales</label>
+                <div id="datos-maquina">
+
+
+              </div>
+            </div>
+            
+
             <div class="col-md-12 mb-3">
               <label for="insumos" class="form-label"><i class="bi bi-box-seam me-2"></i>Insumos</label>
               <div id ="insumos-container">
 
 
               </div>
-              <!-- @foreach ($insumos as $insumo)
-        <div class="row align-items-center mb-2">
-          <div class="col-md-5">
-          <input type="checkbox" name="{{ $insumo->id_insumo }}" data-id="{{ $insumo->id_insumo }}"
-            class="insumo-enable me-2">
-          <span> {{$insumo->id_insumo}} {{ $insumo->Articulo_inventariados->Catalogo_articulos->nombre }}</span>
-          </div>
-          <div class="col-md-7">
-          <div class="input-group">
-            <input type="text" name="insumos[{{ $insumo->id_insumo }}]" placeholder="Cantidad"
-            data-id="{{ $insumo->id_insumo }}" class="insumo-cantidad form-control" disabled>
-            <span class="input-group-text">Litros</span>
-          </div>
-          </div>
-        </div>
-      @endforeach -->
-     
-
 
             </div>
             <div class="text-center mt-4">
@@ -289,7 +281,7 @@
                                     </div>
                                 </div>`;
                             container.append(insumoHtml);
-                            console.log(insumo.id_inventario);
+                            
                         });
 
                         // Volver a asociar el evento click después de agregar nuevos elementos
@@ -301,6 +293,78 @@
                         });
                     }
                 });
+
+
+                $.ajax({
+                url: '{{ route("get-datos-maquinaria") }}',
+                type: 'GET',
+                data: { id: maquinaId },
+                success: function (data) {
+                    let container = $('#datos-maquina');
+                    container.empty(); // Limpiar el contenedor
+
+                    let datos = data;
+
+                    // Crear HTML para los datos generales
+                    let DatosHtml = ` 
+                        <div class="row">
+                            <div class="col-md-12 text-left">
+                                <p>ID:${datos.articulo_inventariados.id_inventario}-${datos.articulo_inventariados.catalogo_articulos.nombre}</p>
+                            </div>
+
+                             <div class="col-md-6">
+                               
+                            </div>
+
+                         
+                        </div>         
+                 
+                    `;
+
+                    // Crear HTML para los insumos
+                    DatosHtml += `
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="form-label">Detalles de los insumos</p>
+                            </div>
+
+                            <div class="col-md-6">
+                                <p class="form-label">Cantidad Actual</p>
+                            </div>
+                        </div>
+                        
+                        
+                    `;
+
+                    datos.insumos.forEach(function(insumo) {
+                        DatosHtml += `
+                            <div class="row align-items-center mb-2">
+                                    <div class="col-md-5">
+                                        <span> ${insumo.id_articulo} ${insumo.nombre}</span>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="input-group">
+                                            
+                                            <input type="text" placeholder="${insumo.pivot?.cantidad_actual ?? 0}"
+                                                data-id="${insumo.id_inventario}" class="insumo-cantidad form-control" disabled>
+                                            <span class="input-group-text">Mililitros</span>
+                                        </div>
+                                    </div>
+                              </div>
+                        `;
+                    });
+
+                    DatosHtml += `
+                        </ul>
+                    `;
+
+                    // Agregar el HTML al contenedor
+                    container.append(DatosHtml);
+
+                    console.log(datos);
+                }
+            });
+
             }
         });
     });
@@ -308,7 +372,7 @@
 
 
 
-  </script>
+  
 
   <script>
     

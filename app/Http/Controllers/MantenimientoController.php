@@ -45,6 +45,13 @@ class MantenimientoController extends Controller
         return response()->json($insumos);
     }
 
+    public function obtenerDatosMaquinaria(Request $request){
+        $maquinariaId = $request->input('id');
+        $maquinaria = Maquinaria::with(['insumos','Articulo_inventariados.catalogo_articulos'])->find($maquinariaId);
+        return response()->json($maquinaria);
+        
+    }
+
 
     public function index()
     {
