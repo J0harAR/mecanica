@@ -172,52 +172,36 @@ class MaquinariaController extends Controller
         $maquinaria=Maquinaria::find($id_maquinaria);
 
        
-  //Asignacion de los insumos a la maquinaria
+        //Asignacion de los insumos a la maquinaria
         $insumosCapacidad = $request->input('insumos', []);
-        $insumosCantidadActual = $request->input('insumos-cantidad-actual', []);
         $insumosCantidadMinima = $request->input('insumos-cantidad-minima', []);
-
   
-        foreach ($insumosCantidadActual as $id => $cantidadActual) {
-          if (isset($insumosCapacidad[$id])) {
-              $capacidad = $insumosCapacidad[$id];
-  
-            
-              if ($cantidadActual > $capacidad) {
-                  return redirect()->route('maquinaria.index')->with('error', 'La cantidad actual no puede ser mayor que la capacidad para el insumo con ID: ' . $id);
-              }
-  
-              if (isset($insumosCantidadMinima[$id])) {
-                  $cantidadMinima = $insumosCantidadMinima[$id];
-                  if ($cantidadMinima > $capacidad) {
-                      return redirect()->route('maquinaria.index')->with('error', 'La cantidad mínima no puede ser mayor que la capacidad para el insumo con ID: ' . $id);
-                  }
-  
-                
-                  if ($cantidadActual < $cantidadMinima) {
-                      return redirect()->route('maquinaria.index')->with('error', 'La cantidad actual no puede ser menor que la cantidad mínima para el insumo con ID: ' . $id);
-                  }
-              } else {
-                  return redirect()->route('maquinaria.index')->with('error', 'Cantidad mínima no definida para el insumo con ID: ' . $id);
-              }
-          } else {
-              return redirect()->route('maquinaria.index')->with('error', 'Capacidad no definida para el insumo con ID: ' . $id);
-          }
-      }
+        foreach ($insumosCantidadMinima as $id => $cantidadMinima) {
+            if (isset($insumosCapacidad[$id])) {
+                $capacidad = $insumosCapacidad[$id];
+        
+                // Validar que la cantidad mínima no sea mayor que la capacidad
+                if ($cantidadMinima > $capacidad) {
+                    return redirect()->route('maquinaria.index')->with('error', 'La cantidad mínima no puede ser mayor que la capacidad para el insumo con ID: ' . $id);
+                }
+            } else {
+                return redirect()->route('maquinaria.index')->with('error', 'Capacidad no definida para el insumo con ID: ' . $id);
+            }
+        }
 
 
 
-        $insumos = collect($insumosCapacidad)->mapWithKeys(function ($capacidad, $id) use ($insumosCantidadActual, $insumosCantidadMinima) {
+        $insumos = collect($insumosCapacidad)->mapWithKeys(function ($capacidad, $id) use ($insumosCantidadMinima) {
           return [
               $id => [
                   'capacidad' => $capacidad,
-                  'cantidad_actual' => $insumosCantidadActual[$id] ?? null,
                   'cantidad_minima' => $insumosCantidadMinima[$id] ?? null,
               ],
           ];
       });
+      $deletedInsumos = $request->input('deleted_insumos', []);
      
-           $maquinaria->insumos()->sync($insumos);
+        $maquinaria->insumos()->sync($insumos);
              
         
 

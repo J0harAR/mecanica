@@ -79,7 +79,7 @@
 
     <!-- Vertically centered Modal -->
     <div class="modal fade" id="modal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content border-0 shadow-lg">
                 <div class="modal-header" style="background-color: #002855; color: #ffffff;">
                     <h5 class="modal-title"><i class="bi bi-plus-circle me-2"></i>Agregar maquinaria</h5>
@@ -126,7 +126,7 @@
 
                             @foreach ($insumosAgrupados as $idArticulo => $insumoGrupo)
                                 <div class="row align-items-center mb-2">
-                                    <div class="col-md-3">
+                                    <div class="col-md-3">                                
                                         <input type="checkbox" name="{{ $idArticulo }}" data-id="{{ $idArticulo }}"
                                             class="insumo-enable me-2">
                                         <span>{{ $idArticulo }} {{ $insumoGrupo->first()->Catalogo_articulos->nombre }}</span>
@@ -283,7 +283,6 @@
                             <th>Insumos</th>
                             <th>Acciones</th>
                             <th>Asignar insumos</th>
-                            <th>Designar insumos</th>
                         </tr>
                     </thead>
                     <tbody class="bg-light">
@@ -311,6 +310,7 @@
                                             class="fas fa-trash"></i></button>
                                     @endcan
                                 </td>
+
                                 <td class="text-center">
                                      @can('asignar-insumos-maquinaria')   
                                     <button type="button"
@@ -319,137 +319,97 @@
                                         <i class="fas fa-boxes me-2"></i>
                                     </button>
                                     @endcan
-
-                                </th>
-
-                                <td>
-                                    <button type="button"
-                                        class="btn btn-outline-danger  d-flex align-items-center mx-auto "
-                                        data-bs-toggle="modal" data-bs-target="#modal-insumos-desasignar-{{ $maquina->id_maquinaria }}">
-                                        <i class="fas fa-boxes me-2"></i>
-                                    </button>
-                               
                                 </td>
+
                             </tr>
                             @can('editar-maquinaria')                                                         
-                            <!-- Modal Update -->
-                            <div class="modal fade" id="modal-update-{{ $maquina->id_maquinaria }}" tabindex="-1">
-                                <div class="modal-dialog  modal-xl">
-                                    <div class="modal-content border-0 shadow-lg">
-                                        <div class="modal-header" style="background-color: #002855; color: #ffffff;">
-                                            <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Editar
-                                                maquinaria
-                                            </h5>
-                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form class="row g-3"
-                                                action="{{ route('maquinaria.update', $maquina->id_maquinaria) }}"
-                                                method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="id_maquinaria" class="form-label"><i
-                                                            class="bi bi-gear me-2"></i>Código de maquinaria</label>
-                                                    <input type="text" class="form-control" id="id_maquinaria"
-                                                        name="id_maquinaria" value="{{ $maquina->id_maquinaria }}" disabled>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6 mb-3">
-                                                        <label for="seccion" class="form-label"><i
-                                                                class="bi bi-diagram-3 me-2"></i>Sección de la
-                                                            maquinaria</label>
-                                                        <input type="text" class="form-control" id="seccion" name="seccion"
-                                                            value="{{ $maquina->Articulo_inventariados->Catalogo_articulos->seccion }}"
-                                                            disabled>
-                                                    </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <label for="nombre" class="form-label"><i
-                                                                class="bi bi-box-seam me-2"></i>Nombre de la
-                                                            maquinaria</label>
-                                                        <input type="text" class="form-control" id="nombre" name="nombre"
-                                                            value="{{ $maquina->Articulo_inventariados->Catalogo_articulos->nombre }}"
-                                                            disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 mb-3">
-                                                <label for="estatus" class="form-label"><i
-                                                        class="bi bi-check-circle me-2"></i>Estatus</label>
-                                                <select id="estatus" class="form-select" name="estatus">
-                                                    <option value="Disponible" {{ $maquina->Articulo_inventariados->estatus == 'Disponible' ? 'selected' : '' }}>Disponible</option>
-                                                    <option value="No disponible" {{ $maquina->Articulo_inventariados->estatus == 'No disponible' ? 'selected' : '' }}>No disponible</option>
-                                                </select>
-                                            </div>
+<!-- Modal Update -->
+<div class="modal fade" id="modal-update-{{ $maquina->id_maquinaria }}" tabindex="-1">
+    <div class="modal-dialog  modal-xl">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header" style="background-color: #002855; color: #ffffff;">
+                <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Editar maquinaria</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" action="{{ route('maquinaria.update', $maquina->id_maquinaria) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="col-md-6 mb-3">
+                        <label for="id_maquinaria" class="form-label"><i class="bi bi-gear me-2"></i>Código de maquinaria</label>
+                        <input type="text" class="form-control" id="id_maquinaria" name="id_maquinaria" value="{{ $maquina->id_maquinaria }}" disabled>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="seccion" class="form-label"><i class="bi bi-diagram-3 me-2"></i>Sección de la maquinaria</label>
+                            <input type="text" class="form-control" id="seccion" name="seccion" value="{{ $maquina->Articulo_inventariados->Catalogo_articulos->seccion }}" disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="nombre" class="form-label"><i class="bi bi-box-seam me-2"></i>Nombre de la maquinaria</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $maquina->Articulo_inventariados->Catalogo_articulos->nombre }}" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="estatus" class="form-label"><i class="bi bi-check-circle me-2"></i>Estatus</label>
+                        <select id="estatus" class="form-select" name="estatus">
+                            <option value="Disponible" {{ $maquina->Articulo_inventariados->estatus == 'Disponible' ? 'selected' : '' }}>Disponible</option>
+                            <option value="No disponible" {{ $maquina->Articulo_inventariados->estatus == 'No disponible' ? 'selected' : '' }}>No disponible</option>
+                        </select>
+                    </div>
 
-                                                <div class="col-md-12 mb-3">
-                                                    <label for="insumos" class="form-label"><i
-                                                            class="bi bi-tools me-2"></i>Insumos</label>
-                                                    @foreach ($maquina->insumos as $insumo)
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-md-3">
-                                                                <span>{{ $insumo->nombre }}</span>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <label for="capacidad-{{ $insumo->id_articulo }}"
-                                                                    class="form-label">Capacidad</label>
-                                                                <div class="input-group">
-                                                                    <input type="number" id="capacidad-{{ $insumo->id_articulo }}"
-                                                                        name="insumos[{{ $insumo->id_articulo }}]"
-                                                                        class="form-control"
-                                                                        value="{{ $insumo->pivot->capacidad }}" >
-                                                                    <div class="input-group-append">
-                                                                        <span class="input-group-text">Mililitros</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <label for="cantidad-actual-{{ $insumo->id_articulo }}"
-                                                                    class="form-label">Cantidad Actual</label>
-                                                                <div class="input-group">
-                                                                    <input type="number"
-                                                                        id="cantidad-actual-{{ $insumo->id_articulo }}"
-                                                                        name="insumos-cantidad-actual[{{ $insumo->id_articulo }}]"
-                                                                        class="form-control"
-                                                                        value="{{ $insumo->pivot->cantidad_actual }}">
-                                                                    <div class="input-group-append">
-                                                                        <span class="input-group-text">Mililitros</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <label for="cantidad-minima-{{ $insumo->id_articulo }}"
-                                                                    class="form-label">Cantidad Mínima</label>
-                                                                <div class="input-group">
-                                                                    <input type="number"
-                                                                        id="cantidad-minima-{{ $insumo->id_articulo }}"
-                                                                        name="insumos-cantidad-minima[{{ $insumo->id_articulo }}]"
-                                                                        class="form-control"
-                                                                        value="{{ $insumo->pivot->cantidad_minima }}">
-                                                                    <div class="input-group-append">
-                                                                        <span class="input-group-text">Mililitros</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-1">
-                                                                
-                                                            </div>
-
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-
-                                                <div class="text-center mt-4">
-                                                    <button type="submit" class="btn btn-primary"
-                                                        style="background-color: #002855; border-color: #002855;">Guardar</button>
-                                                </div>
-                                            </form>
+                    <div class="col-md-12 mb-3">
+                        <label for="insumos" class="form-label"><i class="bi bi-tools me-2"></i>Insumos</label>
+                        @foreach ($maquina->insumos as $insumo)
+                            <div class="row align-items-center mb-2 insumo-row" data-id="{{ $insumo->id_articulo }}">
+                                <div class="col-md-3">
+                                    <span>{{ $insumo->nombre }}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="capacidad-{{ $insumo->id_articulo }}" class="form-label">Capacidad</label>
+                                    <div class="input-group">
+                                        <input type="number" id="capacidad-{{ $insumo->id_articulo }}" name="insumos[{{ $insumo->id_articulo }}]" class="form-control" value="{{ $insumo->pivot->capacidad }}">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Mililitros</span>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-3">
+                                    <label for="cantidad-actual-{{ $insumo->id_articulo }}" class="form-label">Cantidad Actual</label>
+                                    <div class="input-group">
+                                        <input type="number" id="cantidad-actual-{{ $insumo->id_articulo }}" name="insumos-cantidad-actual[{{ $insumo->id_articulo }}]" class="form-control" value="{{ $insumo->pivot->cantidad_actual }}" disabled>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Mililitros</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="cantidad-minima-{{ $insumo->id_articulo }}" class="form-label">Cantidad Mínima</label>
+                                    <div class="input-group">
+                                        <input type="number" id="cantidad-minima-{{ $insumo->id_articulo }}" name="insumos-cantidad-minima[{{ $insumo->id_articulo }}]" class="form-control" value="{{ $insumo->pivot->cantidad_minima }}">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Mililitros</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1 text-center">
+                                    <button type="button" class="btn btn-danger btn-sm remove-insumo" data-id="{{ $insumo->id_articulo }}">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <!-- End Modal Update -->
-                            @endcan
+                        @endforeach
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary" style="background-color: #002855; border-color: #002855;">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal Update -->
+@endcan
 
                             @can('borrar-maquinaria')                                                            
                             <!-- Modal Delete -->
@@ -480,7 +440,6 @@
                                 </div>
                             </div>
                             @endcan
-
 
                             @can('asignar-insumos-maquinaria')                                                         
                             <!-- Modal Asignar Insumos -->
@@ -518,44 +477,6 @@
                                 </div>
                             </div>
                               @endcan
-
-
-                            <!-- Modal Desasignar Insumos -->
-                            <div class="modal fade" id="modal-insumos-desasignar-{{ $maquina->id_maquinaria }}" tabindex="-1" aria-labelledby="modalLabel{{ $maquina->id_maquinaria }}" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content border-0 shadow-lg">
-                                        <div class="modal-header" style="background-color: #002855; color: #ffffff;">
-                                            <h5 class="modal-title" id="modalLabel{{ $maquina->id_maquinaria }}"><i class="bi bi-check-circle me-2"></i>Desasignar insumos</h5>
-                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="{{ route('maquinaria.insumos_desasignar', $maquina->id_maquinaria) }}" method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <div class="mb-3">
-                                                    <label for="insumos" class="form-label"><i class="bi bi-box-seam me-2"></i>Insumos</label>
-                                                    <select class="form-select" multiple aria-label="multiple select example" id="insumos" name="insumos[]">
-                                                        
-                                                    @foreach ($maquina->insumos as $insumo)
-                                                       
-                                                            <option value="{{ $insumo->id_articulo }}">
-                                                                {{ $insumo->id_articulo }} // {{$insumo->nombre}}
-                                                            </option>
-                                                       
-                                                    @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="modal-footer d-flex justify-content-center">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                    <button type="submit" class="btn btn-danger">Guardar</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
                         @endforeach
                     </tbody>
                 </table>
@@ -604,6 +525,30 @@
         if (!enable) {
             $('.insumo-cantidad[data-id="' + id + '"]').val(null);
         }
+    });
+});
+</script>
+
+
+<script>
+
+$(document).ready(function() {
+    var deletedInsumos = [];
+
+    // Manejar la eliminación de insumos
+    $(document).on('click', '.remove-insumo', function() {
+        var insumoId = $(this).data('id');
+        deletedInsumos.push(insumoId);
+
+        // Remover el insumo visualmente
+        $('.insumo-row[data-id="' + insumoId + '"]').remove();
+    });
+
+    // Agregar los insumos eliminados al formulario antes de enviarlo
+    $('form').on('submit', function() {
+        deletedInsumos.forEach(function(id) {
+            $(this).append('<input type="hidden" name="deleted_insumos[]" value="' + id + '">');
+        }.bind(this));
     });
 });
 </script>
