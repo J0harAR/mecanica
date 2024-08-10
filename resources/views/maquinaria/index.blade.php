@@ -79,7 +79,7 @@
 
     <!-- Vertically centered Modal -->
     <div class="modal fade" id="modal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content border-0 shadow-lg">
                 <div class="modal-header" style="background-color: #002855; color: #ffffff;">
                     <h5 class="modal-title"><i class="bi bi-plus-circle me-2"></i>Agregar maquinaria</h5>
@@ -119,25 +119,41 @@
                             <label class="col-sm-2 col-form-label d-flex align-items-center custom-label"><i
                                     class="bi bi-droplet me-2"></i>Insumos</label>
                             <div class="col-sm-12">
-                                <div class="mb-2">
-                                    <button type="button" id="select-all" class="btn btn-primary btn-sm">Seleccionar
-                                        todos</button>
-                                    <button type="button" id="deselect-all"
-                                        class="btn btn-secondary btn-sm">Deseleccionar</button>
+                                
+                            @php
+                                $insumosAgrupados = $insumos->groupBy('id_articulo');
+                            @endphp
+
+                            @foreach ($insumosAgrupados as $idArticulo => $insumoGrupo)
+                                <div class="row align-items-center mb-2">
+                                    <div class="col-md-3">
+                                        <input type="checkbox" name="{{ $idArticulo }}" data-id="{{ $idArticulo }}"
+                                            class="insumo-enable me-2">
+                                        <span>{{ $idArticulo }} {{ $insumoGrupo->first()->Catalogo_articulos->nombre }}</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            <input type="text" name="insumos[{{ $idArticulo }}]" placeholder="Capacidad"
+                                                data-id="{{ $idArticulo }}" class="insumo-cantidad form-control" disabled>
+                                            <span class="input-group-text">Mililitros</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            <input type="text" name="insumos-cantidad-actual[{{ $idArticulo }}]" placeholder="Cantidad actual"
+                                                data-id="{{ $idArticulo }}" class="insumo-cantidad form-control" disabled>
+                                            <span class="input-group-text">Mililitros</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            <input type="text" name="insumos-cantidad-minima[{{ $idArticulo }}]" placeholder="Cantidad mínima"
+                                                data-id="{{ $idArticulo }}" class="insumo-cantidad form-control" disabled>
+                                            <span class="input-group-text">Mililitros</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <select class="form-select" multiple aria-label="multiple select example"
-                                    name="insumos[]" id="insumos">
-                                    @foreach ($insumos->groupBy('id_articulo') as $id_articulo => $group)
-                                        @php
-                                            // Get the first insumo in the group for displaying information
-                                            $firstInsumo = $group->first();
-                                        @endphp
-                                        <option value="{{ $id_articulo }}">
-                                            Código: {{ $firstInsumo->Catalogo_articulos->id_articulo }} //
-                                            {{ $firstInsumo->Catalogo_articulos->nombre }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            @endforeach
                             </div>
                         </div>
 
@@ -557,29 +573,38 @@
             }
         });
     </script>
-    <script>
-        $(document).ready(function () {
-            
-          
 
-            // Funcionalidad para seleccionar todos
-            $('#select-all').click(function () {
-                var allOptions = $('#insumos option');
-                allOptions.each(function () {
-                    $(this).prop('selected', true);
-                });
-                $('#insumos').trigger('change');
-            });
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.insumo-enable').forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                const idArticulo = this.getAttribute('data-id');
+                const cantidadInput = document.querySelectorAll(`input[name="insumos[${idArticulo}]"]`);
 
-            // Funcionalidad para deseleccionar todos
-            $('#deselect-all').click(function () {
-                var allOptions = $('#insumos option');
-                allOptions.each(function () {
-                    $(this).prop('selected', false);
-                });
-                $('#insumos').trigger('change');
+                if (this.checked) {
+                    cantidadInput.removeAttribute('disabled');
+                } else {
+                    cantidadInput.setAttribute('disabled', 'disabled');
+                }
             });
         });
-    </script>
+    });
+</script>
 
+<script>
+    $(document).ready(function() {
+    $('.insumo-enable').on('click', function () {
+        let id = $(this).attr('data-id');
+        let enable = $(this).is(":checked");
+        
+        
+        $('.insumo-cantidad[data-id="' + id + '"]').attr('disabled', !enable).attr('required', enable);
+        
+       
+        if (!enable) {
+            $('.insumo-cantidad[data-id="' + id + '"]').val(null);
+        }
+    });
+});
+</script>
     @endsection
