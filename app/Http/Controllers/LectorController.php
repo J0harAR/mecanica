@@ -59,7 +59,7 @@ class LectorController extends Controller
             if ($insumo_maquinaria) {
                 $cantidad_anterior = $insumo_maquinaria->pivot->cantidad_actual;
                 $capacidad_insumo = $insumo_maquinaria->pivot->capacidad;
-                $cantidad_nueva = $cantidad_anterior + $insumo['cantidad'];
+                $cantidad_nueva = $insumo['cantidad'];
 
               
                 if ($cantidad_nueva > $capacidad_insumo) {

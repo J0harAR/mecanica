@@ -17,6 +17,7 @@ class InventarioController extends Controller
     function _construct()
     {
         $this->middleware('permission:ver-inventario', ['only' => ['index']]);
+        $this->middleware('permission:crear-articulo', ['only' => ['store']]);
         $this->middleware('permission:borrar-inventario', ['only' => ['destroy']]);
     }
 

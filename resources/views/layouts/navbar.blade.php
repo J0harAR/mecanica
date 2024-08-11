@@ -64,15 +64,18 @@ $total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
 
  
           @foreach ($maquinaria_mantenimiento as $maquina)
+          <a href="{{route('mantenimiento.index')}}" style="text-decoration:none;">
             <li class="notification-item">
+             
               <i class="bi bi-exclamation-circle text-warning"></i>
               <div>
                 <h4>Maquina:{{$maquina->maquinaria_id}}</h4>
                 <p>Se necesita brindarle mantenimiento urgente</p>
                 <p>Insumo:{{$maquina->insumo_id}} nivel bajo</p>
               </div>
+             
           </li>
-
+          </a>
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -80,6 +83,7 @@ $total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
         
 
           @foreach ($prestamos_pendientes as $prestamo)
+          <a href="{{route('prestamos.index')}}" style="text-decoration:none;">
           <li class="notification-item">
             <i class="bi bi-info-circle text-primary"></i>
             <div>
@@ -94,6 +98,7 @@ $total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
           <li>
             <hr class="dropdown-divider">
           </li>
+          </a>
           @endforeach
         
         </ul>

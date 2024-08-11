@@ -24,11 +24,12 @@
             </div>
             <div>
 
-                 <!-- BOTON DE HISTORIAL -->
+                 <!-- BOTON DE catalogo -->
+                @can('crear-articulo')
                  <button type="button" class="btn btn-tecnm" data-bs-toggle="modal" data-bs-target="#modal-catalogo">
                     <i class="fas fa-history me-1"></i>Agregar al catalogo
                 </button>
-
+                @endcan
                  <!-- BOTON DE HISTORIAL -->
                 <button type="button" class="btn btn-tecnm" data-bs-toggle="modal" data-bs-target="#ExtralargeModal">
                     <i class="fas fa-history me-1"></i>
@@ -47,7 +48,7 @@
             </div>
         </div>
 
-
+        @can('crear-articulo')
         <!-- Modal Catalogo -->
         <div class="modal fade" id="modal-catalogo" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -148,7 +149,7 @@
                 </div>
             </div>
         </div>
-
+        @endcan
 
         <!-- Extra Large Modal -->
         <div class="modal fade" id="ExtralargeModal" tabindex="-1">
