@@ -135,9 +135,11 @@
                         <div id="dateError" class="text-danger mt-1" style="display: none;">
                         </div>
                       </div>
-                    <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-primary" style="background-color: #002855; border-color: #002855;">Guardar</button>
-                    </div>
+                      <div class="text-center mt-4">
+    <button type="button" class="btn btn-secondary" onclick="resetForm()">Limpiar</button>
+    <button type="submit" class="btn btn-primary" style="background-color: #002855; border-color: #002855;">Guardar</button>
+</div>
+                    
                 </form>
             </div>
 
@@ -286,7 +288,11 @@
                       <input type="date" class="form-control" name="fecha_devolucion" id="fecha_devolucion" value="{{ $prestamo->pivot->fecha_devolucion }}">
                     </div>
                 </div>
-           
+                <div class="text-center mt-4">
+    <button type="button" class="btn btn-secondary" onclick="resetForm()">Limpiar</button>
+    <button type="submit" class="btn btn-primary" style="background-color: #002855; border-color: #002855;">Guardar</button>
+</div>
+
                 <div class="text-center mt-4">
                   <button type="submit" class="btn btn-primary miBoton" style="background-color: #002855; border-color: #002855;">Guardar</button>
                 </div>
@@ -361,6 +367,19 @@
 </script>
 
 
+<script>
+    function resetForm() {
+        // Obtén el formulario por su clase o ID
+        const form = document.querySelector('.miFormulario');
+        
+        // Restablece todos los campos del formulario
+        form.reset();
+
+        // También puedes ocultar mensajes de error si es necesario
+        document.getElementById('dateError').style.display = 'none';
+        document.getElementById('dateError').innerText = '';
+    }
+</script>
 
 
 <script>
