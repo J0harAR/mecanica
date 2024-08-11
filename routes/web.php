@@ -155,6 +155,8 @@ Route::delete('/docente/{id}', [DocenteController::class, 'destroy'])->name('doc
 Route::post('/desasignar', [DocenteController::class, 'eliminar_asignacion'])->name('docentes.eliminar_asignacion');
 Route::get('/desasignar', [DocenteController::class, 'eliminacion_asignacion'])->name('docentes.eliminacion_asignacion');
 Route::post('/docentes/filtrar_grupos', [DocenteController::class, 'filtrar'])->name('docentes.filtrar_grupos');
+Route::get('/grupos-docente', [DocenteController::class, 'obtenerDatosDocente'])->name('docentes.grupos');
+
 
 
 //Parte de grupos

@@ -120,8 +120,11 @@ class DocenteController extends Controller
 
     public function obtenerDatosDocente(Request $request){
         $docente_id = $request->input('id');
-        $docente = Docente::with(['grupos',])->find($docente_id);
-        return response()->json($docente);
+        $docente = Docente::find($docente_id);
+
+        $grupos=Grupo::where('id_docente',$docente_id)->get();
+       
+        return response()->json($grupos);
 
     }
 
