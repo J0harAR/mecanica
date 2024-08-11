@@ -53,44 +53,50 @@
     @canany(['ver-practicas', 'generar_reporte_practicas'])
 
     <form method="POST" class="border p-4 rounded shadow-sm" id="filterForm">
-        @csrf
-        <div class="row g-3">
-            <div class="col-md-4">
-                <label for="docente" class="form-label">Docente</label>
-                <input type="text" class="form-control" id="docente" name="docente" placeholder="Nombre del docente">
-            </div>
-            <div class="col-md-4">
-                <label for="asignatura" class="form-label">Asignatura</label>
-                <input type="text" class="form-control" id="asignatura" name="asignatura"
-                    placeholder="Nombre de la asignatura">
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Estatus</label>
-                <div class="d-flex">
-                    <div class="form-check me-2">
-                        <input class="form-check-input" type="radio" id="completa" name="estatus" value="1">
-                        <label class="form-check-label" for="completa">Completadas</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="incompleta" name="estatus" value="0">
-                        <label class="form-check-label" for="incompleta">No completadas</label>
-                    </div>
+    @csrf
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label for="docente" class="form-label">Docente</label>
+            <select class="form-select" id="docente" name="docente">
+                <option value="">Seleccione un docente</option>
+                @foreach ($docentes as $docente)
+                    <option value="{{ $docente->rfc }}">{{ $docente->persona->nombre }} {{ $docente->persona->apellido_p }} {{ $docente->persona->apellido_m }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="asignatura" class="form-label">Asignatura</label>
+            <select class="form-select" id="asignatura" name="asignatura">
+                <option value="">Seleccione una asignatura</option>
+                @foreach ($asignaturas as $asignatura)
+                    <option value="{{ $asignatura->clave }}">{{ $asignatura->nombre }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Estatus</label>
+            <div class="d-flex">
+                <div class="form-check me-2">
+                    <input class="form-check-input" type="radio" id="completa" name="estatus" value="1">
+                    <label class="form-check-label" for="completa">Completadas</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="incompleta" name="estatus" value="0">
+                    <label class="form-check-label" for="incompleta">No completadas</label>
                 </div>
             </div>
         </div>
-       
-            
-        <div class="d-flex justify-content-end mt-3">
-            <button type="submit" class="btn btn-primary me-2"
-                onclick="submitForm('{{ route('practicas.filtrar') }}')">Filtrar</button>
-                @can('generar_reporte_practicas')
-            <button type="button" class="btn btn-tecnm" onclick="submitForm('{{ route('reporte.practicas') }}')">
-                <i class="bi bi-download"></i> Descargar
-            </button>
-            @endcan
-        </div>
-        
-    </form>
+    </div>
+    <div class="d-flex justify-content-end mt-3">
+        <button type="submit" class="btn btn-primary me-2" onclick="submitForm('{{ route('practicas.filtrar') }}')">Filtrar</button>
+        @can('generar_reporte_practicas')
+        <button type="button" class="btn btn-tecnm" onclick="submitForm('{{ route('reporte.practicas') }}')">
+            <i class="bi bi-download"></i> Descargar
+        </button>
+        @endcan
+    </div>
+</form>
+
     @endcanany
 
 </div>

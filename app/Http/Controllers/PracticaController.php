@@ -29,12 +29,11 @@ class PracticaController extends Controller
     }
 
 
-    public function index(){
-
-        $practicas=Practica::with(['catalogo_articulos'])->get();
-      
-        
-        return view('practicas.index',compact('practicas'));   
+    public function index() {
+        $practicas = Practica::with(['catalogo_articulos'])->get();
+        $docentes = Docente::with('persona')->get(); // Obtener los docentes con su relación a persona
+        $asignaturas = Asignatura::all(); // Obtener todas las asignaturas
+        return view('practicas.index', compact('practicas', 'docentes', 'asignaturas'));
     }
 
 
@@ -169,61 +168,35 @@ class PracticaController extends Controller
 
     }
 
-    public function filtrar(Request $request){
-        $nombre_docente=$request->input('docente');
-        $nombre_asignatura=$request->input('asignatura');
-        $estatus = $request->input('estatus');
-       
-        $query = Practica::query();
-
-      
-        if (!empty($nombre_docente)) {
-            $persona = Persona::where('nombre', $nombre_docente)->first();
-            if ($persona) {
-                $docente = Docente::where('curp', $persona->curp)->first();
-                if ($docente) {
-                    $query->where('id_docente', $docente->rfc);
-                }
-            }
-            else{
-                $query->where('id_docente', null);
-            }
-          
-           
-        }
-
-         
-        if (!empty($nombre_asignatura)) {
-         
-            $asignatura = Asignatura::where('nombre', $nombre_asignatura)->first();
     
-            if ($asignatura) {
-              $grupos = Grupo::where('clave_asignatura', $asignatura->clave)->pluck('clave_grupo');                   
-                if ($grupos) {
-
-                    foreach ($grupos as $key => $grupo) {
-                        if($grupo!=null){
-                          
-                            //$query->where('clave_grupo', $grupo);
-                        }
-                       
-                    }
-                                    
-                }
-            } else{
+    
+    public function filtrar(Request $request) {
+        $id_docente = $request->input('docente');
+        $clave_asignatura = $request->input('asignatura');
+        $estatus = $request->input('estatus');
+    
+        $query = Practica::query();
+    
+        if (!empty($id_docente)) {
+            $query->where('id_docente', $id_docente);
+        }
+    
+        if (!empty($clave_asignatura)) {
+            $grupos = Grupo::where('clave_asignatura', $clave_asignatura)->pluck('clave_grupo');
+            if ($grupos) {
+                $query->whereIn('clave_grupo', $grupos);
+            } else {
                 $query->where('clave_grupo', null);
             }
         }
-       
+    
         if (isset($estatus)) {
             $query->where('estatus', $estatus);
         }
-        
-        
+    
         $practicas = $query->get();
-      
-    return redirect()->route('practicas.index')->with(['practicas' => $practicas]);
-
+    
+        return redirect()->route('practicas.index')->with(['practicas' => $practicas]);
     }
 
     public function completar_practica($id){

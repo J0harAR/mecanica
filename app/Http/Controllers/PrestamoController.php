@@ -20,49 +20,66 @@ class PrestamoController extends Controller
         $this->middleware('permission:finalizar-prestamo', ['only' => ['finalizar']]);
     }
 
-    public function index(){
+    public function index() {
         $prestamos = Docente::with(['persona', 'herramientas' => function ($query) {
-            $query->withPivot(['id','fecha_prestamo', 'fecha_devolucion', 'estatus']);
+            $query->withPivot(['id', 'fecha_prestamo', 'fecha_devolucion', 'estatus']);
         }])->get();
         
-        $herramientas = Herramientas::with('Articulo_inventariados.Catalogo_articulos')->get();
+        // Filtrar solo las herramientas disponibles
+        $herramientas = Herramientas::whereHas('Articulo_inventariados', function($query) {
+            $query->where('estatus', 'Disponible');
+        })->with('Articulo_inventariados.Catalogo_articulos')->get();
+    
+        $docentes = Docente::with('persona')->get();
+    
+        return view('prestamos.index', compact('prestamos', 'herramientas', 'docentes'));
+    }
+    
+    
+    
 
-        return view('prestamos.index',compact('prestamos','herramientas'));
+    public function store(Request $request)
+{
+    $request->validate([
+        'rfc' => 'required',
+        'herramienta' => 'required',
+        'fecha_prestamo' => 'required|date',
+        'fecha_devolucion' => 'required|date|after_or_equal:fecha_prestamo',
+    ], [
+        'rfc.required' => 'Debe seleccionar un docente.',
+        'herramienta.required' => 'Debe seleccionar una herramienta.',
+        'fecha_prestamo.required' => 'Debe seleccionar una fecha de préstamo.',
+        'fecha_devolucion.required' => 'Debe seleccionar una fecha de devolución.',
+        'fecha_devolucion.after_or_equal' => 'La fecha de devolución debe ser igual o posterior a la fecha de préstamo.',
+    ]);
 
+    $id_docente = $request->input('rfc');
+    $id_herramienta = $request->input('herramienta');
+    $fecha_prestamo = $request->input('fecha_prestamo');
+    $fecha_devolucion = $request->input('fecha_devolucion');
+
+    $docente = Docente::find($id_docente);
+    if (!$docente) {
+        return redirect()->route('prestamos.index')->withErrors(['docente_no_encontrado' => 'El docente no encontrado.'])->withInput();
     }
 
-    public function store(Request $request){
-            $id_docente=$request->input('rfc');
-            $id_herramienta=$request->input('herramienta');
-            $fecha_prestamo=$request->input('fecha_prestamo');
-            $fecha_devolucion=$request->input('fecha_devolucion');
-
-
-            if (empty($id_docente) || empty($id_herramienta) || empty($fecha_prestamo) || empty($fecha_devolucion) ) {
-                return redirect()->route('prestamos.index')->with('error', 'Todos los campos son requeridos.');             
-           }
-
-
-            $docente=Docente::find($id_docente);
-            if($docente==null){
-                return redirect()->route('prestamos.index')->with('docente_no_encontrado', 'El docente no encontrado');
-            }
-        
-            $herramienta=Herramientas::find($id_herramienta);
-
-            if($herramienta->Articulo_inventariados->estatus != "Disponible"){
-                return redirect()->route('prestamos.index')->with('herramienta_no_disponible', 'La herramienta '.$herramienta->id_herramientas.' / '.$herramienta->Articulo_inventariados->Catalogo_articulos->nombre.' no se encuentra disponible');        
-
-            }
-            $herramienta=Articulo_inventariado::find($id_herramienta);
-          
-            $herramienta->estatus="No disponible";
-            $herramienta->save();
-            $docente->herramientas()->attach($id_herramienta,['fecha_prestamo'=>$fecha_prestamo,'fecha_devolucion'=>$fecha_devolucion,'estatus'=>"Pendiente"]);
-           
-            return redirect()->route('prestamos.index')->with('success', 'Prestamo registrado correctamente');
-
+    $herramienta = Herramientas::find($id_herramienta);
+    if ($herramienta->Articulo_inventariados->estatus != "Disponible") {
+        return redirect()->route('prestamos.index')->withErrors(['herramienta_no_disponible' => 'La herramienta no está disponible.'])->withInput();
     }
+
+    $herramienta->Articulo_inventariados->estatus = "No disponible";
+    $herramienta->Articulo_inventariados->save();
+
+    $docente->herramientas()->attach($id_herramienta, [
+        'fecha_prestamo' => $fecha_prestamo,
+        'fecha_devolucion' => $fecha_devolucion,
+        'estatus' => "Pendiente"
+    ]);
+
+    return redirect()->route('prestamos.index')->with('success', 'Préstamo registrado correctamente.');
+}
+
 
 
 
