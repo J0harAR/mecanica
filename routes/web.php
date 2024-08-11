@@ -19,6 +19,7 @@ use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\PrestamoController;
 use App\Http\Controllers\PeriodoController;
 use App\Http\Controllers\ReportesController;
+use App\Http\Controllers\LectorController;
 
 
 
@@ -165,12 +166,6 @@ Route::delete('/grupos/{id}', [GrupoController::class, 'destroy'])->name('grupos
 
 
 
-
-
-
-
-
-
 //Parte de prestamo
 Route::get('/prestamos', [PrestamoController::class, 'index'])->name('prestamos.index');
 Route::post('/prestamos', [PrestamoController::class, 'store'])->name('prestamos.store');
@@ -197,3 +192,10 @@ Route::post('/reporte/practicas', [ReportesController::class, 'generar_reporte_p
 Route::post('/reporte/inventario/herramientas', [ReportesController::class, 'generar_reporte_herramientas'])->name('reporte.herramientas');
 Route::post('/reporte/inventario/maquinarias', [ReportesController::class, 'generar_reporte_maquinaria'])->name('reporte.maquinarias');
 Route::post('/reporte/inventario/insumos', [ReportesController::class, 'generar_reporte_insumos'])->name('reporte.insumos');
+
+
+
+//Proceso del lector de insumos de la maquinaria
+
+Route::get('/lectura', [LectorController::class, 'index'])->name('lector.index');
+Route::post('/lectura', [LectorController::class, 'store'])->name('lector.store');

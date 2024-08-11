@@ -22,7 +22,6 @@ class Insumos extends Model
     {
         return $this->belongsToMany(Mantenimiento::class, 'insumos_mantenimiento', 'insumo_id', 'mantenimiento_id');
     }
-    
     //Relacion N a N
     public function maquinarias()
     {

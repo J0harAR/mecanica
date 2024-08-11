@@ -15,7 +15,7 @@ class MantenimientoController extends Controller
   function _construct()
     {
         $this->middleware('permission:ver-mantenimientos', ['only' => ['index']]);
-        $this->middleware('permission:crear-mantenimiento', ['only' => ['store']]);
+        $this->middleware('permission:crear-mantenimiento', ['only' => ['store','obtenerDatosMaquinaria','getInsumosPorMaquinaria']]);
         $this->middleware('permission:borrar-mantenimiento', ['only' => ['destroy']]);
     }
 

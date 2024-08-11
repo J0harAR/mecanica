@@ -111,6 +111,11 @@ class SeederTablaPermisos extends Seeder
             'generar_reporte_maquinaria',
             'generar_reporte_insumos',
             'generar_reporte_practicas',
+
+            //Lecturas
+            'ver-lecturas',
+            'crear-lectura',
+
         ];
         foreach($permisos as $permiso){
             Permission::create(['name'=>$permiso]);

@@ -361,7 +361,7 @@
                     // Agregar el HTML al contenedor
                     container.append(DatosHtml);
 
-                    console.log(datos);
+                  
                 }
             });
 

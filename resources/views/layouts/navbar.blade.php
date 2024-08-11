@@ -335,6 +335,20 @@ $total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
         </a>
       </li><!-- End Role Page Nav -->
       @endcan
+
+      @can('ver-lecturas')
+      <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('lector.*') ? 'active' : 'collapsed' }}"
+          href="{{ route('lector.index') }}">
+          <i class="bi bi-file-earmark-bar-graph"></i>
+          <span>Lecturas</span>
+        </a>
+      </li><!-- End Role Page Nav -->
+      @endcan
+
+
+
+
       <script>
         document.addEventListener('DOMContentLoaded', function () {
           const searchInput = document.getElementById('searchInput');
