@@ -364,7 +364,7 @@
                                 <div class="col-md-3">
                                     <span>{{ $insumo->nombre }}</span>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <label for="capacidad-{{ $insumo->id_articulo }}" class="form-label">Capacidad</label>
                                     <div class="input-group">
                                         <input type="number" id="capacidad-{{ $insumo->id_articulo }}" name="insumos[{{ $insumo->id_articulo }}]" class="form-control" value="{{ $insumo->pivot->capacidad }}">
@@ -373,7 +373,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <label for="cantidad-actual-{{ $insumo->id_articulo }}" class="form-label">Cantidad Actual</label>
                                     <div class="input-group">
                                         <input type="number" id="cantidad-actual-{{ $insumo->id_articulo }}" name="insumos-cantidad-actual[{{ $insumo->id_articulo }}]" class="form-control" value="{{ $insumo->pivot->cantidad_actual }}" disabled>
@@ -382,7 +382,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <label for="cantidad-minima-{{ $insumo->id_articulo }}" class="form-label">Cantidad Mínima</label>
                                     <div class="input-group">
                                         <input type="number" id="cantidad-minima-{{ $insumo->id_articulo }}" name="insumos-cantidad-minima[{{ $insumo->id_articulo }}]" class="form-control" value="{{ $insumo->pivot->cantidad_minima }}">
@@ -391,7 +391,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-1 text-center">
+                                <div class="col-md-3 text-left mt-4">
                                     <button type="button" class="btn btn-danger btn-sm remove-insumo" data-id="{{ $insumo->id_articulo }}">
                                         <i class="bi bi-x"></i>
                                     </button>
