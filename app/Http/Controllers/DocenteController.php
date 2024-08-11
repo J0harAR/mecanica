@@ -118,6 +118,13 @@ class DocenteController extends Controller
        
     }
 
+    public function obtenerDatosDocente(Request $request){
+        $docente_id = $request->input('id');
+        $docente = Docente::with(['grupos',])->find($docente_id);
+        return response()->json($docente);
+
+    }
+
     public function show($id){
         $docente=Docente::find($id);
 
