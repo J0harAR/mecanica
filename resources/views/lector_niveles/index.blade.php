@@ -116,7 +116,7 @@
 
     <div class="col-md-6">
       <div  id="clearButtonContainer" style="display: block;" class="text-end">
-        <button id="clearChart" class="btn btn-secondary mt-3" type="button"><i class="bi bi-trash"></i></button> 
+        <button id="clearChart" class="btn btn-danger mt-3" type="button"><i class="bi bi-trash"></i></button> 
       </div>
       
       <div id="columnChart"></div>
@@ -408,7 +408,7 @@
             }
 
             const index = categories.indexOf(month);
-            insumosMap[key].data[index] = insumo.pivot.cantidad_nueva;
+            insumosMap[key].data[index] += insumo.pivot.cantidad_nueva;
           });
         });
 
