@@ -7,7 +7,7 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
       <h1 class="fw-bold mb-0 text-primary">
-        <i class="fas fa-tools "></i> Lectura de insumos por maquina
+      <i class="bi bi-file-earmark-bar-graph"></i> Lectura de insumos por maquina
       </h1>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-light shadow-sm p-3 mb-4 rounded">
@@ -17,7 +17,7 @@
             </a>
           </li>
           <li class="breadcrumb-item active" aria-current="page">
-            <i class="fas fa-tools "></i> lectura
+            <i class="bi bi-file-earmark-bar-graph"></i> lectura
           </li>
         </ol>
       </nav>

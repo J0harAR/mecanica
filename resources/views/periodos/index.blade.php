@@ -72,7 +72,7 @@
             @csrf
             <div class="col-md-12 mb-3">
               <label for="rfc" class="form-label"><i class="bi bi-calendar me-2"></i>Clave del periodo</label>
-              <input type="text" class="form-control" name="periodo" id="periodo" required>
+              <input type="text" class="form-control" name="periodo" id="periodo" pattern="^\d{4}-\d{1}$"  required>
             </div>
             
             <div class="col-md-6 mb-3">

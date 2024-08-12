@@ -54,12 +54,18 @@
                 </div>
                 <div class="col-md-6">
                         <label for="docente" class="form-label"><i class="fas fa-chalkboard-teacher me-2"></i>Grupo</label>
-                        <select id="docente" class="form-select" required name="grupo">
+                        <select id="grupo" class="form-select" required name="grupo" >
                             <option selected disabled>Selecciona el grupo</option>
                             @foreach ($grupos as $grupo)
+                                @if ($practica->grupo === null)
+                                    <option value="{{$grupo->clave_grupo}}">{{$grupo->clave_grupo}}</option>
+                                @else
                                 <option value="{{ $grupo->clave_grupo }}" {{ $practica->grupo->clave_grupo === $grupo->clave_grupo ? 'selected' : '' }}>
                                     {{$grupo->clave_grupo}}
                                 </option>
+
+                                @endif
+                                                        
                             @endforeach
                         </select>
                         <div class="invalid-feedback">
@@ -143,6 +149,56 @@
         });
     });
 </script>
+
+
+
+
+<script>
+$(document).ready(function () {
+    $('#docente').on('change', function () {
+        let docenteId = $(this).val();
+       
+        if (docenteId) {
+            $.ajax({
+                url: '{{ route("docentes.grupos") }}', 
+                type: 'GET',
+                data: { id: docenteId },
+                success: function (data) {
+                 
+
+                    let grupoSelect = $('#grupo');
+
+                  
+                    grupoSelect.empty();
+
+                
+                    grupoSelect.append('<option selected disabled>Selecciona el grupo</option>');
+
+                  
+                    let selectedGrupo = "{{ $practica->grupo ? $practica->grupo->clave_grupo : '' }}";
+
+                
+                    data.forEach(function(grupo) {
+                        let isSelected = selectedGrupo === grupo.clave_grupo ? 'selected' : '';
+                        grupoSelect.append(`<option value="${grupo.clave_grupo}" ${isSelected}>${grupo.clave_grupo}</option>`);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al obtener los grupos:', error);
+                }
+            });
+        }
+    });
+});
+</script>
+
+
+
+
+
+
+
+
 @endsection
 
 <style>

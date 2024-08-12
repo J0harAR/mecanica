@@ -157,7 +157,7 @@
                 type: 'GET',
                 data: { id: docenteId },
                 success: function (data) {
-                    console.log(data)
+                   
 
                     let grupoSelect = $('#grupo');
                     grupoSelect.empty(); // Limpiar el select de grupos

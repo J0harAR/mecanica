@@ -118,8 +118,7 @@ class PracticaController extends Controller
         $referencias = $request->input('referencias');
         
         
-        $practica = Practica::find($id);
-        
+    
         $asigacion_correcta=DB::table('grupo')                   
         ->where('clave_grupo',$clave_grupo)
         ->where('id_docente',$id_docente)
@@ -129,7 +128,7 @@ class PracticaController extends Controller
             return redirect()->route('practicas.index')->with('error', 'El grupo y el docente no coinciden');
         }
 
-        if($id_practica === $practica->id_practica ){
+        $practica = Practica::firstOrNew(['id_practica' => $id_practica]);  
             $practica->id_practica = $id_practica;
             $practica->id_docente = $id_docente;
             $practica->clave_grupo=$clave_grupo;
@@ -138,25 +137,9 @@ class PracticaController extends Controller
             $practica->introduccion = $introduccion;
             $practica->fundamento = $fundamento;
             $practica->referencias = $referencias;
-            $practica->estatus = 0;
             $practica->catalogo_articulos()->sync($request->input('articulos', []));
             $practica->save();
-        }else{
-            $practica->id_practica = $id_practica;
-            $practica->id_docente = $id_docente;
-            $practica->clave_grupo=$clave_grupo;
-            $practica->nombre = $nombre;
-            $practica->objetivo = $objetivo;
-            $practica->introduccion = $introduccion;
-            $practica->fundamento = $fundamento;
-            $practica->referencias = $referencias;
-            $practica->estatus = 0;
-            $practica->save();
 
-            $practica->catalogo_articulos()->sync($request->input('articulos', []));
-        }
-
-    
         return redirect()->route('practicas.index')->with('success', 'La práctica ha sido actualizada exitosamente.');   
     }
 
