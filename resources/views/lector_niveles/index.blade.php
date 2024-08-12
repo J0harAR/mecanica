@@ -29,7 +29,7 @@
         <i class="ri-add-line"></i> Añadir
       </button>
       @endcan
-      
+
       @can('ver-insumos')
       <a href="{{ route('insumos.index') }}" class="btn btn-outline-primary">
         <i class="bi bi-droplet"></i> Insumos
@@ -72,8 +72,64 @@
   </script>
 @endif
 
+<h3 class="form-label mb-5">Consulta de consumo de insumos</h3> 
+
+  <div class="row">
+
+      <div class="col-md-6">
+        <form id="filterForm">
+          <div class="row">
+            <!-- Maquinaria Selector -->
+            <div class="col-md-4">
+              <label for="maquinaria" class="form-label">Maquinaria</label>
+              <select id="maquinaria" name="maquinaria_id" class="form-select" required>
+                <option value="" selected disabled>Seleccione una maquinaria</option>
+                <!-- Options should be dynamically generated from the server -->
+                @foreach($maquinarias as $maquinaria)
+                  <option value="{{ $maquinaria->id_maquinaria }}">{{ $maquinaria->Articulo_inventariados->Catalogo_articulos->nombre }}</option>
+                @endforeach
+              </select>
+            </div>
+
+            <!-- Date Range Selector -->
+            <div class="col-md-4">
+              <label for="fecha_inicio" class="form-label">Fecha de Inicio</label>
+              <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" required>
+            </div>
+
+            <div class="col-md-4">
+              <label for="fecha_fin" class="form-label">Fecha de Fin</label>
+              <input type="date" id="fecha_fin" name="fecha_fin" class="form-control" required>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="row mt-3">
+            <div class="col-md-12 text-right mb-3">
+              <button type="submit" class="btn btn-primary">Generar Gráfica</button>
+            </div>
+          </div>
+          
+        </form>
+      </div>
 
 
+    <div class="col-md-6">
+      <div  id="clearButtonContainer" style="display: block;" class="text-end">
+        <button id="clearChart" class="btn btn-secondary mt-3" type="button"><i class="bi bi-trash"></i></button> 
+      </div>
+      
+      <div id="columnChart"></div>
+
+    </div>
+
+
+
+  </div>
+ 
+
+
+  <h3 class="form-label mt-5">Listado de lecturas</h3> 
 
         <div class="card shadow-lg rounded-3 border-0">
             <div class="card-body p-4">
@@ -158,7 +214,6 @@
             </div>
         </div>
 
-
   @can('crear-lectura')
 <!-- Vertically centered Modal -->
 <div class="modal fade" id="modal" tabindex="-1">
@@ -213,8 +268,6 @@
   </div>
   <!-- End Vertically centered Modal -->
   @endcan
-
-
 
 
 
@@ -299,6 +352,135 @@
             boton.disabled = true; 
         });
     });
+</script>
+
+<script>
+ document.addEventListener("DOMContentLoaded", function() {
+  const form = document.getElementById('filterForm');
+  const clearButton = document.getElementById('clearChart');
+  let chart; // Declare the chart variable globally
+  document.getElementById('clearButtonContainer').style.display = 'none';
+  
+  form.addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const formData = new FormData(form);
+
+    // Destroy the previous chart if it exists
+    if (chart) {
+      chart.destroy();
+      document.querySelector("#columnChart").innerHTML = ''; // Clear the chart container
+    }
+
+    // AJAX request to the server
+    $.ajax({
+      url: '{{ route("comportamiento.insumos") }}', // Update with your actual route
+      method: 'GET',
+      data: {
+        maquinaria_id: formData.get('maquinaria_id'),
+        fecha_inicio: formData.get('fecha_inicio'),
+        fecha_fin: formData.get('fecha_fin')
+      },
+      success: function(data) {
+        // Prepare categories and series data
+        let categories = [];
+        let seriesData = [];
+        let insumosMap = {}; // Map to accumulate quantities by month and insumo name
+
+        function getMonthYear(dateStr) {
+          const date = new Date(dateStr);
+          const year = date.getFullYear();
+          const month = date.getMonth() + 1; // Months are zero-based
+          return `${year}-${month.toString().padStart(2, '0')}`;
+        }
+
+        data.forEach(entry => {
+          let month = getMonthYear(entry.fecha); // Convert to YYYY-MM format
+
+          if (!categories.includes(month)) {
+            categories.push(month); // Add month to categories if not already present
+          }
+
+          entry.insumos.forEach(insumo => {
+            let key = `${month}-${insumo.nombre}`;
+            if (!insumosMap[key]) {
+              insumosMap[key] = { name: insumo.nombre, data: Array(categories.length).fill(0) };
+            }
+
+            const index = categories.indexOf(month);
+            insumosMap[key].data[index] = insumo.pivot.cantidad_nueva;
+          });
+        });
+
+        // Convert insumosMap to seriesData
+        seriesData = Object.values(insumosMap);
+
+        // Show the clear button
+        document.getElementById('clearButtonContainer').style.display = 'block';
+
+        // Update the chart with the new data
+        chart = new ApexCharts(document.querySelector("#columnChart"), {
+          series: seriesData,
+          chart: {
+            type: 'bar',
+            height: 350
+          },
+          plotOptions: {
+            bar: {
+              horizontal: false,
+              columnWidth: '55%',
+              endingShape: 'rounded'
+            },
+          },
+          dataLabels: {
+            enabled: false
+          },
+          stroke: {
+            show: true,
+            width: 2,
+            colors: ['transparent']
+          },
+          xaxis: {
+            categories: categories,
+            title: {
+              text: 'Meses'
+            }
+          },
+          yaxis: {
+            title: {
+              text: 'Cantidad de Insumos'
+            }
+          },
+          fill: {
+            opacity: 1
+          },
+          tooltip: {
+            y: {
+              formatter: function(val) {
+                return val + " Mililitros";
+              }
+            }
+          }
+        });
+
+        chart.render();
+      },
+      error: function(xhr, status, error) {
+        console.error('Error fetching data:', error);
+      }
+    });
+  });
+
+  clearButton.addEventListener('click', function() {
+    if (chart) {
+      chart.destroy(); // Destroy the chart
+    }
+    document.querySelector("#columnChart").innerHTML = ''; // Clear the chart container
+
+    // Hide the clear button container
+    document.getElementById('clearButtonContainer').style.display = 'none';
+  });
+});
 </script>
 
 @endcan

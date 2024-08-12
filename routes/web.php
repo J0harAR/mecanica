@@ -201,3 +201,4 @@ Route::post('/reporte/inventario/insumos', [ReportesController::class, 'generar_
 
 Route::get('/lectura', [LectorController::class, 'index'])->name('lector.index');
 Route::post('/lectura', [LectorController::class, 'store'])->name('lector.store');
+Route::get('/lectura-comportamiento', [LectorController::class, 'obtenerComportamientoInsumos'])->name('comportamiento.insumos');

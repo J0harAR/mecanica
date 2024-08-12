@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Maquinaria;
 use Spatie\Permission\Models\Role;
 class HomeController extends Controller
 {
@@ -26,6 +27,7 @@ class HomeController extends Controller
     {
         $cant_usuarios=User::count(); 
         $cant_roles=Role::count();
-        return view('home',compact('cant_usuarios','cant_roles'));
+        $maquinarias=Maquinaria::all();
+        return view('home',compact('cant_usuarios','cant_roles','maquinarias'));
     }
 }

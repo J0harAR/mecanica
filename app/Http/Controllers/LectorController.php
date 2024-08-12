@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Maquinaria;
 use App\Models\Catalogo_articulo;
 use App\Models\Lectura;
+use Carbon\Carbon;
 class LectorController extends Controller
 {
 
@@ -102,6 +103,24 @@ class LectorController extends Controller
             
         return redirect()->route('lector.index')->with('success', 'Lectura registrada correctamente');
 
+    }
+
+    public function obtenerComportamientoInsumos(Request $request){
+
+        $maquinariaId = $request->input('maquinaria_id');
+        $fechaInicio = $request->input('fecha_inicio');
+        $fechaFin = $request->input('fecha_fin');
+    
+        $data = Lectura::where('id_maquinaria', $maquinariaId)
+        ->whereBetween('fecha', [Carbon::parse($fechaInicio), Carbon::parse($fechaFin)])
+        ->with('insumos') // Incluye la relación insumos
+        ->get();
+    
+        return response()->json($data);
+
+
+
+        
     }
 
 }
