@@ -53,8 +53,9 @@
         <div class="modal fade" id="modal-catalogo" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Catalogo</h5>
+                     <div class="modal-header" style="background-color: #002855; color: #ffffff;">
+                        <h5 class="modal-title">
+                        Catálogo de articulos</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -64,7 +65,7 @@
                        
                         <div class="col-md-6" >
                             <label for="tipo" class="form-label">Tipo de Producto:</label>
-                                <select name="tipo" id="tipo" required class="form-control">
+                                <select name="tipo" id="tipo"  class="form-control" required>
                                     <option value="default">Seleccione un tipo</option>
                                     <option value="Herramientas">Herramientas</option>
                                     <option value="Maquinaria">Maquinaria</option>
@@ -75,13 +76,13 @@
 
                         <div id="nombre" class="col-md-6 mb-3">
                             <label for="tipoHerramienta" class="form-label">Nombre:</label>
-                            <input type="text" id="nombre" name="nombre" class="form-control">
+                            <input type="text" id="nombre" name="nombre" class="form-control" required>
                         </div>
 
                         <!-- Sección de Herramientas -->
                         <div id="tipo_herramienta" style="display: none;" class="col-md-6">
                             <label for="tipoHerramienta" class="form-label">Tipo de Herramienta:</label>
-                            <select id="tipo_herramienta" class="form-select" name="tipo_herramienta" >
+                            <select id="tipo_herramienta" class="form-select" name="tipo_herramienta">
                                 <option selected disabled>Selecciona un tipo</option>
                                 <option value="Herramienta de corte">Herramienta de corte</option>
                                 <option value="Herramienta de golpe">Herramienta de golpe</option>
@@ -102,14 +103,14 @@
                             <label for="dimension_herramienta" class="form-label"><i
                                     class="bi bi-rulers me-2"></i>Dimensión</label>
                             <input type="number" class="form-control" id="dimension_herramienta"
-                                name="dimension_herramienta"required>
+                                name="dimension_herramienta">
                         </div>
 
                         <!-- Sección de Maquinaria -->
                         <div class="col-md-6 mb-3" id="tipoMaquina" style="display: none;">
                             <label for="tipo_maquina" class="form-label"><i class="bi bi-robot me-2"></i>Tipo de
                                 máquina</label>
-                            <input type="text" class="form-control" id="tipo_maquina" name="tipo_maquina" required>
+                            <input type="text" class="form-control" id="tipo_maquina" name="tipo_maquina">
                         </div>
 
                         <div class="col-md-6 mb-3" id="seccion" style="display: none;">
@@ -133,7 +134,7 @@
                         <div class="col-md-12 mb-3" id="tipoInsumo" style="display: none;">
                             <label for="tipo_insumo" class="form-label"><i class="bi bi-fuel-pump me-2"></i>Tipo de
                                 insumo</label>
-                            <input type="text" class="form-control" id="tipo_insumo" name="tipo_insumo"required>
+                            <input type="text" class="form-control" id="tipo_insumo" name="tipo_insumo">
                         </div>
 
                         <!-- Botón de Envío -->
@@ -407,16 +408,21 @@
                     switch (this.value) {
                         case 'Herramientas':
                             showElement(tipo_herramienta);
-                            showElement(dimension_herramienta);                      
+                            showElement(dimension_herramienta); 
+                            setRequired([tipo_herramienta,dimension_herramienta]);                     
+                                      
                             hideElements([tipo_maquina, tipo_insumo, seccion]);
                             break;
                         case 'Maquinaria':
                             showElement(tipo_maquina);
-                            showElement(seccion);                       
+                            showElement(seccion);                 
+                            setRequired([seccion,tipo_maquina]);                        
                             hideElements([tipo_herramienta, tipo_insumo, dimension_herramienta]);
                             break;
                         case 'Insumos':
                             showElement(tipo_insumo);                          
+                            setRequired([tipo_insumo]);   
+
                             hideElements([tipo_herramienta, tipo_maquina, dimension_herramienta, seccion]);
                             break;
                         case 'default':
@@ -427,6 +433,7 @@
                             tipo_herramienta]);
                             break;
                         default:
+                        setRequired(tipoSelect);           
                             break;
                     }
                 });
@@ -447,13 +454,13 @@
                     });
                 }
 
-                //function setRequired(elements, required) {
-                 //   elements.forEach(element => {
-                  //      if (element.querySelector('input, select')) {
-                       //     element.querySelector('input, select').required = required;
-                      //  }
-                  //  });
-                //}
+                function setRequired(elements, required) {
+                    elements.forEach(element => {
+                        if (element.querySelector('input, select')) {
+                            element.querySelector('input, select').required = required;
+                       }
+                    });
+                }
             });
 
         </script>

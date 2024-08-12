@@ -39,9 +39,16 @@ class InventarioController extends Controller
         $tipo=$request->input('tipo');
         $nombre = strtolower($request->input('nombre'));
         $dimension_herramienta=$request->input('dimension_herramienta');
+   
         switch ($tipo) {
             case 'Herramientas':
                 $tipo_herramienta=$request->input('tipo_herramienta');
+         
+             
+                if(!$tipo_herramienta){
+                    return redirect()->route('inventario.index')->with('error', 'Seleccione el tipo de herramienta que desea registrar ');
+                }
+
                 $codigo=$this->generateCodigoHerramientas($nombre,$tipo_herramienta,$dimension_herramienta);
 
                 $catalogo_articulo = Catalogo_articulo::firstOrNew([
@@ -60,6 +67,15 @@ class InventarioController extends Controller
             case 'Maquinaria':
                 $seccion=$request->input('seccion');
                 $tipo_maquina=strtolower($request->input('tipo_maquina'));
+                
+                if(!$seccion){
+                    return redirect()->route('inventario.index')->with('error', 'Seleccione la seccion de la maquinaria que desea registrar ');
+                }
+
+                if(!$tipo_maquina){
+                    return redirect()->route('inventario.index')->with('error', 'Ingrese el tipo de maquina');
+                }
+
                 $codigo=$this->generateCodigoMaquinaria($nombre,$seccion);
                 
 
@@ -77,9 +93,13 @@ class InventarioController extends Controller
                 break;
             case 'Insumos':
                 $tipo_insumo=strtolower($request->input('tipo_insumo'));
-                $codigo=$this->generateCodigoInsumos($nombre);
-                
+              
+    
+                if(!$tipo_insumo){
+                    return redirect()->route('inventario.index')->with('error', 'Ingrese el tipo de insumo ');
+                }
 
+                $codigo=$this->generateCodigoInsumos($nombre);
 
                 $catalogo_articulo = Catalogo_articulo::firstOrNew([
                     'id_articulo' => $codigo,
@@ -93,6 +113,10 @@ class InventarioController extends Controller
                 $catalogo_articulo->tipo=$tipo_insumo;
                 $catalogo_articulo->save();
                 break;
+
+             default:
+                 return redirect()->route('inventario.index')->with('error', 'Seleccione el tipo de articulo  que desea registrar ');
+                    break;
 
 
         }
