@@ -153,7 +153,10 @@
                                 <div class="col-md-12 mb-3">
                                     <label for="no_control" class="form-label"><i class="bi bi-card-text me-2"></i>Número de
                                         Control</label>
-                                    <input type="text" class="form-control" id="no_control" name="no_control" required>
+                                    <input type="text" class="form-control" id="no_control" name="no_control" required pattern="^\d{8}$">
+                                    <div class="invalid-feedback">
+                                        Ingrese un numero de control valido.
+                                    </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="nombre" class="form-label"><i class="bi bi-person me-2"></i>Nombre</label>
@@ -171,7 +174,10 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="curp" class="form-label"><i class="bi bi-card-list me-2"></i>CURP</label>
-                                    <input type="text" class="form-control" id="curp" name="curp" required>
+                                    <input type="text" class="form-control" id="curp" name="curp" required pattern="^[A-Z]{4}[0-9]{6}[HM][A-Z]{5}[A-Z0-9]{2}$">
+                                    <div class="invalid-feedback">
+                                        Ingrese una CURP válida.
+                                    </div>
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <label for="grupos" class="form-label"><i class="bi bi-people me-2"></i>Grupo</label>
