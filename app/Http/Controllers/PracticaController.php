@@ -284,8 +284,22 @@ class PracticaController extends Controller
         
         $practica->save();
 
-        return redirect()->route('practicas.index');
+        return redirect()->route('practicas.alumnos.index')->with('success', 'Practica del alumno registrada correctamente');
        
     }
+
+
+    public function practicasAlumnos(Request $request){
+        $practicas=Practica::all();
+        return view('practicas.practicas_alumnos',compact('practicas'));
+    }
+
+    public function obtener_alumnos_practica(Request $request){
+        $practica = Practica::with('alumnos.persona')->find($request->input('id'));
+
+        $alumnos=$practica->alumnos;
+        return response()->json($alumnos);
+    }
+
 
 }

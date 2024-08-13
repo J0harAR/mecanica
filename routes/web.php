@@ -113,6 +113,9 @@ Route::post('/practicas/filtrar', [PracticaController::class, 'filtrar'])->name(
 Route::post('/practicas/completar/{id}', [PracticaController::class, 'completar_practica'])->name('practicas.completar');
 
 
+Route::get('/practicas-alumnos', [PracticaController::class, 'practicasAlumnos'])->name('practicas.alumnos.index');
+Route::get('/alumnos-practica', [PracticaController::class, 'obtener_alumnos_practica'])->name('practicas.alumno.obtener');
+
 //Parte de realizar practica de alumnos
 Route::get('/alumnos/practicas/', [PracticaController::class, 'create_practica_alumno'])->name('practicasAlumno.create');
 Route::post('/alumnos/practicas/', [PracticaController::class, 'store_practica_Alumno'])->name('practicasAlumno.store');

@@ -245,7 +245,7 @@
         </script>
 
 
-        <form action="{{route('alumnos.filtrar-grupos')}}" method="POST" class="border p-4 rounded shadow-sm">
+        <form action="{{route('alumnos.filtrar-grupos')}}" method="POST" class="border p-4 rounded shadow-sm mb-5">
             @csrf
             <div class="row g-3">
                 <div class="col-md-6">

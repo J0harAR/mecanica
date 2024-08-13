@@ -321,8 +321,8 @@ $total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
 
           @can('crear-practica-alumno')                         
           <li>
-            <a href="{{route('practicasAlumno.create')}}">
-              <span>Registrar práctica del alumno</span>
+            <a href="{{route('practicas.alumnos.index')}}">
+              <span>Ver alumnos de las practicas</span>
             </a>
           </li>
           @endcan
