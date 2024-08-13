@@ -18,7 +18,7 @@ class PracticaController extends Controller
     
     function _construct()
     {
-        $this->middleware('permission:ver-practicas', ['only' => ['index','filtrar']]);
+        $this->middleware('permission:ver-practicas', ['only' => ['index','filtrar','practicasAlumnos']]);
         $this->middleware('permission:crear-practica', ['only' => ['create','store']]);
         $this->middleware('permission:ver-practica', ['only' => ['show']]);
         $this->middleware('permission:editar-practica', ['only' => ['edit','update']]);
