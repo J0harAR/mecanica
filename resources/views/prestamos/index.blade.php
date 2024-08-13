@@ -193,11 +193,13 @@
       </button>
     @endcan
     @endif
+    <!--  
       @can('borrar-prestamo')
       <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
       data-bs-target="#modal-delete{{ $prestamo->pivot->id }}">
       <i class="fas fa-trash"></i>
       </button>
+      -->
     @endcan
 
       @if ($prestamo->pivot->estatus == "Pendiente")

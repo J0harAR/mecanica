@@ -142,7 +142,7 @@
               <th>Máquina</th>
               <th>Insumos Utilizados</th>
               <th data-type="date" data-format="YYYY/DD/MM">Fecha</th>
-              <th>Borrar</th>
+            
             </tr>
           </thead>
 
@@ -165,6 +165,7 @@
 
         </td>
         <td>{{$mantenimiento->fecha}}</td>
+        <!--  
         <td class="text-center">
           @can('borrar-mantenimiento')             
           <button type="button" class="btn btn-outline-danger btn-sm btn-sm  "
@@ -172,6 +173,7 @@
             class="fas fa-trash"></i></button>
            @endcan
         </td>
+        -->
         </tr>
 
         <!-- Modal -->
