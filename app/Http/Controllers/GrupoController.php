@@ -61,10 +61,16 @@ class GrupoController extends Controller
 
         $asignatura=Asignatura::find($request->input('asignatura'));
         
+        if($request->input('asignatura')=== null){
+            return redirect()->route('grupos.index')->with('error','Seleccione al menos una asignatura');
+        }
+
+
         if($asignatura){
             $grupo->clave_asignatura=$request->input('asignatura');
             $grupo->save();
         }
+        
 
         return redirect()->route('grupos.index')->with('success','Grupo actualizado correctamente');
     }
