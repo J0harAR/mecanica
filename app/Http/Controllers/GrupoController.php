@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use  App\Models\Grupo;
 use  App\Models\Asignatura;
 use  App\Models\Periodo;
+use Carbon\Carbon;  
 class GrupoController extends Controller
 {
 
@@ -24,7 +25,14 @@ class GrupoController extends Controller
 
     public function create(){
         $asignaturas=Asignatura::all();
-        $periodos=Periodo::all();
+        $currentYear = Carbon::now()->year;
+        
+        $currentMonth = Carbon::now()->month;
+            
+        $periodos = Periodo::whereYear('created_at',$currentYear)
+            ->whereMonth('fecha_inicio', '>=',  $currentMonth)
+            ->get();
+        
         return view('grupos.create',compact('asignaturas','periodos'));
 
     }

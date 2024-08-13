@@ -291,7 +291,15 @@ class DocenteController extends Controller
     public function eliminacion_asignacion(){
         $docentes=Docente::all();
         $asignaturas=Asignatura::all();
-        $periodos=Periodo::all();
+       
+
+        $currentYear = Carbon::now()->year;
+        
+        $currentMonth = Carbon::now()->month;
+            
+        $periodos = Periodo::whereYear('created_at',$currentYear)
+            ->whereMonth('fecha_inicio', '>=',  $currentMonth)
+            ->get();
         return view('docentes.desasignar',compact('docentes','asignaturas','periodos'));
     }
 
