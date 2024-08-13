@@ -21,7 +21,7 @@
                 </ol>
             </nav>
         </div>
-        @can('crear-practica-alumno)
+        @can('crear-practica-alumno')
         <a href="{{ route('practicasAlumno.create') }}" class="btn btn-tecnm">
             <i class="fas fa-plus-circle me-1"></i>Registrar practica del alumno
         </a>
