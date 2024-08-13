@@ -315,10 +315,7 @@
       style="background-color: #002855; border-color: #002855;">Guardar</button>
       </div>
 
-      <div class="text-center mt-4">
-      <button type="submit" class="btn btn-primary miBoton"
-      style="background-color: #002855; border-color: #002855;">Guardar</button>
-      </div>
+      
       </form>
       </div>
       </div>
