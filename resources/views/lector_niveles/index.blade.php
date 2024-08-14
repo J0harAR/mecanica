@@ -4,9 +4,10 @@
 @can('ver-lecturas')
   
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h1 class="fw-bold mb-0 text-primary">
+<div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="fw-bold mb-0 text-primary">
       <i class="bi bi-file-earmark-bar-graph"></i> Lectura de insumos por maquina
       </h1>
       <nav aria-label="breadcrumb">
@@ -72,7 +73,7 @@
   </script>
 @endif
 
-<h3 class="form-label mb-5">Consulta de consumo de insumos</h3> 
+<h3 class="fw-bold text-secondary mb-4">Consulta de Consumo de Insumos</h3>
 
   <div class="row">
 
@@ -129,7 +130,7 @@
  
 
 
-  <h3 class="form-label mt-5">Listado de lecturas</h3> 
+  <h3 class="fw-bold text-secondary mb-4">Listado de lecturas</h3>
 
         <div class="card shadow-lg rounded-3 border-0">
             <div class="card-body p-4">

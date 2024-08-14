@@ -36,10 +36,29 @@ class InventarioController extends Controller
 
 
     public function store(Request $request){
-        $tipo=$request->input('tipo');
+        $request->validate([
+            'tipo' => 'required',
+            'nombre' => 'required|string',
+            'tipo_herramienta' => 'required_if:tipo,Herramientas',
+            'dimension_herramienta' => 'required_if:tipo,Herramientas|nullable|numeric',
+            'seccion' => 'required_if:tipo,Maquinaria',
+            'tipo_maquina' => 'required_if:tipo,Maquinaria|string|nullable',
+            'tipo_insumo' => 'required_if:tipo,Insumos|string|nullable',
+        ], [
+            'tipo.required' => 'Seleccione el tipo de artículo que desea registrar.',
+            'nombre.required' => 'Ingrese el nombre del artículo.',
+            'tipo_herramienta.required_if' => 'Seleccione el tipo de herramienta que desea registrar.',
+            'dimension_herramienta.required_if' => 'Ingrese la dimensión de la herramienta.',
+            'seccion.required_if' => 'Seleccione la sección de la maquinaria que desea registrar.',
+            'tipo_maquina.required_if' => 'Ingrese el tipo de máquina.',
+            'tipo_insumo.required_if' => 'Ingrese el tipo de insumo.',
+        ]);
+    
+        $tipo = $request->input('tipo');
         $nombre = strtolower($request->input('nombre'));
-        $dimension_herramienta=$request->input('dimension_herramienta');
-   
+        $dimension_herramienta = $request->input('dimension_herramienta');
+    
+        // Resto de la lógica para registrar el artículo
         switch ($tipo) {
             case 'Herramientas':
                 $tipo_herramienta=$request->input('tipo_herramienta');
@@ -113,16 +132,15 @@ class InventarioController extends Controller
                 $catalogo_articulo->tipo=$tipo_insumo;
                 $catalogo_articulo->save();
                 break;
-
-             default:
-                 return redirect()->route('inventario.index')->with('error', 'Seleccione el tipo de articulo  que desea registrar ');
-                    break;
-
-
+    
+            default:
+                return redirect()->route('inventario.index')->withErrors(['tipo' => 'Seleccione el tipo de artículo que desea registrar.']);
+                break;
         }
-        return redirect()->route('inventario.index')->with('success', 'El articulo ha sido registrado exitosamente: ' . $nombre);
-
+    
+        return redirect()->route('inventario.index')->with('success', 'El artículo ha sido registrado exitosamente: ' . $nombre);
     }
+    
 
 
 

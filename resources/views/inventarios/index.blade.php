@@ -51,40 +51,43 @@
         @can('crear-articulo')
         <!-- Modal Catalogo -->
         <div class="modal fade" id="modal-catalogo" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                     <div class="modal-header" style="background-color: #002855; color: #ffffff;">
-                        <h5 class="modal-title">
-                        Catálogo de articulos</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                    <form class="row" action="{{route('inventario.store')}}" method="POST">
-                        @csrf
-                        <!-- Selector de Tipo -->
-                       
-                        <div class="col-md-6" >
-                            <label for="tipo" class="form-label">Tipo de Producto:</label>
-                                <select name="tipo" id="tipo"  class="form-control" required>
-                                    <option value="default">Seleccione un tipo</option>
-                                    <option value="Herramientas">Herramientas</option>
-                                    <option value="Maquinaria">Maquinaria</option>
-                                    <option value="Insumos">Insumos</option>
-                                </select>
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #002855; color: #ffffff;">
+                <h5 class="modal-title">Catálogo de artículos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+    <form class="row" action="{{ route('inventario.store') }}" method="POST">
+        @csrf
+        <!-- Selector de Tipo -->
+        <div class="col-md-6">
+            <label for="tipo" class="form-label">Tipo de Producto:</label>
+            <select name="tipo" id="tipo" class="form-control" required onchange="clearError('tipoError')">
+                <option value="default">Seleccione un tipo</option>
+                <option value="Herramientas" {{ old('tipo') == 'Herramientas' ? 'selected' : '' }}>Herramientas</option>
+                <option value="Maquinaria" {{ old('tipo') == 'Maquinaria' ? 'selected' : '' }}>Maquinaria</option>
+                <option value="Insumos" {{ old('tipo') == 'Insumos' ? 'selected' : '' }}>Insumos</option>
+            </select>
+            @error('tipo')
+                <div id="tipoError" class="text-danger mt-1">{{ $message }}</div>
+            @enderror
+        </div>
 
-                            </div>
+        <div id="nombre" class="col-md-6 mb-3">
+            <label for="nombre" class="form-label">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" class="form-control" required value="{{ old('nombre') }}">
+            @error('nombre')
+                <div class="text-danger mt-1">{{ $message }}</div>
+            @enderror
+        </div>
 
-                        <div id="nombre" class="col-md-6 mb-3">
-                            <label for="tipoHerramienta" class="form-label">Nombre:</label>
-                            <input type="text" id="nombre" name="nombre" class="form-control" required>
-                        </div>
-
-                        <!-- Sección de Herramientas -->
-                        <div id="tipo_herramienta" style="display: none;" class="col-md-6">
-                            <label for="tipoHerramienta" class="form-label">Tipo de Herramienta:</label>
-                            <select id="tipo_herramienta" class="form-select" name="tipo_herramienta">
-                                <option selected disabled>Selecciona un tipo</option>
-                                <option value="Herramienta de corte">Herramienta de corte</option>
+        <!-- Sección de Herramientas -->
+        <div id="tipo_herramienta" style="display: none;" class="col-md-6">
+            <label for="tipoHerramienta" class="form-label">Tipo de Herramienta:</label>
+            <select id="tipo_herramienta" class="form-select" name="tipo_herramienta">
+                <option selected disabled>Selecciona un tipo</option>
+                <option value="Herramienta de corte">Herramienta de corte</option>
                                 <option value="Herramienta de golpe">Herramienta de golpe</option>
                                 <option value="Herramienta de mantenimiento">Herramienta de mantenimiento</option>
                                 <option value="Herramienta de maquinado">Herramienta de maquinado</option>
@@ -97,25 +100,31 @@
                                 <option value="Herramienta eléctrica">Herramienta eléctrica</option>
                                 <option value="Herramienta manual">Herramienta manual</option>
                             </select>
-                        </div>
+            @error('tipo_herramienta')
+                <div class="text-danger mt-1">{{ $message }}</div>
+            @enderror
+        </div>
 
-                        <div class="col-md-6 mb-3" id="dimensionHerramienta"  style="display: none;">
-                            <label for="dimension_herramienta" class="form-label"><i
-                                    class="bi bi-rulers me-2"></i>Dimensión</label>
-                            <input type="number" class="form-control" id="dimension_herramienta"
-                                name="dimension_herramienta">
-                        </div>
+        <div class="col-md-6 mb-3" id="dimensionHerramienta" style="display: none;">
+            <label for="dimension_herramienta" class="form-label"><i class="bi bi-rulers me-2"></i>Dimensión</label>
+            <input type="number" class="form-control" id="dimension_herramienta" name="dimension_herramienta" value="{{ old('dimension_herramienta') }}">
+            @error('dimension_herramienta')
+                <div class="text-danger mt-1">{{ $message }}</div>
+            @enderror
+        </div>
 
-                        <!-- Sección de Maquinaria -->
-                        <div class="col-md-6 mb-3" id="tipoMaquina" style="display: none;">
-                            <label for="tipo_maquina" class="form-label"><i class="bi bi-robot me-2"></i>Tipo de
-                                máquina</label>
-                            <input type="text" class="form-control" id="tipo_maquina" name="tipo_maquina">
-                        </div>
+        <!-- Sección de Maquinaria -->
+        <div class="col-md-6 mb-3" id="tipoMaquina" style="display: none;">
+            <label for="tipo_maquina" class="form-label"><i class="bi bi-robot me-2"></i>Tipo de máquina</label>
+            <input type="text" class="form-control" id="tipo_maquina" name="tipo_maquina" value="{{ old('tipo_maquina') }}">
+            @error('tipo_maquina')
+                <div class="text-danger mt-1">{{ $message }}</div>
+            @enderror
+        </div>
 
-                        <div class="col-md-6 mb-3" id="seccion" style="display: none;">
-                            <label for="seccion" class="form-label"><i class="bi bi-tags me-2"></i>Sección</label>
-                            <select id="seccion" class="form-select" name="seccion">
+        <div class="col-md-6 mb-3" id="seccion" style="display: none;">
+            <label for="seccion" class="form-label"><i class="bi bi-tags me-2"></i>Sección</label>
+            <select id="seccion" class="form-select" name="seccion">
                                 <option selected disabled>Selecciona una sección</option>
                                 <option value="03">03 Metrología II</option>
                                 <option value="04">04 Mecánica de materiales</option>
@@ -128,28 +137,98 @@
                                 <option value="13">13 Neumática</option>
                                 <option value="20">20 Área de diseño digital</option>
                             </select>
-                        </div>
-
-                        <!-- Sección de Insumos -->
-                        <div class="col-md-12 mb-3" id="tipoInsumo" style="display: none;">
-                            <label for="tipo_insumo" class="form-label"><i class="bi bi-fuel-pump me-2"></i>Tipo de
-                                insumo</label>
-                            <input type="text" class="form-control" id="tipo_insumo" name="tipo_insumo">
-                        </div>
-
-                        <!-- Botón de Envío -->
-                         <div class="col-md-12 text-center">
-                            <button type="submit" class="btn btn-primary">Enviar</button>
-                         </div>
-                        
-                    </form>
-
-
-
-                    </div>
-                </div>
-            </div>
+            @error('seccion')
+                <div class="text-danger mt-1">{{ $message }}</div>
+            @enderror
         </div>
+
+        <!-- Sección de Insumos -->
+        <div class="col-md-12 mb-3" id="tipoInsumo" style="display: none;">
+            <label for="tipo_insumo" class="form-label"><i class="bi bi-fuel-pump me-2"></i>Tipo de insumo</label>
+            <input type="text" class="form-control" id="tipo_insumo" name="tipo_insumo" value="{{ old('tipo_insumo') }}">
+            @error('tipo_insumo')
+                <div class="text-danger mt-1">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <!-- Botón de Envío -->
+        <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+    </form>
+</div>
+
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var tipoSelect = document.getElementById('tipo');
+        var tipo_herramienta = document.getElementById('tipo_herramienta');
+        var dimensionHerramienta = document.getElementById('dimensionHerramienta');
+        var tipoMaquina = document.getElementById('tipoMaquina');
+        var seccion = document.getElementById('seccion');
+        var tipoInsumo = document.getElementById('tipoInsumo');
+
+        function mostrarElementos(tipo) {
+            tipo_herramienta.style.display = 'none';
+            dimensionHerramienta.style.display = 'none';
+            tipoMaquina.style.display = 'none';
+            seccion.style.display = 'none';
+            tipoInsumo.style.display = 'none';
+
+            switch(tipo) {
+                case 'Herramientas':
+                    tipo_herramienta.style.display = 'block';
+                    dimensionHerramienta.style.display = 'block';
+                    break;
+                case 'Maquinaria':
+                    tipoMaquina.style.display = 'block';
+                    seccion.style.display = 'block';
+                    break;
+                case 'Insumos':
+                    tipoInsumo.style.display = 'block';
+                    break;
+            }
+        }
+
+        // Mostrar los elementos si hay un valor seleccionado previamente (para errores)
+        var tipoInicial = tipoSelect.value;
+        if (tipoInicial !== 'default') {
+            mostrarElementos(tipoInicial);
+        }
+
+        // Mostrar los elementos correspondientes cuando se cambia el tipo
+        tipoSelect.addEventListener('change', function () {
+            var tipo = this.value;
+            mostrarElementos(tipo);
+        });
+
+        // Abrir el modal automáticamente si hay errores de validación
+        @if ($errors->any())
+            var myModal = new bootstrap.Modal(document.getElementById('modal-catalogo'), {
+                keyboard: false
+            });
+            myModal.show();
+        @endif
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        @if($errors->any())
+            var myModal = new bootstrap.Modal(document.getElementById('modal-catalogo'), {
+                keyboard: false
+            });
+            myModal.show();
+        @endif
+    });
+</script>
+<script>
+    function clearError(errorId) {
+        document.getElementById(errorId).style.display = 'none';
+    }
+</script>
+
         @endcan
 
         <!-- Extra Large Modal -->
