@@ -9,7 +9,7 @@ use  App\Models\Docente;
 use  App\Models\Grupo;
 use  App\Models\Periodo;
 use Illuminate\Support\Facades\DB;
-
+use Carbon\Carbon;
 class AlumnoController extends Controller
 {
 
@@ -38,9 +38,20 @@ class AlumnoController extends Controller
                 return $alumno->grupos->contains('clave_grupo', $grupo->clave_grupo);
                });
             }
+
+            $currentYear = Carbon::now()->year;
+            $currentMonth = Carbon::now()->month;
+
+            $periodo = Periodo::whereYear('created_at',$currentYear)
+            ->whereMonth('fecha_inicio', '>=',  $currentMonth)
+            ->first();
+            
+
+            $grupos_permitidos=Grupo::where('clave_periodo',$periodo->clave)->get();
+           
          
 
-         return view('alumnos.index', compact('alumnosPorGrupo', 'grupos','TodosAlumnos','periodos'));
+         return view('alumnos.index', compact('alumnosPorGrupo', 'grupos','TodosAlumnos','periodos','grupos_permitidos'));
         }
 
 
@@ -83,18 +94,7 @@ class AlumnoController extends Controller
             $persona->save();
             $alumno->save();
 
-            
-            $alumno=Alumno::find($no_control);
-
-
-           $grupos=$request->input('grupos',[]);
-            foreach ($grupos as $grupo) {
-
-                $alumno->grupos()->attach($alumno->no_control,['clave_grupo'=>$grupo]);
-            }
-
     
-        
             return redirect()->route('alumnos.index')->with('success','Alumno agregado correctamente');;
 
 
