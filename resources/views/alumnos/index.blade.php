@@ -70,7 +70,7 @@
                             <div class="col-md-12 mb-3">
                                 <label for="grupos" class="form-label"><i class="bi bi-people me-2"></i>Grupo</label>
                                 <select class="form-control" id="grupo" name="grupo" required>
-                                    @foreach ($grupos as $grupo)
+                                    @foreach ($grupos_permitidos as $grupo)
                                         <option value="{{ $grupo->clave_grupo }}">{{ $grupo->clave_grupo }}//{{$grupo->clave_periodo}}</option>
                                     @endforeach
                                 </select>
@@ -111,7 +111,7 @@
                             <div class="col-md-12 mb-3">
                                 <label for="grupos" class="form-label"><i class="bi bi-people me-2"></i>Grupo</label>
                                 <select class="form-control" id="grupo" name="grupo" required>
-                                    @foreach ($grupos as $grupo)
+                                    @foreach ($grupos_permitidos as $grupo)
                                         <option value="{{ $grupo->clave_grupo }}">{{ $grupo->clave_grupo }}//{{$grupo->clave_periodo}}</option>
                                     @endforeach
                                 </select>
@@ -179,14 +179,7 @@
                                         Ingrese una CURP válida.
                                     </div>
                                 </div>
-                                <div class="col-md-12 mb-3">
-                                    <label for="grupos" class="form-label"><i class="bi bi-people me-2"></i>Grupo</label>
-                                    <select multiple class="form-control" id="grupos" name="grupos[]" required>
-                                        @foreach ($grupos as $grupo)
-                                            <option value="{{ $grupo->clave_grupo }}">{{ $grupo->clave_grupo }}//{{$grupo->clave_periodo}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                             
                                 <div class="text-center mt-4">
                                     <button type="submit" class="btn btn-primary"
                                         style="background-color: #002855; border-color: #002855;">Guardar</button>
@@ -362,27 +355,27 @@
                                                                     <input type="text" class="form-control" id="no_control"
                                                                         name="no_control" value="{{ $alumno->no_control }}" required>
                                                                 </div>
-                                                                <div class="col-md-6 mb-3">
+                                                                <div class="col-md-12 mb-3">
                                                                     <label for="nombre" class="form-label"><i
                                                                             class="bi bi-person me-2"></i>Nombre</label>
                                                                     <input type="text" class="form-control" id="nombre" name="nombre"
                                                                         value="{{ $alumno->persona->nombre }}" required>
                                                                 </div>
-                                                                <div class="col-md-6 mb-3">
+                                                                <div class="col-md-12 mb-3">
                                                                     <label for="apellido_p" class="form-label"><i
                                                                             class="bi bi-person me-2"></i>Apellido Paterno</label>
                                                                     <input type="text" class="form-control" id="apellido_p"
                                                                         name="apellido_p" value="{{ $alumno->persona->apellido_p }}"
                                                                         required>
                                                                 </div>
-                                                                <div class="col-md-6 mb-3">
+                                                                <div class="col-md-12 mb-3">
                                                                     <label for="apellido_m" class="form-label"><i
                                                                             class="bi bi-person me-2"></i>Apellido Materno</label>
                                                                     <input type="text" class="form-control" id="apellido_m"
                                                                         name="apellido_m" value="{{ $alumno->persona->apellido_m }}"
                                                                         required>
                                                                 </div>
-                                                                <div class="col-md-6 mb-3">
+                                                                <div class="col-md-12 mb-3">
                                                                     <label for="curp" class="form-label"><i
                                                                             class="bi bi-card-list me-2"></i>CURP</label>
                                                                     <input type="text" class="form-control" id="curp" name="curp"
