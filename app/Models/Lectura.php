@@ -22,5 +22,9 @@ class Lectura extends Model
         return $this->belongsToMany(Catalogo_articulo::class, 'insumos_lectura', 'id_lectura', 'id_insumo')
         ->withPivot(['cantidad', 'cantidad_anterior', 'cantidad_nueva']);
     }
+    public function user(){
+        return $this->belongsTo(User::class, 'id');
+
+    }
 
 }
