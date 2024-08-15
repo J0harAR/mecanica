@@ -37,12 +37,6 @@
                     </button>
 
                 @endcan
-
-                @can('crear-alumnos')
-                    <button type="button"class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-desasignar">
-                        <i class="fas fa-trash-alt"></i> Desasignar alumno del grupo
-                    </button>
-                @endcan
             </div>
 
 
@@ -102,54 +96,6 @@
             </div>
         </div>
         <!-- End Vertically centered Modal -->
-
-
-
-
-
-        <!-- Vertically centered Modal -->
-        <div class="modal fade" id="modal-desasignar" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content border-0 shadow-lg">
-                    <div class="modal-header" style="background-color: #002855; color: #ffffff;">
-                        <h5 class="modal-title"> <i class="fas fa-trash-alt"></i> Desasignar grupo al alumno</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="row g-3" action="{{ route('alumnos.desasignar-grupo') }}" method="POST">
-                            @csrf
-                            <div class="col-md-12 mb-3">
-                                <label for="no_control" class="form-label"><i class="bi bi-card-text me-2"></i>Número de
-                                    Control</label>
-                                <input type="text" class="form-control" id="no_control" name="no_control" required>
-                            </div>
-
-                            <div class="col-md-12 mb-3">
-                                <label for="grupos" class="form-label"><i class="bi bi-people me-2"></i>Grupo</label>
-                                <select class="form-control" id="grupo" name="grupo" required>
-                                    @foreach ($grupos_permitidos as $grupo)
-                                        <option value="{{ $grupo->clave_grupo }}">{{ $grupo->clave_grupo }}//{{$grupo->clave_periodo}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="text-center mt-4">
-                                <button type="submit" class="btn btn-primary"
-                                    style="background-color: #002855; border-color: #002855;">Guardar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Vertically centered Modal -->
-
-
-
-
-
-
-
 
 
 
@@ -267,7 +213,7 @@
                 <div class="col-md-6">
                     <label for="periodo" class="form-label">Periodo</label>
 
-                    <select name="periodo" id="periodo" class="form-control" required>
+                    <select name="periodo" id="periodo" class="form-control" >
                         <option value=""disabled selected>Seleccione el periodo</option>
                         @foreach ($periodos as $periodo)
                             <option value="{{$periodo->clave}}">{{$periodo->clave}}</option>
@@ -279,7 +225,7 @@
 
                 <div class="col-md-6 mb-3">
                     <label for="grupos" class="form-label"><i class="bi bi-people me-2"></i>Grupo</label>
-                    <select  class="form-control" id="grupo" name="grupo" required>
+                    <select  class="form-control" id="grupo" name="grupo" >
                         <option value=""disabled selected>Seleccione el grupo</option>
                         @foreach ($grupos as $grupo)
                             <option value="{{ $grupo->clave_grupo }}">{{ $grupo->clave_grupo }}</option>
@@ -295,59 +241,88 @@
             </div>
 
         </form>
+        @if (session('alumnos'))
+<!-- Tabla de alumnos -->
+<div class="card shadow-lg rounded-3 border-0">
+    <div class="card-body p-4">
+        <div class="table-responsive">
+            <h5>Grupo: {{ session('grupo')->clave_grupo }}</h5>
+            <form id="form-post" action="{{ route('alumnos.desasignar-grupo') }}" method="POST">
+                @csrf
+                <input type="hidden" name="clave_grupo" value="{{ session('grupo')->clave_grupo }}">
 
-        <!-- Tabla de alumnos -->
-        <div class="card shadow-lg rounded-3 border-0">
-            <div class="card-body p-4">
-                <div class="table-responsive">
-                    @if (session('alumnos'))
-                        <table class="table table-hover">
-                            @if (session('grupo'))
-                                <h5>Grupo:{{session('grupo')->clave_grupo}}</h5>
-                            @endif
+                <table class="table table-striped table-hover table-bordered shadow-sm rounded align-middle"
+                    style="border-collapse: separate; border-spacing: 0 10px;">
+                    <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
+                        <tr>
+                            <th>Select</th>
+                            <th>Número de Control</th>
+                            <th>Nombre</th>
+                            <th>Apellido Paterno</th>
+                            <th>Apellido Materno</th>
+                            <th>CURP</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(session('alumnos') as $alumno)
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="selected_alumnos[]" value="{{ $alumno->no_control }}">
+                                </td>
+                                </form>  
+                                <td>{{ $alumno->no_control }}</td>
+                                <td>{{ $alumno->persona->nombre }}</td>
+                                <td>{{ $alumno->persona->apellido_p }}</td>
+                                <td>{{ $alumno->persona->apellido_m }}</td>
+                                <td>{{ $alumno->persona->curp }}</td>
+                                <td>
+                                    @can('editar-alumnos')
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            data-bs-toggle="modal" data-bs-target="#updateModal-{{ $alumno->no_control }}">
+                                            <i class="fas fa-pen me-1"></i>
+                                        </button>
+                                    @endcan
 
-                            <table class="table table-striped table-hover table-bordered shadow-sm rounded align-middle"
-                                style="border-collapse: separate; border-spacing: 0 10px;">
-                                <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Número de Control</th>
-                                        <th>Nombre</th>
-                                        <th>Apellido Paterno</th>
-                                        <th>Apellido Materno</th>
-                                        <th>CURP</th>
-                                        <th>Acciones</th>
+                                    @can('borrar-alumnos')
+                                        <!-- Modal Trigger -->
+                                        <button type="button" class="btn btn-outline-danger btn-sm"
+                                            data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $alumno->no_control }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    @endcan
+                                </td>
+                            </tr>   
 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach(session('alumnos') as $alumno)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $alumno->no_control }}</td>
-                                            <td>{{ $alumno->persona->nombre }}</td>
-                                            <td>{{ $alumno->persona->apellido_p }}</td>
-                                            <td>{{ $alumno->persona->apellido_m }}</td>
-                                            <td>{{ $alumno->persona->curp }}</td>
-                                            <td>
-                                                @can('editar-alumnos')
-                                                    <button type="button" class="btn btn-outline-primary btn-sm   "
-                                                        data-bs-toggle="modal" data-bs-target="#updateModal-{{ $alumno->no_control }}">
-                                                        <i class="fas fa-pen me-1"></i>
-                                                    </button>
-                                                @endcan
+                            <!-- Modal de eliminacion -->
+                            @can('borrar-alumnos')
+                                <div class="modal fade" id="deleteModal-{{ $alumno->no_control }}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                ¿Estás seguro de que deseas eliminar al alumno del sistema
+                                                "{{ $alumno->no_control }}"?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                <form action="{{ route('alumnos.destroy', ['id' => $alumno->no_control]) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endcan
 
-                                                @can('borrar-alumnos')
-                                                    <button type="button" class="btn btn-outline-danger btn-sm   "
-                                                        data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $alumno->no_control }}">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                @endcan
-
-                                            </td>
-                                        </tr>
-
-                                        @can('editar-alumnos')
+                            @can('editar-alumnos')
                                             <!-- Modal de edicion -->
                                             <div class="modal fade" id="updateModal-{{ $alumno->no_control }}" tabindex="-1"
                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -410,44 +385,90 @@
                                             </div>
                                         @endcan
 
-                                        @can('borrar-alumnos')
-                                            <!-- Modal de eliminacion -->
-                                            <div class="modal fade" id="deleteModal-{{ $alumno->no_control }}" tabindex="-1"
-                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            ¿Estás seguro de que deseas eliminar el alumno
-                                                            "{{ $alumno->no_control }}"?
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Cancelar</button>
-                                                            <form action="{{ route('alumnos.destroy', ['id' => $alumno->no_control]) }}"
-                                                                method="POST" style="display: inline;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-danger">Eliminar</button>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endcan
-                                    @endforeach
-                                </tbody>
-                            </table>
-                    @endif
+                        @endforeach
+                    </tbody>
+                </table>
+
+                
+                
+                <div class="dropdown mt-3">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Seleccionar Acción
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="#" data-action="desasignar">Desasignar Alumnos</a></li>
+                        <!-- Puedes agregar más opciones aquí -->
+                    </ul>
                 </div>
-            </div>
-            <!-- End Tabla de alumnos -->
+                               
         </div>
     </div>
+</div>
+@endif
+
+<!-- Modal de Confirmación -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmación de Acción</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">¿Estás seguro de que deseas realizar la acción seleccionada?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button id="confirmAction" type="button" class="btn btn-primary">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+    </div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+    const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    const confirmMessage = document.getElementById('confirmMessage');
+    const confirmAction = document.getElementById('confirmAction');
+    let actionType = '';
+
+    dropdownItems.forEach(item => {
+        item.addEventListener('click', function () {
+            actionType = this.getAttribute('data-action');
+            switch (actionType) {
+                case 'desasignar':
+                    confirmMessage.textContent = '¿Estás seguro de que deseas desasignar a los alumnos seleccionados?';
+                    break;
+                // Puedes agregar más casos para otras acciones
+            }
+            confirmModal.show();
+        });
+    });
+
+    confirmAction.addEventListener('click', function () {
+        const form = document.getElementById('form-post');
+        form.action = getActionUrl(actionType);
+        form.submit();
+    });
+
+    function getActionUrl(action) {
+        switch (action) {
+            case 'desasignar':
+                return '{{ route('alumnos.desasignar-grupo') }}';
+            // Puedes agregar más casos para otras acciones
+            default:
+                return '#';
+        }
+    }
+});
+</script>
 
 
     <script>
@@ -463,7 +484,7 @@
         @endforeach
     ];
 
-    let selectedAlumnos = new Map(); // Use Map to store ID and full name
+    let selectedAlumnos = new Map(); 
 
     searchInput.addEventListener('input', function() {
         const searchTerm = searchInput.value.toLowerCase();
@@ -513,13 +534,14 @@
             selectedAlumnosContainer.appendChild(alumno);
         });
 
-        // Actualiza el campo oculto con los IDs de los números de control seleccionados como array
+       
         selectedAlumnosInput.value = selectedAlumnosArray.map(([id]) => id).join(',');
     }
 });
 
 
     </script>
-    
+
+
 @endcan
 @endsection

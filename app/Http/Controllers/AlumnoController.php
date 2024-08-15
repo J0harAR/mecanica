@@ -172,7 +172,9 @@ class AlumnoController extends Controller
           
 
             $selectedAlumnosString = $request->input('selected_alumnos');
-            
+            if(!$selectedAlumnosString){
+                return redirect()->route('alumnos.index')->with('error','No se selecciono ningun alumno');
+            }
     
             $selectedAlumnos = explode(',', $selectedAlumnosString);
           
@@ -193,34 +195,20 @@ class AlumnoController extends Controller
         }
         public function desasignarGrupo(Request $request){
 
-
-            $alumno=Alumno::find($request->input('no_control'));
-            $grupo=Grupo::find($request->input('grupo'));
-            if(!$alumno){
-                return redirect()->route('alumnos.index')->with('error','Alumno no encontrado');
-            }
+            $selectedAlumnos = $request->input('selected_alumnos', []);
+            $grupo=Grupo::find($request->input('clave_grupo'));
 
             if(!$grupo){
                 return redirect()->route('alumnos.index')->with('error','Grupo no encontrado');
             }
-
-            $grupos_alumno=$alumno->grupos->pluck('clave_grupo')->toArray();
-
-
-            if($grupos_alumno){
-                
-                foreach ($grupos_alumno as $grupo_alumno) {
-                    if ($grupo_alumno === $grupo->clave_grupo) {    
-                        $alumno->grupos()->detach($grupo->clave_grupo);
-                        
-                        return redirect()->route('alumnos.index')->with('success','Grupo desasignado correctamente');
-                    }                        
-                }
-
+            if(!$selectedAlumnos){
+                return redirect()->route('alumnos.index')->with('error','Ningún alumno seleccionado');
             }
-            return redirect()->route('alumnos.index')->with('error','Alumno no pertenece a ese grupo');
 
-             
+            $grupo->alumnos()->detach($selectedAlumnos);
+
+            return redirect()->route('alumnos.index')->with('success','Alumnos desasignado correctamente del grupo');
+
         }
 
         public function filtraGrupo(Request $request){
@@ -238,5 +226,7 @@ class AlumnoController extends Controller
              return redirect()->route('alumnos.index')->with(['alumnos' => $alumnos,'grupo'=>$grupo]);
 
         }
+
+  
 
 }

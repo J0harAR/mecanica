@@ -133,6 +133,9 @@ Route::match(['put', 'patch'], '/alumnos/{id}', [AlumnoController::class, 'updat
 Route::delete('/alumnos/{id}', [AlumnoController::class, 'destroy'])->name('alumnos.destroy');
 Route::post('/grupos-alumno', [AlumnoController::class, 'filtraGrupo'])->name('alumnos.filtrar-grupos');
 
+Route::post('/todos-alumnos', [AlumnoController::class, 'mostrarTodos'])->name('alumnos.mostrar-todos');
+
+
 
 
 
