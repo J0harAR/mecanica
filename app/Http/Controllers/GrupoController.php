@@ -44,6 +44,17 @@ class GrupoController extends Controller
             'asignatura' => 'required',
             'periodo' => 'required',
         ]);
+    
+        $grupo = Grupo::where('clave_grupo', $request->input('clave_grupo'))
+        ->where('clave_asignatura', $request->input('asignatura'))
+        ->first();
+
+        
+
+        if($grupo){
+            return redirect()->route('grupos.index')->with('error','Grupo duplicado');
+        }
+
             $grupo=new Grupo;
             $grupo->clave_grupo=$request->input('clave_grupo');
             $grupo->clave_asignatura=$request->input('asignatura');
@@ -59,14 +70,23 @@ class GrupoController extends Controller
 
         $grupo=Grupo::find($id);
 
-        $asignatura=Asignatura::find($request->input('asignatura'));
-        
+       
         if($request->input('asignatura')=== null){
             return redirect()->route('grupos.index')->with('error','Seleccione al menos una asignatura');
         }
+        $asignatura=Asignatura::find($request->input('asignatura'));
 
 
         if($asignatura){
+            
+            $grupo_existente=Grupo::where('clave_grupo',$id)
+            ->where('clave_asignatura', $request->input('asignatura'))
+            ->first();
+
+            if($grupo_existente){
+                return redirect()->route('grupos.index')->with('error','Grupo duplicado');
+            }
+           
             $grupo->clave_asignatura=$request->input('asignatura');
             $grupo->save();
         }

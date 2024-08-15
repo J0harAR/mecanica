@@ -61,11 +61,28 @@
                     <div class="modal-body">
                         <form class="row g-3" action="{{ route('alumnos.asignar-grupo') }}" method="POST">
                             @csrf
-                            <div class="col-md-12 mb-3">
-                                <label for="no_control" class="form-label"><i class="bi bi-card-text me-2"></i>Número de
-                                    Control</label>
-                                <input type="text" class="form-control" id="no_control" name="no_control" required>
+                            <div class="col-md-12">
+                            <div class="mt-3">
+                                    <label for="selected-alumnos" class="form-label">Alumnos seleccionados:</label>
+                                    <div id="selected-alumnos" class="d-flex flex-wrap">
+                                        
+                                        <!-- Aquí se mostrarán los números de control seleccionados -->
+                                    </div>
+                                </div>
+
+                                <label for="search-alumnos" class="form-label"><i class="fas fa-boxes me-2"></i>Buscar Alumnos</label>
+                                <input type="text" id="search-alumnos" class="form-control" placeholder="Buscar número de control...">
+                                
+                                <ul id="suggestions" class="list-group mt-2" style="display: none;">
+                                    <!-- Aquí se mostrarán las sugerencias -->
+                                </ul>
+
+
+                
+                                <input type="hidden" name="selected_alumnos" id="selected-alumnos-input">
                             </div>
+
+                           
 
                             <div class="col-md-12 mb-3">
                                 <label for="grupos" class="form-label"><i class="bi bi-people me-2"></i>Grupo</label>
@@ -431,5 +448,78 @@
             <!-- End Tabla de alumnos -->
         </div>
     </div>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('search-alumnos');
+    const suggestionsList = document.getElementById('suggestions');
+    const selectedAlumnosContainer = document.getElementById('selected-alumnos');
+    const selectedAlumnosInput = document.getElementById('selected-alumnos-input');
+
+    const alumnosData = [
+        @foreach ($TodosAlumnos as $alumno)
+            { id: "{{ $alumno->no_control }}", text: "{{ $alumno->no_control }} {{$alumno->persona->nombre}} {{$alumno->persona->apellido_p}} {{$alumno->persona->apellido_m}}" },
+        @endforeach
+    ];
+
+    let selectedAlumnos = new Map(); // Use Map to store ID and full name
+
+    searchInput.addEventListener('input', function() {
+        const searchTerm = searchInput.value.toLowerCase();
+        suggestionsList.innerHTML = '';
+        if (searchTerm) {
+            const filteredAlumnos = alumnosData.filter(alumno =>
+                alumno.text.toLowerCase().includes(searchTerm)
+            );
+
+            filteredAlumnos.forEach(alumno => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('list-group-item', 'list-group-item-action');
+                listItem.textContent = alumno.text;
+                listItem.addEventListener('click', function() {
+                    if (!selectedAlumnos.has(alumno.id)) {
+                        selectedAlumnos.set(alumno.id, alumno.text);
+                        updateSelectedAlumnos();
+                    }
+                    searchInput.value = '';
+                    suggestionsList.style.display = 'none';
+                });
+                suggestionsList.appendChild(listItem);
+            });
+            suggestionsList.style.display = filteredAlumnos.length ? 'block' : 'none';
+        } else {
+            suggestionsList.style.display = 'none';
+        }
+    });
+
+    function updateSelectedAlumnos() {
+        selectedAlumnosContainer.innerHTML = '';
+        const selectedAlumnosArray = Array.from(selectedAlumnos.entries());
+
+        selectedAlumnosArray.forEach(([id, fullName]) => {
+            const alumno = document.createElement('div');
+            alumno.classList.add('d-flex', 'align-items-center', 'mb-2', 'me-2');
+            alumno.textContent = fullName;
+
+            const removeButton = document.createElement('button');
+            removeButton.classList.add('btn-close', 'ms-2');
+            removeButton.addEventListener('click', function() {
+                selectedAlumnos.delete(id);
+                updateSelectedAlumnos();
+            });
+
+            alumno.appendChild(removeButton);
+            selectedAlumnosContainer.appendChild(alumno);
+        });
+
+        // Actualiza el campo oculto con los IDs de los números de control seleccionados como array
+        selectedAlumnosInput.value = selectedAlumnosArray.map(([id]) => id).join(',');
+    }
+});
+
+
+    </script>
+    
 @endcan
 @endsection

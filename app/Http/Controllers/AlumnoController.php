@@ -168,31 +168,26 @@ class AlumnoController extends Controller
 
 
         public function asignarGrupo(Request $request){
-            $alumno=Alumno::find($request->input('no_control'));
-            $grupo=Grupo::find($request->input('grupo'));
-            if(!$alumno){
-                return redirect()->route('alumnos.index')->with('error','Alumno no encontrado');
-            }
 
+          
+
+            $selectedAlumnosString = $request->input('selected_alumnos');
+            
+    
+            $selectedAlumnos = explode(',', $selectedAlumnosString);
+          
+
+            $grupo=Grupo::find($request->input('grupo'));
+            
+        
             if(!$grupo){
                 return redirect()->route('alumnos.index')->with('error','Grupo no encontrado');
             }
-
-            $grupos_alumno=$alumno->grupos->pluck('clave_grupo')->toArray();
-
-
-            if($grupos_alumno){
-                
-                foreach ($grupos_alumno as $grupo_alumno) {
-                    if ($grupo_alumno === $grupo->clave_grupo) {
-                       return redirect()->route('alumnos.index')->with('error','Alumno ya pertence al grupo: '.$grupo->clave_grupo);
-                    }                          
-                }
-
-            }
-
-            $alumno->grupos()->attach($alumno->no_control, ['clave_grupo' => $grupo->clave_grupo]);
             
+            
+            $grupo->alumnos()->attach($selectedAlumnos);
+            
+
             return redirect()->route('alumnos.index')->with('success','Grupo asignado correctamente');
 
         }

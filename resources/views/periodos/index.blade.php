@@ -114,14 +114,14 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th >Clave de periodo</th>
+                        <th >Periodo</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($periodos as $periodo)
                         <tr>
-                            <td>{{$periodo->clave}} <br>  
+                            <td> 
                             {{mb_strtoupper(\Carbon\Carbon::parse($periodo->fecha_inicio)->locale('es')->isoFormat('MMMM')) }} -
                             {{ mb_strtoupper(\Carbon\Carbon::parse($periodo->fecha_final)->locale('es')->isoFormat('MMMM')) }}</td>
                             <td>
