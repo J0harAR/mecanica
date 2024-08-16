@@ -116,10 +116,8 @@
                                 <div class="col-md-12 mb-3">
                                     <label for="no_control" class="form-label"><i class="bi bi-card-text me-2"></i>Número de
                                         Control</label>
-                                    <input type="text" class="form-control" id="no_control" name="no_control" required pattern="^\d{8}$">
-                                    <div class="invalid-feedback">
-                                        Ingrese un numero de control valido.
-                                    </div>
+                                        <input type="text" class="form-control" id="no_control" name="no_control" required pattern="^\d{8}$">
+                                        <div id="no-control-feedback" class="invalid-feedback"></div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="nombre" class="form-label"><i class="bi bi-person me-2"></i>Nombre</label>
@@ -255,7 +253,7 @@
                     style="border-collapse: separate; border-spacing: 0 10px;">
                     <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
                         <tr>
-                            <th>Select</th>
+                            <th></th>
                             <th>Número de Control</th>
                             <th>Nombre</th>
                             <th>Apellido Paterno</th>
@@ -541,7 +539,39 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     </script>
+    
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const noControlInput = document.getElementById('no_control');
+    const feedback = document.getElementById('no-control-feedback');
+    const form = document.querySelector('form');
 
+    noControlInput.addEventListener('blur', function () {
+        const noControl = noControlInput.value;
+
+        if (noControl) {
+            fetch(`/alumnos/check-no-control/${noControl}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        feedback.textContent = 'Este número de control ya está registrado.';
+                        noControlInput.classList.add('is-invalid');
+                    } else {
+                        feedback.textContent = '';
+                        noControlInput.classList.remove('is-invalid');
+                    }
+                });
+        }
+    });
+
+    form.addEventListener('submit', function (event) {
+        if (noControlInput.classList.contains('is-invalid')) {
+            event.preventDefault();
+            feedback.textContent = 'Por favor corrija los errores antes de enviar el formulario.';
+        }
+    });
+});
+</script
 
 @endcan
 @endsection

@@ -46,7 +46,10 @@ class AlumnoController extends Controller
             ->whereMonth('fecha_inicio', '>=',  $currentMonth)
             ->first();
             
-
+            if(!$periodo){
+                $mensaje="Registre algún periodo para acceder a esta sección";
+                return view('blank',compact('mensaje'));
+            }
             $grupos_permitidos=Grupo::where('clave_periodo',$periodo->clave)->get();
            
          
@@ -225,6 +228,12 @@ class AlumnoController extends Controller
 
              return redirect()->route('alumnos.index')->with(['alumnos' => $alumnos,'grupo'=>$grupo]);
 
+        }
+
+        public function checkNoControl($no_control)
+        {
+            $exists = Alumno::where('no_control', $no_control)->exists();
+            return response()->json(['exists' => $exists]);
         }
 
   

@@ -135,6 +135,8 @@ Route::post('/grupos-alumno', [AlumnoController::class, 'filtraGrupo'])->name('a
 
 Route::post('/todos-alumnos', [AlumnoController::class, 'mostrarTodos'])->name('alumnos.mostrar-todos');
 
+Route::get('/alumnos/check-no-control/{no_control}', [AlumnoController::class, 'checkNoControl'])->name('alumnos.check_no_control');
+
 
 
 

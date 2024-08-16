@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('foto');
             $table->string('telefono');
             $table->timestamps();
-            $table->foreign('curp')->references('curp')->on('persona')->onDelete('SET NULL')->onUpdate('cascade');
+            $table->foreign('curp')->references('curp')->on('persona')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
