@@ -242,6 +242,8 @@
             <div class="col-md-6 mb-3">
               <label for="fecha" class="form-label"><i class="bi bi-calendar me-2"></i>Fecha</label>
               <input type="date" class="form-control" name="fecha" id="fecha" required>
+              <div id="fecha-feedback" class="invalid-feedback"></div>
+
             </div>
             
             <div class="col-md-12 mb-3">
@@ -484,5 +486,20 @@
 });
 </script>
 
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const fechaInput = document.getElementById('fecha');
+    
+    // Establece el valor máximo permitido como la fecha actual (solo fecha)
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Meses comienzan desde 0
+    const dd = String(today.getDate()).padStart(2, '0');
+    const formattedToday = `${yyyy}-${mm}-${dd}`;
+
+    fechaInput.setAttribute('max', formattedToday);
+});
+</script>
 @endcan
 @endsection
