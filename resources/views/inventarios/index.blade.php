@@ -113,16 +113,8 @@
             @enderror
         </div>
 
-        <!-- Sección de Maquinaria -->
-        <div class="col-md-6 mb-3" id="tipoMaquina" style="display: none;">
-            <label for="tipo_maquina" class="form-label"><i class="bi bi-robot me-2"></i>Tipo de máquina</label>
-            <input type="text" class="form-control" id="tipo_maquina" name="tipo_maquina" value="{{ old('tipo_maquina') }}">
-            @error('tipo_maquina')
-                <div class="text-danger mt-1">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <div class="col-md-6 mb-3" id="seccion" style="display: none;">
+   
+        <div class="col-md-12 mb-3" id="seccion" style="display: none;">
             <label for="seccion" class="form-label"><i class="bi bi-tags me-2"></i>Sección</label>
             <select id="seccion" class="form-select" name="seccion">
                                 <option selected disabled>Selecciona una sección</option>
@@ -142,15 +134,7 @@
             @enderror
         </div>
 
-        <!-- Sección de Insumos -->
-        <div class="col-md-12 mb-3" id="tipoInsumo" style="display: none;">
-            <label for="tipo_insumo" class="form-label"><i class="bi bi-fuel-pump me-2"></i>Tipo de insumo</label>
-            <input type="text" class="form-control" id="tipo_insumo" name="tipo_insumo" value="{{ old('tipo_insumo') }}">
-            @error('tipo_insumo')
-                <div class="text-danger mt-1">{{ $message }}</div>
-            @enderror
-        </div>
-
+       
         <!-- Botón de Envío -->
         <div class="col-md-12 text-center">
             <button type="submit" class="btn btn-primary">Enviar</button>
@@ -166,16 +150,12 @@
         var tipoSelect = document.getElementById('tipo');
         var tipo_herramienta = document.getElementById('tipo_herramienta');
         var dimensionHerramienta = document.getElementById('dimensionHerramienta');
-        var tipoMaquina = document.getElementById('tipoMaquina');
         var seccion = document.getElementById('seccion');
-        var tipoInsumo = document.getElementById('tipoInsumo');
 
         function mostrarElementos(tipo) {
             tipo_herramienta.style.display = 'none';
             dimensionHerramienta.style.display = 'none';
-            tipoMaquina.style.display = 'none';
             seccion.style.display = 'none';
-            tipoInsumo.style.display = 'none';
 
             switch(tipo) {
                 case 'Herramientas':
@@ -183,11 +163,10 @@
                     dimensionHerramienta.style.display = 'block';
                     break;
                 case 'Maquinaria':
-                    tipoMaquina.style.display = 'block';
                     seccion.style.display = 'block';
                     break;
                 case 'Insumos':
-                    tipoInsumo.style.display = 'block';
+                 
                     break;
             }
         }
@@ -219,6 +198,7 @@
             var myModal = new bootstrap.Modal(document.getElementById('modal-catalogo'), {
                 keyboard: false
             });
+            
             myModal.show();
         @endif
     });
@@ -477,8 +457,6 @@
             document.addEventListener('DOMContentLoaded', function () {
                 var tipoSelect = document.getElementById('tipo');
                 var tipo_herramienta = document.getElementById('tipo_herramienta');
-                var tipo_maquina = document.getElementById('tipoMaquina');
-                var tipo_insumo = document.getElementById('tipoInsumo');
                 var dimension_herramienta = document.getElementById('dimensionHerramienta');       
                 var seccion = document.getElementById('seccion');
                 
@@ -488,24 +466,19 @@
                         case 'Herramientas':
                             showElement(tipo_herramienta);
                             showElement(dimension_herramienta); 
-                            setRequired([tipo_herramienta,dimension_herramienta]);                     
-                                      
-                            hideElements([tipo_maquina, tipo_insumo, seccion]);
+                            setRequired([tipo_herramienta,dimension_herramienta]);                                                        
+                            hideElements([seccion]);
                             break;
                         case 'Maquinaria':
-                            showElement(tipo_maquina);
                             showElement(seccion);                 
-                            setRequired([seccion,tipo_maquina]);                        
-                            hideElements([tipo_herramienta, tipo_insumo, dimension_herramienta]);
+                            setRequired([seccion]);                        
+                            hideElements([tipo_herramienta,dimension_herramienta]);
                             break;
-                        case 'Insumos':
-                            showElement(tipo_insumo);                          
-                            setRequired([tipo_insumo]);   
-
-                            hideElements([tipo_herramienta, tipo_maquina, dimension_herramienta, seccion]);
+                        case 'Insumos':                                                  
+                            hideElements([tipo_herramienta, dimension_herramienta, seccion]);
                             break;
                         case 'default':
-                            hideElements([tipo_maquina, tipo_insumo, 
+                            hideElements([ 
                             seccion, 
                             dimension_herramienta,
                             seccion,

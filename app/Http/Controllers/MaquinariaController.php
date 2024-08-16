@@ -28,11 +28,9 @@ class MaquinariaController extends Controller
 
       $maquinaria = Maquinaria::with(['Articulo_inventariados.Catalogo_articulos','insumos'])->get();
       $insumos=Articulo_inventariado::where('tipo','Insumos')->get();
-      $articulos=Catalogo_articulo::all();
+      $articulos=Catalogo_articulo::where('tipo',"Maquinaria")->get();
       $periodos=Periodo::all();
-      //foreach ($herramientas as $herramienta) {
-        //  echo $herramienta->Articulo_inventariados->Catalogo_articulos->nombre;
-    //  }
+
       
       return view('maquinaria.index',compact('maquinaria','insumos','periodos','articulos'));
   }

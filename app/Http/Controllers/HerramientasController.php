@@ -28,11 +28,8 @@ class HerramientasController extends Controller
         $herramientas = Herramientas::with('Articulo_inventariados.Catalogo_articulos')->get();
         $insumos=Insumos::all();
         $periodos=Periodo::all();
-        $articulos=Catalogo_articulo::all();
-        //foreach ($herramientas as $herramienta) {
-          //  echo $herramienta->Articulo_inventariados->Catalogo_articulos->nombre;
-      //  }
-        
+        $articulos=Catalogo_articulo::where('tipo',"Herramientas")->get();
+       
         return view('herramientas.index',compact('herramientas','insumos','periodos','articulos'));
     }
 

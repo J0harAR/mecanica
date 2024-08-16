@@ -42,16 +42,12 @@ class InventarioController extends Controller
             'tipo_herramienta' => 'required_if:tipo,Herramientas',
             'dimension_herramienta' => 'required_if:tipo,Herramientas|nullable|numeric',
             'seccion' => 'required_if:tipo,Maquinaria',
-            'tipo_maquina' => 'required_if:tipo,Maquinaria|string|nullable',
-            'tipo_insumo' => 'required_if:tipo,Insumos|string|nullable',
         ], [
             'tipo.required' => 'Seleccione el tipo de artículo que desea registrar.',
             'nombre.required' => 'Ingrese el nombre del artículo.',
             'tipo_herramienta.required_if' => 'Seleccione el tipo de herramienta que desea registrar.',
             'dimension_herramienta.required_if' => 'Ingrese la dimensión de la herramienta.',
             'seccion.required_if' => 'Seleccione la sección de la maquinaria que desea registrar.',
-            'tipo_maquina.required_if' => 'Ingrese el tipo de máquina.',
-            'tipo_insumo.required_if' => 'Ingrese el tipo de insumo.',
         ]);
     
         $tipo = $request->input('tipo');
@@ -79,20 +75,16 @@ class InventarioController extends Controller
                 $catalogo_articulo->nombre=$nombre;
                 $catalogo_articulo->cantidad=0;
                 $catalogo_articulo->seccion=null;
-                $catalogo_articulo->tipo=$tipo_herramienta;
+                $catalogo_articulo->tipo="Herramientas";
                 $catalogo_articulo->save();
                 break;
 
             case 'Maquinaria':
                 $seccion=$request->input('seccion');
-                $tipo_maquina=strtolower($request->input('tipo_maquina'));
+                
                 
                 if(!$seccion){
                     return redirect()->route('inventario.index')->with('error', 'Seleccione la seccion de la maquinaria que desea registrar ');
-                }
-
-                if(!$tipo_maquina){
-                    return redirect()->route('inventario.index')->with('error', 'Ingrese el tipo de maquina');
                 }
 
                 $codigo=$this->generateCodigoMaquinaria($nombre,$seccion);
@@ -107,17 +99,11 @@ class InventarioController extends Controller
                 $catalogo_articulo->nombre=$nombre;
                 $catalogo_articulo->cantidad=0;
                 $catalogo_articulo->seccion=$seccion;
-                $catalogo_articulo->tipo=$tipo_maquina;
+                $catalogo_articulo->tipo="Maquinaria";
                 $catalogo_articulo->save();
                 break;
             case 'Insumos':
-                $tipo_insumo=strtolower($request->input('tipo_insumo'));
-              
-    
-                if(!$tipo_insumo){
-                    return redirect()->route('inventario.index')->with('error', 'Ingrese el tipo de insumo ');
-                }
-
+               
                 $codigo=$this->generateCodigoInsumos($nombre);
 
                 $catalogo_articulo = Catalogo_articulo::firstOrNew([
@@ -129,7 +115,7 @@ class InventarioController extends Controller
                 $catalogo_articulo->nombre=$nombre;
                 $catalogo_articulo->cantidad=0;
                 $catalogo_articulo->seccion=null;
-                $catalogo_articulo->tipo=$tipo_insumo;
+                $catalogo_articulo->tipo="Insumos";
                 $catalogo_articulo->save();
                 break;
     

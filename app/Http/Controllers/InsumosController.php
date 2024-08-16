@@ -28,11 +28,8 @@ class InsumosController extends Controller
   
         $insumos = Insumos::with('Articulo_inventariados.Catalogo_articulos')->get();
         $periodos=Periodo::all();
-        $articulos=Catalogo_articulo::all();
-        //foreach ($herramientas as $herramienta) {
-          //  echo $herramienta->Articulo_inventariados->Catalogo_articulos->nombre;
-      //  }
-        
+        $articulos=Catalogo_articulo::where('tipo',"Insumos")->get();
+     
         return view('insumos.index',compact('insumos','periodos','articulos'));
     }
 
