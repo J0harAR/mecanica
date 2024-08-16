@@ -54,28 +54,53 @@ class InventarioController extends Controller
         $nombre = strtolower($request->input('nombre'));
         $dimension_herramienta = $request->input('dimension_herramienta');
     
-        // Resto de la lógica para registrar el artículo
+        
         switch ($tipo) {
             case 'Herramientas':
-                $tipo_herramienta=$request->input('tipo_herramienta');
-         
-             
-                if(!$tipo_herramienta){
-                    return redirect()->route('inventario.index')->with('error', 'Seleccione el tipo de herramienta que desea registrar ');
+                $tipo_herramienta = $request->input('tipo_herramienta');
+
+                if (!$tipo_herramienta) {
+                    return redirect()->route('inventario.index')->with('error', 'Seleccione el tipo de herramienta que desea registrar');
                 }
 
-                $codigo=$this->generateCodigoHerramientas($nombre,$tipo_herramienta,$dimension_herramienta);
+            
+                if (Catalogo_articulo::where('nombre', $nombre)->exists()) {
+                    $codigoBase = $this->generateCodigoHerramientas($nombre, $tipo_herramienta, $dimension_herramienta);
+                        
+                        if(Catalogo_articulo::where('id_articulo',$codigoBase)->exists()){
+                            return redirect()->route('inventario.index')->with('error', 'Artículo duplicado');
+                        }        
+                }
+            
+                $codigoBase = $this->generateCodigoHerramientas($nombre, $tipo_herramienta, $dimension_herramienta);
 
-                $catalogo_articulo = Catalogo_articulo::firstOrNew([
-                    'id_articulo' => $codigo,
-                    'nombre' => $nombre,
-                ]);
+            
+                $segmentos = explode('-', $codigoBase);
+                $codigoBaseSinNumero = implode('-', array_slice($segmentos, 0, 2));
+                $numeroBase = implode('-', array_slice($segmentos, 2)); 
 
-                $catalogo_articulo->id_articulo=$codigo;
-                $catalogo_articulo->nombre=$nombre;
-                $catalogo_articulo->cantidad=0;
-                $catalogo_articulo->seccion=null;
-                $catalogo_articulo->tipo="Herramientas";
+            
+                $codigosExistentes = Catalogo_articulo::where('id_articulo', 'like', $codigoBaseSinNumero . '%')
+                    ->pluck('id_articulo')
+                    ->toArray();
+
+            
+                $contador = 1;
+                $codigo = $codigoBaseSinNumero . $contador . '-' . $numeroBase;
+
+            
+                while (in_array($codigo, $codigosExistentes)) {
+                    $contador++;
+                    $codigo = $codigoBaseSinNumero . $contador . '-' . $numeroBase;
+                }
+            
+                
+                $catalogo_articulo = new Catalogo_articulo;
+                $catalogo_articulo->id_articulo = $codigo;
+                $catalogo_articulo->nombre = $nombre;
+                $catalogo_articulo->cantidad = 0;
+                $catalogo_articulo->seccion = null;
+                $catalogo_articulo->tipo = "Herramientas";
                 $catalogo_articulo->save();
                 break;
 
@@ -87,14 +112,28 @@ class InventarioController extends Controller
                     return redirect()->route('inventario.index')->with('error', 'Seleccione la seccion de la maquinaria que desea registrar ');
                 }
 
-                $codigo=$this->generateCodigoMaquinaria($nombre,$seccion);
+                if(Catalogo_articulo::where('nombre', $nombre)->where('seccion', $seccion)->first()){
+
+                     return redirect()->route('inventario.index')->with('error', 'Articulo duplicado ');
+                }
+
+                $codigoBase =$this->generateCodigoMaquinaria($nombre,$seccion);
                 
+               
+                $codigosExistentes = Catalogo_articulo::where('id_articulo', 'like', $codigoBase . '%')
+                ->pluck('id_articulo')
+                ->toArray();
 
-                $catalogo_articulo = Catalogo_articulo::firstOrNew([
-                    'id_articulo' => $codigo,
-                    'nombre' => $nombre,
-                ]);
+                $contador = 1;
+                $codigo = $codigoBase;
 
+                while (in_array($codigo, $codigosExistentes)) {
+                    $codigo = $codigoBase  . $contador;
+                    $contador++;
+                }
+
+                
+                $catalogo_articulo=new Catalogo_articulo;
                 $catalogo_articulo->id_articulo=$codigo;
                 $catalogo_articulo->nombre=$nombre;
                 $catalogo_articulo->cantidad=0;
@@ -104,13 +143,28 @@ class InventarioController extends Controller
                 break;
             case 'Insumos':
                
-                $codigo=$this->generateCodigoInsumos($nombre);
 
-                $catalogo_articulo = Catalogo_articulo::firstOrNew([
-                    'id_articulo' => $codigo,
-                    'nombre' => $nombre,
-                ]);
+                if(Catalogo_articulo::where('nombre', $nombre)->first()){
 
+                    return redirect()->route('inventario.index')->with('error', 'Articulo duplicado ');
+               }
+
+     
+               $codigoBase=$this->generateCodigoInsumos($nombre);
+               
+               $codigosExistentes = Catalogo_articulo::where('id_articulo', 'like', $codigoBase . '%')
+               ->pluck('id_articulo')
+               ->toArray();
+
+               $contador = 1;
+               $codigo = $codigoBase;
+
+               while (in_array($codigo, $codigosExistentes)) {
+                   $codigo = $codigoBase  . $contador;
+                   $contador++;
+               }
+
+                $catalogo_articulo=new Catalogo_articulo;
                 $catalogo_articulo->id_articulo=$codigo;
                 $catalogo_articulo->nombre=$nombre;
                 $catalogo_articulo->cantidad=0;
@@ -127,6 +181,10 @@ class InventarioController extends Controller
         return redirect()->route('inventario.index')->with('success', 'El artículo ha sido registrado exitosamente: ' . $nombre);
     }
     
+
+    public function codigoRepetido(){
+
+    }
 
 
 
