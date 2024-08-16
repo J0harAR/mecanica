@@ -390,30 +390,31 @@
         let seriesData = [];
         let insumosMap = {}; // Map to accumulate quantities by month and insumo name
 
-        function getMonthYear(dateStr) {
+        function getDayMonthYear(dateStr) {
           const date = new Date(dateStr);
           const year = date.getFullYear();
-          const month = date.getMonth() + 1; // Months are zero-based
-          return `${year}-${month.toString().padStart(2, '0')}`;
+          const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Meses comienzan desde 0
+          const day = date.getDate().toString().padStart(2, '0');
+          return `${year}-${month}-${day}`;
         }
 
         data.forEach(entry => {
-          let month = getMonthYear(entry.fecha); // Convert to YYYY-MM format
+        let day = getDayMonthYear(entry.fecha); // Obtener el día, mes y año
 
-          if (!categories.includes(month)) {
-            categories.push(month); // Add month to categories if not already present
+        if (!categories.includes(day)) {
+          categories.push(day); // Añadir el día si no está ya en las categorías
+        }
+
+        entry.insumos.forEach(insumo => {
+          let key = `${day}-${insumo.nombre}`;
+          if (!insumosMap[key]) {
+            insumosMap[key] = { name: insumo.nombre, data: Array(categories.length).fill(0) };
           }
 
-          entry.insumos.forEach(insumo => {
-            let key = `${month}-${insumo.nombre}`;
-            if (!insumosMap[key]) {
-              insumosMap[key] = { name: insumo.nombre, data: Array(categories.length).fill(0) };
-            }
-
-            const index = categories.indexOf(month);
-            insumosMap[key].data[index] += insumo.pivot.cantidad_nueva;
-          });
+          const index = categories.indexOf(day);
+          insumosMap[key].data[index] += insumo.pivot.cantidad_nueva;
         });
+      });
 
         // Convert insumosMap to seriesData
         seriesData = Object.values(insumosMap);
@@ -446,7 +447,7 @@
           xaxis: {
             categories: categories,
             title: {
-              text: 'Meses'
+              text: 'Días'
             }
           },
           yaxis: {
