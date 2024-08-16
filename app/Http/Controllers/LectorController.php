@@ -32,6 +32,9 @@ class LectorController extends Controller
         if(!$request->input('maquina')){
             return redirect()->route('lector.index')->with('error', 'Seleccione una maquinaria');
         }
+        if(!$request->input('observaciones')){
+            return redirect()->route('lector.index')->with('error', 'No dejar en blanco la observación');
+        }
 
         $lectura = new Lectura;
         $lectura->fecha = $request->input('fecha');
