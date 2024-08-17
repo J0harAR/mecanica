@@ -15,8 +15,8 @@ class AlumnoController extends Controller
 
     function _construct()
     {
-        $this->middleware('permission:ver-alumnos', ['only' => ['index']]);
-        $this->middleware('permission:crear-alumno', ['only' => ['store']]);
+        $this->middleware('permission:ver-alumnos', ['only' => ['index','filtraGrupo']]);
+        $this->middleware('permission:crear-alumno', ['only' => ['store','checkNoControl']]);
         $this->middleware('permission:editar-alumno', ['only' => ['update']]);
         $this->middleware('permission:borrar-alumno', ['only' => ['destroy']]);
     }
