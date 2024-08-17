@@ -29,7 +29,7 @@ class ReportesController extends Controller
 
     public function generar_reporte_prestamo(Request $request){
         $prestamos = DB::table('prestamo')->get();
-     
+        
 
         $pdf = Pdf::loadView('reportes.prestamos',['prestamos'=>$prestamos]);
         return $pdf->stream();
@@ -57,12 +57,14 @@ class ReportesController extends Controller
             ->whereMonth('created_at', '<=', $finMes)
             ->get();
 
+            $pdf = Pdf::loadView('reportes.inventario', ['inventario' => $inventario, 'periodo' => $periodo,'año'=>$año[0]]);
+            return $pdf->stream();
+
            
         }
+        return redirect()->route('inventario.index')->with('error', 'No se selecciono el periodo ');
 
-
-        $pdf = Pdf::loadView('reportes.inventario', ['inventario' => $inventario, 'periodo' => $periodo,'año'=>$año[0]]);
-        return $pdf->stream();
+       
     }
 
 
@@ -83,12 +85,13 @@ class ReportesController extends Controller
             ->whereMonth('created_at', '>=', $inicioMes)
             ->whereMonth('created_at', '<=', $finMes)
             ->get();
+            $pdf = Pdf::loadView('reportes.herramientas',['herramientas'=>$herramientas,'periodo'=>$periodo ,'año'=>$año[0]]);
+            return $pdf->stream();
         }
     
-        
+        return redirect()->route('inventario.index')->with('error', 'No se selecciono el periodo ');
        
-       $pdf = Pdf::loadView('reportes.herramientas',['herramientas'=>$herramientas,'periodo'=>$periodo ,'año'=>$año[0]]);
-       return $pdf->stream();
+      
 
     }
 
@@ -107,10 +110,13 @@ class ReportesController extends Controller
                     ->whereMonth('created_at', '>=', $inicioMes)
                     ->whereMonth('created_at', '<=', $finMes)
                     ->get();
+            $pdf = Pdf::loadView('reportes.maquinaria',['maquinarias'=>$maquinarias,'periodo'=>$periodo ,'año'=>$año[0]]);
+            return $pdf->stream();
         }
 
-        $pdf = Pdf::loadView('reportes.maquinaria',['maquinarias'=>$maquinarias,'periodo'=>$periodo ,'año'=>$año[0]]);
-        return $pdf->stream();
+        
+
+        return redirect()->route('inventario.index')->with('error', 'No se selecciono el periodo ');
 
     }
 
@@ -128,11 +134,12 @@ class ReportesController extends Controller
                     ->whereMonth('created_at', '>=', $inicioMes)
                     ->whereMonth('created_at', '<=', $finMes)
                     ->get();
+            $pdf = Pdf::loadView('reportes.insumos',['Insumos'=>$Insumos,'periodo'=>$periodo ,'año'=>$año[0]]);
+            return $pdf->stream();
         }
 
-        $pdf = Pdf::loadView('reportes.insumos',['Insumos'=>$Insumos,'periodo'=>$periodo ,'año'=>$año[0]]);
-        return $pdf->stream();
-
+        
+        return redirect()->route('inventario.index')->with('error', 'No se selecciono el periodo ');
     }
 
 
