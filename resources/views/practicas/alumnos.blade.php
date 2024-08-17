@@ -27,12 +27,19 @@
                 </ol>
             </nav>
             <div class="container mt-4"></div>
-            @if(session('error'))
-                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" id="success-alert" role="alert">
                     {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                    window.setTimeout(function () {
+                        const successAlert = document.getElementById("success-alert");
+                        if (successAlert) successAlert.style.display = 'none';
+                    }, 3000);
+                    });
+                </script>
                 </div>
-            @endif
+        @endif
             
             @can('crear-practica-alumno')          
             <form class="row g-3 needs-validation" action="{{ route('practicasAlumno.store') }}" method="post" novalidate>
