@@ -89,7 +89,7 @@ class ReportesController extends Controller
             return $pdf->stream();
         }
     
-        return redirect()->route('inventario.index')->with('error', 'No se selecciono el periodo ');
+        return redirect()->route('herramientas.index')->with('error', 'No se selecciono el periodo ');
        
       
 
@@ -116,7 +116,7 @@ class ReportesController extends Controller
 
         
 
-        return redirect()->route('inventario.index')->with('error', 'No se selecciono el periodo ');
+        return redirect()->route('maquinaria.index')->with('error', 'No se selecciono el periodo ');
 
     }
 
@@ -139,7 +139,7 @@ class ReportesController extends Controller
         }
 
         
-        return redirect()->route('inventario.index')->with('error', 'No se selecciono el periodo ');
+        return redirect()->route('insumos.index')->with('error', 'No se selecciono el periodo ');
     }
 
 
