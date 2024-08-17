@@ -10,7 +10,7 @@ use  App\Models\Practica;
 class Articulo_inventariado extends Model
 {
     use HasFactory;
-    protected $table = "Articulo_inventariado";
+    protected $table = "articulo_inventariado";
     protected $primaryKey = 'id_inventario';
     protected $keyType = 'string';
 
