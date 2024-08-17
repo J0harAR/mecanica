@@ -71,18 +71,6 @@
         @endif
 
 
-
-        @if(session('success'))
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    window.setTimeout(function () {
-                        const successAlert = document.getElementById("success-alert");
-                        if (successAlert) successAlert.style.display = 'none';
-                    }, 3000);
-                });
-            </script>
-        @endif
-
         @can('ver-grupos')
 
             <div class="card shadow-lg rounded-3 border-0">
@@ -164,7 +152,7 @@
                                     @endcan
 
 
-                                 
+                                        @can('editar-grupo')                                       
                                         <!-- Modal de update -->
                                         <div class="modal fade" id="updateModal-{{ $grupo->clave_grupo }}" tabindex="-1"
                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -207,6 +195,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @endcan
                                    
                                 @endforeach
                             </tbody>

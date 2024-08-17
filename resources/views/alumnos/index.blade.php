@@ -157,17 +157,18 @@
             <div class="alert alert-success" id="success-alert">
                 {{ session('success') }}
             </div>
-        @endif
+      
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const errorAlert = document.getElementById("success-alert");
                 if (errorAlert) {
                     setTimeout(function () {
                         errorAlert.style.display = 'none';
-                    }, 4000); 
+                    }, 3000); 
                 }
             });
         </script>
+         @endif
 
         @if (session('error'))
             <div class="alert alert-danger" id="error-alert">
@@ -193,17 +194,7 @@
             <div class="alert alert-danger" id="error-alert">Numero de control duplicado</div>
         @enderror
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const errorAlert = document.getElementById("error-alert");
-                if (errorAlert) {
-                    setTimeout(function () {
-                        errorAlert.style.display = 'none';
-                    }, 4000); 
-                }
-            });
-        </script>
-
+    
 
         <form action="{{route('alumnos.filtrar-grupos')}}" method="POST" class="border p-4 rounded shadow-sm mb-5">
             @csrf
@@ -320,7 +311,7 @@
                                 </div>
                             @endcan
 
-                            @can('editar-alumnos')
+                                     @can('editar-alumnos')
                                             <!-- Modal de edicion -->
                                             <div class="modal fade" id="updateModal-{{ $alumno->no_control }}" tabindex="-1"
                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">

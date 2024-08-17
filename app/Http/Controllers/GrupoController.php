@@ -13,6 +13,7 @@ class GrupoController extends Controller
     function _construct()
     {
         $this->middleware('permission:ver-grupos', ['only' => ['index']]);
+        $this->middleware('permission:editar-grupo', ['only' => ['update']]);
         $this->middleware('permission:crear-grupo', ['only' => ['create','store']]);
         $this->middleware('permission:borrar-grupo', ['only' => ['destroy']]);
     }

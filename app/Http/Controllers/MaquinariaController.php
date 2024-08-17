@@ -17,6 +17,7 @@ class MaquinariaController extends Controller
         $this->middleware('permission:crear-maquinaria', ['only' => ['store']]);
         $this->middleware('permission:editar-maquinaria', ['only' => ['update']]);
         $this->middleware('permission:asignar-insumos-maquinaria', ['only' => ['asignar_insumos']]);
+        $this->middleware('permission:desasignar-insumos-maquinaria', ['only' => ['desasignar_insumo']]);
         $this->middleware('permission:borrar-maquinaria', ['only' => ['destroy']]);
     }
 

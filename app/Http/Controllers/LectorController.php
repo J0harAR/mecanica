@@ -12,7 +12,7 @@ class LectorController extends Controller
 
     function _construct()
     {
-        $this->middleware('permission:ver-lecturas', ['only' => ['index']]);
+        $this->middleware('permission:ver-lecturas', ['only' => ['index','obtenerComportamientoInsumos']]);
         $this->middleware('permission:crear-lectura', ['only' => ['store']]);
     }
 

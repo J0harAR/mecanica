@@ -50,6 +50,7 @@ class SeederTablaPermisos extends Seeder
             
             //Grupos
             'ver-grupos',
+            'editar-grupo',
             'crear-grupo',
             'borrar-grupo',
 
@@ -76,12 +77,12 @@ class SeederTablaPermisos extends Seeder
             'crear-maquinaria',
             'editar-maquinaria',
             'asignar-insumos-maquinaria',
+            'desasignar-insumos-maquinaria',
             'borrar-maquinaria',
 
             //Mantenimiento
             'ver-mantenimientos',
             'crear-mantenimiento',
-            'borrar-mantenimiento',
 
             //Periodo
             'ver-periodos',
@@ -103,7 +104,6 @@ class SeederTablaPermisos extends Seeder
             'ver-prestamos',
             'crear-prestamo',
             'editar-prestamo',
-            'borrar-prestamo',
             'finalizar-prestamo',
 
             //Reportes

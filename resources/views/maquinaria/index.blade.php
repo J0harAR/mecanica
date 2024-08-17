@@ -387,11 +387,13 @@
                                         </div>
                                     </div>
                                 </div>
+                                @can('desasignar-insumos-maquinaria')                                                              
                                 <div class="col-md-3 text-left mt-4">
                                     <button type="button" class="btn btn-danger btn-sm remove-insumo" data-id="{{ $insumo->id_articulo }}">
                                         <i class="bi bi-x"></i>
                                     </button>
                                 </div>
+                                @endcan
                             </div>
                         @endforeach
                     </div>

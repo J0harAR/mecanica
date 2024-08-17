@@ -18,7 +18,7 @@ class DocenteController extends Controller
     {
         $this->middleware('permission:ver-docentes', ['only' => ['index']]);
         $this->middleware('permission:crear-docente', ['only' => ['create','store']]);
-        $this->middleware('permission:ver-docente', ['only' => ['show']]);
+        $this->middleware('permission:ver-docente', ['only' => ['show','obtenerDatosDocente']]);
         $this->middleware('permission:editar-docente', ['only' => ['update']]);
         $this->middleware('permission:borrar-docente', ['only' => ['destroy']]);
         $this->middleware('permission:asignar-grupos-docente', ['only' => ['asigna','filtrar_asignaturas','asignar']]);

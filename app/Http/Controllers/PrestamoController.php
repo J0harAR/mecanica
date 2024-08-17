@@ -16,7 +16,6 @@ class PrestamoController extends Controller
         $this->middleware('permission:ver-prestamos', ['only' => ['index']]);
         $this->middleware('permission:crear-prestamo', ['only' => ['store']]);
         $this->middleware('permission:editar-prestamo', ['only' => ['update']]);
-        $this->middleware('permission:borrar-prestamo', ['only' => ['destroy']]);
         $this->middleware('permission:finalizar-prestamo', ['only' => ['finalizar']]);
     }
 
@@ -99,20 +98,7 @@ class PrestamoController extends Controller
 
     }
 
-    public function destroy($id){
-        $prestamo = DB::table('prestamo')->where('id', $id)->first();
-
-        $herramienta=Articulo_inventariado::find($prestamo->id_herramientas);
-        
-        $herramienta->estatus="Disponible";
-        $herramienta->save();
-
-        DB::table('prestamo')->where('id', $id)->delete();
-
-        return redirect()->route('prestamos.index')->with('success', 'Préstamo eliminado correctamente.');
-
-    }
-
+ 
     public function finalizar($id){
 
         $prestamo = DB::table('prestamo')->where('id', $id)->first();

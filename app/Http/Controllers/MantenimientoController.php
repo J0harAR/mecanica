@@ -16,7 +16,7 @@ class MantenimientoController extends Controller
     {
         $this->middleware('permission:ver-mantenimientos', ['only' => ['index']]);
         $this->middleware('permission:crear-mantenimiento', ['only' => ['store','obtenerDatosMaquinaria','getInsumosPorMaquinaria']]);
-        $this->middleware('permission:borrar-mantenimiento', ['only' => ['destroy']]);
+    
     }
 
     public function getInsumosPorMaquinaria(Request $request)
@@ -130,13 +130,5 @@ class MantenimientoController extends Controller
     
     }
 
-    public function destroy($id){
-      $mantenimiento=Mantenimiento::find($id);
-      $mantenimiento->delete();
-      
-      return redirect()->route('mantenimiento.index')->with('success', 'El registro del mantenimiento ha sido eliminado exitosamente.');
-
-
-    }
 
 }
