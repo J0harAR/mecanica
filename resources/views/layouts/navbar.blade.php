@@ -47,11 +47,14 @@ $total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
         </a>
       </li><!-- End Search Icon-->
       <li class="nav-item dropdown">
+      @canany(['ver-mantenimientos','ver-prestamos'])
       <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
           <i class="bi bi-bell"></i>
           <span class="badge bg-primary badge-number">{{$total_notificaciones}}</span>
-        </a><!-- End Notification Icon -->
+      </a><!-- End Notification Icon -->
+      @endcanany
 
+      @canany(['ver-mantenimientos','ver-prestamos'])
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
           <li class="dropdown-header">
         
@@ -108,7 +111,7 @@ $total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
         <!--  End Notification Dropdown Items -->
 
       </li><!-- End Notification Nav -->
-
+  @endcanany
       <li class="nav-item dropdown pe-3">
         <a class="nav-link d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
           <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->name }}</span>
