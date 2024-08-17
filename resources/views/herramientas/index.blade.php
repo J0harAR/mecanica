@@ -197,17 +197,33 @@
         </div>
  
 
-    @if (session('success'))
-        <div class="alert alert-success" id="success-alert">
-            {{ session('success') }}
-        </div>
-    @endif
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
+                {{ session('success') }}
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                window.setTimeout(function () {
+                    const successAlert = document.getElementById("success-alert");
+                    if (successAlert) successAlert.style.display = 'none';
+                }, 3000);
+                });
+            </script>
+        @endif
 
     @if (session('error'))
-        <div class="alert alert-danger" id="error-alert">
-            {{ session('error') }}
+            <div class="alert alert-danger alert-dismissible fade show" id="success-alert" role="alert">
+                {{ session('error') }}
+                <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                window.setTimeout(function () {
+                    const successAlert = document.getElementById("success-alert");
+                    if (successAlert) successAlert.style.display = 'none';
+                }, 3000);
+                });
+            </script>
         </div>
-    @endif 
+    @endif
 
     @if ($errors->any())
     <div class="alert alert-danger" id="error-alert">

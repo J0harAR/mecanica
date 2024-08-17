@@ -62,46 +62,57 @@ class InventarioController extends Controller
                 if (!$tipo_herramienta) {
                     return redirect()->route('inventario.index')->with('error', 'Seleccione el tipo de herramienta que desea registrar');
                 }
-
-            
-                if (Catalogo_articulo::where('nombre', $nombre)->exists()) {
-                    $codigoBase = $this->generateCodigoHerramientas($nombre, $tipo_herramienta, $dimension_herramienta);
-                        
-                        if(Catalogo_articulo::where('id_articulo',$codigoBase)->exists()){
-                            return redirect()->route('inventario.index')->with('error', 'Artículo duplicado');
-                        }        
-                }
-            
+                
                 $codigoBase = $this->generateCodigoHerramientas($nombre, $tipo_herramienta, $dimension_herramienta);
 
-            
-                $segmentos = explode('-', $codigoBase);
-                $codigoBaseSinNumero = implode('-', array_slice($segmentos, 0, 2));
-                $numeroBase = implode('-', array_slice($segmentos, 2)); 
-
-            
-                $codigosExistentes = Catalogo_articulo::where('id_articulo', 'like', $codigoBaseSinNumero . '%')
-                    ->pluck('id_articulo')
-                    ->toArray();
-
-            
-                $contador = 1;
-                $codigo = $codigoBaseSinNumero . $contador . '-' . $numeroBase;
-
-            
-                while (in_array($codigo, $codigosExistentes)) {
-                    $contador++;
-                    $codigo = $codigoBaseSinNumero . $contador . '-' . $numeroBase;
-                }
-            
+               if(!Catalogo_articulo::where('id_articulo',$codigoBase)->exists()){
                 
-                $catalogo_articulo = new Catalogo_articulo;
-                $catalogo_articulo->id_articulo = $codigo;
-                $catalogo_articulo->nombre = $nombre;
-                $catalogo_articulo->cantidad = 0;
-                $catalogo_articulo->seccion = null;
-                $catalogo_articulo->tipo = "Herramientas";
-                $catalogo_articulo->save();
+                    $catalogo_articulo = new Catalogo_articulo;
+                    $catalogo_articulo->id_articulo = $codigoBase;
+                    $catalogo_articulo->nombre = $nombre;
+                    $catalogo_articulo->cantidad = 0;
+                    $catalogo_articulo->seccion = null;
+                    $catalogo_articulo->tipo = "Herramientas";
+                    $catalogo_articulo->save();
+
+               }else{
+
+                    if(!Catalogo_articulo::where('nombre', $nombre)->exists()){
+
+                        $segmentos = explode('-', $codigoBase);
+                        $codigoBaseSinNumero = implode('-', array_slice($segmentos, 0, 2));
+                        $numeroBase = implode('-', array_slice($segmentos, 2)); 
+        
+                    
+                        $codigosExistentes = Catalogo_articulo::where('id_articulo', 'like', $codigoBaseSinNumero . '%')
+                            ->pluck('id_articulo')
+                            ->toArray();
+        
+                    
+                        $contador = 1;
+                        $codigo = $codigoBaseSinNumero . $contador . '-' . $numeroBase;
+        
+                    
+                        while (in_array($codigo, $codigosExistentes)) {
+                            $contador++;
+                            $codigo = $codigoBaseSinNumero . $contador . '-' . $numeroBase;
+                        }
+                    
+                        
+                        $catalogo_articulo = new Catalogo_articulo;
+                        $catalogo_articulo->id_articulo = $codigo;
+                        $catalogo_articulo->nombre = $nombre;
+                        $catalogo_articulo->cantidad = 0;
+                        $catalogo_articulo->seccion = null;
+                        $catalogo_articulo->tipo = "Herramientas";
+                        $catalogo_articulo->save();
+                    }else{
+                        return redirect()->route('inventario.index')->with('error', 'Articulo duplicado ');
+                    }
+                   
+               }
+
+
                 break;
 
             case 'Maquinaria':
