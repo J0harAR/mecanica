@@ -31,7 +31,7 @@
                     </button>
                 @endcan
 
-                @can('crear-alumnos')
+                @can('asigar-grupo-alumno')
                     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-asignar">
                         <i class="fas fa-chalkboard-teacher me-1"></i> Asignar grupo
                     </button>
@@ -379,7 +379,7 @@
                 </table>
 
                 
-                
+                @can('desasigar-grupo-alumno')                  
                 <div class="dropdown mt-3">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                         Seleccionar Acción
@@ -389,6 +389,7 @@
                         <!-- Puedes agregar más opciones aquí -->
                     </ul>
                 </div>
+                @endcan
                                
         </div>
     </div>

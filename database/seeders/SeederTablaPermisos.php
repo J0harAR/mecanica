@@ -31,6 +31,8 @@ class SeederTablaPermisos extends Seeder
             'crear-alumnos',
             'editar-alumnos',
             'borrar-alumnos',
+            'asigar-grupo-alumno',
+            'desasigar-grupo-alumno',
 
             //Asigatura
             'ver-asignaturas',

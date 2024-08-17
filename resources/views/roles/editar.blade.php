@@ -71,7 +71,7 @@
           $permissions = [
               'Usuarios' => ['ver-usuarios', 'crear-usuarios', 'editar-usuarios', 'borrar-usuarios'],
               'Rol' => ['ver-rol', 'crear-rol', 'editar-rol', 'borrar-rol'],
-              'Alumnos' => ['ver-alumnos', 'crear-alumnos', 'editar-alumnos', 'borrar-alumnos'],
+              'Alumnos' => ['ver-alumnos', 'crear-alumnos', 'editar-alumnos', 'borrar-alumnos','asigar-grupo-alumno','desasigar-grupo-alumno'],
               'Asignaturas' => ['ver-asignaturas', 'crear-asignatura', 'editar-asignatura', 'borrar-asignatura'],
               'Docentes' => ['ver-docentes', 'crear-docente', 'ver-docente', 'editar-docente', 'borrar-docente', 'asignar-grupos-docente', 'eliminar-grupos-docente'],
               'Grupos' => ['ver-grupos', 'crear-grupo', 'editar-grupo','borrar-grupo'],

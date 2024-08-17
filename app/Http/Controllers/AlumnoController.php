@@ -19,6 +19,8 @@ class AlumnoController extends Controller
         $this->middleware('permission:crear-alumno', ['only' => ['store','checkNoControl']]);
         $this->middleware('permission:editar-alumno', ['only' => ['update']]);
         $this->middleware('permission:borrar-alumno', ['only' => ['destroy']]);
+        $this->middleware('permission:asigar-grupo-alumno', ['only' => ['asignarGrupo']]);
+        $this->middleware('permission:desasigar-grupo-alumno', ['only' => ['desasignarGrupo']]);
     }
 
 
