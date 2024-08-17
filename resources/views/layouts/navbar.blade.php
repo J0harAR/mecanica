@@ -62,7 +62,7 @@ $total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
             <hr class="dropdown-divider">
           </li>
 
- 
+          @can('ver-mantenimientos')           
           @foreach ($maquinaria_mantenimiento as $maquina)
           <a href="{{route('mantenimiento.index')}}" style="text-decoration:none;">
             <li class="notification-item">
@@ -80,8 +80,11 @@ $total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
               <hr class="dropdown-divider">
             </li>
             @endforeach
-        
+          @endcan
 
+
+
+          @can('ver-prestamos')           
           @foreach ($prestamos_pendientes as $prestamo)
           <a href="{{route('prestamos.index')}}" style="text-decoration:none;">
           <li class="notification-item">
@@ -100,7 +103,7 @@ $total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
           </li>
           </a>
           @endforeach
-        
+          @endcan
         </ul>
         <!--  End Notification Dropdown Items -->
 
