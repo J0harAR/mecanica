@@ -84,6 +84,7 @@
               'Practicas' => ['ver-practicas', 'crear-practica', 'ver-practica', 'editar-practica', 'borrar-practica', 'completar-practica', 'crear-practica-alumno'],
               'Prestamos' => ['ver-prestamos', 'crear-prestamo', 'editar-prestamo', 'borrar-prestamo', 'finalizar-prestamo'],
               'Reportes' => ['generar_reporte_prestamo', 'generar_reporte_inventario', 'generar_reporte_herramientas', 'generar_reporte_maquinaria', 'generar_reporte_insumos', 'generar_reporte_practicas']
+              'Lecturas'=>['ver-lecturas','crear-lectura']
           ];
 
           $rolePermissions = $role->permissions->pluck('name')->toArray();
