@@ -104,7 +104,7 @@
 
     
                                         <td>
-                                            @can('editar-grupo')                                                                              
+                                            @can('editar-grupo')                                             
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                                     data-bs-target="#updateModal-{{ $grupo->clave_grupo }}">
                                                     <i class="fas fa-edit bt"></i>

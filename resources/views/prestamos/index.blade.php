@@ -25,48 +25,49 @@
     <div>
 
       @can('crear-prestamo')
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
-      <i class="ri-add-line"></i> Añadir préstamo
-      </button>
-    @endcan
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
+        <i class="ri-add-line"></i> Añadir préstamo
+        </button>
+      @endcan
+
       @can('generar_reporte_prestamo')
       <a class="btn btn btn-tecnm" href="{{route('reporte.prestamo')}}"><i class="bi bi-download"></i></a>
-    @endcan
+      @endcan
     </div>
 
     </div>
 
 
     @if (session('docente_no_encontrado'))
-    <div class="alert alert-danger" id="danger-alert">
-    {{ session('docente_no_encontrado') }}
-    </div>
-  @endif
+        <div class="alert alert-danger" id="danger-alert">
+        {{ session('docente_no_encontrado') }}
+        </div>
+    @endif
 
     @if (session('herramienta_no_disponible'))
-    <div class="alert alert-danger" id="danger-alert">
-    {{ session('herramienta_no_disponible') }}
-    </div>
-  @endif
+      <div class="alert alert-danger" id="danger-alert">
+      {{ session('herramienta_no_disponible') }}
+      </div>
+    @endif
 
     @if (session('herramienta_no_encontrada'))
-    <div class="alert alert-danger" id="danger-alert">
-    {{ session('herramienta_no_encontrada') }}
-    </div>
+      <div class="alert alert-danger" id="danger-alert">
+      {{ session('herramienta_no_encontrada') }}
+      </div>
   @endif
 
     @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
-    {{ session('success') }}
-    </div>
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      window.setTimeout(function () {
-      const successAlert = document.getElementById("success-alert");
-      if (successAlert) successAlert.style.display = 'none';
-      }, 3000);
-    });
-    </script>
+      <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
+      {{ session('success') }}
+      </div>
+      <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        window.setTimeout(function () {
+        const successAlert = document.getElementById("success-alert");
+        if (successAlert) successAlert.style.display = 'none';
+        }, 3000);
+      });
+      </script>
   @endif
 
   @if (session('error'))
@@ -163,7 +164,6 @@
     <!-- End Vertically centered Modal -->
   @endcan
     @can('ver-prestamos')
-
     <div class="card shadow-lg rounded-3 border-0">
     <div class="card-body p-4">
       <div class="table-responsive">
@@ -194,15 +194,15 @@
       <td>
 
       @if ($prestamo->pivot->estatus == "Pendiente")
-      @can('editar-prestamo')
-      <button type="button" class="btn btn-outline btn-tecnm btn-sm" data-bs-toggle="modal"
-      data-bs-target="#modal-update-{{ $prestamo->pivot->id }}">
-      <i class="fas fa-pencil-alt"></i>
-      </button>
-    @endcan
-    @endif
+          @can('editar-prestamo')
+          <button type="button" class="btn btn-outline btn-tecnm btn-sm" data-bs-toggle="modal"
+          data-bs-target="#modal-update-{{ $prestamo->pivot->id }}">
+          <i class="fas fa-pencil-alt"></i>
+          </button>
+        @endcan
+      @endif
  
-    @endcan
+  
 
       @if ($prestamo->pivot->estatus == "Pendiente")
       @can('finalizar-prestamo')
