@@ -31,7 +31,7 @@
       @endcan
 
       @can('generar_reporte_prestamo')
-      <a class="btn btn btn-tecnm" href="{{route('reporte.prestamo')}}"><i class="bi bi-download"></i></a>
+      <a class="btn btn btn-tecnm" href="{{route('reporte.prestamo')}}" target="_blank"><i class="bi bi-download"></i></a>
       @endcan
     </div>
 

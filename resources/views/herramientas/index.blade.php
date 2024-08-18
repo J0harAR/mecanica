@@ -55,7 +55,7 @@
             <h5 class="modal-title" id="exampleModalLabel">Reporte de herramientas</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <form action="{{ route('reporte.herramientas') }}" method="POST">
+          <form action="{{ route('reporte.herramientas') }}" method="POST" target="_blank">
             @csrf
           <div class="modal-body">
           <label >Seleciona el periodo</label>
