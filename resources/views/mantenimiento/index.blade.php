@@ -84,7 +84,7 @@
 @can('crear-mantenimiento')
   <!-- Vertically centered Modal -->
   <div class="modal fade" id="modal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content border-0 shadow-lg">
         <div class="modal-header" style="background-color: #002855; color: #ffffff;">
           <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Registrar mantenimiento</h5>
@@ -319,7 +319,7 @@
                     // Crear HTML para los datos generales
                     let DatosHtml = ` 
                         <div class="row">
-                            <div class="col-md-12 text-left">
+                            <div class="col-md-12 ">
                                 <p>ID:${datos.articulo_inventariados.id_inventario}-${datos.articulo_inventariados.catalogo_articulos.nombre}</p>
                             </div>
 
@@ -339,9 +339,14 @@
                                 <p class="form-label">Detalles de los insumos</p>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <p class="form-label">Cantidad Actual</p>
                             </div>
+
+                            <div class="col-md-3">
+                                <p class="form-label">Capacidad</p>
+                            </div>
+
                         </div>
                         
                         
@@ -350,13 +355,22 @@
                     datos.insumos.forEach(function(insumo) {
                         DatosHtml += `
                             <div class="row align-items-center mb-2">
-                                    <div class="col-md-5">
+                                    <div class="col-md-6">
                                         <span> ${insumo.id_articulo} ${insumo.nombre}</span>
                                     </div>
-                                    <div class="col-md-7">
+                                    <div class="col-md-3">
                                         <div class="input-group">
                                             
                                             <input type="text" placeholder="${insumo.pivot?.cantidad_actual ?? 0}"
+                                                data-id="${insumo.id_inventario}" class="insumo-cantidad form-control" disabled>
+                                            <span class="input-group-text">Mililitros</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            
+                                            <input type="text" placeholder="${insumo.pivot?.capacidad ?? 0}"
                                                 data-id="${insumo.id_inventario}" class="insumo-cantidad form-control" disabled>
                                             <span class="input-group-text">Mililitros</span>
                                         </div>
@@ -394,6 +408,22 @@
             boton.disabled = true; 
         });
     });
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const fechaInput = document.getElementById('fecha');
+    
+    // Establece el valor máximo permitido como la fecha actual (solo fecha)
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Meses comienzan desde 0
+    const dd = String(today.getDate()).padStart(2, '0');
+    const formattedToday = `${yyyy}-${mm}-${dd}`;
+
+    fechaInput.setAttribute('max', formattedToday);
+});
 </script>
 
   @endsection
