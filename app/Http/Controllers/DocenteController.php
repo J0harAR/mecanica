@@ -199,7 +199,9 @@ class DocenteController extends Controller
     public function destroy($id){
     try {
         $docente = Docente::findOrFail($id);
-        $docente->delete();
+        $persona = Persona::find($docente->curp);
+        
+        $persona->delete();
 
         return redirect()->route('docentes.index')->with('success', 'Docente eliminado correctamente');
     } catch (QueryException $e) {

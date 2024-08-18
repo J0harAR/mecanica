@@ -82,7 +82,7 @@ class AlumnoController extends Controller
             if($persona_existente){
                 return redirect()->route('alumnos.index')->with('error','Curp le pertenece a un docente');
             }
-
+           
 
             $persona=new Persona;
             $persona->curp=$curp;
@@ -163,7 +163,9 @@ class AlumnoController extends Controller
 
         public function destroy($id){
             $alumno=Alumno::find($id);
-            $alumno->delete();
+            $persona = Persona::find($alumno->curp);
+            $persona->delete();
+            
 
             return redirect()->route('alumnos.index')->with('success','Alumno eliminado correctamente');
 
@@ -217,6 +219,12 @@ class AlumnoController extends Controller
         }
 
         public function filtraGrupo(Request $request){
+
+            if(!$request->input('periodo') and !$request->input('grupo')){
+               
+                $alumnos=Alumno::all();
+                return redirect()->route('alumnos.index')->with(['alumnos' => $alumnos]);
+            }
 
             $grupo = Grupo::where('clave_periodo', $request->input('periodo'))
             ->where('clave_grupo', $request->input('grupo'))

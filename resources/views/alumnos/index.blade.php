@@ -235,16 +235,23 @@
 <div class="card shadow-lg rounded-3 border-0">
     <div class="card-body p-4">
         <div class="table-responsive">
-            <h5>Grupo: {{ session('grupo')->clave_grupo }}</h5>
+            @if (session('grupo'))
+                <h5>Grupo: {{ session('grupo')->clave_grupo }}</h5>
+            @endif
+                <h5>Todos los grupos</h5>
+           
             <form id="form-post" action="{{ route('alumnos.desasignar-grupo') }}" method="POST">
                 @csrf
+                @if (session('grupo'))               
                 <input type="hidden" name="clave_grupo" value="{{ session('grupo')->clave_grupo }}">
-
+                @endif
                 <table class="table table-striped table-hover table-bordered shadow-sm rounded align-middle"
                     style="border-collapse: separate; border-spacing: 0 10px;">
                     <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
                         <tr>
+                            @if (session('grupo'))        
                             <th></th>
+                            @endif
                             <th>Número de Control</th>
                             <th>Nombre</th>
                             <th>Apellido Paterno</th>
@@ -256,9 +263,11 @@
                     <tbody>
                         @foreach(session('alumnos') as $alumno)
                             <tr>
+                                 @if (session('grupo'))        
                                 <td>
                                     <input type="checkbox" name="selected_alumnos[]" value="{{ $alumno->no_control }}">
                                 </td>
+                                @endif
                                 </form>  
                                 <td>{{ $alumno->no_control }}</td>
                                 <td>{{ $alumno->persona->nombre }}</td>
@@ -360,7 +369,7 @@
                                                                     <label for="curp" class="form-label"><i
                                                                             class="bi bi-card-list me-2"></i>CURP</label>
                                                                     <input type="text" class="form-control" id="curp" name="curp"
-                                                                        value="{{ $alumno->persona->curp }}" required>
+                                                                        value="{{ $alumno->persona->curp }}" required pattern="^[A-Z]{4}[0-9]{6}[HM][A-Z]{5}[A-Z0-9]{2}$">
                                                                 </div>
 
                                                                 <div class="text-center mt-4">
@@ -379,7 +388,8 @@
                 </table>
 
                 
-                @can('desasigar-grupo-alumno')                  
+                @can('desasigar-grupo-alumno') 
+                @if (session('grupo'))                         
                 <div class="dropdown mt-3">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                         Seleccionar Acción
@@ -389,6 +399,7 @@
                         <!-- Puedes agregar más opciones aquí -->
                     </ul>
                 </div>
+                @endif
                 @endcan
                                
         </div>
