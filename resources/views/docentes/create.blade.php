@@ -45,10 +45,32 @@
 
                   @if ($error === "validation.max.file")
                       Archivo excedio el peso permitido
-                  @endif        
+                  @endif   
+                  
+          
+                  @if ($error === "validation.unique")
+                      CURP duplicada
+                  @endif
+                 
             @endforeach
   </div>
   @endif
+
+  @if (session('error'))
+            <div class="alert alert-danger" id="error-alert">
+                {{ session('error') }}
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    window.setTimeout(function () {
+                        const successAlert = document.getElementById("error-alert");
+                        if (successAlert) successAlert.style.display = 'none';
+                    }, 3000);
+                });
+            </script>
+        @endif
+
+
   <div class="card custom-card">
   <form id="docenteForm" action="{{ route('docentes.store') }}" method="POST" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
     @csrf

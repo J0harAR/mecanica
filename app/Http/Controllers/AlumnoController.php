@@ -109,6 +109,10 @@ class AlumnoController extends Controller
 
         public function update(Request $request,$id){
            
+            $validated = $request->validate([
+                'curp' => 'required|unique:alumno|max:255',
+            ]); 
+
             $curp = $request->input('curp');
             $nombre=$request->input('nombre');   
             $apellido_p=$request->input('apellido_p');   

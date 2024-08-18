@@ -36,7 +36,12 @@
 
                   @if ($error === "validation.max.file")
                       Archivo excedio el peso permitido
-                  @endif        
+                  @endif   
+                  
+                  @if ($error === "validation.unique")
+                      CURP duplicada
+                  @endif
+                  
             @endforeach
   </div>
   @endif

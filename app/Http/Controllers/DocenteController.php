@@ -38,7 +38,11 @@ class DocenteController extends Controller
 
 
     public function store(Request $request){
-     
+        
+        $validated = $request->validate([
+            'curp' => 'required|unique:docente|max:255',
+        ]); 
+
         $curp = $request->input('curp');
         $nombre=$request->input('nombre');   
         $apellido_p=$request->input('apellido_p');   
@@ -52,13 +56,13 @@ class DocenteController extends Controller
         //Validacion de inclusion
         if($persona_existente){
 
-            return redirect()->route('docentes.index')->with('error','Curp le pertenece a un alumno');
+            return redirect()->route('docentes.create')->with('error','Curp le pertenece a un alumno');
         }
 
         //validacion rfc 
         $docente=Docente::find($rfc);
         if($docente){
-            return redirect()->route('docentes.index')->with('error','RFC duplicado');
+            return redirect()->route('docentes.create')->with('error','RFC duplicado');
         }
 
       
@@ -143,6 +147,10 @@ class DocenteController extends Controller
     }   
 
     public function update(Request $request ,$id){
+        
+        $validated = $request->validate([
+            'curp' => 'required|unique:docente|max:255',
+        ]); 
 
         $nombre=$request->input('nombre');
         $apellido_p=$request->input('apellido_p');
