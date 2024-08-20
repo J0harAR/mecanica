@@ -179,32 +179,27 @@ class AlumnoController extends Controller
 
 
 
-        public function asignarGrupo(Request $request){
-
-          
-
+        public function asignarGrupo(Request $request)
+        {
             $selectedAlumnosString = $request->input('selected_alumnos');
-            if(!$selectedAlumnosString){
-                return redirect()->route('alumnos.index')->with('error','No se selecciono ningun alumno');
+            if (!$selectedAlumnosString) {
+                return redirect()->route('alumnos.index')->with('error', 'No se seleccionó ningún alumno');
             }
-    
+
             $selectedAlumnos = explode(',', $selectedAlumnosString);
-          
 
-            $grupo=Grupo::find($request->input('grupo'));
-            
-        
-            if(!$grupo){
-                return redirect()->route('alumnos.index')->with('error','Grupo no encontrado');
+            $grupo = Grupo::find($request->input('grupo'));
+
+            if (!$grupo) {
+                return redirect()->route('alumnos.index')->with('error', 'Grupo no encontrado');
             }
-            
-            
-            $grupo->alumnos()->attach($selectedAlumnos);
-            
 
-            return redirect()->route('alumnos.index')->with('success','Grupo asignado correctamente');
+           
+            $grupo->alumnos()->syncWithoutDetaching($selectedAlumnos);
 
+            return redirect()->route('alumnos.index')->with('success', 'Grupo asignado correctamente');
         }
+
         public function desasignarGrupo(Request $request){
 
             $selectedAlumnos = $request->input('selected_alumnos', []);          
