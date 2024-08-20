@@ -23,7 +23,7 @@ class Lectura extends Model
         ->withPivot(['cantidad', 'cantidad_anterior', 'cantidad_nueva']);
     }
     public function user(){
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'id_usuario');
 
     }
 

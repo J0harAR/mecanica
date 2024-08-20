@@ -142,8 +142,9 @@
                     <th>N.Lectura</th>
                     <th>Máquina</th>
                     <th>Insumos Utilizados</th>
-                    <th data-type="date" data-format="YYYY/DD/MM">Fecha</th>
                     
+                    <th data-type="date" data-format="YYYY/DD/MM">Fecha</th>
+                    <th>Usuario</th>
                     </tr>
                 </thead>
 
@@ -162,6 +163,7 @@
                     </button>
                 </td>
                 <td>{{$lectura->fecha}}</td>
+                <td>{{$lectura->user->id}}</td>
             
                 </tr>
 
