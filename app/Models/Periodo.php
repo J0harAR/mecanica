@@ -14,5 +14,7 @@ class Periodo extends Model
 
     protected $fillable = [
         'clave',
+        'fecha_inicio',
+        'fecha_final',
     ];
 }

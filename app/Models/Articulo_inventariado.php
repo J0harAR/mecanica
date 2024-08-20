@@ -14,6 +14,15 @@ class Articulo_inventariado extends Model
     protected $primaryKey = 'id_inventario';
     protected $keyType = 'string';
 
+
+    protected $fillable = [
+        'id_inventario',
+        'id_articulo',
+        'estatus',
+        'tipo',
+    ];
+
+
     public function Catalogo_articulos(){
         return $this->belongsTo(Catalogo_articulo::class, 'id_articulo');
     }

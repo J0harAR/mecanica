@@ -109,10 +109,7 @@ class AlumnoController extends Controller
 
         public function update(Request $request,$id){
            
-            $validated = $request->validate([
-                'curp' => 'required|unique:alumno|max:255',
-            ]); 
-
+         
             $curp = $request->input('curp');
             $nombre=$request->input('nombre');   
             $apellido_p=$request->input('apellido_p');   
@@ -125,11 +122,31 @@ class AlumnoController extends Controller
             if($persona_existente){
                 return redirect()->route('alumnos.index')->with('error','Curp le pertenece a un docente');
             }
+            $persona_curp=Persona::find($curp);
+            
+            $alumno=Alumno::find($id);
+            
+            if($persona_curp){
+                    if($persona_curp->curp !==$alumno->curp){
+                       
+                        return redirect()->route('alumnos.index')->with('error','Curp duplicada');
+                    }
+                
+            }
 
-            $alumno=Alumno::find($no_control);
+            $alumno_existente=Alumno::find($no_control);
+            if($alumno_existente){
+                if($alumno_existente->no_control !==$alumno->no_control){
+                   
+                    return redirect()->route('alumnos.index')->with('error','Numero de control duplicado');
+                }
+                
+            
+            }
 
+        
             if($alumno){
-               
+              
                 $persona=Persona::find($alumno->persona->curp);
                 $alumno->no_control=$no_control;
                 $alumno->curp=$persona->curp;
@@ -142,23 +159,7 @@ class AlumnoController extends Controller
                 $alumno->save();
                 $persona->save();  
 
-               // $grupos = $request->input('grupos', []);
-               // $grupos_alumno = $alumno->grupos->pluck('clave_grupo')->toArray();
-
-               
-            //    $grupos=$request->input('grupos',[]);
-            //     foreach ($grupos as $grupo) {
-    
-            //         $alumno->grupos()->attach($alumno->no_control,['clave_grupo'=>$grupo]);
-            //     }
-              
-                /*
-                foreach ($grupos as $grupo) {
-                    if (!in_array($grupo, $grupos_alumno)) {
-                        $alumno->grupos()->attach($grupo, ['clave_grupo' => $grupo]);
-                    }
-                }
-                */
+            
             }
             
             return redirect()->route('alumnos.index')->with('success','Alumno actualizado correctamente');
@@ -206,13 +207,13 @@ class AlumnoController extends Controller
         }
         public function desasignarGrupo(Request $request){
 
-            $selectedAlumnos = $request->input('selected_alumnos', []);
+            $selectedAlumnos = $request->input('selected_alumnos', []);          
             $grupo=Grupo::find($request->input('clave_grupo'));
 
             if(!$grupo){
                 return redirect()->route('alumnos.index')->with('error','Grupo no encontrado');
             }
-            if(!$selectedAlumnos){
+            if(empty($selectedAlumnos)){
                 return redirect()->route('alumnos.index')->with('error','Ningún alumno seleccionado');
             }
 

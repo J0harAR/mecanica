@@ -10,6 +10,14 @@ class Herramientas extends Model
     use HasFactory;
     protected $primaryKey = 'id_herramientas';
     protected $keyType = 'string';
+
+
+    protected $fillable = [
+        'id_herramientas',
+        'condicion',
+        'dimension',
+    ];
+
     
     public function Articulo_inventariados(){
         return $this->belongsTo(Articulo_inventariado::class, 'id_herramientas');

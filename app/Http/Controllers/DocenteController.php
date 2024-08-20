@@ -85,19 +85,7 @@ class DocenteController extends Controller
 
         }
 
-        $persona=Persona::find($curp);
-        
-        if($persona){
-            Docente::create([
-                'rfc'=>$rfc,
-                'curp'=>$persona->curp,
-                'area'=>$area,
-                'foto'=>$path.$filename,
-                'telefono'=>$telefono,
-    
-            ]);
-        }else{
-
+       
             Persona::create([
                 'curp'=>$curp,
                 'nombre'=>$nombre,
@@ -115,8 +103,6 @@ class DocenteController extends Controller
     
             ]);
             
-        }
-
  
         return redirect()->route('docentes.index')->with('success','Docente agregado correctamente');
        
@@ -148,9 +134,7 @@ class DocenteController extends Controller
 
     public function update(Request $request ,$id){
         
-        $validated = $request->validate([
-            'curp' => 'required|unique:docente|max:255',
-        ]); 
+    
 
         $nombre=$request->input('nombre');
         $apellido_p=$request->input('apellido_p');
@@ -169,8 +153,18 @@ class DocenteController extends Controller
             return redirect()->route('docentes.index')->with('error','Curp le pertenece a un alumno');
         }
 
+        $persona_curp=Persona::find($curp);
         $docente=Docente::find($id);
-        
+
+            if($persona_curp){
+                if($persona_curp->curp !==$docente->curp){
+                
+                    return redirect()->route('alumnos.index')->with('error','Curp duplicada');
+                }
+            
+        }
+
+
         if($docente){
             $persona=Persona::find($docente->persona->curp);
           
@@ -318,7 +312,7 @@ class DocenteController extends Controller
         $docente=Docente::find($request->input('rfc'));
         $asignatura=Asignatura::find($request->input('id_asignatura'));
         $periodo=Periodo::find($request->input('periodo'));
-    
+        
         if (!$docente || !$asignatura || !$periodo) {
             return redirect()->route('docentes.eliminacion_asignacion')->with('error', 'Todos los campos son requeridos');
         }

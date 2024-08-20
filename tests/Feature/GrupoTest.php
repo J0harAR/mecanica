@@ -14,6 +14,8 @@ use App\Models\Practica;
 use App\Models\Docente;
 use App\Models\Grupo;
 use App\Models\Persona;
+use App\Models\Periodo;
+use App\Models\Alumno;
 use App\Models\Asignatura;
 
 class GrupoTest extends TestCase
@@ -67,6 +69,11 @@ class GrupoTest extends TestCase
         $response= $this->get(route('grupos.create'))
         ->assertStatus(200)
         ->assertViewIs('grupos.create');
+        Periodo::create([
+            'clave'=>'2024-3',
+            'fecha_inicio'=>"2024-08-01",
+            'fecha_final'=>"2024-12-20",
+        ]);
 
         Asignatura::create([
             'clave'=>'IA',
@@ -77,14 +84,120 @@ class GrupoTest extends TestCase
        
         $data=[
             'clave_grupo'=>"1A",
-            'asignatura'=>$asignatura->clave
+            'asignatura'=>$asignatura->clave,
+            'periodo'=>"2024-3"
         ];
 
         $response = $this->post(route('grupos.store'), $data); 
         $response->assertStatus(302);
         $response->assertRedirect(route('grupos.index'));
+
+
+        //Caso de grupo duplicado
+        Grupo::create([
+            'id_docente'=>null,
+            'clave_grupo'=>"IA1",
+            'clave_asignatura'=>$asignatura->clave,
+            'periodo'=>"2024-3"
+        ]);
+
+        $data=[
+            'clave_grupo'=>"IA1",
+            'asignatura'=>$asignatura->clave,
+            'periodo'=>"2024-3"
+        ];
+
+        $response = $this->post(route('grupos.store'), $data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('grupos.index'));
+        $response->assertSessionHas('error');
+
     }
 
+
+    public function test_update_grupo():void{
+
+        Artisan::call('migrate');
+
+        User::create([
+            "name" =>"Test",
+            "email" => 'test@gmail.com',
+            "password" => Hash::make('password22'),
+        ]);
+        
+        
+        $acceso = $this->post(route('login'), [
+            'email' => 'test@gmail.com',
+            'password' => 'password22',
+        
+        ]);
+
+        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        
+        Asignatura::create([
+            'clave'=>'IA',
+            'nombre'=>'Inteligencia artificial'
+        ]);
+
+        Asignatura::create([
+            'clave'=>'IA2',
+            'nombre'=>'Inteligencia artificial'
+        ]);
+
+        Periodo::create([
+            
+            'clave'=>'2024-3',
+            'fecha_inicio'=>"2024-08-01",
+            'fecha_final'=>"2024-12-20",
+        ]);
+
+        Grupo::create([
+            'id_docente'=>null,
+            'clave_grupo'=>"IA1",
+            'clave_asignatura'=>"IA",
+            'clave_periodo'=>'2024-3'
+        ]);
+
+        //Actualizar correctamente el grupo 
+        $data=[
+            "asignatura"=>"IA2"
+        ];
+
+        $response = $this->patch(route('grupos.update',"IA1"),$data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('grupos.index'));
+
+        //Caso que no se seleccione ninguna asignatura
+        $data=[
+            "asignatura"=>null
+        ];
+
+        $response = $this->patch(route('grupos.update',"IA1"),$data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('grupos.index'));
+        $response->assertSessionHas('error');
+
+
+        //Caso en el que grupo este duplicado
+        Grupo::create([
+            'id_docente'=>null,
+            'clave_grupo'=>"IA1",
+            'clave_asignatura'=>"IA2",
+            'clave_periodo'=>'2024-3'
+        ]);
+
+
+        $data=[
+            "asignatura"=>"IA"
+        ];
+
+        $response = $this->patch(route('grupos.update',"IA1"),$data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('grupos.index'));
+        $response->assertSessionHas('error');
+
+
+    }
 
     public function test_delete_grupo():void{
         Artisan::call('migrate');
@@ -109,75 +222,59 @@ class GrupoTest extends TestCase
             'nombre'=>'Inteligencia artificial'
         ]);
 
-        $asignatura=Asignatura::find('IA');
-
-        Grupo::create([
-            'clave_grupo'=>"B1",
-            'clave_asignatura'=>$asignatura->clave,
+        Periodo::create([
+            
+            'clave'=>'2024-3',
+            'fecha_inicio'=>"2024-08-01",
+            'fecha_final'=>"2024-12-20",
         ]);
 
-        $response = $this->delete(route('grupos.destroy',"B1")); 
+        Grupo::create([
+            'id_docente'=>null,
+            'clave_grupo'=>"IA1",
+            'clave_asignatura'=>"IA",
+            'clave_periodo'=>'2024-3'
+        ]);
+
+        $response = $this->delete(route('grupos.destroy',"IA1")); 
         $response->assertStatus(302);
         $response->assertRedirect(route('grupos.index'));
 
 
         //Eliminar grupo con alumnos 
+
         Persona::create([
-            'curp'=>"AAAA",
+            'curp'=>"OOAZ900824MTSRLL08",
             'nombre'=>"Johan",
             'apellido_p'=>"Alfaro",
             'apellido_m'=>"Ruiz",
         ]);
 
-        Docente::create([
-            'rfc'=>"DDD",
-            'curp'=>"AAAA",
-            'area'=>"Sistemas",
-            'foto'=>"sdsada",
-            'telefono'=>"839213"
-        ]);
 
-        Asignatura::create([
-            'clave'=>'IAR',
-            'nombre'=>'Inteligencia artificial'
-        ]);
-
-
-        $docente=Docente::find("DDD");
-        $asignatura=Asignatura::find('IAR');
-
-
-
+        
         Grupo::create([
-            'id_docente'=>$docente->rfc,
-            'clave_grupo'=>"IA1",
-            'clave_asignatura'=>$asignatura->clave,
-            'periodo'=>'2024'
+            'id_docente'=>null,
+            'clave_grupo'=>"IA22",
+            'clave_asignatura'=>"IA",
+            'clave_periodo'=>'2024-3'
         ]);
 
-        $grupo=Grupo::find('IA1');
-        $this->assertNotNull($grupo);
-
-        $data=[
+        $alumno=Alumno::create([
             'no_control'=>"19161299",
-            'curp'=>"AAAAR",
-            'nombre'=>"Johan",
-            'apellido_p'=>"Alfaro",
-            'apellido_m'=>"Ruiz",
-            'grupos'=>[
-                $grupo->clave_grupo
-            ]
+            'curp'=>"OOAZ900824MTSRLL08",
+          ]);
 
-        ];
-        $response = $this->post(route('alumnos.store'), $data); 
-       
+          $alumno->grupos()->attach([
+            'clave_grupo' => 'IA22'
+        ], [
+            'id_alumno' => '19161299'
+        ]);
 
 
-        $response = $this->delete(route('grupos.destroy',$grupo->clave_grupo)); 
+        $response = $this->delete(route('grupos.destroy','IA22')); 
         $response->assertStatus(302);
         $response->assertRedirect(route('grupos.index'));
-        
-        $this->assertDatabaseMissing('alumno_grupo', ['clave_grupo' => $grupo->clave_grupo]);
+        $this->assertDatabaseMissing('alumno_grupo', ['clave_grupo' =>"IA22"]);
 
 
     }

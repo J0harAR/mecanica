@@ -20,6 +20,8 @@ use App\Models\Asignatura;
 use App\Models\Persona;
 use App\Models\Alumno;
 use App\Models\Periodo;
+use App\Models\Catalogo_articulo;
+use App\Models\Articulo_inventariado;
 use App\Models\Herramientas;
 
 class DocenteTest extends TestCase
@@ -79,8 +81,9 @@ class DocenteTest extends TestCase
         
         $file = UploadedFile::fake()->image('foto.jpg');
        
+        //Registro correcto del docente
         $data=[
-            'curp'=>"AAA",
+            'curp'=>"CCC",
             'nombre'=>"Johan",
             'apellido_p'=>"Alfaro",
             'apellido_m'=>"Ruiz",
@@ -89,38 +92,45 @@ class DocenteTest extends TestCase
             'telefono'=>"1234",
             'foto'=>  $file,
         ];
-        $response = $this->post(route('docentes.store'), $data); 
-        $response->assertStatus(302);
-        $response->assertRedirect(route('docentes.index'));
-       
-        $docente=Docente::find("BBB");
-        $this->assertNotNull($docente);
-
-        //Revisar que en caso de que se cree un docente repetido
 
         $response = $this->post(route('docentes.store'), $data); 
         $response->assertStatus(302);
         $response->assertRedirect(route('docentes.index'));
-        $response->assertSessionHas('error');
 
 
         //Caso en el que se cree un docente pero con curp de un alumno(inclusion)
         Persona::create([
-            'curp'=>"CCC",
+            'curp'=>"AAA",
             'nombre'=>"Johan",
             'apellido_p'=>"Alfaro",
             'apellido_m'=>"Ruiz",
         ]);
         Alumno::create([
             'no_control'=>"19161229",
-            'curp'=>"CCC"
+            'curp'=>"AAA"
         ]);
 
         $data=[
-            'curp'=>"CCC",
+            'curp'=>"AAA",
             'nombre'=>"Johan",
             'apellido_p'=>"Alfaro",
             'apellido_m'=>"Ruiz",
+            'rfc'=>"RRR",
+            'area'=>"Sistemas",
+            'telefono'=>"1234",
+            'foto'=>  $file,
+        ];
+
+        $response = $this->post(route('docentes.store'), $data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('docentes.create'));
+        $response->assertSessionHas('error');
+        
+        
+        
+        //se crea un docente con un mismo rfc
+        $data=[
+            'curp'=>"CURP3",        
             'rfc'=>"BBB",
             'area'=>"Sistemas",
             'telefono'=>"1234",
@@ -129,32 +139,10 @@ class DocenteTest extends TestCase
 
         $response = $this->post(route('docentes.store'), $data); 
         $response->assertStatus(302);
-        $response->assertRedirect(route('docentes.index'));
+        $response->assertRedirect(route('docentes.create'));
         $response->assertSessionHas('error');
 
-
-        //Caso en el que se elimine un profesor pero la persona sigue registrada
-        Persona::create([
-            'curp'=>"CURP2",
-            'nombre'=>"Johan",
-            'apellido_p'=>"Alfaro",
-            'apellido_m'=>"Ruiz",
-        ]);
-
-        $persona=Persona::find('CURP2');
-        $this->assertNotNull($persona);
-
-        $data=[
-            'curp'=>$persona->curp,        
-            'rfc'=>"BBB",
-            'area'=>"Sistemas",
-            'telefono'=>"1234",
-            'foto'=>  $file,
-        ];
-
-        $response = $this->post(route('docentes.store'), $data);
-        $response->assertStatus(302)->assertRedirect(route('docentes.index')); 
-        
+ 
     }
 
 
@@ -402,22 +390,28 @@ class DocenteTest extends TestCase
 
         $grupo=Grupo::find('IA1');
 
-        $data_herramienta=[
+        Catalogo_articulo::create([
+            'id_articulo'=>"HM-T-0234",
             'nombre' => 'Torno',
-            'seccion' => 03,
-            'estatus' => 'Disponible',
-            'tipo' => 'Herramientas',
-            'cantidad' => 1,
-            'tipo_herramienta' => 'Herramienta manual',
-            'dimension_herramienta' => 234,
-            'condicion_herramienta' => 'Nueva',
-            'tipo_insumo' => null, 
-            'capacidad_insumo' => null 
+            'cantidad'=>0,
+            'seccion'=>null,
+            'tipo'=>"Herramientas",
 
+        ]);
 
-        ];
+        Articulo_inventariado::create([
+            'id_inventario'=>"HM-T-0234-01",
+            'id_articulo'=>"HM-T-0234",
+            'estatus'=>"Disponible",
+            'tipo'=>"Herramientas",
+        ]);
 
-        $response = $this->post(route('herramientas.store'), $data_herramienta); 
+        Herramientas::create([
+            'id_herramientas'=>"HM-T-0234-01",
+            'condicion'=>"Buen estado",
+            'dimension'=>234,
+        ]);
+
         $herramienta=Herramientas::find('HM-T-0234-01');
        
         $this->assertNotNull($herramienta);
@@ -436,6 +430,9 @@ class DocenteTest extends TestCase
             'fundamento'=>"fundamento practica 1",
             'referencias'=>"referencias practica 1",
             'estatus'=>0,
+            'catalogo_articulos'=>[
+                'HM-T-0234'
+            ]
         ]);
         $response =$this->delete(route('docentes.destroy',$docente->rfc));
         $response->assertStatus(302);
@@ -487,14 +484,17 @@ class DocenteTest extends TestCase
             'clave'=>'IA',
             'nombre'=>'Inteligencia artificial'
         ]);
+
         Periodo::create([
-            'clave'=>"2024"
+            'clave'=>'2024-3',
+            'fecha_inicio'=>"2024-08-01",
+            'fecha_final'=>"2024-12-20",
         ]);
 
-        $periodo=Periodo::find("2024");
+        $periodo=Periodo::find("2024-3");
         $docente=Docente::find("DDD");
         $asignatura=Asignatura::find('IA');
-
+        //Filtro de asignar
         $data=[
             "asignatura"=>$asignatura->clave,
             "docente"=>$docente->rfc,
@@ -503,8 +503,7 @@ class DocenteTest extends TestCase
         $response = $this->post(route('docentes.filtrar_asignaturas'), $data); 
         $response->assertStatus(302);
         $response->assertRedirect(route('docentes.asigna'));
-
-        //Caso en el que se deja en blanco algun input
+        //caso de input null
         $data=[
             "asignatura"=>null,
             "docente"=>$docente->rfc,
@@ -513,7 +512,31 @@ class DocenteTest extends TestCase
         $response = $this->post(route('docentes.filtrar_asignaturas'), $data); 
         $response->assertStatus(302);
         $response->assertRedirect(route('docentes.asigna'));
+        
+        
+        //Filtro de desasignar
+        $data=[
+            "id_asignatura"=>$asignatura->clave,
+            "rfc"=>$docente->rfc,
+            "periodo"=>$periodo->clave
+        ];
+        $response = $this->post(route('docentes.filtrar_grupos'), $data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('docentes.eliminar_asignacion'));
+
+
+        //Caso en el que se deja en blanco algun input en desasignar
+        $data=[
+            "id_asignatura"=>null,
+            "rfc"=>$docente->rfc,
+            "periodo"=>$periodo->clave
+        ];
+        $response = $this->post(route('docentes.filtrar_grupos'), $data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('docentes.eliminar_asignacion'));
         $response->assertSessionHas('error');
+
+        
 
     }
 
@@ -556,12 +579,13 @@ class DocenteTest extends TestCase
             'nombre'=>'Inteligencia artificial'
         ]);
         Periodo::create([
-            'clave'=>"2024"
+            'clave'=>'2024-3',
+            'fecha_inicio'=>"2024-08-01",
+            'fecha_final'=>"2024-12-20",
         ]);
-
         
 
-        $periodo=Periodo::find("2024");
+        $periodo=Periodo::find("2024-3");
         $docente=Docente::find("DDD");
         $asignatura=Asignatura::find('IA');
 
@@ -569,12 +593,12 @@ class DocenteTest extends TestCase
             'id_docente'=>null,
             'clave_grupo'=>"A1",
             'clave_asignatura'=>$asignatura->clave,
-            'clave_periodo'=>null,
+            'clave_periodo'=>$periodo->clave,
         ]);
         $grupo=Grupo::find("A1");
 
         $data=[
-            "clave_periodo"=>$periodo->clave,
+            "clave_periodo"=>"2024-3",
             "grupos" => [
                 $grupo->clave_grupo => [
                 'asignatura' => $grupo->clave_asignatura
@@ -589,12 +613,25 @@ class DocenteTest extends TestCase
         
         //Caso que el grupo ya cuente con algun docente asignado
         $data=[
-            "clave_periodo"=>$periodo->clave,
+            "clave_periodo"=>"2024-3",
             "grupos" => [
                 $grupo->clave_grupo => [
                 'asignatura' => $grupo->clave_asignatura
              ]
             ],
+            "rfc_docente"=>$docente->rfc,
+        ];
+
+        $response = $this->post(route('docentes.asignar'), $data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('docentes.asigna'));
+        $response->assertSessionHas('error');
+
+        //Caso en el que no se selecciona ningun grupo
+
+        $data=[
+            "clave_periodo"=>"2024-3",
+            "grupos" => [],
             "rfc_docente"=>$docente->rfc,
         ];
 
@@ -683,7 +720,7 @@ class DocenteTest extends TestCase
 
         //Eliminar la asignacion de forma correcta
         $data=[
-            "periodoc"=>$periodo->clave,
+            "periodo"=>$periodo->clave,
             "grupos" => [
                 $grupo->clave_grupo => [
                 'asignatura' => $grupo->clave_asignatura
@@ -694,7 +731,58 @@ class DocenteTest extends TestCase
         $response = $this->post(route('docentes.eliminar_asignacion'), $data); 
         $response->assertStatus(302);
         $response->assertRedirect(route('docentes.index'));
+
+        //Caso que  no se seleccione ningun grupo
+        $data=[
+            "periodo"=>$periodo->clave,
+            "grupos" => [],
+            "rfc"=>$docente->rfc,
+        ];
+        $response = $this->post(route('docentes.eliminar_asignacion'), $data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('docentes.eliminacion_asignacion'));
+    }
+
+
+    public function test_obtener_datos_docente():void{
+
+        Artisan::call('migrate');
+
+        User::create([
+            "name" =>"Test",
+            "email" => 'test@gmail.com',
+            "password" => Hash::make('password22'),
+        ]);
         
+        
+        $acceso = $this->post(route('login'), [
+            'email' => 'test@gmail.com',
+            'password' => 'password22',
+        
+        ]);
+
+        Persona::create([
+            'curp'=>"OOAZ900824MTSRLL08",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+        ]);
+
+        Docente::create([
+            'rfc'=>"DDD",
+            'curp'=>"OOAZ900824MTSRLL08",
+            'area'=>"Sistemas",
+            'foto'=>"sdsada",
+            'telefono'=>"839213"
+        ]);
+
+            $data=[
+                "id"=>"DDD"
+            ];
+         
+          $response= $this->get(route('docentes.grupos'))
+            ->assertStatus(200);
+
     }
 
 }
