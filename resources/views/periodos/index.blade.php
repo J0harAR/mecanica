@@ -137,9 +137,14 @@
                 <tbody>
                     @foreach ($periodos as $periodo)
                         <tr>
+                        @php
+                            $year = explode('-', $periodo->clave)[0];
+                        @endphp
                             <td> 
                             {{mb_strtoupper(\Carbon\Carbon::parse($periodo->fecha_inicio)->locale('es')->isoFormat('MMMM')) }} -
-                            {{ mb_strtoupper(\Carbon\Carbon::parse($periodo->fecha_final)->locale('es')->isoFormat('MMMM')) }}</td>
+                            {{ mb_strtoupper(\Carbon\Carbon::parse($periodo->fecha_final)->locale('es')->isoFormat('MMMM')) }}/{{$year}}
+                            
+                            </td>
                             <td>
                                 @can('borrar-periodo')                                                             
                                 <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-delete{{ $periodo->clave}}">
