@@ -67,34 +67,8 @@ class GrupoController extends Controller
     }
 
 
-    public function update(Request $request,$id){
-
-        $grupo=Grupo::find($id);
-
-       
-        if($request->input('asignatura')=== null){
-            return redirect()->route('grupos.index')->with('error','Seleccione al menos una asignatura');
-        }
-        $asignatura=Asignatura::find($request->input('asignatura'));
-
-
-        if($asignatura){
-            
-            $grupo_existente=Grupo::where('clave_grupo',$id)
-            ->where('clave_asignatura', $request->input('asignatura'))
-            ->first();
-
-            if($grupo_existente){
-                return redirect()->route('grupos.index')->with('error','Grupo duplicado');
-            }
-           
-            $grupo->clave_asignatura=$request->input('asignatura');
-            $grupo->save();
-        }
-        
-
-        return redirect()->route('grupos.index')->with('success','Grupo actualizado correctamente');
-    }
+ 
+    
 
     public function destroy($id){
 

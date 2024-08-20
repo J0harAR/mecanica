@@ -104,12 +104,7 @@
 
     
                                         <td>
-                                            @can('editar-grupo')                                             
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#updateModal-{{ $grupo->clave_grupo }}">
-                                                    <i class="fas fa-edit bt"></i>
-                                            </button>
-                                            @endcan
+                                            
 
                                             @can('borrar-grupo')
                                                 <button type="button" class="btn btn-danger " data-bs-toggle="modal"
@@ -151,54 +146,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endcan
-
-
-                                        @can('editar-grupo')                                       
-                                        <!-- Modal de update -->
-                                        <div class="modal fade" id="updateModal-{{ $grupo->clave_grupo }}" tabindex="-1"
-                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                <div class="modal-header" style="background-color: #002855; color: #ffffff;">
-                                                    <h5 class="modal-title" id="editModalLabel"><i class="bi bi-pencil me-2"></i> Asignar asignatura al grupo:{{$grupo->clave_grupo}}</h5>
-                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        
-
-                                                        <form action="{{ route('grupos.update', ['id' => $grupo->clave_grupo]) }}"
-                                                            method="POST" style="display: inline;">
-                                                            @csrf
-                                                            @method('PATCH')
-                                                        
-                                                            <label for="floatingSelect" class="form-label"><i class="fas fa-book me-2"></i> Asignatura</label>
-                                                            <select class="form-select" id="floatingSelect" name="asignatura" required>
-                                                                <option selected disabled>Selecciona una asignatura</option>
-                                                                @foreach ($asignaturas as $asignatura)
-                                                                    <option value="{{ $asignatura->clave }}">{{ $asignatura->clave }} - {{ $asignatura->nombre }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            <div class="invalid-feedback">
-                                                                Seleccione una asignatura.
-                                                            </div>
-
-                                                            <div class="col-12 d-flex justify-content-end mt-3">
-                                                                <button type="submit" class="btn btn-primary btn-sm shadow">
-                                                                    <i class="bi bi-check2"></i> Guardar
-                                                                </button>
-                                                            </div>
-                                                           
-                                                        </form>
-
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @endcan
-                                   
+                                    @endcan                                 
                                 @endforeach
                             </tbody>
                         </table>
