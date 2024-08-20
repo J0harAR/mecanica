@@ -81,7 +81,7 @@
                             <div class="col-md-12 mb-3">
                                 <label for="grupos" class="form-label"><i class="bi bi-people me-2"></i>Grupo</label>
                                 <select class="form-control" id="grupo" name="grupo" required>
-                                    @foreach ($grupos_permitidos as $grupo)
+                                    @foreach ($grupos_permitidos->unique('clave_grupo') as $grupo)
                                         <option value="{{ $grupo->clave_grupo }}">{{ $grupo->clave_grupo }}//{{$grupo->clave_periodo}}</option>
                                     @endforeach
                                 </select>
@@ -216,7 +216,7 @@
                     <label for="grupos" class="form-label"><i class="bi bi-people me-2"></i>Grupo</label>
                     <select  class="form-control" id="grupo" name="grupo" >
                         <option value=""disabled selected>Seleccione el grupo</option>
-                        @foreach ($grupos as $grupo)
+                        @foreach($grupos->unique('clave_grupo') as $grupo)
                             <option value="{{ $grupo->clave_grupo }}">{{ $grupo->clave_grupo }}</option>
                         @endforeach
                     </select>
