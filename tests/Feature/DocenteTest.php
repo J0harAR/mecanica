@@ -312,6 +312,32 @@ class DocenteTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect(route('docentes.index'));
         $response->assertSessionHas('error');
+
+        //Validacion de curp repetida
+        Persona::create([
+            'curp'=>"CURP1",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+        ]);
+
+        $data=[
+            'curp'=>"CURP1",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+            'rfc'=>"BBB",
+            'area'=>"Sistemas",
+            'telefono'=>"1234",
+            'foto'=>  $file,
+        ];
+
+        $response =$this->put(route('docentes.update',$docente->rfc),$data);
+        $response->assertStatus(302);
+        $response->assertRedirect(route('docentes.index'));
+        $response->assertSessionHas('error');
+
+
     }
 
     public function test_delete_docente():void{

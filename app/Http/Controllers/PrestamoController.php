@@ -58,15 +58,9 @@ class PrestamoController extends Controller
     $fecha_devolucion = $request->input('fecha_devolucion');
 
     $docente = Docente::find($id_docente);
-    if (!$docente) {
-        return redirect()->route('prestamos.index')->withErrors(['docente_no_encontrado' => 'El docente no encontrado.'])->withInput();
-    }
-
     $herramienta = Herramientas::find($id_herramienta);
-    if ($herramienta->Articulo_inventariados->estatus != "Disponible") {
-        return redirect()->route('prestamos.index')->withErrors(['herramienta_no_disponible' => 'La herramienta no está disponible.'])->withInput();
-    }
-
+ 
+    
     $herramienta->Articulo_inventariados->estatus = "No disponible";
     $herramienta->Articulo_inventariados->save();
 

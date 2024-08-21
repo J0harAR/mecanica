@@ -159,7 +159,7 @@ class DocenteController extends Controller
             if($persona_curp){
                 if($persona_curp->curp !==$docente->curp){
                 
-                    return redirect()->route('alumnos.index')->with('error','Curp duplicada');
+                    return redirect()->route('docentes.index')->with('error','Curp duplicada');
                 }
             
         }

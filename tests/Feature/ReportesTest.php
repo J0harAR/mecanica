@@ -8,6 +8,7 @@ use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Periodo;
 class ReportesTest extends TestCase
 {
     /**
@@ -55,15 +56,31 @@ class ReportesTest extends TestCase
         ]);
         $acceso->assertStatus(302)->assertRedirect(route('home'));
 
+
+        Periodo::create([
+            'clave'=>'2024-3',
+            'fecha_inicio'=>"2024-08-01",
+            'fecha_final'=>"2024-12-20",
+        ]);
+
+        $data=[
+            "periodo"=>"2024-3"
+
+        ];
+       
+        $response= $this->post(route('reporte.inventario'),$data)
+        ->assertStatus(200);
+
+        //Caso en el que no exista periodo
         $data=[
             "periodo"=>"2024"
 
         ];
        
-        
-        $response= $this->post(route('reporte.inventario'),$data)
-        ->assertStatus(200);
-
+        $response= $this->post(route('reporte.inventario'),$data);
+        $response->assertStatus(302);
+        $response->assertRedirect(route('inventario.index'));
+        $response->assertSessionHas('error');
 
     }
 
@@ -85,14 +102,31 @@ class ReportesTest extends TestCase
         ]);
         $acceso->assertStatus(302)->assertRedirect(route('home'));
 
+        Periodo::create([
+            'clave'=>'2024-3',
+            'fecha_inicio'=>"2024-08-01",
+            'fecha_final'=>"2024-12-20",
+        ]);
+
         $data=[
-            "periodo"=>"2024"
+            "periodo"=>"2024-3"
 
         ];
        
         
         $response= $this->post(route('reporte.herramientas'),$data)
         ->assertStatus(200);
+
+        //Caso en el que no exista periodo
+        $data=[
+            "periodo"=>"2024"
+
+        ];
+       
+        $response= $this->post(route('reporte.herramientas'),$data);
+        $response->assertStatus(302);
+        $response->assertRedirect(route('herramientas.index'));
+        $response->assertSessionHas('error');
 
 
     }
@@ -115,14 +149,31 @@ class ReportesTest extends TestCase
         ]);
         $acceso->assertStatus(302)->assertRedirect(route('home'));
 
+        Periodo::create([
+            'clave'=>'2024-3',
+            'fecha_inicio'=>"2024-08-01",
+            'fecha_final'=>"2024-12-20",
+        ]);
+
         $data=[
-            "periodo"=>"2024"
+            "periodo"=>"2024-3"
 
         ];
        
         
         $response= $this->post(route('reporte.insumos'),$data)
         ->assertStatus(200);
+
+        //Caso en el que no exista periodo
+        $data=[
+            "periodo"=>"2024"
+
+        ];
+       
+        $response= $this->post(route('reporte.insumos'),$data);
+        $response->assertStatus(302);
+        $response->assertRedirect(route('insumos.index'));
+        $response->assertSessionHas('error');
 
 
     }
@@ -144,14 +195,31 @@ class ReportesTest extends TestCase
         ]);
         $acceso->assertStatus(302)->assertRedirect(route('home'));
 
+        Periodo::create([
+            'clave'=>'2024-3',
+            'fecha_inicio'=>"2024-08-01",
+            'fecha_final'=>"2024-12-20",
+        ]);
+
         $data=[
-            "periodo"=>"2024"
+            "periodo"=>"2024-3"
 
         ];
        
         
         $response= $this->post(route('reporte.maquinarias'),$data)
         ->assertStatus(200);
+
+        //Caso en el que no exista periodo
+        $data=[
+            "periodo"=>"2024"
+
+        ];
+       
+        $response= $this->post(route('reporte.maquinarias'),$data);
+        $response->assertStatus(302);
+        $response->assertRedirect(route('maquinaria.index'));
+        $response->assertSessionHas('error');
 
 
     }

@@ -41,8 +41,8 @@ class UserTest extends TestCase
         $registroBien=$this->post(route('register'),[
             'email' => 'alfaro@itoaxaca.edu.mx',
             'name' => 'Johan',
-            'password' => 'johan1234-',
-            'password_confirmation' => 'johan1234-',
+            'password' => 'Johan1234-',
+            'password_confirmation' => 'Johan1234-',
         ]);
         $registroBien->assertStatus(302)->assertRedirect(route('home'));
 
@@ -174,9 +174,9 @@ class UserTest extends TestCase
         //Creacion correcta de un usuario
         $this->post(route('usuarios.store'), [
             'name' => 'Johan',
-            'email' => 'prueba@gmail.com',
-            'password' => 'password23232',
-            'confirm-password' => 'password23232', 
+            'email' => '19161229@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
+            'confirm-password' => 'Johanar2-', 
             'roles' => 'Servicio Social',
         ])->assertRedirect(route('usuarios.index'));
 
@@ -229,7 +229,7 @@ class UserTest extends TestCase
 
         //Update de forma correcta de un usuario
         $updateCorrecto = $this->patch(route('usuarios.update',$user->id), [
-            'email' => 'prueba2@gmail.com',
+            'email' => '19161229@itoaxaca.edu.mx',
             'name' => 'Pedro',
             'password' => '',
             'password_confirmation' => '',

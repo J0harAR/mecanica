@@ -261,7 +261,63 @@ class AlumnoTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect(route('alumnos.index'));
         $response->assertSessionHas('error');
-      
+
+
+        //Validacion de curp repetida
+        Persona::create([
+            'curp'=>"CURP1",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+        ]);
+
+        $data=[
+            'no_control'=>"19161299",
+            'curp'=>"CURP1",
+            'nombre'=>"Johannnn",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+       
+        ];
+
+
+        $response = $this->put(route('alumnos.update',"19161299"), $data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('alumnos.index'));
+        $response->assertSessionHas('error');
+
+        //Validacion con numero de control repetido
+        Persona::create([
+            'curp'=>"CURP2",
+            'nombre'=>"Johan",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+        ]);
+
+        Alumno::create([
+            'no_control'=>"19161212",
+            'curp'=>"CURP1",
+          ]);
+
+        Alumno::create([
+            'no_control'=>"19161213",
+            'curp'=>"CURP2",
+          ]);
+
+          $data=[
+            'no_control'=>"19161213",
+            'curp'=>"CURP1",
+            'nombre'=>"Johannnn",
+            'apellido_p'=>"Alfaro",
+            'apellido_m'=>"Ruiz",
+       
+          ];
+
+        $response = $this->put(route('alumnos.update',"19161212"), $data); 
+        $response->assertStatus(302);
+        $response->assertRedirect(route('alumnos.index'));
+        $response->assertSessionHas('error');
+
     }
 
     public function test_delete_alumno():void{

@@ -816,6 +816,13 @@ class PracticaTest extends TestCase
         'periodo'=>'2024-3'
     ]);
 
+    Grupo::create([
+        'id_docente'=>$docente->rfc,
+        'clave_grupo'=>"ISA",
+        'clave_asignatura'=>$asignatura->clave,
+        'periodo'=>'2024-3'
+    ]);
+
     $grupo=Grupo::where('clave_grupo','IA1')->first();
 
     Catalogo_articulo::create([
@@ -848,7 +855,7 @@ class PracticaTest extends TestCase
     $this->assertNotNull($asignatura);
   
 
-    Practica::create([
+    $practica=Practica::create([
         'id_practica'=>"001",
         'id_docente'=>$docente->rfc,
         'clave_grupo'=>$grupo->clave_grupo,
@@ -858,14 +865,14 @@ class PracticaTest extends TestCase
         'fundamento'=>"fundamento practica 1",
         'referencias'=>"referencias practica 1",
         'estatus'=>0,
-        'articulos'=>[
-            $herramienta->Articulo_inventariados->Catalogo_articulos->id_articulo
-        ],
-
     ]);
+
+  
 
     $practica=Practica::find("001");
     $this->assertNotNull($practica);
+
+    $practica->catalogo_articulos()->sync(["HM-T-0234"]);
 
     Persona::create([
         'curp'=>"BBB",
@@ -886,13 +893,12 @@ class PracticaTest extends TestCase
     $response =$this->get(route('practicasAlumno.create'));
     $response->assertViewIs('practicas.alumnos');
     
-    
-    //Creacion correcta
+    //Creacion correcta de una practica alumno
     $data =[
         'alumnos'=>[$alumno->no_control],
         'practica'=>$practica->id_practica,
         'articulos'=>[
-            $herramienta->Articulo_inventariados->id_inventario
+           "HM-T-0234-01"
         ],
         'fecha'=>"2024-07-02",
         'no_equipo'=>2,
@@ -901,13 +907,71 @@ class PracticaTest extends TestCase
     ];
     $response = $this->post(route('practicasAlumno.store'), $data);
     $response->assertStatus(302); 
-    $response->assertRedirect(route('practicas.index'));
-    
+    $response->assertRedirect(route('practicas.alumnos.index'));
+   
+    //Validacion si un alumno no pertence al grupo de la practica
 
-    //Caso en el que se eligan articulos extra
+    Persona::create([
+        'curp'=>"RR",
+        'nombre'=>"Johan",
+        'apellido_p'=>"Alfaro",
+        'apellido_m'=>"Ruiz",
+    ]);
+    Alumno::create([
+        'no_control'=>"19161230",
+        'curp'=>"RR",
+    ]);
+
+    $alumno=Alumno::find("19161230");
+  
+    $this->assertNotNull($alumno);
+    $alumno->grupos()->sync(["ISA"]);
+
+    $data =[
+        'alumnos'=>[$alumno->no_control],
+        'practica'=>$practica->id_practica,
+        'articulos'=>[
+           "HM-T-0234-01"
+        ],
+        'fecha'=>"2024-07-02",
+        'no_equipo'=>2,
+        'hora_entrada'=>"21:31:00",
+        'hora_salida'=>"21:32:00"
+    ];
+    $response = $this->post(route('practicasAlumno.store'), $data);
+    $response->assertStatus(302); 
+    $response->assertRedirect(route('practicasAlumno.create'));
+    $response->assertSessionHas('error');
+
+
+
+  //Validacion ningun alumno seleccionado o articulo
+    $alumno=Alumno::find("19161229");
+  
+    $this->assertNotNull($alumno);
+    $alumno->grupos()->sync([$grupo->clave_grupo]);
+ 
+    
+    //Creacion correcta de una practica alumno
+    $data =[
+        'alumnos'=>null,
+        'practica'=>$practica->id_practica,
+        'articulos'=>null,
+        'fecha'=>"2024-07-02",
+        'no_equipo'=>2,
+        'hora_entrada'=>"21:31:00",
+        'hora_salida'=>"21:32:00"
+    ];
+    $response = $this->post(route('practicasAlumno.store'), $data);
+    $response->assertStatus(302); 
+    $response->assertRedirect(route('practicasAlumno.create'));
+    $response->assertSessionHas('error');
+
+
+    //Validacion de articulos no esten asociados a la practica.
     Catalogo_articulo::create([
-        'id_articulo'=>"HM-TP-0234",
-        'nombre' => 'Torno p',
+        'id_articulo'=>"HM-TT-0234",
+        'nombre' => 'Torno T',
         'cantidad'=>1,
         'seccion'=>null,
         'tipo'=>"Herramientas",
@@ -915,31 +979,24 @@ class PracticaTest extends TestCase
     ]);
 
     Articulo_inventariado::create([
-        'id_inventario'=>"HM-TP-0234-01",
-        'id_articulo'=>"HM-T-0234",
+        'id_inventario'=>"HM-TT-0234-01",
+        'id_articulo'=>"HM-TT-0234",
         'estatus'=>"Disponible",
         'tipo'=>"Herramientas",
     ]);
 
     Herramientas::create([
-        'id_herramientas'=>"HM-TP-0234-01",
+        'id_herramientas'=>"HM-TT-0234-01",
         'condicion'=>"Buen estado",
         'dimension'=>234,
     ]);
 
-    $herramienta_extra=Herramientas::find('HM-TP-0234-01');
-    $herramienta=Herramientas::find('HM-T-0234-01');
-
-    $this->assertNotNull($herramienta_extra);
-
+    
     $data =[
         'alumnos'=>[$alumno->no_control],
         'practica'=>$practica->id_practica,
         'articulos'=>[
-            $herramienta->Articulo_inventariados->id_inventario
-        ],
-        'articulos-extras'=>[
-            $herramienta_extra->Articulo_inventariados->id_inventario
+           "HM-TT-0234-01"
         ],
         'fecha'=>"2024-07-02",
         'no_equipo'=>2,
@@ -948,11 +1005,250 @@ class PracticaTest extends TestCase
     ];
     $response = $this->post(route('practicasAlumno.store'), $data);
     $response->assertStatus(302); 
-    $response->assertRedirect(route('practicas.index'));
+    $response->assertRedirect(route('practicasAlumno.create'));
+    $response->assertSessionHas('error');
 
+
+    //Validacion ningun articulo seleccionado
+    $alumno=Alumno::find("19161229");
+  
+    $this->assertNotNull($alumno);
+    $alumno->grupos()->sync([$grupo->clave_grupo]);
+ 
+    
+    $data =[
+        'alumnos'=>[$alumno->no_control],
+        'practica'=>$practica->id_practica,
+        'articulos'=>null,
+        'fecha'=>"2024-07-02",
+        'no_equipo'=>2,
+        'hora_entrada'=>"21:31:00",
+        'hora_salida'=>"21:32:00"
+    ];
+    $response = $this->post(route('practicasAlumno.store'), $data);
+    $response->assertStatus(302); 
+    $response->assertRedirect(route('practicasAlumno.create'));
+    $response->assertSessionHas('error');
+
+    //Validacion de practica sin grupo asignado
+
+    $alumno=Alumno::find("19161229");
+  
+    $this->assertNotNull($alumno);
+    $alumno->grupos()->sync([$grupo->clave_grupo]);
+    
+    $practica=Practica::create([
+        'id_practica'=>"0013",
+        'id_docente'=>$docente->rfc,
+        'clave_grupo'=>null,
+        'nombre'=>"Practica 1",
+        'objetivo'=>"Objectivo practica 1",
+        'introduccion'=>"Introduccion practica 1",
+        'fundamento'=>"fundamento practica 1",
+        'referencias'=>"referencias practica 1",
+        'estatus'=>0,
+    ]);
+
+    $practica=Practica::find("0013");
+    $this->assertNotNull($practica);
+    
+    $data =[
+        'alumnos'=>[$alumno->no_control],
+        'practica'=>$practica->id_practica,
+        'articulos'=>[
+           "HM-T-0234-01"
+        ],
+        'fecha'=>"2024-07-02",
+        'no_equipo'=>2,
+        'hora_entrada'=>"21:31:00",
+        'hora_salida'=>"21:32:00"
+    ];
+
+    $response = $this->post(route('practicasAlumno.store'), $data);
+    $response->assertStatus(302); 
+    $response->assertRedirect(route('practicasAlumno.create'));
+    $response->assertSessionHas('error');
+
+
+     //Caso en el que se eligan articulos extra
+    $practica=Practica::find("001");
+
+    $data =[
+        'alumnos'=>[$alumno->no_control],
+        'practica'=>$practica->id_practica,
+        'articulos'=>[
+           "HM-T-0234-01"
+        ],
+        'articulos-extras'=>[
+             "HM-TT-0234-01"
+        ],
+        'fecha'=>"2024-07-02",
+        'no_equipo'=>2,
+        'hora_entrada'=>"21:31:00",
+        'hora_salida'=>"21:32:00"
+    ];
+    $response = $this->post(route('practicasAlumno.store'), $data);
+    $response->assertStatus(302); 
+    $response->assertRedirect(route('practicas.alumnos.index'));
 
 
    }
 
+   public function test_view_practicas_alumnos():void{
+    Artisan::call('migrate');
 
+    User::create([
+        "name" =>"Test",
+        "email" => 'test@gmail.com',
+        "password" => Hash::make('password22'),
+    ]);
+    
+    
+    $acceso = $this->post(route('login'), [
+        'email' => 'test@gmail.com',
+        'password' => 'password22',
+    
+    ]);
+
+    $acceso->assertStatus(302)->assertRedirect(route('home'));
+    
+
+    $response= $this->get(route('practicas.alumnos.index'))
+    ->assertStatus(200)
+    ->assertViewIs('practicas.practicas_alumnos');
+   }
+
+   public function test_obtener_alumnos_practica():void{
+    Artisan::call('migrate');
+
+    User::create([
+        "name" =>"Test",
+        "email" => 'test@gmail.com',
+        "password" => Hash::make('password22'),
+    ]);
+    
+    
+    $acceso = $this->post(route('login'), [
+        'email' => 'test@gmail.com',
+        'password' => 'password22',
+    
+    ]);
+    Persona::create([
+        'curp'=>"AAA",
+        'nombre'=>"Johan",
+        'apellido_p'=>"Alfaro",
+        'apellido_m'=>"Ruiz",
+    ]);
+    
+
+    Docente::create([
+        'rfc'=>"DDD",
+        'curp'=>"AAA",
+        'area'=>"Sistemas",
+        'foto'=>"sdsada",
+        'telefono'=>"839213"
+    ]);
+
+    Asignatura::create([
+        'clave'=>'IA',
+        'nombre'=>'Inteligencia artificial'
+    ]);
+
+
+    $docente=Docente::find("DDD");
+    $asignatura=Asignatura::find('IA');
+
+    Grupo::create([
+        'id_docente'=>$docente->rfc,
+        'clave_grupo'=>"ISA",
+        'clave_asignatura'=>$asignatura->clave,
+        'periodo'=>'2024-3'
+    ]);
+
+    Persona::create([
+        'curp'=>"RR",
+        'nombre'=>"Johan",
+        'apellido_p'=>"Alfaro",
+        'apellido_m'=>"Ruiz",
+    ]);
+    Alumno::create([
+        'no_control'=>"19161230",
+        'curp'=>"RR",
+    ]);
+
+    $alumno=Alumno::find("19161230");
+  
+    $this->assertNotNull($alumno);
+    $alumno->grupos()->sync(["ISA"]);
+
+
+    $grupo=Grupo::where('clave_grupo','ISA')->first();
+
+    Catalogo_articulo::create([
+            'id_articulo'=>"HM-T-0234",
+            'nombre' => 'Torno',
+            'cantidad'=>1,
+            'seccion'=>null,
+            'tipo'=>"Herramientas",
+
+        ]);
+
+    Articulo_inventariado::create([
+            'id_inventario'=>"HM-T-0234-01",
+            'id_articulo'=>"HM-T-0234",
+            'estatus'=>"Disponible",
+            'tipo'=>"Herramientas",
+        ]);
+
+    Herramientas::create([
+            'id_herramientas'=>"HM-T-0234-01",
+            'condicion'=>"Buen estado",
+            'dimension'=>234,
+        ]);
+
+    $herramienta=Herramientas::find('HM-T-0234-01');
+    
+        $this->assertNotNull($herramienta);
+        $this->assertNotNull($grupo);
+        $this->assertNotNull($docente);
+        $this->assertNotNull($asignatura);
+  
+
+    $practica=Practica::create([
+        'id_practica'=>"001",
+        'id_docente'=>$docente->rfc,
+        'clave_grupo'=>$grupo->clave_grupo,
+        'nombre'=>"Practica 1",
+        'objetivo'=>"Objectivo practica 1",
+        'introduccion'=>"Introduccion practica 1",
+        'fundamento'=>"fundamento practica 1",
+        'referencias'=>"referencias practica 1",
+        'estatus'=>0,
+    ]);
+
+  
+
+    $practica=Practica::find("001");
+    $this->assertNotNull($practica);
+
+    $practica->catalogo_articulos()->sync(["HM-T-0234"]);
+
+    $practica->alumnos()->sync([$alumno->no_control => [
+        'fecha' => "2024-07-02",
+        'no_equipo' => 2,
+        'hora_entrada' => "21:31:00",
+        'hora_salida' => "21:32:00"
+    ]]);
+  
+
+    $data=[
+        "id"=>"001"
+    ];
+ 
+    $response = $this->get(route('practicas.alumno.obtener', $data))
+    ->assertStatus(200);
+
+   }
+
+  
 }
