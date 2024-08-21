@@ -25,6 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        //Se retorna el numero de todos los usuarios roles y maquinarias para mostrarlas en una card
         $cant_usuarios=User::count(); 
         $cant_roles=Role::count();
         $maquinarias=Maquinaria::all();
