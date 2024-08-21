@@ -106,7 +106,7 @@
                 <div class="mb-3">
                     <label for="articulos" class="form-label"><i class="fas fa-box" ></i> Artículos</label>
                     <select class="form-select" multiple aria-label="multiple select example" name="articulos[]"
-                        id="articulos">
+                        id="articulos" required>
                         @foreach ($articulos_inventariados as $articulo)
                             <option value="{{ $articulo->id_inventario }}">Código: {{ $articulo->id_inventario }} //
                                 {{ $articulo->Catalogo_articulos->nombre }}</option>

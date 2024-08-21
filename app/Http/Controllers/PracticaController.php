@@ -223,6 +223,9 @@ class PracticaController extends Controller
         if(!$alumnos){
             return redirect()->route('practicasAlumno.create')->with('error', 'Ningun alumno seleccionado');
         }
+        if(!$articulos_inventariados){
+            return redirect()->route('practicasAlumno.create')->with('error', 'Ningun articulo seleccionado');
+        }
 
         
         foreach ($alumnos as $alumno) { 
