@@ -15,6 +15,12 @@ class Maquinaria extends Model
     protected $primaryKey = 'id_maquinaria';
     protected $keyType = 'string';
 
+
+    protected $fillable = [
+        'id_maquinaria',
+    ];
+
+
     public function Articulo_inventariados(){
         return $this->belongsTo(Articulo_inventariado::class, 'id_maquinaria');
     }

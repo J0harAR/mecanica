@@ -780,7 +780,7 @@ class DocenteTest extends TestCase
                 "id"=>"DDD"
             ];
          
-          $response= $this->get(route('docentes.grupos'))
+          $response= $this->get(route('docentes.grupos'),$data)
             ->assertStatus(200);
 
     }

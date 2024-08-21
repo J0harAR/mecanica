@@ -193,10 +193,7 @@ class InventarioController extends Controller
     }
     
 
-    public function codigoRepetido(){
-
-    }
-
+   
 
 
     public function generateCodigoHerramientas(String $nombre,String $tipoHerramienta,$dimension){

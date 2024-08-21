@@ -168,28 +168,6 @@ class InsumosController extends Controller
     }
 
 
-    public function generadorCodigoArticulo(String $nombre){
-        $codigo="";
-        $iniciales="";
-        $ignorar = ["de","para"];
-
-        $palabras = explode(' ', $nombre);
-        foreach ($palabras as $palabra) {
-         
-            if (!in_array(strtolower($palabra), $ignorar)) {
-                $iniciales .= substr($palabra, 0, 1);
-               
-            }
-        }
-
-        $iniciales_nombre = strtoupper($iniciales);
-        $codigo=$iniciales_nombre;
-     
-        return $codigo;
-}
-
-
-
 public function generadorCodigoInventario(Catalogo_articulo $catalogo_articulo,$Cantidad) {
       
     $ultimo_codigo = Articulo_inventariado::where('id_articulo', $catalogo_articulo->id_articulo)

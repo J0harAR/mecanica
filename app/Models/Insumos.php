@@ -13,6 +13,12 @@ class Insumos extends Model
     protected $primaryKey = 'id_insumo';
     protected $keyType = 'string';
 
+    protected $fillable = [
+        'id_insumo',
+        'capacidad',
+  
+    ];
+ 
     public function Articulo_inventariados(){
         return $this->belongsTo(Articulo_inventariado::class, 'id_insumo');
     }

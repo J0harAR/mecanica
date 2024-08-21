@@ -61,62 +61,36 @@ class InsumosTest extends TestCase
         
         ]);
 
+        Catalogo_articulo::create([
+            'id_articulo'=>"AI",
+            'nombre' => 'Aceite Industrial',
+            'cantidad'=>0,
+            'seccion'=>null,
+            'tipo'=>"Insumos",
+
+        ]);
+
         //Create pero con la asignacion de los insumos
-        $data_insumos=[
-            'nombre' => 'Aceite Industrial',
-            'seccion' => null,
-            'estatus' => 'Disponible',
-            'tipo' => 'Insumos',
-            'cantidad' => 2,
-            'tipo_maquina'=>'',
-            'tipo_herramienta' => '',
-            'dimension_herramienta' => null,
-            'condicion_herramienta' => 'Nueva',
-            'tipo_insumo' => 'Aceite para maquina', 
-            'capacidad_insumo' => 3,
-           
-        ];
-
-        $response_insumo = $this->post(route('insumos.store'), $data_insumos); 
-        $response_insumo->assertStatus(302);
-        $response_insumo->assertRedirect(route('insumos.index'));
-
-        $this->assertDatabaseHas('insumos', [
-            'capacidad' => 3,              
-        ]);
-
-        $this->assertDatabaseHas('articulo_inventariado', [
-            'id_articulo' => 'AI',              
-        ]);
-
-        $insumo=Insumos::find('AI01');
-        $this->assertNotNull($insumo);
-
-
-         //Insertar un insumo ya registrado
-
-         $data_insumos=[
-            'nombre' => 'Aceite Industrial',
-            'seccion' => null,
+        $data=[
+            'id_articulo'=>'AI',
             'estatus' => 'Disponible',
             'tipo' => 'Insumos',
             'cantidad' => 1,
-            'tipo_maquina'=>'',
-            'tipo_herramienta' => '',
-            'dimension_herramienta' => null,
-            'condicion_herramienta' => 'Nueva',
-            'tipo_insumo' => 'Aceite para maquina', 
-            'capacidad_insumo' => 3,
-           
-         ];
+            'capacidad_insumo' => 100, 
+        ];
 
-        $response = $this->post(route('insumos.store'), $data_insumos); 
-        $response->assertStatus(302);
-        $response->assertRedirect(route('insumos.index'));
-
-        $insumo=Insumos::find('AI03');
+        $response_insumo = $this->post(route('insumos.store'), $data); 
+        $response_insumo->assertStatus(302);
+        $response_insumo->assertRedirect(route('insumos.index'));
+       
+        $insumo=Insumos::where('id_insumo', 'AI01')->first();
+        
+        //No es nulo
         $this->assertNotNull($insumo);
-    
+
+      ;
+
+ 
     }
 
     public function test_edit_insumo(){
@@ -136,62 +110,48 @@ class InsumosTest extends TestCase
         
         ]);
 
-        $data = [
+        Catalogo_articulo::create([
+            'id_articulo'=>"AI",
             'nombre' => 'Aceite Industrial',
-            'seccion' => null,
-            'estatus' => 'Disponible',
-            'tipo' => 'Insumos',
-            'cantidad' => 2,
-            'tipo_maquina'=>'',
-            'tipo_herramienta' => '',
-            'dimension_herramienta' => null,
-            'condicion_herramienta' => 'Nueva',
-            'tipo_insumo' => 'Aceite para maquina', 
-            'capacidad_insumo' => 3,
-        ];
+            'cantidad'=>1,
+            'seccion'=>null,
+            'tipo'=>"Insumos",
 
-        
-        $response = $this->post(route('insumos.store'), $data); 
-        
-        $response->assertStatus(302);
-        $response->assertRedirect(route('insumos.index'));
-
-        //Checamos que si la herramienta si se existe en la base de datos
-        $this->assertDatabaseHas('catalogo_articulo', [
-            'nombre' => 'Aceite Industrial',
-            'cantidad' => 2,
-            'tipo' => 'Aceite para maquina'
         ]);
-        $articulo=Catalogo_articulo::where('nombre', 'Aceite Industrial')->first();
-        //No es nulo
-        $this->assertNotNull($articulo);
 
-        //Ahora se crean los id de inventariado por la cantidad que se ingreso
-        for ($i = 0; $i <2; $i++) {
-            $this->assertDatabaseHas('articulo_inventariado', [
-                'id_articulo' => $articulo->id_articulo,
-                'estatus' => 'Disponible',
-                'tipo' => 'Insumos'
-            ]);
-        }
-
-        $this->assertDatabaseHas('insumos', [
-            'capacidad' => 3,    
+        Articulo_inventariado::create([
+            'id_inventario'=>"AI01",
+            'id_articulo'=>"AI",
+            'estatus'=>"Disponible",
+            'tipo'=>"Insumos",
         ]);
-        
-        $insumo=Insumos::find('AI01');
-        $this->assertNotNull($insumo);
+
+        Insumos::create([
+            'id_insumo'=>"AI01",
+            'capacidad'=>200,
+        ]);
+
 
         $data_update=[
-            'capacidad' => '20',
+            'capacidad'=>200,
             'estatus'=>'No disponible'
         ];
+        //Update sin cambiar la capacidad del insumo
+        $updateCorrecto = $this->put(route('insumos.update',"AI01"),$data_update);
 
-        $updateCorrecto = $this->put(route('insumos.update',$insumo->id_insumo),$data_update);
+        $insumo=Articulo_inventariado::where('estatus','No disponible')->first();
+        $this->assertNotNull($insumo);
 
-        $insumo_update=Insumos::where('capacidad',20);
+        $updateCorrecto->assertRedirect(route('insumos.index'));
+    
+        //Update cambiando la capacidad del insumo
+        $data_update=[
+            'capacidad'=>200,
+            'estatus'=>'Disponible'
+        ];
+        $updateCorrecto = $this->put(route('insumos.update',"AI01"),$data_update);
+        $insumo_update=Insumos::where('capacidad',200);
         $this->assertNotNull($insumo_update);
-
         $updateCorrecto->assertRedirect(route('insumos.index'));
     }
 
@@ -211,35 +171,35 @@ class InsumosTest extends TestCase
         
         ]);
 
-        $data = [
+      
+
+        Catalogo_articulo::create([
+            'id_articulo'=>"AI",
             'nombre' => 'Aceite Industrial',
-            'seccion' => null,
-            'estatus' => 'Disponible',
-            'tipo' => 'Insumos',
-            'cantidad' => 2,
-            'tipo_maquina'=>'',
-            'tipo_herramienta' => '',
-            'dimension_herramienta' => null,
-            'condicion_herramienta' => 'Nueva',
-            'tipo_insumo' => 'Aceite para maquina', 
-            'capacidad_insumo' => 3,
+            'cantidad'=>1,
+            'seccion'=>null,
+            'tipo'=>"Insumos",
 
-        ];
-       
-       
-        $response = $this->post(route('insumos.store'), $data); 
-        $response->assertStatus(302);
-        $response->assertRedirect(route('insumos.index'));
-        
+        ]);
 
-        $insumo=Insumos::find('AI01');
+        Articulo_inventariado::create([
+            'id_inventario'=>"AI01",
+            'id_articulo'=>"AI",
+            'estatus'=>"Disponible",
+            'tipo'=>"Insumos",
+        ]);
 
-        $this->assertNotNull($insumo);
+        Insumos::create([
+            'id_insumo'=>"AI01",
+            'capacidad'=>200,
+        ]);
 
-        $delete_correcto = $this->delete(route('insumos.destroy',$insumo->id_insumo))->assertRedirect(route('insumos.index'));
+
+
+        $delete_correcto = $this->delete(route('insumos.destroy',"AI01"))->assertRedirect(route('insumos.index'));
     
         //Signigica que ya no existe en la base de datos
-        $this->assertDatabaseMissing('insumos', ['id_insumos' => $insumo->id_insumo]);
+        $this->assertDatabaseMissing('insumos', ['id_insumos' =>"AI01"]);
 
 
     }

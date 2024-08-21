@@ -229,7 +229,11 @@ class PracticaController extends Controller
             $aparece_grupo=0; 
 
             $alumno_encontrado=Alumno::find($alumno);  
-                
+            
+            if(!$practica->grupo){
+                return redirect()->route('practicasAlumno.create')->with('error', 'Practica sin grupo asignado');
+            }  
+
             foreach ($alumno_encontrado->grupos as $grupo_alumno) {
                 if($grupo_alumno->clave_grupo === $practica->grupo->clave_grupo){
                         $aparece_grupo++;

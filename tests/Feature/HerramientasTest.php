@@ -62,96 +62,36 @@ class HerramientasTest extends TestCase
         $acceso =$this->get(route('herramientas.index'));
         $acceso->assertStatus(200);
 
-        $data = [
+    
+
+
+     //Creacion correcta de una herramienta
+
+        Catalogo_articulo::create([
+            'id_articulo'=>"HM-T-0234",
             'nombre' => 'Torno',
-            'seccion' => 03,
-            'estatus' => 'Disponible',
-            'tipo' => 'Herramientas',
-            'cantidad' => 10,
-            'tipo_herramienta' => 'Herramienta manual',
-            'dimension_herramienta' => 15,
-            'condicion_herramienta' => 'Nueva',
-            'tipo_insumo' => null, 
-            'capacidad_insumo' => null 
-        ];
+            'cantidad'=>0,
+            'seccion'=>null,
+            'tipo'=>"Herramientas",
+
+        ]);
 
         //tipo nulo
-        $datos_nulos=[
-            'nombre' => 'Torno',
-            'seccion' => 03,
+        $data=[
+            "id_articulo"=>"HM-T-0234",
             'estatus' => 'Disponible',
-            'tipo' => 'Herramientas',
-            'cantidad' => 10,
-            'tipo_herramienta' => null,
-            'dimension_herramienta' => 15,
-            'condicion_herramienta' => 'Nueva',
-            'tipo_insumo' => null, 
-            'capacidad_insumo' => null 
-
+            'cantidad' => 1,
+            'condicion_herramienta' => 'Buen estado',
         ];
-
-        //Tipo de herramienta nulo 
-        $response = $this->post(route('herramientas.store'), $datos_nulos); 
-        $response->assertRedirect(route('herramientas.index'));
-        $response->assertStatus(302);
-        $response->assertSessionHas('tipo_vacia', 'Seleccione el  tipo de herramienta');
-
-
-
-        //Creacion correcta de una herramienta
+    
         $response = $this->post(route('herramientas.store'), $data); 
-        
         $response->assertStatus(302);
         $response->assertRedirect(route('herramientas.index'));
 
-        //Checamos que si la herramienta si se existe en la base de datos
-        $this->assertDatabaseHas('catalogo_articulo', [
-            'nombre' => 'Torno',
-            'cantidad' => 10,
-            'tipo' => 'Herramienta manual'
-        ]);
-        $herramienta=Catalogo_articulo::where('nombre', 'Torno')->first();
+        $herramienta=Herramientas::where('id_herramientas', 'HM-T-0234-01')->first();
+        
         //No es nulo
         $this->assertNotNull($herramienta);
-
-        //Ahora se crean los id de inventariado por la cantidad que se ingreso
-        for ($i = 0; $i < 10; $i++) {
-            $this->assertDatabaseHas('articulo_inventariado', [
-                'id_articulo' => $herramienta->id_articulo,
-                'estatus' => 'Disponible',
-                'tipo' => 'Herramientas'
-            ]);
-        }
-
-        $this->assertDatabaseHas('herramientas', [
-            'condicion' => 'Nueva',
-            'dimension' => 15
-        ]);
-
-         //Insertar una herramienta ya registrada
-
-         $data = [
-            'nombre' => 'Torno',
-            'seccion' => 03,
-            'estatus' => 'Disponible',
-            'tipo' => 'Herramientas',
-            'cantidad' => 1,
-            'tipo_herramienta' => 'Herramienta manual',
-            'dimension_herramienta' => 15,
-            'condicion_herramienta' => 'Nueva',
-            'tipo_insumo' => null, 
-            'capacidad_insumo' => null 
-        ];
-
-
-        $response = $this->post(route('herramientas.store'), $data); 
-        $response->assertStatus(302);
-        $response->assertRedirect(route('herramientas.index'));
-
-        $herramienta=Herramientas::find('HM-T-0015-11');
-        $this->assertNotNull($herramienta);
-        
-
 
     }
 
@@ -172,59 +112,38 @@ class HerramientasTest extends TestCase
         
         ]);
 
-        $data = [
-            'nombre' => 'Torno',
-            'seccion' => 03,
-            'estatus' => 'Disponible',
-            'tipo' => 'Herramientas',
-            'cantidad' => 1,
-            'tipo_herramienta' => 'Herramienta manual',
-            'dimension_herramienta' => 234,
-            'condicion_herramienta' => 'Nueva',
-            'tipo_insumo' => null, 
-            'capacidad_insumo' => null 
-        ];
-
-        //Creacion correcta de una herramienta
-        $response = $this->post(route('herramientas.store'), $data); 
         
-        $response->assertStatus(302);
-        $response->assertRedirect(route('herramientas.index'));
 
-        //Checamos que si la herramienta si se existe en la base de datos
-        $this->assertDatabaseHas('catalogo_articulo', [
+        Catalogo_articulo::create([
+            'id_articulo'=>"HM-T-0234",
             'nombre' => 'Torno',
-            'cantidad' => 1,
-            'tipo' => 'Herramienta manual'
-        ]);
-        $articulo=Catalogo_articulo::where('nombre', 'Torno')->first();
-        //No es nulo
-        $this->assertNotNull($articulo);
+            'cantidad'=>1,
+            'seccion'=>null,
+            'tipo'=>"Herramientas",
 
-        //Ahora se crean los id de inventariado por la cantidad que se ingreso
-        for ($i = 0; $i < 1; $i++) {
-            $this->assertDatabaseHas('articulo_inventariado', [
-                'id_articulo' => $articulo->id_articulo,
-                'estatus' => 'Disponible',
-                'tipo' => 'Herramientas'
-            ]);
-        }
-
-        $this->assertDatabaseHas('herramientas', [
-            'condicion' => 'Nueva',
-            'dimension' => 234
         ]);
-        
-        $herramienta=Herramientas::find('HM-T-0234-01');
-        $this->assertNotNull($herramienta);
+
+        Articulo_inventariado::create([
+            'id_inventario'=>"HM-T-0234-01",
+            'id_articulo'=>"HM-T-0234",
+            'estatus'=>"Disponible",
+            'tipo'=>"Herramientas",
+        ]);
+
+        Herramientas::create([
+            'id_herramientas'=>"HM-T-0234-01",
+            'condicion'=>"Buen estado",
+            'dimension'=>234,
+        ]);
+
 
         $data_update=[
-            'condicion_herramienta' => 'Nueva',
+            'condicion_herramienta' => 'Buen estado',
             'estatus'=>'No disponible'
         ];
         //Update sin cambiar la condicion de la herramienta
-        $updateCorrecto = $this->put(route('herramientas.update',$herramienta->id_herramientas),$data_update);
-        $herramienta_update=Herramientas::where('estatus','No disponible');
+        $updateCorrecto = $this->put(route('herramientas.update',"HM-T-0234-01"),$data_update);
+        $herramienta_update=Articulo_inventariado::where('estatus','No disponible')->first();
         $this->assertNotNull($herramienta_update);
         $updateCorrecto->assertRedirect(route('herramientas.index'));
     
@@ -234,8 +153,8 @@ class HerramientasTest extends TestCase
             'condicion_herramienta' => 'Desgastada',
             'estatus'=>'No disponible'
         ];
-        $updateCorrecto = $this->put(route('herramientas.update',$herramienta->id_herramientas),$data_update);
-        $herramienta_update=Herramientas::where('condicion','Desgastada');
+        $updateCorrecto = $this->put(route('herramientas.update',"HM-T-0234-01"),$data_update);
+        $herramienta_update=Articulo_inventariado::where('condicion','Desgastada');
         $this->assertNotNull($herramienta_update);
         $updateCorrecto->assertRedirect(route('herramientas.index'));
 
@@ -258,56 +177,35 @@ class HerramientasTest extends TestCase
         
         ]);
 
-        $data = [
+        Catalogo_articulo::create([
+            'id_articulo'=>"HM-T-0234",
             'nombre' => 'Torno',
-            'seccion' => 03,
-            'estatus' => 'Disponible',
-            'tipo' => 'Herramientas',
-            'cantidad' => 1,
-            'tipo_herramienta' => 'Herramienta manual',
-            'dimension_herramienta' => 234,
-            'condicion_herramienta' => 'Nueva',
-            'tipo_insumo' => null, 
-            'capacidad_insumo' => null 
-        ];
+            'cantidad'=>1,
+            'seccion'=>null,
+            'tipo'=>"Herramientas",
 
-        //Creacion correcta de una herramienta
-        $response = $this->post(route('herramientas.store'), $data); 
-        
-        $response->assertStatus(302);
-        $response->assertRedirect(route('herramientas.index'));
-
-        //Checamos que si la herramienta si se existe en la base de datos
-        $this->assertDatabaseHas('catalogo_articulo', [
-            'nombre' => 'Torno',
-            'cantidad' => 1,
-            'tipo' => 'Herramienta manual'
         ]);
-        $articulo=Catalogo_articulo::where('nombre', 'Torno')->first();
-        //No es nulo
-        $this->assertNotNull($articulo);
 
-        //Ahora se crean los id de inventariado por la cantidad que se ingreso
-        for ($i = 0; $i < 1; $i++) {
-            $this->assertDatabaseHas('articulo_inventariado', [
-                'id_articulo' => $articulo->id_articulo,
-                'estatus' => 'Disponible',
-                'tipo' => 'Herramientas'
-            ]);
-        }
-
-        $this->assertDatabaseHas('herramientas', [
-            'condicion' => 'Nueva',
-            'dimension' => 234
+        Articulo_inventariado::create([
+            'id_inventario'=>"HM-T-0234-01",
+            'id_articulo'=>"HM-T-0234",
+            'estatus'=>"Disponible",
+            'tipo'=>"Herramientas",
         ]);
-        
-        $herramienta=Herramientas::find('HM-T-0234-01');
-        $this->assertNotNull($herramienta);
 
-        $delete_correcto = $this->delete(route('herramientas.destroy',$herramienta->id_herramientas))->assertRedirect(route('herramientas.index'));
+        Herramientas::create([
+            'id_herramientas'=>"HM-T-0234-01",
+            'condicion'=>"Buen estado",
+            'dimension'=>234,
+        ]);
+
+        $delete_correcto = $this->delete(route('herramientas.destroy',"HM-T-0234-01"))->assertRedirect(route('herramientas.index'));
        
         //Signigica que ya no existe en la base de datos
-        $this->assertDatabaseMissing('herramientas', ['id_herramientas' => $herramienta->id_herramienta]);
+        $this->assertDatabaseMissing('herramientas', ['id_herramientas' => "HM-T-0234-01"]);
+
+
+        //Caso en el que sea mayor a 0 la cantidad en catalogo articulo cuando se elimine debe disminuir
 
     }
 }

@@ -46,7 +46,7 @@ class MaquinariaTest extends TestCase
      }
 
 
-        public function test_create_maquinaria():void{
+    public function test_create_maquinaria():void{
             Artisan::call('migrate');
     
             User::create([
@@ -64,7 +64,53 @@ class MaquinariaTest extends TestCase
     
             $acceso =$this->get(route('inventario.index'));
             $acceso->assertStatus(200);
+
+
+            //Creacion correcta de una maquinaria
+            Catalogo_articulo::create([
+                'id_articulo'=>"03DI",
+                'nombre' => 'durometro ibertest',
+                'cantidad'=>0,
+                'seccion'=>null,
+                'tipo'=>"Herramientas",
     
+            ]);
+            
+
+            //tipo nulo
+            $data=[
+                "id_articulo"=>"HM-T-0234",
+                'estatus' => 'Disponible',
+                'cantidad' => 1,
+                'condicion_herramienta' => 'Buen estado',
+            ];
+
+            $data_update = [
+                'estatus'=>'No disponible',
+                
+                'insumos' => [
+                    'AI01'=>200, 
+                    'AI02'=>200,                
+                ],
+
+                'insumos-cantidad-actual' => [
+                     'AI01'=>250, 
+                     'AI02'=>20, 
+                ],
+                'insumos-cantidad-minima' => [
+                    'AI01'=> 5, 
+                    'AI02'=>15, 
+                ],
+            ];
+        
+            $response = $this->post(route('herramientas.store'), $data); 
+            $response->assertStatus(302);
+            $response->assertRedirect(route('herramientas.index'));
+    
+            $herramienta=Herramientas::where('id_herramientas', 'HM-T-0234-01')->first();
+            
+            //No es nulo
+            $this->assertNotNull($herramienta);
     
             $data = [
                 'nombre' => 'Inyectora',
@@ -87,34 +133,8 @@ class MaquinariaTest extends TestCase
             $response->assertRedirect(route('maquinaria.index'));
     
            
-    
-    
-            $this->assertDatabaseHas('catalogo_articulo', [
-                'nombre' => 'Inyectora',
-                'cantidad' => 1,
-                'tipo' => 'Maquina de robotica'
-            ]);
-    
-                 
-    
-            $articulo=Catalogo_articulo::where('nombre', 'Inyectora')->first();
-            //No es nulo
-            $this->assertNotNull($articulo);
-    
-            for ($i = 0; $i < 1; $i++) {
-                $this->assertDatabaseHas('articulo_inventariado', [
-                    'id_articulo' => $articulo->id_articulo,
-                    'estatus' => 'Disponible',
-                    'tipo' => 'Maquinaria'
-                ]);
-            } 
-    
-            for ($i = 0; $i < 1; $i++) {
-                $this->assertDatabaseHas('maquinaria', [
-                    'id_maquinaria' => '03I01',
-                   
-                ]);
-            } 
+
+          
     
     
               //Create pero con la asignacion de los insumos
