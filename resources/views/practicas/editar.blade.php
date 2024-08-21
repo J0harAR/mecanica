@@ -37,7 +37,7 @@
                     <label for="codigo_practica" class="form-label"><i class="fas fa-id-badge me-2"></i>No. Practica
                     </label>
                     <input type="text" class="form-control" id="codigo_practica" name="codigo_practica"
-                        value="{{ $practica->id_practica }}" required>
+                        value="{{ $practica->id_practica }}" required readonly>
                 </div>
 
                 <div class="col-md-6">

@@ -385,7 +385,7 @@ class DocenteTest extends TestCase
             'id_docente'=>$docente->rfc,
             'clave_grupo'=>"IA1",
             'clave_asignatura'=>$asignatura->clave,
-            'periodo'=>'2024'
+            'periodo'=>'2024-3'
         ]);
 
         $grupo=Grupo::find('IA1');
@@ -682,12 +682,12 @@ class DocenteTest extends TestCase
             'nombre'=>'Inteligencia artificial'
         ]);
         Periodo::create([
-            'clave'=>"2024"
+            'clave'=>"2024-3"
         ]);
 
         
 
-        $periodo=Periodo::find("2024");
+        $periodo=Periodo::find("2024-3");
         $docente=Docente::find("DDD");
         $asignatura=Asignatura::find('IA');
 

@@ -62,15 +62,7 @@ class PracticaController extends Controller
         $fundamento = $request->input('fundamento');
         $referencias = $request->input('referencias');
     
-        //Verificar que el docente tenga su grupo asignado
-        $asigacion_correcta=DB::table('grupo')                   
-        ->where('clave_grupo',$clave_grupo)
-        ->where('id_docente',$id_docente)
-        ->first();
-
-        if(!$asigacion_correcta){
-            return redirect()->route('practicas.create')->with('error', 'El grupo y el docente no coinciden');
-        }
+       
 
         $practica = new Practica;
     
@@ -118,15 +110,6 @@ class PracticaController extends Controller
         $referencias = $request->input('referencias');
         
         
-    
-        $asigacion_correcta=DB::table('grupo')                   
-        ->where('clave_grupo',$clave_grupo)
-        ->where('id_docente',$id_docente)
-        ->first();
-
-        if(!$asigacion_correcta){
-            return redirect()->route('practicas.index')->with('error', 'El grupo y el docente no coinciden');
-        }
 
         $practica = Practica::firstOrNew(['id_practica' => $id_practica]);  
             $practica->id_practica = $id_practica;

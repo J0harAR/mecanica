@@ -66,7 +66,7 @@ class MaquinariaTest extends TestCase
             $acceso->assertStatus(200);
 
 
-            //Creacion correcta de una maquinaria
+            //Creacion correcta de una maquinaria sin insumos
             Catalogo_articulo::create([
                 'id_articulo'=>"03DI",
                 'nombre' => 'durometro ibertest',
@@ -92,6 +92,8 @@ class MaquinariaTest extends TestCase
             $this->assertNotNull($maquinaria);
 
             //Validaciones de la capacidad , capacidad actual y capacidad minima de cada insumo que se le asigne
+
+            //La cantidad actual no puede ser menor que la cantidad mínima
             Catalogo_articulo::create([
                 'id_articulo'=>"02DI",
                 'nombre' => 'durometro ibertest',
@@ -128,15 +130,15 @@ class MaquinariaTest extends TestCase
                 'cantidad' => 1,
                 
                 'insumos' => [
-                    'AI01'=>200, 
+                    'AI'=>200, 
                        
                 ],
 
                 'insumos-cantidad-actual' => [
-                     'AI01'=>250,                
+                     'AI'=>1,                
                 ],
                 'insumos-cantidad-minima' => [
-                    'AI01'=> 5, 
+                    'AI'=> 5, 
                     
                 ],
             ];
@@ -144,8 +146,136 @@ class MaquinariaTest extends TestCase
             $response = $this->post(route('maquinaria.store'), $data); 
             $response->assertStatus(302);
             $response->assertRedirect(route('maquinaria.index'));
+            $response->assertSessionHas('error');
+            //La cantidad mínima no puede ser mayor que la capacidad
     
+            $data=[
+                "id_articulo"=>"02DI",
+                'estatus' => 'Disponible',
+                'cantidad' => 1,
+                
+                'insumos' => [
+                    'AI'=>200, 
+                       
+                ],
 
+                'insumos-cantidad-actual' => [
+                     'AI'=>1,                
+                ],
+                'insumos-cantidad-minima' => [
+                    'AI'=> 270, 
+                    
+                ],
+            ];
+            $response = $this->post(route('maquinaria.store'), $data); 
+            $response->assertStatus(302);
+            $response->assertRedirect(route('maquinaria.index'));
+            $response->assertSessionHas('error');
+
+
+            //La cantidad actual no puede ser mayor que la capacidad 
+
+            $data=[
+                "id_articulo"=>"02DI",
+                'estatus' => 'Disponible',
+                'cantidad' => 1,
+                
+                'insumos' => [
+                    'AI'=>200, 
+                       
+                ],
+
+                'insumos-cantidad-actual' => [
+                     'AI'=>1000,                
+                ],
+                'insumos-cantidad-minima' => [
+                    'AI'=> 10, 
+                    
+                ],
+            ];
+            $response = $this->post(route('maquinaria.store'), $data); 
+            $response->assertStatus(302);
+            $response->assertRedirect(route('maquinaria.index'));
+            $response->assertSessionHas('error');
+
+
+
+
+            //Cantidad mínima no definida para el insumo con ID
+
+            
+            $data=[
+                "id_articulo"=>"02DI",
+                'estatus' => 'Disponible',
+                'cantidad' => 1,
+                
+                'insumos' => [
+                    'AI'=>200, 
+                       
+                ],
+
+                'insumos-cantidad-actual' => [
+                     'AI'=>6,                
+                ],
+                'insumos-cantidad-minima' => [
+                    'AI'=> null, 
+                    
+                ],
+            ];
+            $response = $this->post(route('maquinaria.store'), $data); 
+            $response->assertStatus(302);
+            $response->assertRedirect(route('maquinaria.index'));
+            $response->assertSessionHas('error');
+
+            //Capacidad no definida para el insumo
+
+            
+            $data=[
+                "id_articulo"=>"02DI",
+                'estatus' => 'Disponible',
+                'cantidad' => 1,
+                
+                'insumos' => [
+                    'AI'=>null, 
+                       
+                ],
+
+                'insumos-cantidad-actual' => [
+                     'AI'=>5,                
+                ],
+                'insumos-cantidad-minima' => [
+                    'AI'=> 1, 
+                    
+                ],
+            ];
+            $response = $this->post(route('maquinaria.store'), $data); 
+            $response->assertStatus(302);
+            $response->assertRedirect(route('maquinaria.index'));
+            $response->assertSessionHas('error');
+
+            //Creacion correcta de una maquinaria con  insumos
+
+            $data=[
+                "id_articulo"=>"02DI",
+                'estatus' => 'Disponible',
+                'cantidad' => 1,
+                
+                'insumos' => [
+                    'AI'=>10, 
+                       
+                ],
+
+                'insumos-cantidad-actual' => [
+                     'AI'=>5,                
+                ],
+                'insumos-cantidad-minima' => [
+                    'AI'=> 1, 
+                    
+                ],
+            ];
+            $response = $this->post(route('maquinaria.store'), $data); 
+            $response->assertStatus(302);
+            $response->assertRedirect(route('maquinaria.index'));
         }
 
         public function test_edit_maquinaria():void{
@@ -163,175 +293,124 @@ class MaquinariaTest extends TestCase
                 'password' => 'password22',
             
             ]);
-    
-            $data = [
-                'nombre' => 'Inyectora',
-                'seccion' => '03',
-                'estatus' => 'Disponible',
-                'tipo' => 'Maquinaria',
-                'cantidad' => 1,
-                'tipo_maquina'=>'Maquina de robotica',
-                'tipo_herramienta' => 'Herramienta manual',
-                'dimension_herramienta' => 15,
-                'condicion_herramienta' => 'Nueva',
-                'tipo_insumo' => null, 
-                'capacidad_insumo' => null
-    
-            ];
-           
-      
-            $response = $this->post(route('maquinaria.store'), $data); 
-            $response->assertStatus(302);
-            $response->assertRedirect(route('maquinaria.index'));
-    
-           
 
-            $this->assertDatabaseHas('catalogo_articulo', [
-                'nombre' => 'Inyectora',
-                'cantidad' => 1,
-                'tipo' => 'Maquina de robotica'
+            Catalogo_articulo::create([
+                'id_articulo'=>"03MI",
+                'nombre' =>'maquina inyectora',
+                'cantidad'=>1,
+                'seccion'=>"03",
+                'tipo'=>"Maquinaria",
+    
             ]);
     
-                 
-
-            $articulo=Catalogo_articulo::where('nombre', 'Inyectora')->first();
-            //No es nulo
-            $this->assertNotNull($articulo);
-    
-            for ($i = 0; $i < 1; $i++) {
-                $this->assertDatabaseHas('articulo_inventariado', [
-                    'id_articulo' => $articulo->id_articulo,
-                    'estatus' => 'Disponible',
-                    'tipo' => 'Maquinaria'
-                ]);
-            } 
-    
-            for ($i = 0; $i < 1; $i++) {
-                $this->assertDatabaseHas('maquinaria', [
-                    'id_maquinaria' => '03I01',
-                   
-                ]);
-            }
-
-            $data_insumos=[
+            Catalogo_articulo::create([
+                'id_articulo'=>"AI",
                 'nombre' => 'Aceite Industrial',
-                'seccion' => null,
-                'estatus' => 'Disponible',
-                'tipo' => 'Insumos',
-                'cantidad' => 2,
-                'tipo_maquina'=>'',
-                'tipo_herramienta' => '',
-                'dimension_herramienta' => null,
-                'condicion_herramienta' => 'Nueva',
-                'tipo_insumo' => 'Aceite para maquina', 
-                'capacidad_insumo' => 3,
-               
-            ];
+                'cantidad'=>1,
+                'seccion'=>null,
+                'tipo'=>"Insumos",
     
-            $response_insumo = $this->post(route('insumos.store'), $data_insumos); 
+            ]);
     
-            
-            $maquinaria=Maquinaria::find('03I01');
-
-            $insumos=[
-                'AI01',
-                'AI02',
-            ];
+            Articulo_inventariado::create([
+                'id_inventario'=>"03MI01",
+                'id_articulo'=>"03MI",
+                'estatus'=>"Disponible",
+                'tipo'=>"Maquinaria",
+            ]);
+    
+            Articulo_inventariado::create([
+                'id_inventario'=>"AI01",
+                'id_articulo'=>"AI",
+                'estatus'=>"Disponible",
+                'tipo'=>"Insumos",
+            ]);
+    
+            Insumos::create([
+                'id_insumo'=>"AI01",
+                'capacidad'=>200,
+            ]);
+    
+            Maquinaria::create([
+                'id_maquinaria'=>"03MI01",
+            ]);
+    
+            $maquinaria=Maquinaria::find('03MI01');
+          
+    
+    
+            $maquinaria->insumos()->attach("AI", ['capacidad' => 100, 'cantidad_actual' => 50,'cantidad_minima'=>10]);
            
-            $maquinaria->insumos()->sync($insumos);
-
-            $data_update = [
-                'estatus'=>'No disponible',
-                
+            //La cantidad mínima no puede ser mayor que la capacidad para el insumo
+            $data=[
+                "id_articulo"=>"03MI01",
+                'estatus' => 'No disponible',
+       
                 'insumos' => [
-                    'AI01'=>200, 
-                    'AI02'=>200,                
+                    'AI'=>10, 
+                       
                 ],
 
-                'insumos-cantidad-actual' => [
-                     'AI01'=>100, 
-                     'AI02'=>20, 
-                ],
                 'insumos-cantidad-minima' => [
-                    'AI01'=> 5, 
-                    'AI02'=>15, 
+                    'AI'=>50, 
+                    
                 ],
             ];
 
-            $updateCorrecto = $this->put(route('maquinaria.update',$maquinaria->id_maquinaria),$data_update);
-            $updateCorrecto->assertRedirect(route('maquinaria.index'));
-    
-            $maquinaria_update=articulo_inventariado::where('id_articulo','03I01')
-                                        ->where('estatus','No disponible');
-           $this->assertNotNull($maquinaria_update);
+           
+            $response = $this->put(route('maquinaria.update',$maquinaria->id_maquinaria),$data);
+            $response->assertStatus(302);
+            $response->assertRedirect(route('maquinaria.index'));
+            $response->assertSessionHas('error');
 
 
-            //Caso de la cantidad actual del insumo es mayor a la capacidad total
-            $data_update = [
-                'estatus'=>'No disponible',
-                
+            //Capacidad no definida para el insumo
+            $data=[
+                "id_articulo"=>"03MI01",
+                'estatus' => 'No disponible',
+       
                 'insumos' => [
-                    'AI01'=>200, 
-                    'AI02'=>200,                
+                    'AI'=>null, 
+                       
                 ],
 
-                'insumos-cantidad-actual' => [
-                     'AI01'=>250, 
-                     'AI02'=>20, 
-                ],
                 'insumos-cantidad-minima' => [
-                    'AI01'=> 5, 
-                    'AI02'=>15, 
+                    'AI'=> 1, 
+                    
                 ],
             ];
 
-            $update = $this->put(route('maquinaria.update',$maquinaria->id_maquinaria),$data_update);
-            $update->assertRedirect(route('maquinaria.index'));
-            $update->assertSessionHas('error');
+           
+            $response = $this->put(route('maquinaria.update',$maquinaria->id_maquinaria),$data);
+            $response->assertStatus(302);
+            $response->assertRedirect(route('maquinaria.index'));
+            $response->assertSessionHas('error');
 
-            //Caso de la cantidad minima del insumo es mayor a la capacidad total
-            $data_update = [
-                'estatus'=>'No disponible',
-                
+
+
+
+
+            //Correcto actualizacion de maquinaria
+            $data=[
+                "id_articulo"=>"03MI01",
+                'estatus' => 'No disponible',
+       
                 'insumos' => [
-                    'AI01'=>200, 
-                    'AI02'=>200,                
+                    'AI'=>200, 
+                       
                 ],
 
-                'insumos-cantidad-actual' => [
-                     'AI01'=>20, 
-                     'AI02'=>20, 
-                ],
                 'insumos-cantidad-minima' => [
-                    'AI01'=> 500, 
-                    'AI02'=>15, 
+                    'AI'=> 1, 
+                    
                 ],
             ];
-            $update = $this->put(route('maquinaria.update',$maquinaria->id_maquinaria),$data_update);
-            $update->assertRedirect(route('maquinaria.index'));
-            $update->assertSessionHas('error');
 
-            //Caso cuando no esta definida la capacidad de un insumo
-            $data_update = [
-                'estatus'=>'No disponible',
-                
-                'insumos' => [
-                    'AI01'=>null, 
-                    'AI02'=>null,                
-                ],
-
-                'insumos-cantidad-actual' => [
-                     'AI01'=>20, 
-                     'AI02'=>20, 
-                ],
-                'insumos-cantidad-minima' => [
-                    'AI01'=> 500, 
-                    'AI02'=>15, 
-                ],
-            ];
-            $update = $this->put(route('maquinaria.update',$maquinaria->id_maquinaria),$data_update);
-            $update->assertRedirect(route('maquinaria.index'));
-            $update->assertSessionHas('error');
+           
+            $response = $this->put(route('maquinaria.update',$maquinaria->id_maquinaria),$data);
+            $response->assertStatus(302);
+            $response->assertRedirect(route('maquinaria.index'));
+          
     
         }
         public function test_delete_maquinaria():void{
@@ -350,32 +429,29 @@ class MaquinariaTest extends TestCase
                 'password' => 'password22',
             
             ]);
+
+            Catalogo_articulo::create([
+                'id_articulo'=>"03MI",
+                'nombre' =>'maquina inyectora',
+                'cantidad'=>1,
+                'seccion'=>"03",
+                'tipo'=>"Maquinaria",
     
-            $data = [
-                'nombre' => 'Inyectora',
-                'seccion' => '03',
-                'estatus' => 'Disponible',
-                'tipo' => 'Maquinaria',
-                'cantidad' => 1,
-                'tipo_maquina'=>'Maquina de robotica',
-                'tipo_herramienta' => 'Herramienta manual',
-                'dimension_herramienta' => 15,
-                'condicion_herramienta' => 'Nueva',
-                'tipo_insumo' => null, 
-                'capacidad_insumo' => null
+            ]);
+          
+            Articulo_inventariado::create([
+                'id_inventario'=>"03MI01",
+                'id_articulo'=>"03MI",
+                'estatus'=>"Disponible",
+                'tipo'=>"Maquinaria",
+            ]);
+
     
-            ];
+            Maquinaria::create([
+                'id_maquinaria'=>"03MI01",
+            ]);
+            $maquinaria=Maquinaria::find("03MI01");
            
-            //Creacion correcta de una herramienta
-            $response = $this->post(route('maquinaria.store'), $data); 
-            $response->assertStatus(302);
-            $response->assertRedirect(route('maquinaria.index'));
-            
-    
-            $maquinaria=Maquinaria::find('03I01');
-    
-            $this->assertNotNull($maquinaria);
-    
             $delete_correcto = $this->delete(route('maquinaria.destroy',$maquinaria->id_maquinaria))->assertRedirect(route('maquinaria.index'));
         
             //Signigica que ya no existe en la base de datos
@@ -397,60 +473,163 @@ class MaquinariaTest extends TestCase
                 'password' => 'password22',
             
             ]);
-    
-            $data = [
-                'nombre' => 'Inyectora',
-                'seccion' => '03',
-                'estatus' => 'Disponible',
-                'tipo' => 'Maquinaria',
-                'cantidad' => 1,
-                'tipo_maquina'=>'Maquina de robotica',
-                'tipo_herramienta' => 'Herramienta manual',
-                'dimension_herramienta' => 15,
-                'condicion_herramienta' => 'Nueva',
-                'tipo_insumo' => null, 
-                'capacidad_insumo' => null
-    
-            ];
-           
-            //Creacion correcta de una maquinaria
-            $response = $this->post(route('maquinaria.store'), $data); 
-            $response->assertStatus(302);
-            $response->assertRedirect(route('maquinaria.index'));
-            
-            $data_insumos=[
-                'nombre' => 'Aceite Industrial',
-                'seccion' => null,
-                'estatus' => 'Disponible',
-                'tipo' => 'Insumos',
-                'cantidad' => 2,
-                'tipo_maquina'=>'',
-                'tipo_herramienta' => '',
-                'dimension_herramienta' => null,
-                'condicion_herramienta' => 'Nueva',
-                'tipo_insumo' => 'Aceite para maquina', 
-                'capacidad_insumo' => 3,
-               
-            ];
-    
-            $response_insumo = $this->post(route('insumos.store'), $data_insumos); 
 
-            //data de los insumos de los inputs
+            Catalogo_articulo::create([
+                'id_articulo'=>"03MI",
+                'nombre' =>'maquina inyectora',
+                'cantidad'=>1,
+                'seccion'=>"03",
+                'tipo'=>"Maquinaria",
+    
+            ]);
+          
+            Articulo_inventariado::create([
+                'id_inventario'=>"03MI01",
+                'id_articulo'=>"03MI",
+                'estatus'=>"Disponible",
+                'tipo'=>"Maquinaria",
+            ]);
+
+    
+            Maquinaria::create([
+                'id_maquinaria'=>"03MI01",
+            ]);
+
+            Catalogo_articulo::create([
+                'id_articulo'=>"AI",
+                'nombre' => 'Aceite Industrial',
+                'cantidad'=>1,
+                'seccion'=>null,
+                'tipo'=>"Insumos",
+    
+            ]);
+
+
+            Articulo_inventariado::create([
+                'id_inventario'=>"AI01",
+                'id_articulo'=>"AI",
+                'estatus'=>"Disponible",
+                'tipo'=>"Insumos",
+            ]);
+    
+            Insumos::create([
+                'id_insumo'=>"AI01",
+                'capacidad'=>200,
+            ]);
 
             $data=[
-                'insumos' => [
-                    'AI01' ,
-                    'AI02'               
+                'insumos'=>[
+                    "AI"
                 ]
             ];
+    
+        
+          
 
-            $maquinaria=Maquinaria::find('03I01');
+            $maquinaria=Maquinaria::find('03MI01');
+            //ASignacion correcta
             $asignacion = $this->patch(route('maquinaria.insumos_asignar',$maquinaria->id_maquinaria),$data);
             $asignacion->assertStatus(302);
             $asignacion->assertRedirect(route('maquinaria.index'));
             
+            //Validacion si no se selecciona ninguno
+              $data=[
+                'insumos'=>null
+            ];
+            
+            $asignacion = $this->patch(route('maquinaria.insumos_asignar',$maquinaria->id_maquinaria),$data);
+            $asignacion->assertStatus(302);
+            $asignacion->assertRedirect(route('maquinaria.index'));
+            $asignacion->assertSessionHas('error');
+            
+          
+            
+        }
+
+        public function test_desasignar_insumos():void{
+
+            Artisan::call('migrate');
+    
+            User::create([
+                "name" =>"Test",
+                "email" => 'test@gmail.com',
+                "password" => Hash::make('password22'),
+            ]);
+            
+            
+            $acceso = $this->post(route('login'), [
+                'email' => 'test@gmail.com',
+                'password' => 'password22',
+            
+            ]);
 
 
+            Catalogo_articulo::create([
+                'id_articulo'=>"03MI",
+                'nombre' =>'maquina inyectora',
+                'cantidad'=>1,
+                'seccion'=>"03",
+                'tipo'=>"Maquinaria",
+    
+            ]);
+    
+            Catalogo_articulo::create([
+                'id_articulo'=>"AI",
+                'nombre' => 'Aceite Industrial',
+                'cantidad'=>1,
+                'seccion'=>null,
+                'tipo'=>"Insumos",
+    
+            ]);
+    
+            Articulo_inventariado::create([
+                'id_inventario'=>"03MI01",
+                'id_articulo'=>"03MI",
+                'estatus'=>"Disponible",
+                'tipo'=>"Maquinaria",
+            ]);
+    
+            Articulo_inventariado::create([
+                'id_inventario'=>"AI01",
+                'id_articulo'=>"AI",
+                'estatus'=>"Disponible",
+                'tipo'=>"Insumos",
+            ]);
+    
+            Insumos::create([
+                'id_insumo'=>"AI01",
+                'capacidad'=>200,
+            ]);
+    
+            Maquinaria::create([
+                'id_maquinaria'=>"03MI01",
+            ]);
+    
+            $maquinaria=Maquinaria::find('03MI01');
+          
+    
+            //Desasignar correctamente
+            $maquinaria->insumos()->attach("AI", ['capacidad' => 100, 'cantidad_actual' => 50,'cantidad_minima'=>10]);
+            $data=[
+                "insumos"=>[
+                    "AI"
+                ]
+            ];
+            $response = $this->patch(route('maquinaria.insumos_desasignar',$maquinaria->id_maquinaria),$data);
+            $response->assertStatus(302);
+            $response->assertRedirect(route('maquinaria.index'));
+            //Si no se selecciono ningun insumo
+
+
+            $data=[
+                'insumos'=>null
+            ];
+            
+            $response = $this->patch(route('maquinaria.insumos_desasignar',$maquinaria->id_maquinaria),$data);
+            $response->assertStatus(302);
+            $response->assertRedirect(route('maquinaria.index'));
+        
+            
         }
 
     

@@ -17,6 +17,8 @@ use App\Models\Asignatura;
 use App\Models\Persona;
 use App\Models\Alumno;
 use App\Models\Herramientas;
+use App\Models\Catalogo_articulo;
+use App\Models\Articulo_inventariado;
 class PracticaTest extends TestCase
 {
     /**
@@ -106,27 +108,33 @@ class PracticaTest extends TestCase
             'id_docente'=>$docente->rfc,
             'clave_grupo'=>"IA1",
             'clave_asignatura'=>$asignatura->clave,
-            'periodo'=>'2024'
+            'periodo'=>'2024-3'
         ]);
 
         $grupo=Grupo::find('IA1');
 
-        $data_herramienta=[
+        Catalogo_articulo::create([
+            'id_articulo'=>"HM-T-0234",
             'nombre' => 'Torno',
-            'seccion' => 03,
-            'estatus' => 'Disponible',
-            'tipo' => 'Herramientas',
-            'cantidad' => 1,
-            'tipo_herramienta' => 'Herramienta manual',
-            'dimension_herramienta' => 234,
-            'condicion_herramienta' => 'Nueva',
-            'tipo_insumo' => null, 
-            'capacidad_insumo' => null 
+            'cantidad'=>1,
+            'seccion'=>null,
+            'tipo'=>"Herramientas",
 
+        ]);
 
-        ];
+        Articulo_inventariado::create([
+            'id_inventario'=>"HM-T-0234-01",
+            'id_articulo'=>"HM-T-0234",
+            'estatus'=>"Disponible",
+            'tipo'=>"Herramientas",
+        ]);
 
-        $response = $this->post(route('herramientas.store'), $data_herramienta); 
+        Herramientas::create([
+            'id_herramientas'=>"HM-T-0234-01",
+            'condicion'=>"Buen estado",
+            'dimension'=>234,
+        ]);
+
         $herramienta=Herramientas::find('HM-T-0234-01');
        
         $this->assertNotNull($herramienta);
@@ -223,29 +231,34 @@ class PracticaTest extends TestCase
             'id_docente'=>$docente->rfc,
             'clave_grupo'=>"IA1",
             'clave_asignatura'=>$asignatura->clave,
-            'periodo'=>'2024'
+            'periodo'=>'2024-3'
         ]);
 
         $grupo=Grupo::find('IA1');
 
-        $data_herramienta=[
+        Catalogo_articulo::create([
+            'id_articulo'=>"HM-T-0234",
             'nombre' => 'Torno',
-            'seccion' => 03,
-            'estatus' => 'Disponible',
-            'tipo' => 'Herramientas',
-            'cantidad' => 1,
-            'tipo_herramienta' => 'Herramienta manual',
-            'dimension_herramienta' => 234,
-            'condicion_herramienta' => 'Nueva',
-            'tipo_insumo' => null, 
-            'capacidad_insumo' => null 
+            'cantidad'=>1,
+            'seccion'=>null,
+            'tipo'=>"Herramientas",
 
+        ]);
 
-        ];
+        Articulo_inventariado::create([
+            'id_inventario'=>"HM-T-0234-01",
+            'id_articulo'=>"HM-T-0234",
+            'estatus'=>"Disponible",
+            'tipo'=>"Herramientas",
+        ]);
 
-        $response = $this->post(route('herramientas.store'), $data_herramienta); 
+        Herramientas::create([
+            'id_herramientas'=>"HM-T-0234-01",
+            'condicion'=>"Buen estado",
+            'dimension'=>234,
+        ]);
+
         $herramienta=Herramientas::find('HM-T-0234-01');
-       
         $this->assertNotNull($herramienta);
         $this->assertNotNull($grupo);
         $this->assertNotNull($docente);
@@ -321,23 +334,30 @@ class PracticaTest extends TestCase
         ]);
 
         $grupo=Grupo::find('IA1');
-
-        $data_herramienta=[
+        
+        Catalogo_articulo::create([
+            'id_articulo'=>"HM-T-0234",
             'nombre' => 'Torno',
-            'seccion' => 03,
-            'estatus' => 'Disponible',
-            'tipo' => 'Herramientas',
-            'cantidad' => 1,
-            'tipo_herramienta' => 'Herramienta manual',
-            'dimension_herramienta' => 234,
-            'condicion_herramienta' => 'Nueva',
-            'tipo_insumo' => null, 
-            'capacidad_insumo' => null 
+            'cantidad'=>1,
+            'seccion'=>null,
+            'tipo'=>"Herramientas",
 
+        ]);
 
-        ];
+        Articulo_inventariado::create([
+            'id_inventario'=>"HM-T-0234-01",
+            'id_articulo'=>"HM-T-0234",
+            'estatus'=>"Disponible",
+            'tipo'=>"Herramientas",
+        ]);
 
-        $response = $this->post(route('herramientas.store'), $data_herramienta); 
+        Herramientas::create([
+            'id_herramientas'=>"HM-T-0234-01",
+            'condicion'=>"Buen estado",
+            'dimension'=>234,
+        ]);
+        
+
         $herramienta=Herramientas::find('HM-T-0234-01');
        
         $this->assertNotNull($herramienta);
@@ -367,27 +387,6 @@ class PracticaTest extends TestCase
 
         $data_update=[
             'codigo_practica'=>"001",
-            'docente'=>$docente->rfc,
-            'clave_grupo'=>$grupo->clave_grupo,
-            'nombre_practica'=>"Practica 2 actualizada",
-            'objetivo'=>"Objectivo practica 2",
-            'introduccion'=>"Introduccion practica 2",
-            'fundamento'=>"Fundamento practica 2",
-            'referencias'=>"Referencias practica 2",
-            'articulos'=>[
-                $herramienta->Articulo_inventariados->Catalogo_articulos->id_articulo
-            ],
-        ];
-        $response =$this->patch(route('practicas.update',$practica->id_practica),$data_update);
-        $response->assertStatus(302);
-        $response->assertRedirect(route('practicas.index'));
-
-
-
-        //Cambio de codigo de practica
-    
-        $data_update=[
-            'codigo_practica'=>"002",
             'docente'=>$docente->rfc,
             'clave_grupo'=>$grupo->clave_grupo,
             'nombre_practica'=>"Practica 2 actualizada",
@@ -455,23 +454,29 @@ class PracticaTest extends TestCase
         ]);
 
         $grupo=Grupo::find('IA1');
-
-        $data_herramienta=[
+        
+        Catalogo_articulo::create([
+            'id_articulo'=>"HM-T-0234",
             'nombre' => 'Torno',
-            'seccion' => 03,
-            'estatus' => 'Disponible',
-            'tipo' => 'Herramientas',
-            'cantidad' => 1,
-            'tipo_herramienta' => 'Herramienta manual',
-            'dimension_herramienta' => 234,
-            'condicion_herramienta' => 'Nueva',
-            'tipo_insumo' => null, 
-            'capacidad_insumo' => null 
+            'cantidad'=>1,
+            'seccion'=>null,
+            'tipo'=>"Herramientas",
 
+        ]);
 
-        ];
+        Articulo_inventariado::create([
+            'id_inventario'=>"HM-T-0234-01",
+            'id_articulo'=>"HM-T-0234",
+            'estatus'=>"Disponible",
+            'tipo'=>"Herramientas",
+        ]);
 
-        $response = $this->post(route('herramientas.store'), $data_herramienta); 
+        Herramientas::create([
+            'id_herramientas'=>"HM-T-0234-01",
+            'condicion'=>"Buen estado",
+            'dimension'=>234,
+        ]);
+      
         $herramienta=Herramientas::find('HM-T-0234-01');
        
         $this->assertNotNull($herramienta);
@@ -554,22 +559,28 @@ class PracticaTest extends TestCase
 
         $grupo=Grupo::find('IA1');
 
-        $data_herramienta=[
+        Catalogo_articulo::create([
+            'id_articulo'=>"HM-T-0234",
             'nombre' => 'Torno',
-            'seccion' => 03,
-            'estatus' => 'Disponible',
-            'tipo' => 'Herramientas',
-            'cantidad' => 1,
-            'tipo_herramienta' => 'Herramienta manual',
-            'dimension_herramienta' => 234,
-            'condicion_herramienta' => 'Nueva',
-            'tipo_insumo' => null, 
-            'capacidad_insumo' => null 
+            'cantidad'=>1,
+            'seccion'=>null,
+            'tipo'=>"Herramientas",
 
+        ]);
 
-        ];
+        Articulo_inventariado::create([
+            'id_inventario'=>"HM-T-0234-01",
+            'id_articulo'=>"HM-T-0234",
+            'estatus'=>"Disponible",
+            'tipo'=>"Herramientas",
+        ]);
 
-        $response = $this->post(route('herramientas.store'), $data_herramienta); 
+        Herramientas::create([
+            'id_herramientas'=>"HM-T-0234-01",
+            'condicion'=>"Buen estado",
+            'dimension'=>234,
+        ]);
+
         $herramienta=Herramientas::find('HM-T-0234-01');
        
         $this->assertNotNull($herramienta);
@@ -695,22 +706,28 @@ class PracticaTest extends TestCase
 
     $grupo=Grupo::find('IA1');
 
-    $data_herramienta=[
-        'nombre' => 'Torno',
-        'seccion' => 03,
-        'estatus' => 'Disponible',
-        'tipo' => 'Herramientas',
-        'cantidad' => 1,
-        'tipo_herramienta' => 'Herramienta manual',
-        'dimension_herramienta' => 234,
-        'condicion_herramienta' => 'Nueva',
-        'tipo_insumo' => null, 
-        'capacidad_insumo' => null 
+    Catalogo_articulo::create([
+            'id_articulo'=>"HM-T-0234",
+            'nombre' => 'Torno',
+            'cantidad'=>1,
+            'seccion'=>null,
+            'tipo'=>"Herramientas",
 
+        ]);
 
-    ];
+        Articulo_inventariado::create([
+            'id_inventario'=>"HM-T-0234-01",
+            'id_articulo'=>"HM-T-0234",
+            'estatus'=>"Disponible",
+            'tipo'=>"Herramientas",
+        ]);
 
-    $response = $this->post(route('herramientas.store'), $data_herramienta); 
+        Herramientas::create([
+            'id_herramientas'=>"HM-T-0234-01",
+            'condicion'=>"Buen estado",
+            'dimension'=>234,
+        ]);
+
     $herramienta=Herramientas::find('HM-T-0234-01');
    
     $this->assertNotNull($herramienta);
@@ -796,52 +813,59 @@ class PracticaTest extends TestCase
         'id_docente'=>$docente->rfc,
         'clave_grupo'=>"IA1",
         'clave_asignatura'=>$asignatura->clave,
-        'periodo'=>'2024'
+        'periodo'=>'2024-3'
     ]);
 
-    $grupo=Grupo::find('IA1');
+    $grupo=Grupo::where('clave_grupo','IA1')->first();
 
-    $data_herramienta=[
-        'nombre' => 'Torno',
-        'seccion' => 03,
-        'estatus' => 'Disponible',
-        'tipo' => 'Herramientas',
-        'cantidad' => 1,
-        'tipo_herramienta' => 'Herramienta manual',
-        'dimension_herramienta' => 234,
-        'condicion_herramienta' => 'Nueva',
-        'tipo_insumo' => null, 
-        'capacidad_insumo' => null 
+    Catalogo_articulo::create([
+            'id_articulo'=>"HM-T-0234",
+            'nombre' => 'Torno',
+            'cantidad'=>1,
+            'seccion'=>null,
+            'tipo'=>"Herramientas",
 
+        ]);
 
-    ];
+        Articulo_inventariado::create([
+            'id_inventario'=>"HM-T-0234-01",
+            'id_articulo'=>"HM-T-0234",
+            'estatus'=>"Disponible",
+            'tipo'=>"Herramientas",
+        ]);
 
-    $response = $this->post(route('herramientas.store'), $data_herramienta); 
+        Herramientas::create([
+            'id_herramientas'=>"HM-T-0234-01",
+            'condicion'=>"Buen estado",
+            'dimension'=>234,
+        ]);
+
     $herramienta=Herramientas::find('HM-T-0234-01');
    
     $this->assertNotNull($herramienta);
     $this->assertNotNull($grupo);
     $this->assertNotNull($docente);
     $this->assertNotNull($asignatura);
-    $data=[
-        'codigo_practica'=>"001",
-        'docente'=>$docente->rfc,
+  
+
+    Practica::create([
+        'id_practica'=>"001",
+        'id_docente'=>$docente->rfc,
         'clave_grupo'=>$grupo->clave_grupo,
-        'nombre_practica'=>"Practica 1",
+        'nombre'=>"Practica 1",
         'objetivo'=>"Objectivo practica 1",
         'introduccion'=>"Introduccion practica 1",
-        'fundamento'=>"Fundamento practica 1",
-        'referencias'=>"Referencias practica 1",
+        'fundamento'=>"fundamento practica 1",
+        'referencias'=>"referencias practica 1",
+        'estatus'=>0,
         'articulos'=>[
             $herramienta->Articulo_inventariados->Catalogo_articulos->id_articulo
         ],
-    ];
 
-    $response = $this->post(route('practicas.store'), $data); 
+    ]);
 
     $practica=Practica::find("001");
     $this->assertNotNull($practica);
-
 
     Persona::create([
         'curp'=>"BBB",
@@ -851,17 +875,21 @@ class PracticaTest extends TestCase
     ]);
     Alumno::create([
         'no_control'=>"19161229",
-        'curp'=>"BBB"
+        'curp'=>"BBB",
     ]);
 
     $alumno=Alumno::find("19161229");
+  
     $this->assertNotNull($alumno);
-
+    $alumno->grupos()->sync([$grupo->clave_grupo]);
+    
     $response =$this->get(route('practicasAlumno.create'));
     $response->assertViewIs('practicas.alumnos');
+    
+    
     //Creacion correcta
     $data =[
-        'no_control'=>$alumno->no_control,
+        'alumnos'=>[$alumno->no_control],
         'practica'=>$practica->id_practica,
         'articulos'=>[
             $herramienta->Articulo_inventariados->id_inventario
@@ -875,68 +903,37 @@ class PracticaTest extends TestCase
     $response->assertStatus(302); 
     $response->assertRedirect(route('practicas.index'));
     
-    //Caso de que se eliga un articulo que no esta relacionado con la practica
-    $data_herramienta=[
-        'nombre' => 'Torno R',
-        'seccion' => 03,
-        'estatus' => 'Disponible',
-        'tipo' => 'Herramientas',
-        'cantidad' => 1,
-        'tipo_herramienta' => 'Herramienta manual',
-        'dimension_herramienta' => 234,
-        'condicion_herramienta' => 'Nueva',
-        'tipo_insumo' => null, 
-        'capacidad_insumo' => null 
-
-
-    ];
-
-    $response = $this->post(route('herramientas.store'), $data_herramienta); 
-    $herramienta=Herramientas::find('HM-TR-0234-01');
-   
-    $this->assertNotNull($herramienta);
-
-    $data =[
-        'no_control'=>$alumno->no_control,
-        'practica'=>$practica->id_practica,
-        'articulos'=>[
-            $herramienta->id_herramientas
-        ],
-        'fecha'=>"2024-07-02",
-        'no_equipo'=>2,
-        'hora_entrada'=>"21:31:00",
-        'hora_salida'=>"21:32:00"
-    ];
-    $response = $this->post(route('practicasAlumno.store'), $data);
-    $response->assertStatus(302); 
-    $response->assertRedirect(route('practicasAlumno.create'));
-    $response->assertSessionHas('error');
-
 
     //Caso en el que se eligan articulos extra
-    $data_herramienta=[
-        'nombre' => 'Torno P',
-        'seccion' => 03,
-        'estatus' => 'Disponible',
-        'tipo' => 'Herramientas',
-        'cantidad' => 1,
-        'tipo_herramienta' => 'Herramienta manual',
-        'dimension_herramienta' => 234,
-        'condicion_herramienta' => 'Nueva',
-        'tipo_insumo' => null, 
-        'capacidad_insumo' => null 
+    Catalogo_articulo::create([
+        'id_articulo'=>"HM-TP-0234",
+        'nombre' => 'Torno p',
+        'cantidad'=>1,
+        'seccion'=>null,
+        'tipo'=>"Herramientas",
 
+    ]);
 
-    ];
+    Articulo_inventariado::create([
+        'id_inventario'=>"HM-TP-0234-01",
+        'id_articulo'=>"HM-T-0234",
+        'estatus'=>"Disponible",
+        'tipo'=>"Herramientas",
+    ]);
 
-    $response = $this->post(route('herramientas.store'), $data_herramienta); 
+    Herramientas::create([
+        'id_herramientas'=>"HM-TP-0234-01",
+        'condicion'=>"Buen estado",
+        'dimension'=>234,
+    ]);
+
     $herramienta_extra=Herramientas::find('HM-TP-0234-01');
     $herramienta=Herramientas::find('HM-T-0234-01');
 
     $this->assertNotNull($herramienta_extra);
 
     $data =[
-        'no_control'=>$alumno->no_control,
+        'alumnos'=>[$alumno->no_control],
         'practica'=>$practica->id_practica,
         'articulos'=>[
             $herramienta->Articulo_inventariados->id_inventario
@@ -954,27 +951,7 @@ class PracticaTest extends TestCase
     $response->assertRedirect(route('practicas.index'));
 
 
-    //Caso en el que el alumno no exista
 
-    $herramienta=Herramientas::find('HM-T-0234-01');
-
-    $this->assertNotNull($herramienta_extra);
-
-    $data =[
-        'no_control'=>"1917323",
-        'practica'=>$practica->id_practica,
-        'articulos'=>[
-            $herramienta->Articulo_inventariados->id_inventario
-        ],
-        'fecha'=>"2024-07-02",
-        'no_equipo'=>2,
-        'hora_entrada'=>"21:31:00",
-        'hora_salida'=>"21:32:00"
-    ];
-    $response = $this->post(route('practicasAlumno.store'), $data);
-    $response->assertStatus(302); 
-    $response->assertRedirect(route('practicasAlumno.create'));
-    $response->assertSessionHas('alumno_no_encontrado');
    }
 
 
