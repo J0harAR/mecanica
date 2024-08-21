@@ -191,7 +191,7 @@ class HerramientasController extends Controller
         $auditoria->new_data=json_encode([]);
         $auditoria->save();
 
-       //Vamos atualizar Catalogo para in disminuyendo por cada herramienta que se elimine
+       //Vamos atualizar Catalogo para ir disminuyendo por cada herramienta que se elimine
         $catalogo_articulo=Catalogo_articulo::find($herramienta->id_articulo);
         if($catalogo_articulo->cantidad>0){//Validamos que va disminuir siempre y cuando sea mayor a 0 asi evitamos el -1 o numeros negativos
             $catalogo_articulo->cantidad-=1;//Diminuimos la cantidad en el catalogo
