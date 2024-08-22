@@ -23,7 +23,7 @@ class RolController extends Controller
      */
     public function index()
     {
-
+        //Vamos a obtener los roles con una paginacion de 5
         $roles = Role::paginate(5);
 
         return view('roles.index', compact('roles'));
@@ -34,7 +34,7 @@ class RolController extends Controller
      */
     public function create()
     {
-
+        //Traemos todos los permisos a la view de create
         $permission = Permission::get();
 
         return view('roles.crear', compact('permission'));
@@ -45,6 +45,7 @@ class RolController extends Controller
      */
     public function store(Request $request)
     {
+        //Validamos que si el rol ya existe y no dejar campos nulos
         $request->validate([
             'name' => [
                 'required',
@@ -60,7 +61,9 @@ class RolController extends Controller
             'permission.min' => 'Seleccione uno o más permisos para poder guardar el rol',
         ]);
 
+        //Creamos el rol y le asignamos el nombre
         $role = Role::create(['name' => $request->input('name')]);
+        //Asignamos los permisos al rol
         $role->syncPermissions($request->input('permission'));
 
         return redirect()->route('roles.index')->with('success', 'El rol "' . $role->name .'" ha sido registrado exitosamente: ' );
@@ -74,8 +77,9 @@ class RolController extends Controller
      */
     public function edit(string $id)
 {
+    //Buscamos el rol que vamos actualizar y lo mandamos a la vista
     $role = Role::find($id);
-    $permission = Permission::all();
+    $permission = Permission::all();//Retornamos todos los permisos
     $rolePermissions = $role->permissions->pluck('name')->toArray();
 
     return view('roles.editar', compact('role', 'permission', 'rolePermissions'));
@@ -87,11 +91,14 @@ class RolController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        //Validamos que el no se dejen campos en blanco
         $this->validate($request, ['name' => 'required', 'permission' => 'required']);
+        //Buscamos el que vamos actualizar
         $role = Role::find($id);
+        //Actualizamos el nombre
         $role->name = $request->input('name');
-        $role->save();
-
+        $role->save();//Guardamos
+        //Asiganmos los nuevos permisos que se actualizaron
         $role->syncPermissions($request->input('permission'));
 
         return redirect()->route('roles.index')->with('success', 'El rol" ' . $role->name .'" ha sido actualizado exitosamente: ' );
@@ -102,6 +109,7 @@ class RolController extends Controller
      */
     public function destroy(string $id)
     {
+        //Buscamo el rol que vamos a eliminar y lo eliminamos
         DB::table('roles')->where('id', $id)->delete();
         return redirect()->route('roles.index')->with('success', 'El rol ha sido eliminado exitosamente.');   
     }
