@@ -25,10 +25,10 @@ class InsumosController extends Controller
     public function index()
     {
       
-        //Se retoran todos los insumos con su relacion de catalogo articulos y se retornan tambien los periodos
+        //Se retornan todos los insumos con su relacion de catalogo articulos y se retornan tambien los periodos
         $insumos = Insumos::with('Articulo_inventariados.Catalogo_articulos')->get();
         $periodos=Periodo::all();
-        $articulos=Catalogo_articulo::where('tipo',"Insumos")->get();
+        $articulos=Catalogo_articulo::where('tipo',"Insumos")->get();//Se retorna solo los articulos de tipo insumo
      
         return view('insumos.index',compact('insumos','periodos','articulos'));
     }
@@ -38,7 +38,7 @@ class InsumosController extends Controller
     public function store(Request $request){
         set_time_limit(180);//Delimitamos a 180 la respueta por si se agregan en masa
         
-        //Guaramos los requests
+        //guardamos los requests
         $estatus=$request->input('estatus');
         $cantidad_articulo=$request->input('cantidad');
         $capacidad_insumo=$request->input('capacidad_insumo');

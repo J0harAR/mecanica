@@ -228,7 +228,7 @@ public function generadorCodigoInventario(Catalogo_articulo $catalogo_articulo,$
     //Si no existe codigo entonces significa que sera el primero
     if($ultimo_codigo==null){       
             //HC-M-0234-00
-            $ultimo_codigo=$catalogo_articulo->id_articulo."-00";//Se le asigna el 00 ya que de ahi aumentara 1 el codigo    
+            $ultimo_codigo=$catalogo_articulo->id_articulo."-00";//Se le asigna el -00 ya que de ahi aumentara 1 el codigo    
     }
 
     $ultimo_numero = intval(substr($ultimo_codigo, -2)); //Aqui vamos a extraer los ultimos 2 caracteres del ultimo digito
