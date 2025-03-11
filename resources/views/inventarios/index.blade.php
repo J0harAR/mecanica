@@ -145,69 +145,7 @@
         </div>
     </div>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var tipoSelect = document.getElementById('tipo');
-        var tipo_herramienta = document.getElementById('tipo_herramienta');
-        var dimensionHerramienta = document.getElementById('dimensionHerramienta');
-        var seccion = document.getElementById('seccion');
 
-        function mostrarElementos(tipo) {
-            tipo_herramienta.style.display = 'none';
-            dimensionHerramienta.style.display = 'none';
-            seccion.style.display = 'none';
-
-            switch(tipo) {
-                case 'Herramientas':
-                    tipo_herramienta.style.display = 'block';
-                    dimensionHerramienta.style.display = 'block';
-                    break;
-                case 'Maquinaria':
-                    seccion.style.display = 'block';
-                    break;
-                case 'Insumos':
-                 
-                    break;
-            }
-        }
-
-        // Mostrar los elementos si hay un valor seleccionado previamente (para errores)
-        var tipoInicial = tipoSelect.value;
-        if (tipoInicial !== 'default') {
-            mostrarElementos(tipoInicial);
-        }
-
-        // Mostrar los elementos correspondientes cuando se cambia el tipo
-        tipoSelect.addEventListener('change', function () {
-            var tipo = this.value;
-            mostrarElementos(tipo);
-        });
-
-        // Abrir el modal automáticamente si hay errores de validación
-        @if ($errors->any())
-            var myModal = new bootstrap.Modal(document.getElementById('modal-catalogo'), {
-                keyboard: false
-            });
-            myModal.show();
-        @endif
-    });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        @if($errors->any())
-            var myModal = new bootstrap.Modal(document.getElementById('modal-catalogo'), {
-                keyboard: false
-            });
-            
-            myModal.show();
-        @endif
-    });
-</script>
-<script>
-    function clearError(errorId) {
-        document.getElementById(errorId).style.display = 'none';
-    }
-</script>
 
         @endcan
 
@@ -349,50 +287,11 @@
             </div>
             @endcan
         </div>
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
-                {{ session('success') }}
-            </div>
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                window.setTimeout(function () {
-                    const successAlert = document.getElementById("success-alert");
-                    if (successAlert) successAlert.style.display = 'none';
-                }, 3000);
-                });
-            </script>
-            @endif
+      
 
-            @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" id="success-alert" role="alert">
-                {{ session('error') }}
-                <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                window.setTimeout(function () {
-                    const successAlert = document.getElementById("success-alert");
-                    if (successAlert) successAlert.style.display = 'none';
-                }, 3000);
-                });
-            </script>
-            </div>
-            @endif
+@include('layouts.notificaciones') 
 
 
-
-        @if(session('tipo_null'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="tipo_null-alert">
-                {{ session('tipo_null') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    window.setTimeout(function () {
-                        const successAlert = document.getElementById("tipo_null-alert");
-                        if (successAlert) successAlert.style.display = 'none';
-                    }, 3000);
-                });
-            </script>
-        @endif
         @can('ver-inventario') 
         <div class="card shadow-lg rounded-3 border-0">
             <div class="card-body p-4">
@@ -573,4 +472,74 @@
                 ventanaEmergente.document.write(content);
             }
         </script>
-        @endsection
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var tipoSelect = document.getElementById('tipo');
+        var tipo_herramienta = document.getElementById('tipo_herramienta');
+        var dimensionHerramienta = document.getElementById('dimensionHerramienta');
+        var seccion = document.getElementById('seccion');
+
+        function mostrarElementos(tipo) {
+            tipo_herramienta.style.display = 'none';
+            dimensionHerramienta.style.display = 'none';
+            seccion.style.display = 'none';
+
+            switch(tipo) {
+                case 'Herramientas':
+                    tipo_herramienta.style.display = 'block';
+                    dimensionHerramienta.style.display = 'block';
+                    break;
+                case 'Maquinaria':
+                    seccion.style.display = 'block';
+                    break;
+                case 'Insumos':
+                 
+                    break;
+            }
+        }
+
+        // Mostrar los elementos si hay un valor seleccionado previamente (para errores)
+        var tipoInicial = tipoSelect.value;
+        if (tipoInicial !== 'default') {
+            mostrarElementos(tipoInicial);
+        }
+
+        // Mostrar los elementos correspondientes cuando se cambia el tipo
+        tipoSelect.addEventListener('change', function () {
+            var tipo = this.value;
+            mostrarElementos(tipo);
+        });
+
+        // Abrir el modal automáticamente si hay errores de validación
+        @if ($errors->any())
+            var myModal = new bootstrap.Modal(document.getElementById('modal-catalogo'), {
+                keyboard: false
+            });
+            myModal.show();
+        @endif
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        @if($errors->any())
+            var myModal = new bootstrap.Modal(document.getElementById('modal-catalogo'), {
+                keyboard: false
+            });
+            
+            myModal.show();
+        @endif
+    });
+</script>
+<script>
+    function clearError(errorId) {
+        document.getElementById(errorId).style.display = 'none';
+    }
+</script>
+
+
+
+
+
+@endsection

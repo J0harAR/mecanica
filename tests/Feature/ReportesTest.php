@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Periodo;
+use Spatie\Permission\Models\Permission;
 class ReportesTest extends TestCase
 {
     /**
@@ -18,22 +19,54 @@ class ReportesTest extends TestCase
     {
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
-        $response= $this->get(route('reporte.prestamo'))
+        $permissions = [
+            Permission::create(['name' => 'generar_reporte_prestamo']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+        
+        Periodo::create([
+            'clave'=>'2024-3',
+            'fecha_inicio'=>"2024-08-01",
+            'fecha_final'=>"2024-12-20",
+        ]);
+
+        $data=[
+            "periodo"=>"2024-3"
+
+        ];
+
+        $response= $this->post(route('reporte.prestamo'),$data)
         ->assertStatus(200);
+
+
+        //Caso en el que no exista periodo
+        $data=[
+            "periodo"=>"2024"
+
+        ];
+       
+        $response= $this->post(route('reporte.prestamo'),$data);
+        $response->assertStatus(302);
+        $response->assertRedirect(route('prestamos.index'));
+        $response->assertSessionHas('error');
 
 
     }
@@ -42,19 +75,28 @@ class ReportesTest extends TestCase
     {
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+
+        $permissions = [
+            Permission::create(['name' => 'generar_reporte_inventario']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
 
         Periodo::create([
@@ -88,19 +130,28 @@ class ReportesTest extends TestCase
     {
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+
+        $permissions = [
+            Permission::create(['name' => 'generar_reporte_herramientas']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
         Periodo::create([
             'clave'=>'2024-3',
@@ -135,19 +186,28 @@ class ReportesTest extends TestCase
     {
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+
+        $permissions = [
+            Permission::create(['name' => 'generar_reporte_insumos']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
         Periodo::create([
             'clave'=>'2024-3',
@@ -181,19 +241,28 @@ class ReportesTest extends TestCase
     {
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+
+        $permissions = [
+            Permission::create(['name' => 'generar_reporte_maquinaria']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
         Periodo::create([
             'clave'=>'2024-3',
@@ -228,19 +297,28 @@ class ReportesTest extends TestCase
     {
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+       $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+
+        $permissions = [
+            Permission::create(['name' => 'generar_reporte_practicas']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
 
         

@@ -21,7 +21,7 @@ use App\Models\Alumno;
 use App\Models\Periodo;
 use App\Models\Articulo_inventariado;
 use App\Models\Catalogo_articulo;
-
+use Spatie\Permission\Models\Permission;
 class PrestamoTest extends TestCase
 {
     /**
@@ -34,26 +34,36 @@ class PrestamoTest extends TestCase
 
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'ver-prestamos']),
+            Permission::create(['name' => 'crear-prestamo']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+        
         
 
         $response= $this->get(route('prestamos.index'))
         ->assertStatus(200)
         ->assertViewIs('prestamos.index');
-        //Cracion de un docente y una herramienta
+        //Creacion de un docente y una herramienta
 
         Catalogo_articulo::create([
             'id_articulo'=>"HM-T-0234",
@@ -123,20 +133,29 @@ class PrestamoTest extends TestCase
         
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'ver-prestamos']),
+            Permission::create(['name' => 'crear-prestamo']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         
         
         Catalogo_articulo::create([
@@ -194,26 +213,63 @@ class PrestamoTest extends TestCase
         $response->assertRedirect(route('prestamos.index'));
 
 
+        //Prestamo sin rfc del docente ni fecha de devolucion
+        $data=[
+            "rfc"=>null,
+            "herramienta"=>$herramienta->id_herramientas,
+            "fecha_prestamo"=>"2024-07-02",
+            "fecha_devolucion"=>null,
+        ];
 
+        $response = $this->post(route('prestamos.store'), $data); 
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors([
+            'rfc' => 'Debe seleccionar un docente.',
+            'fecha_devolucion' => 'Debe seleccionar una fecha de devolución.',
+        ]);
+
+        //Prestamo sin herramienta 
+        $data=[
+            "rfc"=>$docente->rfc,
+            "herramienta"=>null,
+            "fecha_prestamo"=>"2024-07-02",
+            "fecha_devolucion"=>"2024-07-03",
+        ];
+
+        $response = $this->post(route('prestamos.store'), $data); 
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors([
+            'herramienta' => 'Debe seleccionar una herramienta.',   
+        ]);
     }
 
     public function test_edit_prestamo():void {
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' =>'ver-prestamos']),
+            Permission::create(['name' =>'crear-prestamo']),
+            Permission::create(['name' => 'editar-prestamo']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         
         
         //Creacion de un prestamo correcto 
@@ -281,6 +337,20 @@ class PrestamoTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect(route('prestamos.index'));
 
+        //Caso que no se ponga fecha de devolucion ni docente
+        $data=[
+            "rfc"=>null,
+            "fecha_devolucion"=>null,
+        ];
+
+
+        $response = $this->patch(route('prestamos.update',1), $data); 
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors([
+            'rfc' => 'Debe seleccionar un docente.',
+            'fecha_devolucion' => 'Debe seleccionar una fecha de devolución.',
+        ]);
+
         
     }
  
@@ -288,20 +358,30 @@ class PrestamoTest extends TestCase
     public function test_finalizar_prestamo():void{
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' =>'ver-prestamos']),
+            Permission::create(['name' =>'crear-prestamo']),
+            Permission::create(['name' => 'finalizar-prestamo']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         
         
         //Creacion de un prestamo correcto 

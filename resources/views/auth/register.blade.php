@@ -73,8 +73,7 @@
                                 class="form-control form-control1 @error('password') is-invalid @enderror"
                                 name="password" required autocomplete="new-password">
                             @error('password')
-                                <div class="invalid-feedback">La contraseña debe tener 8 caracteres, una mayúscula, una
-                                    minúscula y un número.
+                                <div class="invalid-feedback">La contraseña debe tener 8 caracteres,una mayúscula,un número y un simbolo
                                 </div>
                             @enderror
                         </div>

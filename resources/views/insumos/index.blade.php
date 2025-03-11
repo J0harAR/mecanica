@@ -194,33 +194,8 @@
         @endcan
         </div>
 
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
-                {{ session('success') }}
-            </div>
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                window.setTimeout(function () {
-                    const successAlert = document.getElementById("success-alert");
-                    if (successAlert) successAlert.style.display = 'none';
-                }, 3000);
-                });
-            </script>
-        @endif
+    @include('layouts.notificaciones') 
 
-    @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" id="success-alert" role="alert">
-                {{ session('error') }}
-                <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                window.setTimeout(function () {
-                    const successAlert = document.getElementById("success-alert");
-                    if (successAlert) successAlert.style.display = 'none';
-                }, 3000);
-                });
-            </script>
-        </div>
-    @endif  
     @can('ver-insumos')    
     <div class="card shadow-lg rounded-3 border-0">
         <div class="card-body p-4">
@@ -348,26 +323,20 @@
 
     @endcan
 
-@if(session('success'))
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            window.setTimeout(function () {
-                const successAlert = document.getElementById("success-alert");
-                if (successAlert) successAlert.style.display = 'none';
-            }, 3000);
-        });
-    </script>
-@endif
-
+<!-- En este caso se pone disabled el boton para evitar multiples envios -->
 <script>
-    
-        var formularios = document.querySelectorAll('.miFormulario');
-        formularios.forEach(function(formulario) {
-            formulario.addEventListener('submit', function(event) {
-                var boton = formulario.querySelector('.miBoton');
-                boton.disabled = true; 
+      document.addEventListener("DOMContentLoaded", function () {
+        window.setTimeout(function () {
+            const notificaciones = document.querySelectorAll(".notificacion");
+            notificaciones.forEach(function(notificacion) {
+                notificacion.style.display = 'none';
             });
-        });
-    </script>
+        }, 3000);
+    });
+ </script>
+
+
+
+
 @endcan
 @endsection

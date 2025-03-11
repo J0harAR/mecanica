@@ -30,33 +30,7 @@
         
     </div>
 
-    @if(session('success'))
-  <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
-    {{ session('success') }}
-  </div>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    window.setTimeout(function () {
-      const successAlert = document.getElementById("success-alert");
-      if (successAlert) successAlert.style.display = 'none';
-    }, 3000);
-    });
-  </script>
-@endif
-    
-    @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" id="success-alert" role="alert">
-                {{ session('error') }}
-                <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                window.setTimeout(function () {
-                    const successAlert = document.getElementById("success-alert");
-                    if (successAlert) successAlert.style.display = 'none';
-                }, 3000);
-                });
-            </script>
-            </div>
-    @endif
+    @include('layouts.notificaciones') 
     
     @canany(['ver-practicas', 'generar_reporte_practicas'])
 
@@ -128,7 +102,7 @@
                                     <th>ID</th>
                                     <th>Nombre</th>
                                     <th>Docente</th>
-                                    <th>Objetivo</th>
+                                    <th>Grupo/Asignatura</th>                                   
                                     <th>Estatus</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -139,7 +113,7 @@
                                         <td>{{ $practica->id_practica }}</td>
                                         <td>{{ $practica->nombre }}</td>
                                         <td>{{ $practica->id_docente }}</td>
-                                        <td>{{ $practica->objetivo }}</td>
+                                        <th>{{$practica->grupo->clave_grupo}}/{{$practica->grupo->asignatura->nombre}}</th>
                                         <td>
                                                                                                                            
                                             @if ($practica->estatus == 0)
@@ -228,5 +202,8 @@
         form.submit();
     }
 </script>
+
+
+
 
 @endsection

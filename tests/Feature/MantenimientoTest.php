@@ -15,7 +15,7 @@ use App\Models\Catalogo_articulo;
 use App\Models\Maquinaria;
 use App\Models\Insumos;
 use App\Models\Mantenimiento;
-
+use Spatie\Permission\Models\Permission;
 class MantenimientoTest extends TestCase
 {
     /**
@@ -25,20 +25,28 @@ class MantenimientoTest extends TestCase
     {
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'ver-mantenimientos']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
         $acceso = $this->get(route('mantenimiento.index'))
         ->assertStatus(200)
@@ -51,18 +59,28 @@ class MantenimientoTest extends TestCase
 
         Artisan::call('migrate');
     
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
+
+        $permissions = [
+            Permission::create(['name' => 'crear-mantenimiento']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
         
         //Registro de mantenimiento correcto
@@ -160,8 +178,7 @@ class MantenimientoTest extends TestCase
         $response->assertRedirect(route('mantenimiento.index'));
         $response->assertSessionHas('errores_cantidad');
 
-         //Caso de que algunos campos esten vacios
-
+         //Caso de que maquina sea null
          $data_mantenimiento = [
             'maquina'=>null,
             'fecha'=>'2024-07-02',
@@ -173,8 +190,40 @@ class MantenimientoTest extends TestCase
         ];
         $response=$this->post(route('mantenimiento.store'),$data_mantenimiento);
         $response->assertStatus(302);
-        $response->assertRedirect(route('mantenimiento.index'));
-        $response->assertSessionHas('error');
+        $response->assertSessionHasErrors([
+            'maquina' => 'Seleccione una maquinaria.',
+        ]);
+
+        //Caso de que la fecha sea null
+        $data_mantenimiento = [
+            'maquina'=>$maquinaria->id_maquinaria,
+            'fecha'=>null,
+            
+            'insumos' => [
+                "AI01" => 160,       
+            ],
+
+        ];
+        $response=$this->post(route('mantenimiento.store'),$data_mantenimiento);
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors([
+            'fecha' => 'La fecha es obligatoria.',
+        ]);
+
+        //Caso de que los insumos no se seleccionen
+        $data_mantenimiento = [
+            'maquina'=>$maquinaria->id_maquinaria,
+            'fecha'=>'2024-07-02',
+            'insumos' => null
+        ];
+
+        $response=$this->post(route('mantenimiento.store'),$data_mantenimiento);
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors([
+            'insumos' => 'Insumos obligatorios',
+        ]);
+
+
            
     }
 
@@ -186,20 +235,28 @@ class MantenimientoTest extends TestCase
 
         Artisan::call('migrate');
     
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
+        $permissions = [
+            Permission::create(['name' => 'crear-mantenimiento']),
+        ];
 
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         
         //Registro de mantenimiento correcto
         Catalogo_articulo::create([
@@ -260,18 +317,28 @@ class MantenimientoTest extends TestCase
     public function test_insumos_por_maquinaria():void{
         Artisan::call('migrate');
     
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
+
+        $permissions = [
+            Permission::create(['name' => 'crear-mantenimiento']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
 
         

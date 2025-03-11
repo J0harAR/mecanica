@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('alumno_grupo', function (Blueprint $table) {
          
             $table->string('id_alumno')->nullable();
-            $table->string('clave_grupo')->nullable();
+            $table->unsignedBigInteger('clave_grupo')->nullable();
     
-
+            $table->foreign('clave_grupo')->references('id')->on('grupo')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('id_alumno')->references('no_control')->on('alumno')->onUpdate('cascade')->onDelete('cascade');
           
         });

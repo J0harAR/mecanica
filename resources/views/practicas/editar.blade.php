@@ -29,6 +29,10 @@
             </nav>
             @can('editar-practica')
             <!-- Vertical Form -->
+
+            @include('layouts.notificaciones')  
+
+
             <form class="row g-3" action="{{ route('practicas.update', ['id' => $practica->id_practica]) }}"
                 method="POST">
                 @method('PATCH')
@@ -58,10 +62,10 @@
                             <option selected disabled>Selecciona el grupo</option>
                             @foreach ($grupos as $grupo)
                                 @if ($practica->grupo === null)
-                                    <option value="{{$grupo->clave_grupo}}">{{$grupo->clave_grupo}}</option>
+                                    <option value="{{$grupo->id}}">{{$grupo->id}}</option>
                                 @else
-                                <option value="{{ $grupo->clave_grupo }}" {{ $practica->grupo->clave_grupo === $grupo->clave_grupo ? 'selected' : '' }}>
-                                    {{$grupo->clave_grupo}}
+                                <option value="{{ $grupo->id }}" {{ $practica->grupo->id === $grupo->id ? 'selected' : '' }}>
+                                    {{$grupo->clave_grupo}}/{{$grupo->asignatura->nombre}}
                                 </option>
 
                                 @endif
@@ -155,32 +159,22 @@
 
 <script>
 $(document).ready(function () {
-    $('#docente').on('change', function () {
-        let docenteId = $(this).val();
-       
+    function loadGroups(docenteId) {
         if (docenteId) {
             $.ajax({
                 url: '{{ route("docentes.grupos") }}', 
                 type: 'GET',
                 data: { id: docenteId },
                 success: function (data) {
-                 
-
                     let grupoSelect = $('#grupo');
-
-                  
                     grupoSelect.empty();
-
-                
                     grupoSelect.append('<option selected disabled>Selecciona el grupo</option>');
 
-                  
                     let selectedGrupo = "{{ $practica->grupo ? $practica->grupo->clave_grupo : '' }}";
 
-                
                     data.forEach(function(grupo) {
                         let isSelected = selectedGrupo === grupo.clave_grupo ? 'selected' : '';
-                        grupoSelect.append(`<option value="${grupo.clave_grupo}" ${isSelected}>${grupo.clave_grupo}</option>`);
+                        grupoSelect.append(`<option value="${grupo.id}" ${isSelected}>${grupo.clave_grupo}/${grupo.asignatura.nombre}</option>`);
                     });
                 },
                 error: function(xhr, status, error) {
@@ -188,15 +182,21 @@ $(document).ready(function () {
                 }
             });
         }
+    }
+
+    // Cuando se carga la página, verifica si el input de docente tiene un valor
+    let initialDocenteId = $('#docente').val();
+    if (initialDocenteId) {
+        loadGroups(initialDocenteId);
+    }
+
+    // Maneja el cambio en el input de docente
+    $('#docente').on('change', function () {
+        let docenteId = $(this).val();
+        loadGroups(docenteId);
     });
 });
 </script>
-
-
-
-
-
-
 
 
 @endsection

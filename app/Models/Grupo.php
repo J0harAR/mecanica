@@ -11,9 +11,6 @@ class Grupo extends Model
 {
     use HasFactory;
     protected $table = "grupo";
-    protected $primaryKey = 'clave_grupo';
-    protected $keyType = 'string';
-
 
     protected $fillable = 
     [
@@ -42,6 +39,26 @@ class Grupo extends Model
       public function docentes(){
 
         return $this->belongsToMany(Docente::class, 'docente_grupo', 'clave_grupo', 'id_docente');
+      }
+
+      //Validaciones del modelo
+
+      //Create
+      public static $createRules = [
+        'clave_grupo' => 'required',
+        'asignatura' => 'required',
+        'periodo' => 'required',
+      ];
+      //Mensajes personalizados para las validaciones
+      public static function messages()
+      {
+          return [
+              'clave_grupo.required' => 'La clave del grupo es obligatoria.',
+              'asignatura.required' => 'La asignatura es obligatoria.',
+              'asignatura.unique' => 'La asignatura es obligatoria.',
+              'periodo.required' => 'El periodo es obligatorio.',
+              
+          ];
       }
       
 }

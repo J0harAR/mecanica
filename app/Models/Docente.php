@@ -47,5 +47,64 @@ class Docente extends Model
     }
 
 
+ 
+     //Validaciones del modelo 
+
+      //Create
+      public static $createRules = [
+        'curp' => 'required|unique:persona,curp|max:255',
+        'rfc' => 'required|unique:docente,rfc|max:255',
+        'foto' => 'file|mimes:jpg,png|max:512',
+        'nombre' => 'required',
+        'apellido_p' => 'required',
+        'apellido_m' => 'required',
+    ];
+      //Update
+    public static function updateRules($id) {
+        return [
+            'curp' => 'required|unique:persona,curp,' . $id . ',curp|max:255',
+            'foto' => 'file|mimes:jpg,png|max:512',
+            'nombre' => 'required',
+            'apellido_p' => 'required',
+            'apellido_m' => 'required',
+           
+        ];
+    }
+      //Asignar Rules y desasignar
+    public static $AsignarRules = [
+        'clave_periodo' => 'required',
+        'grupos'=>'required',
+        'rfc_docente'=>'required',
+       
+      ];
+
+    public static $DesasignarRules=[
+        'grupos'=>'required',
+        'rfc'=>'required',
+        'periodo'=>'required',
+      ];
+
+      //Mensajes personalizados para las validaciones
+    public static function messages()
+        {
+          return [
+              'curp.required' => 'Curp es obligatorio.',
+                'curp.unique' => 'Curp duplicado.',
+              'rfc.required' => 'rfc  obligatorio.',
+              'rfc_docente.required' => 'rfc  obligatorio.',
+              'rfc.unique' => 'Este rfc ya está registrado.', 
+              'foto.file' => 'El campo de la foto debe ser un archivo.',
+              'foto.mimes' => 'El archivo de la foto debe ser de tipo: jpg, png.',
+              'foto.max' => 'El tamaño de la foto no debe exceder los 512 KB.',
+              'nombre.required' => 'El nombre es obligatorio.',
+               'apellido_p.required' => 'El apellido paterno es obligatorio.',
+               'apellido_m.required' => 'El apellido materno es obligatorio.',                                 
+               'clave_periodo.required' => 'El periodo es obligatorio.',  
+               'periodo.required' => 'El periodo es obligatorio.',  
+               'grupos.required' => 'No se selecciono ningun grupo.',  
+
+            ];
+    }
+
   
 }

@@ -13,6 +13,7 @@ use App\Models\Articulo_inventariado;
 use App\Models\Catalogo_articulo;
 use App\Models\Maquinaria;
 use App\Models\Insumos;
+use Spatie\Permission\Models\Permission;
 class LecturaTest extends TestCase
 {
     /**
@@ -22,20 +23,28 @@ class LecturaTest extends TestCase
     {
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'ver-lecturas']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
         $response= $this->get(route('lector.index'))
         ->assertStatus(200)
@@ -48,20 +57,28 @@ class LecturaTest extends TestCase
 
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'crear-lectura']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
         //Creacion correcta de la lectura
 
@@ -151,8 +168,9 @@ class LecturaTest extends TestCase
 
         $response_insumo = $this->post(route('lector.store'), $data); 
         $response_insumo->assertStatus(302);
-        $response_insumo->assertRedirect(route('lector.index'));
-        $response_insumo->assertSessionHas('error');
+        $response_insumo->assertSessionHasErrors([
+            'observaciones' => 'La observación es obligatoria',
+        ]);
 
          //Validacion cuando no se selecciona la maquina
          $data=[
@@ -166,8 +184,25 @@ class LecturaTest extends TestCase
 
         $response_insumo = $this->post(route('lector.store'), $data); 
         $response_insumo->assertStatus(302);
-        $response_insumo->assertRedirect(route('lector.index'));
-        $response_insumo->assertSessionHas('error');
+        $response_insumo->assertSessionHasErrors([
+            'maquina' => 'Seleccione una maquinaria.',
+        ]);
+
+       //Validacion cuando no se selecciona la fecha
+       $data=[
+            "maquina"=>"03MI01",
+            "observaciones"=>"Sin observaciones",
+            "fecha"=>null,
+            "insumos"=>[
+                "AI"=>15
+            ]
+        ];
+
+        $response_insumo = $this->post(route('lector.store'), $data); 
+        $response_insumo->assertStatus(302);
+        $response_insumo->assertSessionHasErrors([
+            'fecha' => 'La fecha es obligatoria.',
+        ]);
 
     }
 
@@ -175,20 +210,29 @@ class LecturaTest extends TestCase
     public function test_comportamiento_insumos():void{
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'ver-lecturas']),
+            Permission::create(['name' => 'crear-lectura']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
         //Creacion correcta de la lectura
 

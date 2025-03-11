@@ -12,11 +12,11 @@ use  App\Models\Grupo;
 use  App\Models\Persona;
 use App\Models\Asignatura;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Auth;
 class PracticaController extends Controller
 {
     
-    function _construct()
+    function __construct()
     {
         $this->middleware('permission:ver-practicas', ['only' => ['index','filtrar','practicasAlumnos','obtener_alumnos_practica']]);
         $this->middleware('permission:crear-practica', ['only' => ['create','store']]);
@@ -25,6 +25,7 @@ class PracticaController extends Controller
         $this->middleware('permission:borrar-practica', ['only' => ['destroy']]);
         $this->middleware('permission:completar-practica', ['only' => ['completar_practica']]);
         $this->middleware('permission:crear-practica-alumno', ['only' => ['create_practica_alumno','store_practica_Alumno']]);
+        $this->middleware('auth');//Aqui se valida que el usuario este autentica para todo el controlador
    
     }
 
@@ -48,14 +49,11 @@ class PracticaController extends Controller
     }
 
     public function store(Request $request){
+        //Validacion del modelo
+        $validatedData = $request->validate(Practica::$createRules,Practica::messages());
+        
         //Guardamos el codigo de la practica
         $id_practica = $request->input('codigo_practica');
-    
-        // Verificar si la práctica ya existe si existe retornar error
-        $existingPractica = Practica::find($id_practica);
-        if ($existingPractica) {
-            return redirect()->route('practicas.create')->with('error', 'La práctica ya existe.');
-        }
         //Guaramos las requests
         $id_docente = $request->input('docente');
         $clave_grupo=$request->input('grupo');
@@ -106,8 +104,10 @@ class PracticaController extends Controller
     }
 
     public function update(Request $request, $id){
+        //Validacion del modelo
+          $validatedData = $request->validate(Practica::$updateRules,Practica::messages());
+
         //Guardamos los requestss
-        $id_practica = $request->input('codigo_practica');
         $id_docente = $request->input('docente');
         $clave_grupo=$request->input('grupo');
         $nombre = $request->input('nombre_practica');
@@ -118,8 +118,7 @@ class PracticaController extends Controller
         
         
         //Buscamos la practica que vamos a actualizar si la encuentra que actualice y si no que se cree una nueva
-        $practica = Practica::firstOrNew(['id_practica' => $id_practica]);  
-            $practica->id_practica = $id_practica;
+        $practica = Practica::firstOrNew(['id_practica' => $id]);  
             $practica->id_docente = $id_docente;
             $practica->clave_grupo=$clave_grupo;
             $practica->nombre = $nombre;
@@ -162,15 +161,11 @@ class PracticaController extends Controller
     // Si se seleccionó una asignatura.
     if (!empty($clave_asignatura)) {
         // Obtener los grupos asociados a la asignatura seleccionada
-        $grupos = Grupo::where('clave_asignatura', $clave_asignatura)->pluck('clave_grupo');
-        
+        $grupos = Grupo::where('clave_asignatura', $clave_asignatura)->pluck('id');
         // Si se encontraron grupos para la asignatura.
         if ($grupos) {
             // Filtrar la consulta para incluir solo prácticas que pertenezcan a los grupos encontrados
             $query->whereIn('clave_grupo', $grupos);
-        } else {
-            // Si no se encontraron grupos, filtrar la consulta para prácticas que no tengan grupo asignado
-            $query->where('clave_grupo', null);
         }
     }
 
@@ -213,6 +208,10 @@ class PracticaController extends Controller
 
 
     public function store_practica_Alumno(Request $request){
+        //Validaciones del modelo
+
+        $validatedData = $request->validate(Practica::$createRulesAlumno,Practica::messages());
+
         //Guardamos las request para para practicas
         $alumnos=$request->input('alumnos');
         $practica=Practica::find($request->input('practica'));
@@ -223,15 +222,6 @@ class PracticaController extends Controller
         $no_equipo=$request->input('no_equipo');
         $hora_entrada=$request->input('hora_entrada');
         $hora_salida=$request->input('hora_salida');
-
-        //Si no se selecciono ningun alumno retornara un error
-        if(!$alumnos){
-            return redirect()->route('practicasAlumno.create')->with('error', 'Ningun alumno seleccionado');
-        }
-        //Si no se selecciono ningun articulo retornara un error
-        if(!$articulos_inventariados){
-            return redirect()->route('practicasAlumno.create')->with('error', 'Ningun articulo seleccionado');
-        }
 
         //iteramos entre los alumnos que se seleccionaron
         foreach ($alumnos as $alumno) { 
@@ -245,8 +235,9 @@ class PracticaController extends Controller
                 return redirect()->route('practicasAlumno.create')->with('error', 'Practica sin grupo asignado');
             }  
             //Iteramos entre los grupos del alumno
+        
             foreach ($alumno_encontrado->grupos as $grupo_alumno) {
-                if($grupo_alumno->clave_grupo === $practica->grupo->clave_grupo){//Si el grupo del alumno es igual al grupo de la practica aumentara ++
+                if($grupo_alumno->id === $practica->grupo->id){//Si el grupo del alumno es igual al grupo de la practica aumentara ++
                         $aparece_grupo++;
                 }
             }

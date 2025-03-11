@@ -27,24 +27,8 @@
       </nav>
     </div>
   </div>
-  @if($errors->any())
-  <div class="alert alert-danger" id="success-alert">
-            @foreach ($errors->all() as $error)
-                  @if ($error === "validation.mimes")
-                      Formato del archivo no valido
-                  @endif
 
-                  @if ($error === "validation.max.file")
-                      Archivo excedio el peso permitido
-                  @endif   
-                  
-                  @if ($error === "validation.unique")
-                      CURP duplicada
-                  @endif
-                  
-            @endforeach
-  </div>
-  @endif
+  @include('layouts.notificaciones') 
 
   <section class="section profile">
     <div class="row">
@@ -204,13 +188,7 @@
     </div>
   </div>
 </div>
-<script>
-        document.addEventListener("DOMContentLoaded", function () {
-            window.setTimeout(function () {
-                const successAlert = document.getElementById("success-alert");
-                if (successAlert) successAlert.style.display = 'none';
-            }, 3000);
-        });
-    </script>
+
+
 @endcan
 @endsection

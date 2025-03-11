@@ -10,46 +10,44 @@ use  App\Models\Grupo;
 use  App\Models\Periodo;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+
 class AlumnoController extends Controller
 {
 
-    function _construct()
+    function __construct()
     {
         $this->middleware('permission:ver-alumnos', ['only' => ['index','filtraGrupo']]);
-        $this->middleware('permission:crear-alumno', ['only' => ['store','checkNoControl']]);
-        $this->middleware('permission:editar-alumno', ['only' => ['update']]);
-        $this->middleware('permission:borrar-alumno', ['only' => ['destroy']]);
+        $this->middleware('permission:crear-alumnos', ['only' => ['store','checkNoControl']]);
+        $this->middleware('permission:editar-alumnos', ['only' => ['update']]);
+        $this->middleware('permission:borrar-alumnos', ['only' => ['destroy']]);
         $this->middleware('permission:asigar-grupo-alumno', ['only' => ['asignarGrupo']]);
         $this->middleware('permission:desasigar-grupo-alumno', ['only' => ['desasignarGrupo']]);
+        $this->middleware('auth');//Aqui se valida que el usuario este autentica para todo el controlador
     }
 
 
 
         public function index()
         {   
+           
             //Listamos todos los datos para poder ingresar un alumno
             $alumnos = Alumno::with('persona', 'grupos')->get();
             $grupos = Grupo::all();
             $TodosAlumnos=Alumno::all();
             $periodos=Periodo::all();
            
-            //Se agrupan los alumnos por grupo para la vista
-           $alumnosPorGrupo = [];
-            foreach ($grupos as $grupo) {
-               $alumnosPorGrupo[$grupo->clave_grupo] = $alumnos->filter(function ($alumno) use ($grupo) {
-            
-                return $alumno->grupos->contains('clave_grupo', $grupo->clave_grupo);
-               });
-            }
+           
+            // Obtengo la fecha actual con día, mes y año
+            $currentDate = Carbon::now();
+            $currentYear = Carbon::now()->year;
 
-            //Obtengo los el mes y el año en el que esta logueado el usuario
-            $currentYear = Carbon::now()->year;//año
-            $currentMonth = Carbon::now()->month;//mes
+            // Buscar el período que contenga completamente la fecha actual
+            $periodo = Periodo::whereDate('fecha_inicio', '<=', $currentDate)  // Empezó antes o justo el primer día del mes
+                ->whereDate('fecha_final', '>=', $currentDate)
+                ->whereYear('created_at', $currentYear)  // Termina después o justo el último día del mes
+                ->first();
 
-            //Se filtran solo los periodos que esten dentro del rango de año y mes
-            $periodo = Periodo::whereYear('created_at',$currentYear)
-            ->whereMonth('fecha_inicio', '>=',  $currentMonth)
-            ->first();
             
             //Si no existe ningun periodo registrado no mostrara los alumnos
             if(!$periodo){
@@ -61,17 +59,14 @@ class AlumnoController extends Controller
            
          
 
-         return view('alumnos.index', compact('alumnosPorGrupo', 'grupos','TodosAlumnos','periodos','grupos_permitidos'));
+         return view('alumnos.index', compact('grupos','TodosAlumnos','periodos','grupos_permitidos'));
         }
 
 
         public function store(Request $request){
-            
-            //Validamos que el alumno tenga un curp y no de control unicos
-            $validated = $request->validate([
-                'curp' => 'required|unique:alumno|max:255',
-                'no_control' => 'required|unique:alumno|max:255',
-            ]);  
+           
+            //Validaciones desde el modelo
+            $validatedData = $request->validate(Alumno::$createRules,Alumno::messages());
 
             //Se guardan las request 
             $curp = $request->input('curp');
@@ -80,13 +75,6 @@ class AlumnoController extends Controller
             $apellido_m=$request->input('apellido_m');   
             $no_control=$request->input('no_control');
 
-            //Verificamos que si existe un docente con ese curp
-            $persona_existente=Docente::where('curp',$curp)->first();
-
-            //Validacion de inclusion si es que se encuentra ese docente se retorna un mensaje de error
-            if($persona_existente){
-                return redirect()->route('alumnos.index')->with('error','Curp le pertenece a un docente');
-            }
            
             //Creamos primero a la persona
             $persona=new Persona;
@@ -113,7 +101,10 @@ class AlumnoController extends Controller
 
 
         public function update(Request $request,$id){
-           
+          
+            //Validaciones desde el modelo
+            $validatedData = $request->validate(Alumno::updateRules($id),Alumno::messages());
+
              //Se guardan las request 
             $curp = $request->input('curp');
             $nombre=$request->input('nombre');   
@@ -121,42 +112,11 @@ class AlumnoController extends Controller
             $apellido_m=$request->input('apellido_m');   
             $no_control=$request->input('no_control');
 
-             //Verificamos que si existe un docente con ese curp
-            $persona_existente=Docente::where('curp',$curp)->first();
-
-            //Validacion de inclusion si es que se encuentra ese docente se retorna un mensaje de error
-            if($persona_existente){
-                return redirect()->route('alumnos.index')->with('error','Curp le pertenece a un docente');
-            }
-            
-            $persona_curp=Persona::find($curp);//Consultamos que si existe una persona con ese curp
             
             $alumno=Alumno::find($id);//Consultamos que si se encuentre el alumno que se paso como parametro el $id
 
-            //Validamos en caso de que si exista ya una persona con el curp
-            if($persona_curp){
-                    if($persona_curp->curp !==$alumno->curp){
-                       
-                        return redirect()->route('alumnos.index')->with('error','Curp duplicada');
-                    }
-                
-            }
-
-            $alumno_existente=Alumno::find($no_control);//Consultamos que si existe un alumno con ese numero de control
-            
-            //Validamos que si existe un alumno con ese numero de control retorne un error 
-            if($alumno_existente){
-                if($alumno_existente->no_control !==$alumno->no_control){
-                   
-                    return redirect()->route('alumnos.index')->with('error','Numero de control duplicado');
-                }
-                
-            
-            }
-
             //Actualizamos el alumno siempre y cuando exista
-            if($alumno){
-              
+            if($alumno){             
                 $persona=Persona::find($alumno->persona->curp);
                 $alumno->no_control=$no_control;
                 $alumno->curp=$persona->curp;
@@ -167,9 +127,7 @@ class AlumnoController extends Controller
                 $persona->apellido_m=$apellido_m;
                 
                 $alumno->save();
-                $persona->save();  
-
-            
+                $persona->save();             
             }
             
             return redirect()->route('alumnos.index')->with('success','Alumno actualizado correctamente');
@@ -192,21 +150,24 @@ class AlumnoController extends Controller
 
         public function asignarGrupo(Request $request)
         {
+
+            //Validaciones desde el modelo
+            $validatedData = $request->validate(Alumno::$AsignarRules,Alumno::messages());
             //Se guardan los alumnos que se seleccionaron en el checkbox multiple
             $selectedAlumnosString = $request->input('selected_alumnos');
-            if (!$selectedAlumnosString) {//Si en dado caso no se selecciono ninguno retornara un error
-                return redirect()->route('alumnos.index')->with('error', 'No se seleccionó ningún alumno');
-            }
+            
             //Separamos los numeros de control convirtiendolo en un array ya que estan de esta forma : 19161220,193232
             $selectedAlumnos = explode(',', $selectedAlumnosString);
 
             //Revisamos que el grupo se encuentre
             $grupo = Grupo::find($request->input('grupo'));
-            //Validamos que si el grupo no esta retorne un error
-            if (!$grupo) {
-                return redirect()->route('alumnos.index')->with('error', 'Grupo no encontrado');
-            }
 
+            if (!$grupo) {
+                return redirect()->route('alumnos.index')->withErrors([
+                    'grupo' => 'Grupo no encontrado'
+                ]);
+            }
+           
            //Aqui se sincroniza es decir se asigan los numeros de control al grupo
             $grupo->alumnos()->syncWithoutDetaching($selectedAlumnos);
 
@@ -214,19 +175,19 @@ class AlumnoController extends Controller
         }
 
         public function desasignarGrupo(Request $request){
+            //Validaciones desde el modelo
+            $validatedData = $request->validate(Alumno::$DesasignarRules,Alumno::messages());
             //Se guardan los alumnos que se seleccionaron en el checkbox multiple
             $selectedAlumnos = $request->input('selected_alumnos', []);  
+            
             
             //Revisamos que el grupo se encuentre
             $grupo=Grupo::find($request->input('clave_grupo'));
 
-             //Validamos que si el grupo no esta retorne un error
-            if(!$grupo){
-                return redirect()->route('alumnos.index')->with('error','Grupo no encontrado');
-            }
-
-            if(empty($selectedAlumnos)){//Si en dado caso no se selecciono ninguno retornara un error
-                return redirect()->route('alumnos.index')->with('error','Ningún alumno seleccionado');
+            if (!$grupo) {
+                return redirect()->route('alumnos.index')->withErrors([
+                    'clave_grupo' => 'Grupo no encontrado'
+                ]);
             }
             //Se eliminan o desasignan del grupo los alumnos que se seleccionaron
             $grupo->alumnos()->detach($selectedAlumnos);
@@ -244,7 +205,7 @@ class AlumnoController extends Controller
             }
             //Filtramos y buscamos el grupo que coincidan con nuestras requests
             $grupo = Grupo::where('clave_periodo', $request->input('periodo'))
-            ->where('clave_grupo', $request->input('grupo'))
+            ->where('id', $request->input('grupo'))
             ->first();
 
             //Si no se encuentra el grupo retornara un error

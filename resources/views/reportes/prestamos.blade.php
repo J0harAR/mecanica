@@ -54,6 +54,8 @@
                 <td class="center">
                     <p>TECNOLÓGICO NACIONAL DE MÉXICO</p>
                     <p>Instituto Tecnológico de Oaxaca</p>
+                    <p>Reporte de prestamos del periodo {{mb_strtoupper(\Carbon\Carbon::parse($periodo->fecha_inicio)->locale('es')->isoFormat('MMMM')) }} -
+                    {{ mb_strtoupper(\Carbon\Carbon::parse($periodo->fecha_final)->locale('es')->isoFormat('MMMM')) }}/{{$año}}</p>
                 </td>
                 <td class="right">
                     <img src="{{ public_path('assets/img/logo.png') }}" alt="Logo ITO">
@@ -65,14 +67,18 @@
     <table class="content-table">
         <tr>
             <th>RFC</th>
+            <th>Nombre del docente</th>
             <th>Herramienta</th>
-            <th>Fecha_prestamo</th>
+            <th>Fecha del prestamo</th>
+            <th>Estatus</th>
         </tr>
         @foreach ($prestamos as $prestamo)
         <tr>
             <td>{{$prestamo->id_docente}}</td>
+            <td>{{$prestamo->docente->persona->nombre}} {{$prestamo->docente->persona->apellido_p}} {{$prestamo->docente->persona->apellido_m}}</td>
             <td>{{$prestamo->id_herramientas}}</td>
             <td>{{$prestamo->fecha_prestamo}}</td>
+            <td>{{$prestamo->estatus}}</td>
         </tr>
         @endforeach
     </table>

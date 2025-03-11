@@ -57,7 +57,7 @@
           <div class="col-12">
             <label for="asignatura" class="form-label"><i class="fas fa-bullseye me-2"></i>Grupo</label>
             <input type="text" class="form-control" name="asignatura" required
-              value="{{ $practica->grupo->clave_grupo ?? '' }}" disabled>
+              value="{{ $practica->grupo->clave_grupo ?? '' }}/{{$practica->grupo->asignatura->nombre}}" disabled>
           </div>
 
           <div class="col-12">

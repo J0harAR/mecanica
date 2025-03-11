@@ -20,18 +20,29 @@ class RolTest extends TestCase
     {
         Artisan::call('migrate');
         
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
-
+        
+        
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+
+        $permissions = [
+            Permission::create(['name' => 'ver-rol']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+
         //Ver la tabla de roles
         $acceso = $this->get(route('roles.index'))
         ->assertStatus(200)
@@ -44,19 +55,29 @@ class RolTest extends TestCase
     {
         Artisan::call('migrate');
         
-        $user = User::factory()->create([
-            "name" => "Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
-        $roleAdministrador = Role::firstOrCreate(['name' => 'Administrador']);     
-        $user->assignRole($roleAdministrador);
-       
+        
+        
+        $acceso = $this->post(route('login'), [
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
+        
+        ]);
 
-        $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
-        ]);
+        $permissions = [
+            Permission::create(['name' => 'crear-rol']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+
         //Ver formulario de crear rol
         $this->get(route('roles.create'))
         ->assertStatus(200)
@@ -72,25 +93,44 @@ class RolTest extends TestCase
            
         ])->assertRedirect(route('roles.index'));
 
+        //Creacion de un rol repetido
+      
+        $this->post(route('roles.store'), [
+            'name' => 'Servicio social',
+            'permission' => [$permission1->name, $permission2->name],
+           
+        ])->assertRedirect(route('roles.create'));
+
     }
     public function test_edit_rol(){
         Artisan::call('migrate');
         
-        $user = User::factory()->create([
-            "name" => "Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
-        $roleAdministrador = Role::firstOrCreate(['name' => 'Administrador']);
+        
+        
+        $acceso = $this->post(route('login'), [
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
+        
+        ]);
+
+        $permissions = [
+            Permission::create(['name' => 'editar-rol']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+
         $roleServicioSocial = Role::firstOrCreate(['name' => 'Servicio Social']);
-        $user->assignRole($roleAdministrador);
+ 
        
-
-        $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
-        ]);
-
         $permission1 = Permission::create(['name' => 'permission1']);
         $permission2 = Permission::create(['name' => 'permission2']);;
 
@@ -109,20 +149,32 @@ class RolTest extends TestCase
     public function test_delete_rol(){
         Artisan::call('migrate');
         
-        $user = User::factory()->create([
-            "name" => "Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
-        $roleAdministrador = Role::firstOrCreate(['name' => 'Administrador']);
-        $roleServicioSocial = Role::firstOrCreate(['name' => 'Servicio Social']);
-        $user->assignRole($roleAdministrador);
-       
+        
+        
+        $acceso = $this->post(route('login'), [
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
+        
+        ]);
 
-        $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
-        ]);
+        $permissions = [
+            Permission::create(['name' => 'borrar-rol']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+
+
+        $roleServicioSocial = Role::firstOrCreate(['name' => 'Servicio Social']);
+    
         
         //Eliminar rol de forma correcta 
         $this->delete(route('roles.destroy', $roleServicioSocial->id))

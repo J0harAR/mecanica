@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use  App\Models\Periodo;
+use Illuminate\Support\Facades\Auth;
 class PeriodoController extends Controller
 {
 
-    function _construct()
+    function __construct()
     {
         $this->middleware('permission:ver-periodos', ['only' => ['index']]);
         $this->middleware('permission:crear-periodo', ['only' => ['store']]);
         $this->middleware('permission:editar-periodo', ['only' => ['update']]);
         $this->middleware('permission:borrar-periodo', ['only' => ['destroy']]);
+        $this->middleware('auth');//Aqui se valida que el usuario este autentica para todo el controlador
     }
     
    
@@ -23,25 +25,16 @@ class PeriodoController extends Controller
         }
 
         public function store(Request $request){
-            //Validamos que no se ingresen datos en blanco
-            $this->validate($request, [
-                'periodo' => 'required',
-                'fecha_inicio' => 'required',
-                'fecha_final' => 'required',
-            ]);
-            //Buscamos si hay un periodo con la clave del periodo
-            $duplicado=Periodo::find($request->input('periodo'));
-            
-            //Si se encuentra se retornara un error
-            if($duplicado){
-                return redirect()->route('periodos.index')->with('error','Periodo con clave duplicada');
-            }
+            //Validaciones del modelo
+
+            $validatedData = $request->validate(Periodo::$createRules,Periodo::messages());
+
             //Creamos el periodo
             $periodo=new Periodo;
             $periodo->clave=$request->input('periodo');
             $periodo->fecha_inicio=$request->input('fecha_inicio');
             $periodo->fecha_final=$request->input('fecha_final');
-            $periodo->save();//Guaramos el periodo
+            $periodo->save();//Guardamos el periodo
 
 
             return redirect()->route('periodos.index')->with('success','Periodo agregado correctamente');
@@ -49,7 +42,11 @@ class PeriodoController extends Controller
         }
 
         public function update(Request $request ,$id){
-            //Buscamos el periodo que vamos actualizar
+            //Validacioens del modelo
+            
+            $validatedData = $request->validate(Periodo::updateRules($id),Periodo::messages());
+
+
             $periodo=Periodo::find($id);
             //Si se encuentra el periodo se actualiza con las requests
             if($periodo){

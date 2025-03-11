@@ -45,4 +45,27 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    //Validaciones del modelo
+
+    //Create
+    public static $createRules=[
+        'name' => 'required',
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email', 'regex:/^[\w\.-]+@itoaxaca\.edu\.mx$/'],
+        'password' => 'required | same:confirm-password',
+        'roles' => 'required'
+    ];
+    
+    //Update
+    public static function updateRules($id){
+        return[
+        'name' => 'required',
+        'email' => 'required | email |regex:/^[\w\.-]+@itoaxaca\.edu\.mx$/|unique:users,email,' . $id,
+        'password' => 'same:confirm-password',
+        'roles' => 'required'
+        ];
+
+    }  
+   
+
 }

@@ -9,14 +9,16 @@ use App\Models\Mantenimiento;
 use App\Models\Articulo_inventariado;
 use App\Models\Catalogo_articulo;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 class MantenimientoController extends Controller
 {
 
-  function _construct()
+  function __construct()
     {
         $this->middleware('permission:ver-mantenimientos', ['only' => ['index']]);
         $this->middleware('permission:crear-mantenimiento', ['only' => ['store','obtenerDatosMaquinaria','getInsumosPorMaquinaria']]);
-    
+        $this->middleware('auth');//Aqui se valida que el usuario este autentica para todo el controlador
+
     }
 
     public function getInsumosPorMaquinaria(Request $request)
@@ -64,10 +66,9 @@ class MantenimientoController extends Controller
 
     public function store(Request $request)
     {
-      //Revisamos que no se deje ningun campo en blanco si es asi retornara un error
-      if (empty($request->input('maquina')) || empty($request->input('fecha')) || empty($request->input('insumos'))) {
-         return redirect()->route('mantenimiento.index')->with('error', 'Todos los campos son requeridos.');             
-    }
+    
+      //Validaciones del modelo
+      $validatedData = $request->validate(Mantenimiento::$createRules,Mantenimiento::messages());
 
       //Creamos un mantenimiento
       $Mantenimiento= new Mantenimiento;

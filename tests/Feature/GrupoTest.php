@@ -17,7 +17,7 @@ use App\Models\Persona;
 use App\Models\Periodo;
 use App\Models\Alumno;
 use App\Models\Asignatura;
-
+use Spatie\Permission\Models\Permission;
 class GrupoTest extends TestCase
 {
     /**
@@ -27,20 +27,28 @@ class GrupoTest extends TestCase
     {
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'ver-grupos']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         
 
         $response= $this->get(route('grupos.index'))
@@ -51,24 +59,32 @@ class GrupoTest extends TestCase
     public function test_create_grupos():void{
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
-       
-        $response= $this->get(route('grupos.create'))
-        ->assertStatus(200)
-        ->assertViewIs('grupos.create');
+        $permissions = [
+            Permission::create(['name' => 'ver-grupos']),
+            Permission::create(['name' => 'crear-grupo']),
+           
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+        
+
         Periodo::create([
             'clave'=>'2024-3',
             'fecha_inicio'=>"2024-08-01",
@@ -93,7 +109,7 @@ class GrupoTest extends TestCase
         $response->assertRedirect(route('grupos.index'));
 
 
-        //Caso de grupo duplicado
+        //Caso de grupo duplicado con misma asignatura
         Grupo::create([
             'id_docente'=>null,
             'clave_grupo'=>"IA1",
@@ -112,28 +128,50 @@ class GrupoTest extends TestCase
         $response->assertRedirect(route('grupos.index'));
         $response->assertSessionHas('error');
 
+        //Caso que no se ponga el grupo 
+
+        $data=[
+            'clave_grupo'=>null,
+            'asignatura'=>$asignatura->clave,
+            'periodo'=>"2024-3"
+        ];
+
+        $response = $this->post(route('grupos.store'), $data); 
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors([
+            'clave_grupo' => 'La clave del grupo es obligatoria.',
+        ]);
+
     }
 
-
-    
 
     public function test_delete_grupo():void{
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'ver-grupos']),
+            Permission::create(['name' => 'borrar-grupo']),
+           
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         
         Asignatura::create([
             'clave'=>'IA',
@@ -183,13 +221,13 @@ class GrupoTest extends TestCase
           ]);
 
           $alumno->grupos()->attach([
-            'clave_grupo' => 'IA22'
+            'clave_grupo' => 1
         ], [
             'id_alumno' => '19161299'
         ]);
 
 
-        $response = $this->delete(route('grupos.destroy','IA22')); 
+        $response = $this->delete(route('grupos.destroy',1)); 
         $response->assertStatus(302);
         $response->assertRedirect(route('grupos.index'));
         $this->assertDatabaseMissing('alumno_grupo', ['clave_grupo' =>"IA22"]);

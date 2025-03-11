@@ -9,16 +9,18 @@ use App\Models\Catalogo_articulo;
 use App\Models\Auditoria;
 use App\Models\Periodo;
 use App\Models\Insumos;
+use Illuminate\Support\Facades\Auth;
 class MaquinariaController extends Controller
 {
-    function _construct()
+    function __construct()
     {
         $this->middleware('permission:ver-maquinarias', ['only' => ['index']]);
         $this->middleware('permission:crear-maquinaria', ['only' => ['store']]);
         $this->middleware('permission:editar-maquinaria', ['only' => ['update']]);
         $this->middleware('permission:asignar-insumos-maquinaria', ['only' => ['asignar_insumos']]);
         $this->middleware('permission:desasignar-insumos-maquinaria', ['only' => ['desasignar_insumo']]);
-        $this->middleware('permission:borrar-maquinaria', ['only' => ['destroy']]);
+        $this->middleware('permission:borrar-maquinaria', ['only' => ['destroy']]);     
+        $this->middleware('auth');//Aqui se valida que el usuario este autentica para todo el controlador
     }
 
 
@@ -37,7 +39,13 @@ class MaquinariaController extends Controller
   }
 
   public function store(Request $request){
+
     set_time_limit(180);//Delimitamos a 180 la respueta por si se agregan en masa
+
+    //Validacion del modelo
+
+    $validatedData = $request->validate(Maquinaria::$createRules,Maquinaria::messages());
+
     //guardamos los requests
     $estatus=$request->input('estatus');
     $cantidad_articulo=$request->input('cantidad');
@@ -152,6 +160,9 @@ class MaquinariaController extends Controller
 
   public function update(Request $request,$id_maquinaria)
   {
+    //Validaciones del modelo
+    $validatedData = $request->validate(Maquinaria::$updateRules,Maquinaria::messages());
+
       //Guardamos el estatus de la request
       $estatus_maquinaria=$request->input('estatus');
     //Creamos una auditoria
@@ -218,10 +229,9 @@ class MaquinariaController extends Controller
 
   public function asignar_insumos( Request $request,$id_maquinaria){
 
-    //Revisamos que se haya seleccionado algun insumo si no se retornara un error
-    if(!$request->input('insumos',[])){
-        return redirect()->route('maquinaria.index')->with('error',' No se selecciono ningun insumo');
-    }
+    //Validacion del modelo
+    $validatedData = $request->validate(Maquinaria::$AsignarRules,Maquinaria::messages());
+
     //Buscamos la maquina que vamos asignar los insumos
     $maquina=Maquinaria::find($id_maquinaria);
    
@@ -234,13 +244,11 @@ class MaquinariaController extends Controller
   }
 
   public function desasignar_insumo(Request $request,$id_maquinaria){
-    
+    //Validacion del modelo
+    $validatedData = $request->validate(Maquinaria::$DesasignarRules,Maquinaria::messages());
     //Buscamos la maquina que vamos desasignar los insumos
     $maquina=Maquinaria::find($id_maquinaria);
-    //Revisamos que si no selecciono ningun insumo solo lo regrese no le retorne error
-    if(!$request->input('insumos',[])){
-        return redirect()->route('maquinaria.index');
-    }
+    
     $maquina->insumos()->detach($request->input('insumos',[]));//Aqui desasignamos los insumos a la maquinaria
     return redirect()->route('maquinaria.index')->with('success', 'Insumo desasignado correctamente a la máquina: ' . $id_maquinaria . '.');
   }

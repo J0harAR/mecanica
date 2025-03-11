@@ -7,15 +7,16 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Auth;
 class RolController extends Controller
 {
-    function _construct()
+    function __construct()
     {
         $this->middleware('permission:ver-rol|crear-rol|editar-rol|borrar-rol', ['only' => ['index']]);
         $this->middleware('permission:crear-rol', ['only' => ['create', 'store']]);
         $this->middleware('permission:editar-rol', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:borrar-rol', ['only' => ['destroy']]);
+        $this->middleware('permission:borrar-rol', ['only' => ['destroy']]);     
+        $this->middleware('auth');//Aqui se valida que el usuario este autentica para todo el controlador
     }
 
     /**

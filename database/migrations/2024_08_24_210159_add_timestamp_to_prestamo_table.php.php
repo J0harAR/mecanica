@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('practica', function (Blueprint $table) {
-            //
-            $table->string('clave_grupo')->nullable()->after('id_docente');
-           
-
+        Schema::table('prestamo', function (Blueprint $table) {
+                $table->timestamps();
         });
     }
 
@@ -24,8 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('practica', function (Blueprint $table) {
-            //
-        });
+        //
     }
 };

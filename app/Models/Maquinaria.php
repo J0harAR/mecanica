@@ -31,4 +31,45 @@ class Maquinaria extends Model
           return $this->belongsToMany(Catalogo_articulo::class, 'insumos_maquinaria', 'maquinaria_id', 'insumo_id')
           ->withPivot(['capacidad','cantidad_actual','cantidad_minima']);
       }
+
+
+      //Validaciones modelo
+
+       //Create
+       public static $createRules = [
+        'id_articulo'=>'required',
+        'estatus' => 'required',
+        'cantidad' => 'required',
+        ];
+
+        //Update
+        public static $updateRules = [
+            'estatus' => 'required',
+            'insumos' => 'required',
+        ];
+
+
+         //Asignar Rules y desasignar
+      public static $AsignarRules = [
+        'insumos' => 'required',
+       
+      ];
+
+      public static $DesasignarRules=[
+        'insumos' => 'required',
+      ];
+
+        //Mensajes personalizados para las validaciones
+        public static function messages()
+        {
+            return [
+                'id_articulo.required' => 'Articulo obligatorio',
+                'estatus.required' => 'Estatus de la maquinaria obligatorio.',
+                'cantidad.required' => 'Cantidad obligatoria.',
+                'insumos.required' => 'Insumos obligatorios.',
+            ];
+        }
+
+
+
 }

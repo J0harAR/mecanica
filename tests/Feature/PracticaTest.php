@@ -19,6 +19,7 @@ use App\Models\Alumno;
 use App\Models\Herramientas;
 use App\Models\Catalogo_articulo;
 use App\Models\Articulo_inventariado;
+use Spatie\Permission\Models\Permission;
 class PracticaTest extends TestCase
 {
     /**
@@ -29,20 +30,28 @@ class PracticaTest extends TestCase
        
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'ver-practicas']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         
 
         $response= $this->get(route('practicas.index'))
@@ -58,20 +67,28 @@ class PracticaTest extends TestCase
 
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'crear-practica']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         
         
         $response= $this->get(route('practicas.create'))
@@ -111,7 +128,7 @@ class PracticaTest extends TestCase
             'periodo'=>'2024-3'
         ]);
 
-        $grupo=Grupo::find('IA1');
+        $grupo=Grupo::find(1);
 
         Catalogo_articulo::create([
             'id_articulo'=>"HM-T-0234",
@@ -145,7 +162,7 @@ class PracticaTest extends TestCase
         $data=[
             'codigo_practica'=>"001",
             'docente'=>$docente->rfc,
-            'clave_grupo'=>$grupo->clave_grupo,
+            'grupo'=>$grupo->id,
             'nombre_practica'=>"Practica 1",
             'objetivo'=>"Objectivo practica 1",
             'introduccion'=>"Introduccion practica 1",
@@ -163,11 +180,10 @@ class PracticaTest extends TestCase
 
         //Ingresar una practica repetida
 
-
         $data=[
             'codigo_practica'=>"001",
             'docente'=>$docente->rfc,
-            'clave_grupo'=>$grupo->clave_grupo,
+            'grupo'=>$grupo->id,
             'nombre_practica'=>"Practica 2",
             'objetivo'=>"Objectivo practica 2",
             'introduccion'=>"Introduccion practica 2",
@@ -179,8 +195,29 @@ class PracticaTest extends TestCase
         ];
         $response = $this->post(route('practicas.store'), $data); 
         $response->assertStatus(302);
-        $response->assertRedirect(route('practicas.create'));
-        $response->assertSessionHas('error');
+        $response->assertSessionHasErrors([
+            'codigo_practica'=>'Codigo de practica duplicado.',
+        ]);
+
+        //Ingresar con varios datos nulos ejemplo grupo y articulo
+        $data=[
+            'codigo_practica'=>"005",
+            'docente'=>$docente->rfc,
+            'grupo'=>null,
+            'nombre_practica'=>"Practica 2",
+            'objetivo'=>"Objectivo practica 2",
+            'introduccion'=>"Introduccion practica 2",
+            'fundamento'=>"Fundamento practica 2",
+            'referencias'=>"Referencias practica 2",
+            'articulos'=>null
+        ];
+        $response = $this->post(route('practicas.store'), $data); 
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors([
+            'grupo' => 'Grupo obligatorio.',
+            'articulos' => 'Articulos obligatorios.',
+        ]);
+
 
     }
 
@@ -188,20 +225,28 @@ class PracticaTest extends TestCase
 
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'ver-practica']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
         Persona::create([
             'curp'=>"AAA",
@@ -234,7 +279,7 @@ class PracticaTest extends TestCase
             'periodo'=>'2024-3'
         ]);
 
-        $grupo=Grupo::find('IA1');
+        $grupo=Grupo::find(1);
 
         Catalogo_articulo::create([
             'id_articulo'=>"HM-T-0234",
@@ -268,7 +313,7 @@ class PracticaTest extends TestCase
         Practica::create([
             'id_practica'=>"001",
             'id_docente'=>$docente->rfc,
-            'clave_grupo'=>$grupo->clave_grupo,
+            'clave_grupo'=>$grupo->id,
             'nombre'=>"Practica 1",
             'objetivo'=>"Objectivo practica 1",
             'introduccion'=>"Introduccion practica 1",
@@ -287,20 +332,28 @@ class PracticaTest extends TestCase
     public function test_edit_practica():void{
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'editar-practica']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
         Persona::create([
             'curp'=>"AAA",
@@ -333,7 +386,7 @@ class PracticaTest extends TestCase
             'periodo'=>'2024'
         ]);
 
-        $grupo=Grupo::find('IA1');
+        $grupo=Grupo::find(1);
         
         Catalogo_articulo::create([
             'id_articulo'=>"HM-T-0234",
@@ -369,7 +422,7 @@ class PracticaTest extends TestCase
         Practica::create([
             'id_practica'=>"001",
             'id_docente'=>$docente->rfc,
-            'clave_grupo'=>$grupo->clave_grupo,
+            'clave_grupo'=>$grupo->id,
             'nombre'=>"Practica 1",
             'objetivo'=>"Objectivo practica 1",
             'introduccion'=>"Introduccion practica 1",
@@ -377,50 +430,106 @@ class PracticaTest extends TestCase
             'referencias'=>"referencias practica 1",
             'estatus'=>0,
         ]);
+        
         $practica=Practica::find("001");
+        $practica->catalogo_articulos()->sync(["HM-T-0234"]);
         $this->assertNotNull($practica);
-
         $response =$this->get(route('practicas.edit',$practica->id_practica));
         $response->assertViewIs('practicas.editar');
 
+        //Actualizacion correcta de una practica
+
+        $data_update = [
+            'docente' => $docente->rfc,
+            'grupo' => $grupo->id,
+            'nombre_practica' => "Practica 2 actualizada",
+            'objetivo' => "Objetivo practica 2",
+            'introduccion' => "Introduccion practica 2",
+            'fundamento' => "Fundamento practica 2",
+            'referencias' => "Referencias practica 2",
+            'articulos' => [
+                "HM-T-0234"
+            ],
+        ];
+
+        $response =$this->patch(route('practicas.update',$practica->id_practica),$data_update);
+        $response->assertStatus(302);
+        $response->assertRedirect(route('practicas.index'));
 
 
+   
+        //Validacion si no se le asignan articulos
         $data_update=[
             'codigo_practica'=>"001",
             'docente'=>$docente->rfc,
-            'clave_grupo'=>$grupo->clave_grupo,
+            'grupo'=>$grupo->id,
             'nombre_practica'=>"Practica 2 actualizada",
             'objetivo'=>"Objectivo practica 2",
             'introduccion'=>"Introduccion practica 2",
             'fundamento'=>"Fundamento practica 2",
             'referencias'=>"Referencias practica 2",
-            'articulos'=>[
-                $herramienta->Articulo_inventariados->Catalogo_articulos->id_articulo
-            ],
+            'articulos'=>null
         ];
         $response =$this->patch(route('practicas.update',$practica->id_practica),$data_update);
         $response->assertStatus(302);
-        $response->assertRedirect(route('practicas.index'));
+        $response->assertSessionHasErrors([
+            'articulos' => 'Articulos obligatorios.',
+        ]);
+
+        //Validacion si se deja algun campo en blanco/ o todos
+        $data_update=[
+            'codigo_practica'=>null,
+            'docente'=>null,
+            'grupo'=>null,
+            'nombre_practica'=>null,
+            'objetivo'=>null,
+            'introduccion'=>null,
+            'fundamento'=>null,
+            'referencias'=>null,
+            'articulos'=>null
+        ];
+        $response =$this->patch(route('practicas.update',$practica->id_practica),$data_update);
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors([
+            'docente' => 'Docente obligatorio.',
+            'grupo' => 'Grupo obligatorio.',
+            'nombre_practica' => 'Nombre de la practica obligatorio.',
+            'objetivo' => 'Objectivo obligatorio.',
+            'introduccion' => 'Introducción obligatoria.',
+            'fundamento' => 'Fundamento obligatorio.',
+            'referencias' => 'Referencias obligatorias.',
+            'articulos' => 'Articulos obligatorios.',
+        ]);
+
 
     }
 
     public function test_delete_practica():void{
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'borrar-practica']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+
 
         Persona::create([
             'curp'=>"AAA",
@@ -453,7 +562,7 @@ class PracticaTest extends TestCase
             'periodo'=>'2024'
         ]);
 
-        $grupo=Grupo::find('IA1');
+        $grupo=Grupo::find(1);
         
         Catalogo_articulo::create([
             'id_articulo'=>"HM-T-0234",
@@ -488,7 +597,7 @@ class PracticaTest extends TestCase
         Practica::create([
             'id_practica'=>"001",
             'id_docente'=>$docente->rfc,
-            'clave_grupo'=>$grupo->clave_grupo,
+            'clave_grupo'=>$grupo->id,
             'nombre'=>"Practica 1",
             'objetivo'=>"Objectivo practica 1",
             'introduccion'=>"Introduccion practica 1",
@@ -511,20 +620,28 @@ class PracticaTest extends TestCase
     public function test_filtrar_practicas():void{
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'ver-practicas']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
         Persona::create([
             'curp'=>"AAA",
@@ -546,6 +663,11 @@ class PracticaTest extends TestCase
             'nombre'=>'Inteligencia artificial'
         ]);
 
+        Asignatura::create([
+            'clave'=>'IAAAAA',
+            'nombre'=>'Inteligencia artificial2'
+        ]);
+
 
         $docente=Docente::find("DDD");
         $asignatura=Asignatura::find('IA');
@@ -557,7 +679,7 @@ class PracticaTest extends TestCase
             'periodo'=>'2024'
         ]);
 
-        $grupo=Grupo::find('IA1');
+        $grupo=Grupo::find(1);
 
         Catalogo_articulo::create([
             'id_articulo'=>"HM-T-0234",
@@ -592,7 +714,7 @@ class PracticaTest extends TestCase
         Practica::create([
             'id_practica'=>"001",
             'id_docente'=>$docente->rfc,
-            'clave_grupo'=>$grupo->clave_grupo,
+            'clave_grupo'=>$grupo->id,
             'nombre'=>"Practica 1",
             'objetivo'=>"Objectivo practica 1",
             'introduccion'=>"Introduccion practica 1",
@@ -654,24 +776,41 @@ class PracticaTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect(route('practicas.index'));
 
+        $data = [
+            
+            'asignatura' => 'IAAAAA',
+        ];
+        $response = $this->post(route('practicas.filtrar'), $data);
+    
+        $response->assertStatus(302);
+        $response->assertRedirect(route('practicas.index'));    
+
     }
    public function test_completar_practica():void{
     Artisan::call('migrate');
 
-    User::create([
-        "name" =>"Test",
-        "email" => 'test@gmail.com',
-        "password" => Hash::make('password22'),
+    $user = User::create([
+        'name' => 'Test',
+        'email' => '19161221@itoaxaca.edu.mx',
+        'password' => Hash::make('Johanar2-'),
     ]);
     
     
     $acceso = $this->post(route('login'), [
-        'email' => 'test@gmail.com',
-        'password' => 'password22',
+        'email' => '19161221@itoaxaca.edu.mx',
+        'password' => 'Johanar2-',
     
     ]);
 
-    $acceso->assertStatus(302)->assertRedirect(route('home'));
+    $permissions = [
+        Permission::create(['name' => 'completar-practica']),
+    ];
+
+    $user->syncPermissions($permissions);
+
+    foreach ($permissions as $permission) {
+        $this->assertTrue($user->hasPermissionTo($permission->name));
+    }
 
     Persona::create([
         'curp'=>"AAA",
@@ -704,7 +843,7 @@ class PracticaTest extends TestCase
         'periodo'=>'2024'
     ]);
 
-    $grupo=Grupo::find('IA1');
+    $grupo=Grupo::find(1);
 
     Catalogo_articulo::create([
             'id_articulo'=>"HM-T-0234",
@@ -739,7 +878,7 @@ class PracticaTest extends TestCase
     Practica::create([
         'id_practica'=>"001",
         'id_docente'=>$docente->rfc,
-        'clave_grupo'=>$grupo->clave_grupo,
+        'clave_grupo'=>$grupo->id,
         'nombre'=>"Practica 1",
         'objetivo'=>"Objectivo practica 1",
         'introduccion'=>"Introduccion practica 1",
@@ -770,20 +909,28 @@ class PracticaTest extends TestCase
 
     Artisan::call('migrate');
 
-    User::create([
-        "name" =>"Test",
-        "email" => 'test@gmail.com',
-        "password" => Hash::make('password22'),
+    $user = User::create([
+        'name' => 'Test',
+        'email' => '19161221@itoaxaca.edu.mx',
+        'password' => Hash::make('Johanar2-'),
     ]);
     
     
     $acceso = $this->post(route('login'), [
-        'email' => 'test@gmail.com',
-        'password' => 'password22',
+        'email' => '19161221@itoaxaca.edu.mx',
+        'password' => 'Johanar2-',
     
     ]);
 
-    $acceso->assertStatus(302)->assertRedirect(route('home'));
+    $permissions = [
+        Permission::create(['name' => 'crear-practica-alumno']),
+    ];
+
+    $user->syncPermissions($permissions);
+
+    foreach ($permissions as $permission) {
+        $this->assertTrue($user->hasPermissionTo($permission->name));
+    }
 
     Persona::create([
         'curp'=>"AAA",
@@ -823,7 +970,7 @@ class PracticaTest extends TestCase
         'periodo'=>'2024-3'
     ]);
 
-    $grupo=Grupo::where('clave_grupo','IA1')->first();
+    $grupo=Grupo::find(1);
 
     Catalogo_articulo::create([
             'id_articulo'=>"HM-T-0234",
@@ -858,7 +1005,7 @@ class PracticaTest extends TestCase
     $practica=Practica::create([
         'id_practica'=>"001",
         'id_docente'=>$docente->rfc,
-        'clave_grupo'=>$grupo->clave_grupo,
+        'clave_grupo'=>$grupo->id,
         'nombre'=>"Practica 1",
         'objetivo'=>"Objectivo practica 1",
         'introduccion'=>"Introduccion practica 1",
@@ -888,7 +1035,7 @@ class PracticaTest extends TestCase
     $alumno=Alumno::find("19161229");
   
     $this->assertNotNull($alumno);
-    $alumno->grupos()->sync([$grupo->clave_grupo]);
+    $alumno->grupos()->sync([$grupo->id]);
     
     $response =$this->get(route('practicasAlumno.create'));
     $response->assertViewIs('practicas.alumnos');
@@ -925,7 +1072,7 @@ class PracticaTest extends TestCase
     $alumno=Alumno::find("19161230");
   
     $this->assertNotNull($alumno);
-    $alumno->grupos()->sync(["ISA"]);
+    $alumno->grupos()->sync([2]);
 
     $data =[
         'alumnos'=>[$alumno->no_control],
@@ -949,12 +1096,11 @@ class PracticaTest extends TestCase
     $alumno=Alumno::find("19161229");
   
     $this->assertNotNull($alumno);
-    $alumno->grupos()->sync([$grupo->clave_grupo]);
+    $alumno->grupos()->sync([$grupo->id]);
  
-    
-    //Creacion correcta de una practica alumno
+
     $data =[
-        'alumnos'=>null,
+        'alumnos'=>[$alumno->no_control],
         'practica'=>$practica->id_practica,
         'articulos'=>null,
         'fecha'=>"2024-07-02",
@@ -964,8 +1110,10 @@ class PracticaTest extends TestCase
     ];
     $response = $this->post(route('practicasAlumno.store'), $data);
     $response->assertStatus(302); 
-    $response->assertRedirect(route('practicasAlumno.create'));
-    $response->assertSessionHas('error');
+    $response->assertSessionHasErrors([
+        'articulos' => 'Articulos obligatorios.',
+      
+    ]);
 
 
     //Validacion de articulos no esten asociados a la practica.
@@ -1009,17 +1157,19 @@ class PracticaTest extends TestCase
     $response->assertSessionHas('error');
 
 
-    //Validacion ningun articulo seleccionado
+    //Validacion ningun alumno seleccionado
     $alumno=Alumno::find("19161229");
   
     $this->assertNotNull($alumno);
-    $alumno->grupos()->sync([$grupo->clave_grupo]);
+    $alumno->grupos()->sync([$grupo->id]);
  
     
     $data =[
-        'alumnos'=>[$alumno->no_control],
+        'alumnos'=>null,
         'practica'=>$practica->id_practica,
-        'articulos'=>null,
+        'articulos'=>[
+           "HM-T-0234-01"
+        ],
         'fecha'=>"2024-07-02",
         'no_equipo'=>2,
         'hora_entrada'=>"21:31:00",
@@ -1028,14 +1178,16 @@ class PracticaTest extends TestCase
     $response = $this->post(route('practicasAlumno.store'), $data);
     $response->assertStatus(302); 
     $response->assertRedirect(route('practicasAlumno.create'));
-    $response->assertSessionHas('error');
+    $response->assertSessionHasErrors([
+        'alumnos' => 'Alumnos obligatorios.',
+    ]);
 
     //Validacion de practica sin grupo asignado
 
     $alumno=Alumno::find("19161229");
   
     $this->assertNotNull($alumno);
-    $alumno->grupos()->sync([$grupo->clave_grupo]);
+    $alumno->grupos()->sync([$grupo->id]);
     
     $practica=Practica::create([
         'id_practica'=>"0013",
@@ -1097,20 +1249,28 @@ class PracticaTest extends TestCase
    public function test_view_practicas_alumnos():void{
     Artisan::call('migrate');
 
-    User::create([
-        "name" =>"Test",
-        "email" => 'test@gmail.com',
-        "password" => Hash::make('password22'),
+    $user = User::create([
+        'name' => 'Test',
+        'email' => '19161221@itoaxaca.edu.mx',
+        'password' => Hash::make('Johanar2-'),
     ]);
     
     
     $acceso = $this->post(route('login'), [
-        'email' => 'test@gmail.com',
-        'password' => 'password22',
+        'email' => '19161221@itoaxaca.edu.mx',
+        'password' => 'Johanar2-',
     
     ]);
 
-    $acceso->assertStatus(302)->assertRedirect(route('home'));
+    $permissions = [
+        Permission::create(['name' => 'ver-practicas']),
+    ];
+
+    $user->syncPermissions($permissions);
+
+    foreach ($permissions as $permission) {
+        $this->assertTrue($user->hasPermissionTo($permission->name));
+    }
     
 
     $response= $this->get(route('practicas.alumnos.index'))
@@ -1121,18 +1281,28 @@ class PracticaTest extends TestCase
    public function test_obtener_alumnos_practica():void{
     Artisan::call('migrate');
 
-    User::create([
-        "name" =>"Test",
-        "email" => 'test@gmail.com',
-        "password" => Hash::make('password22'),
+    $user = User::create([
+        'name' => 'Test',
+        'email' => '19161221@itoaxaca.edu.mx',
+        'password' => Hash::make('Johanar2-'),
     ]);
     
     
     $acceso = $this->post(route('login'), [
-        'email' => 'test@gmail.com',
-        'password' => 'password22',
+        'email' => '19161221@itoaxaca.edu.mx',
+        'password' => 'Johanar2-',
     
     ]);
+
+    $permissions = [
+        Permission::create(['name' => 'ver-practicas']),
+    ];
+
+    $user->syncPermissions($permissions);
+
+    foreach ($permissions as $permission) {
+        $this->assertTrue($user->hasPermissionTo($permission->name));
+    }
     Persona::create([
         'curp'=>"AAA",
         'nombre'=>"Johan",
@@ -1179,10 +1349,10 @@ class PracticaTest extends TestCase
     $alumno=Alumno::find("19161230");
   
     $this->assertNotNull($alumno);
-    $alumno->grupos()->sync(["ISA"]);
+    $alumno->grupos()->sync([1]);
 
 
-    $grupo=Grupo::where('clave_grupo','ISA')->first();
+    $grupo=Grupo::find(1);
 
     Catalogo_articulo::create([
             'id_articulo'=>"HM-T-0234",
@@ -1217,7 +1387,7 @@ class PracticaTest extends TestCase
     $practica=Practica::create([
         'id_practica'=>"001",
         'id_docente'=>$docente->rfc,
-        'clave_grupo'=>$grupo->clave_grupo,
+        'clave_grupo'=>$grupo->id,
         'nombre'=>"Practica 1",
         'objetivo'=>"Objectivo practica 1",
         'introduccion'=>"Introduccion practica 1",

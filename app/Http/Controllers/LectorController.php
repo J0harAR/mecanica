@@ -7,13 +7,15 @@ use App\Models\Maquinaria;
 use App\Models\Catalogo_articulo;
 use App\Models\Lectura;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 class LectorController extends Controller
 {
 
-    function _construct()
+    function __construct()
     {
         $this->middleware('permission:ver-lecturas', ['only' => ['index','obtenerComportamientoInsumos']]);
         $this->middleware('permission:crear-lectura', ['only' => ['store']]);
+        $this->middleware('auth');//Aqui se valida que el usuario este autentica para todo el controlador
     }
 
 
@@ -27,16 +29,12 @@ class LectorController extends Controller
 
 
     public function store(Request $request){
+        
         $usuario = auth()->user(); // Obtenemos la instancia del usuario logueado
+        
+        //Validaciones del modelo
+        $validatedData = $request->validate(Lectura::$createRules,Lectura::messages());
 
-        //Reviamos que se seleccione una maquinaria si no retornara error
-        if(!$request->input('maquina')){
-            return redirect()->route('lector.index')->with('error', 'Seleccione una maquinaria');
-        }
-        //Reviamos que se ingrese una observacion si no retornara error
-        if(!$request->input('observaciones')){
-            return redirect()->route('lector.index')->with('error', 'No dejar en blanco la observación');
-        }
         //Creamos la lectura 
         $lectura = new Lectura;
         $lectura->fecha = $request->input('fecha');

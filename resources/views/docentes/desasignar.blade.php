@@ -26,11 +26,8 @@
             </li>
         </ol>
     </nav>
-    @if (session('error'))
-        <div class="alert alert-danger mt-4" id="error-alert">
-            {{ session('error') }}
-        </div>
-    @endif
+
+    @include('layouts.notificaciones') 
 
 
     <form action="{{ route('docentes.filtrar_grupos') }}" method="POST" class="row g-3 needs-validation" novalidate>
@@ -103,7 +100,7 @@
                             <td>{{ $grupo->asignatura->clave}} // {{$grupo->asignatura->nombre}} </td>
                             <td>{{ $grupo->clave_grupo }}</td>
                             <td>
-                                <input type="checkbox" name="grupos[{{ $grupo->clave_grupo }}][asignatura]"
+                                <input type="checkbox" name="grupos[{{ $grupo->id }}][asignatura]"
                                     value="{{ $grupo->asignatura->clave }}">
                             </td>
                         </tr>
@@ -114,31 +111,10 @@
     @endif
 </div>
 
-<script>
-    // JavaScript para la validación del formulario
-    (function () {
-        'use strict'
-        var forms = document.querySelectorAll('.needs-validation')
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-                    form.classList.add('was-validated')
-                }, false)
-            })
-    })()
-    // JavaScript para ocultar el mensaje de error después de 3 segundos
-    document.addEventListener('DOMContentLoaded', function () {
-        var errorAlert = document.getElementById('error-alert');
-        if (errorAlert) {
-            setTimeout(function () {
-                errorAlert.style.display = 'none';
-            }, 3000);
-        }
-    });
-</script>
+<!-- Validacion del form antes de que se envie -->
+
+@include('layouts.validacionForm') 
+
+
 @endcan
 @endsection

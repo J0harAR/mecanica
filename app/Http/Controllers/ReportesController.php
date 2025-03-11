@@ -9,34 +9,55 @@ use App\Models\Docente;
 use App\Models\Herramientas;
 use App\Models\Insumos;
 use App\Models\Periodo;
+use App\Models\Prestamo;
 use App\Models\Maquinaria;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 class ReportesController extends Controller
 {
    
-    function _construct()
+    function __construct()
     {
         $this->middleware('permission:generar_reporte_prestamo', ['only' => ['generar_reporte_prestamo']]);
         $this->middleware('permission:generar_reporte_inventario', ['only' => ['generar_reporte_inventario']]);
         $this->middleware('permission:generar_reporte_herramientas', ['only' => ['generar_reporte_herramientas']]);
         $this->middleware('permission:generar_reporte_maquinaria', ['only' => ['generar_reporte_maquinaria']]);
         $this->middleware('permission:generar_reporte_insumos', ['only' => ['generar_reporte_insumos']]);
-        $this->middleware('permission:generar_reporte_practicas', ['only' => ['generar_reporte_practicas_completas']]);
+        $this->middleware('permission:generar_reporte_practicas', ['only' => ['generar_reporte_practicas_completas']]);  
+        $this->middleware('auth');//Aqui se valida que el usuario este autentica para todo el controlador
     }
 
 
     public function generar_reporte_prestamo(Request $request){
-        //Traemos todos los prestamos
-        $prestamos = DB::table('prestamo')->get();
-        
-        //Cargamos la view donde se reflejaran los prestamos en pdf
-        $pdf = Pdf::loadView('reportes.prestamos',['prestamos'=>$prestamos]);
-        return $pdf->stream();
+       
+        //Haremos una colecion para mostrar el inventario
+        $prestamos = collect();
 
+        //Vamos a buscar el periodo que se selecciono
+        $periodo=Periodo::find($request->input('periodo'));
 
+        //Si el peridoo existe
+        if($periodo){
+          
+            $inicioMes =Carbon::parse($periodo->fecha_inicio)->month;  //Obtenemos el inicio de mes 
+            $finMes = Carbon::parse($periodo->fecha_final)->month;//Obtenemos el fin de mes
+            $año = explode("-", $periodo->clave);//Obtenemos el año
+            
+            //Filtamos el inventario a partir del created at y en el rango de meses del periodo
+            $prestamos = Prestamo::whereYear('created_at', $año[0])
+            ->whereMonth('created_at', '>=', $inicioMes)
+            ->whereMonth('created_at', '<=', $finMes)
+            ->get();
 
+            //Cargamos la view donde se reflejaran el inventario en pdf
+            $pdf = Pdf::loadView('reportes.prestamos', ['prestamos' => $prestamos, 'periodo' => $periodo,'año'=>$año[0]]);
+            $pdf->setPaper('A4','landscape');
+            return $pdf->stream();  
+        }else{
+            return redirect()->route('prestamos.index')->with('error', 'No se selecciono el periodo ');
+        }   
     }
 
     public function generar_reporte_inventario(Request $request) {

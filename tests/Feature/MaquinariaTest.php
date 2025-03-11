@@ -14,7 +14,7 @@ use App\Models\Articulo_inventariado;
 use App\Models\Catalogo_articulo;
 use App\Models\Maquinaria;
 use App\Models\Insumos;
-
+use Spatie\Permission\Models\Permission;
 class MaquinariaTest extends TestCase
 {
     /**
@@ -25,20 +25,29 @@ class MaquinariaTest extends TestCase
      {
          Artisan::call('migrate');
  
-         User::create([
-             "name" =>"Test",
-             "email" => 'test@gmail.com',
-             "password" => Hash::make('password22'),
-         ]);
-         
-         
-         $acceso = $this->post(route('login'), [
-             'email' => 'test@gmail.com',
-             'password' => 'password22',
-         
-         ]);
- 
-         $acceso->assertStatus(302)->assertRedirect(route('home'));
+         $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
+        ]);
+        
+        
+        $acceso = $this->post(route('login'), [
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
+        
+        ]);
+
+        $permissions = [
+            Permission::create(['name' => 'ver-maquinarias']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+
  
          $acceso = $this->get(route('maquinaria.index'))
          ->assertStatus(200)
@@ -49,21 +58,28 @@ class MaquinariaTest extends TestCase
     public function test_create_maquinaria():void{
             Artisan::call('migrate');
     
-            User::create([
-                "name" =>"Test",
-                "email" => 'test@gmail.com',
-                "password" => Hash::make('password22'),
+            $user = User::create([
+                'name' => 'Test',
+                'email' => '19161221@itoaxaca.edu.mx',
+                'password' => Hash::make('Johanar2-'),
             ]);
             
             
             $acceso = $this->post(route('login'), [
-                'email' => 'test@gmail.com',
-                'password' => 'password22',
+                'email' => '19161221@itoaxaca.edu.mx',
+                'password' => 'Johanar2-',
             
             ]);
     
-            $acceso =$this->get(route('inventario.index'));
-            $acceso->assertStatus(200);
+            $permissions = [
+                Permission::create(['name' => 'crear-maquinaria']),
+            ];
+    
+            $user->syncPermissions($permissions);
+    
+            foreach ($permissions as $permission) {
+                $this->assertTrue($user->hasPermissionTo($permission->name));
+            }
 
 
             //Creacion correcta de una maquinaria sin insumos
@@ -90,6 +106,49 @@ class MaquinariaTest extends TestCase
             
             //No es nulo
             $this->assertNotNull($maquinaria);
+
+            //Validacion cuando no se selecciona articulo
+
+             $data=[
+                "id_articulo"=>null,
+                'estatus' => 'Disponible',
+                'cantidad' => 1,
+            ];
+
+            $response = $this->post(route('maquinaria.store'), $data); 
+            $response->assertStatus(302);
+            $response->assertSessionHasErrors([
+                'id_articulo' => 'Articulo obligatorio',
+            ]);
+
+            //Validacion cuando no se ingresa estatus
+            $data=[
+                "id_articulo"=>"03DI",
+                'estatus' => null,
+                'cantidad' => 1,
+            ];
+
+            $response = $this->post(route('maquinaria.store'), $data); 
+            $response->assertStatus(302);
+            $response->assertSessionHasErrors([
+                'estatus' => 'Estatus de la maquinaria obligatorio.',
+            ]);
+
+            //Validacion cuando no se ingresa cantidad
+
+            $data=[
+                "id_articulo"=>"03DI",
+                'estatus' => 'Disponible',
+                'cantidad' =>null,
+            ];
+
+            $response = $this->post(route('maquinaria.store'), $data); 
+            $response->assertStatus(302);
+            $response->assertSessionHasErrors([
+                'cantidad' => 'Cantidad obligatoria.',
+            ]);
+
+
 
             //Validaciones de la capacidad , capacidad actual y capacidad minima de cada insumo que se le asigne
 
@@ -281,18 +340,28 @@ class MaquinariaTest extends TestCase
         public function test_edit_maquinaria():void{
             Artisan::call('migrate');
     
-            User::create([
-                "name" =>"Test",
-                "email" => 'test@gmail.com',
-                "password" => Hash::make('password22'),
+            $user = User::create([
+                'name' => 'Test',
+                'email' => '19161221@itoaxaca.edu.mx',
+                'password' => Hash::make('Johanar2-'),
             ]);
             
             
             $acceso = $this->post(route('login'), [
-                'email' => 'test@gmail.com',
-                'password' => 'password22',
+                'email' => '19161221@itoaxaca.edu.mx',
+                'password' => 'Johanar2-',
             
             ]);
+    
+            $permissions = [
+                Permission::create(['name' => 'editar-maquinaria']),
+            ];
+    
+            $user->syncPermissions($permissions);
+    
+            foreach ($permissions as $permission) {
+                $this->assertTrue($user->hasPermissionTo($permission->name));
+            }
 
             Catalogo_articulo::create([
                 'id_articulo'=>"03MI",
@@ -341,6 +410,44 @@ class MaquinariaTest extends TestCase
     
             $maquinaria->insumos()->attach("AI", ['capacidad' => 100, 'cantidad_actual' => 50,'cantidad_minima'=>10]);
            
+            //Validacion que estatus sea null
+            $data=[
+                "id_articulo"=>"03MI01",
+                'estatus' => null,
+       
+                'insumos' => [
+                    'AI'=>10, 
+                       
+                ],
+
+                'insumos-cantidad-minima' => [
+                    'AI'=>5, 
+                    
+                ],
+            ];
+
+            $response = $this->put(route('maquinaria.update',$maquinaria->id_maquinaria),$data);
+            $response->assertStatus(302);
+            $response->assertSessionHasErrors([
+                'estatus' => 'Estatus de la maquinaria obligatorio.',
+            ]);
+            //Validacion que insumos sea null
+
+            $data=[
+                "id_articulo"=>"03MI01",
+               'estatus' => 'No disponible',
+                'insumos' => null
+            ];
+
+            $response = $this->put(route('maquinaria.update',$maquinaria->id_maquinaria),$data);
+            $response->assertStatus(302);
+            $response->assertSessionHasErrors([
+                'insumos' => 'Insumos obligatorios.',
+            ]);
+
+
+
+
             //La cantidad mínima no puede ser mayor que la capacidad para el insumo
             $data=[
                 "id_articulo"=>"03MI01",
@@ -410,6 +517,10 @@ class MaquinariaTest extends TestCase
             $response = $this->put(route('maquinaria.update',$maquinaria->id_maquinaria),$data);
             $response->assertStatus(302);
             $response->assertRedirect(route('maquinaria.index'));
+
+
+
+
           
     
         }
@@ -417,18 +528,28 @@ class MaquinariaTest extends TestCase
 
             Artisan::call('migrate');
     
-            User::create([
-                "name" =>"Test",
-                "email" => 'test@gmail.com',
-                "password" => Hash::make('password22'),
+            $user = User::create([
+                'name' => 'Test',
+                'email' => '19161221@itoaxaca.edu.mx',
+                'password' => Hash::make('Johanar2-'),
             ]);
             
             
             $acceso = $this->post(route('login'), [
-                'email' => 'test@gmail.com',
-                'password' => 'password22',
+                'email' => '19161221@itoaxaca.edu.mx',
+                'password' => 'Johanar2-',
             
             ]);
+    
+            $permissions = [
+                Permission::create(['name' => 'borrar-maquinaria']),
+            ];
+    
+            $user->syncPermissions($permissions);
+    
+            foreach ($permissions as $permission) {
+                $this->assertTrue($user->hasPermissionTo($permission->name));
+            }
 
             Catalogo_articulo::create([
                 'id_articulo'=>"03MI",
@@ -461,18 +582,28 @@ class MaquinariaTest extends TestCase
         public function test_asignar_insumos():void{
             Artisan::call('migrate');
     
-            User::create([
-                "name" =>"Test",
-                "email" => 'test@gmail.com',
-                "password" => Hash::make('password22'),
+            $user = User::create([
+                'name' => 'Test',
+                'email' => '19161221@itoaxaca.edu.mx',
+                'password' => Hash::make('Johanar2-'),
             ]);
             
             
             $acceso = $this->post(route('login'), [
-                'email' => 'test@gmail.com',
-                'password' => 'password22',
+                'email' => '19161221@itoaxaca.edu.mx',
+                'password' => 'Johanar2-',
             
             ]);
+    
+            $permissions = [
+                Permission::create(['name' => 'asignar-insumos-maquinaria']),
+            ];
+    
+            $user->syncPermissions($permissions);
+    
+            foreach ($permissions as $permission) {
+                $this->assertTrue($user->hasPermissionTo($permission->name));
+            }
 
             Catalogo_articulo::create([
                 'id_articulo'=>"03MI",
@@ -539,8 +670,10 @@ class MaquinariaTest extends TestCase
             
             $asignacion = $this->patch(route('maquinaria.insumos_asignar',$maquinaria->id_maquinaria),$data);
             $asignacion->assertStatus(302);
-            $asignacion->assertRedirect(route('maquinaria.index'));
-            $asignacion->assertSessionHas('error');
+            $asignacion->assertSessionHasErrors([
+                'insumos' => 'Insumos obligatorios.',
+            ]);
+    
             
           
             
@@ -550,18 +683,28 @@ class MaquinariaTest extends TestCase
 
             Artisan::call('migrate');
     
-            User::create([
-                "name" =>"Test",
-                "email" => 'test@gmail.com',
-                "password" => Hash::make('password22'),
+            $user = User::create([
+                'name' => 'Test',
+                'email' => '19161221@itoaxaca.edu.mx',
+                'password' => Hash::make('Johanar2-'),
             ]);
             
             
             $acceso = $this->post(route('login'), [
-                'email' => 'test@gmail.com',
-                'password' => 'password22',
+                'email' => '19161221@itoaxaca.edu.mx',
+                'password' => 'Johanar2-',
             
             ]);
+    
+            $permissions = [
+                Permission::create(['name' => 'desasignar-insumos-maquinaria']),
+            ];
+    
+            $user->syncPermissions($permissions);
+    
+            foreach ($permissions as $permission) {
+                $this->assertTrue($user->hasPermissionTo($permission->name));
+            }
 
 
             Catalogo_articulo::create([
@@ -627,7 +770,9 @@ class MaquinariaTest extends TestCase
             
             $response = $this->patch(route('maquinaria.insumos_desasignar',$maquinaria->id_maquinaria),$data);
             $response->assertStatus(302);
-            $response->assertRedirect(route('maquinaria.index'));
+            $response->assertSessionHasErrors([
+                'insumos' => 'Insumos obligatorios.',
+            ]);
         
             
         }

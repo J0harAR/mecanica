@@ -34,5 +34,33 @@ class Insumos extends Model
         return $this->belongsToMany(Maquinaria::class, 'insumos_maquinaria', 'insumo_id', 'maquinaria_id');
     }
 
+    
+    //Validaciones del modelo
+       //Create
+    public static $createRules = [
+            'id_articulo'=>'required',
+            'estatus' => 'required',
+            'cantidad' => 'required',
+            'capacidad_insumo' =>'required',
+        ];
+
+    //Update
+    public static $updateRules = [
+            'estatus' => 'required',
+            'capacidad' =>'required',
+    ];
+
+    //Mensajes personalizados para las validaciones
+    public static function messages()
+    {
+        return [
+            'id_articulo.required' => 'Articulo obligatorio',
+            'estatus.required' => 'Estatus del insumo obligatorio.',
+            'cantidad.required' => 'Cantidad obligatoria.',
+            'capacidad_insumo.required' => 'La capacidad es obligatoria.',
+            'capacidad.required' => 'La capacidad es obligatoria.',
+        ];
+    }
+
 
 }

@@ -1,39 +1,11 @@
-@extends('layouts.app')
-
-@section('content')
-@can('crear-grupo')
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="fw-bold mb-0 text-primary">
-                <i class="fas fa-users"></i> Registro de Grupo
-            </h1>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb bg-light shadow-sm p-3 mb-4 rounded">
-                    <li class="breadcrumb-item">
-                        <a href="{{ route('home') }}" class="text-decoration-none text-primary">
-                            <i class="fas fa-home me-1"></i>Dashboard
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        @can('ver-grupos')                                                  
-                        <a href="{{ route('grupos.index')}}" class="text-decoration-none text-primary">
-                            <i class="fas fa-users me-1"></i> Administración de Grupos
-                        </a>
-                        @endcan
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">
-                        <i class="fas fa-user-plus"></i> Registrar Grupo
-                    </li>
-                </ol>
-            </nav>
-        </div>
-    </div>
-
-
-    @can('crear-grupo')
-    <div class="card custom-card">
-        <div class="card-body">
+<div class="modal fade" id="creargrupoModal" tabindex="-1" aria-labelledby="creargrupoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="creargrupoModalLabel">Registrar grupo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
             <form class="row g-3 needs-validation" action="{{ route('grupos.store') }}" method="POST" novalidate>
                 @csrf
                 <div class="col-md-4">
@@ -81,9 +53,7 @@
                     </button>
                 </div>
             </form>
+            </div>
         </div>
     </div>
-    @endcan
 </div>
-@endcan
-@endsection

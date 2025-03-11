@@ -32,20 +32,7 @@
     @endcan
   </div>
 
-  @if(session('success'))
-  <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
-    {{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      window.setTimeout(function () {
-        const successAlert = document.getElementById("success-alert");
-        if (successAlert) successAlert.style.display = 'none';
-      }, 3000);
-    });
-  </script>
-  @endif
+  @include('layouts.notificaciones') 
 
   <div class="card custom-card shadow-sm border-0 mx-auto" style="max-width: 80%;">
     <div class="card-body">
@@ -145,5 +132,6 @@
     });
   }
 </script>
+
 
 @endsection

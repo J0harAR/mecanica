@@ -22,4 +22,26 @@ class Mantenimiento extends Model
         ->withPivot(['cantidad']);
     }
 
+    //Validaciones del modelo
+
+    //create
+      public static $createRules = [
+        'maquina' => 'required',
+        'fecha' => 'required',
+        'insumos' => 'required',
+    ];
+
+
+
+     //Mensajes personalizados para las validaciones
+     public static function messages()
+     {
+         return [
+             'maquina.required' => 'Seleccione una maquinaria.',
+             'fecha.required' => 'La fecha es obligatoria.',
+             'insumos.required' => 'Insumos obligatorios',
+             
+         ];
+     }
+
 }

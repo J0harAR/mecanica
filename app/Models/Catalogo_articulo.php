@@ -25,5 +25,23 @@ class Catalogo_articulo extends Model
     {
         return $this->belongsToMany(Practica::class, 'catalogo_practica', 'articulo_id', 'practica_id');
     }
+
+        //Validaciones del modelo 
+
+      //Create
+      public static $createRules = [
+        'tipo' => 'required',
+        'nombre' => 'required|string',
+       
+    ];
+
+    //Mensajes personalizados para las validaciones
+    public static function messages(){
+        return [
+            'tipo.required' => 'Seleccione el tipo de artículo que desea registrar.',
+            'nombre.required' => 'Ingrese el nombre del artículo.',
+        ];
+}
+
     
 }

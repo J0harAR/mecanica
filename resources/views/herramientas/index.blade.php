@@ -197,45 +197,9 @@
         </div>
  
 
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
-                {{ session('success') }}
-            </div>
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                window.setTimeout(function () {
-                    const successAlert = document.getElementById("success-alert");
-                    if (successAlert) successAlert.style.display = 'none';
-                }, 3000);
-                });
-            </script>
-        @endif
 
-    @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" id="success-alert" role="alert">
-                {{ session('error') }}
-                <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                window.setTimeout(function () {
-                    const successAlert = document.getElementById("success-alert");
-                    if (successAlert) successAlert.style.display = 'none';
-                }, 3000);
-                });
-            </script>
-        </div>
-    @endif
+@include('layouts.notificaciones') 
 
-    @if ($errors->any())
-    <div class="alert alert-danger" id="error-alert">
-        Todos los campos son requeridos  
-    </div>
-    @endif
-
-    @if (session('tipo_vacia'))
-        <div class="alert alert-danger" id="error-alert">
-            {{ session('tipo_vacia') }}
-        </div>
-    @endif 
 
     @can('ver-herramientas')       
     <div class="card shadow-lg rounded-3 border-0">
@@ -383,21 +347,8 @@
 
   @endcan
 
-
-
-@if(session('success'))
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            window.setTimeout(function () {
-                const successAlert = document.getElementById("success-alert");
-                if (successAlert) successAlert.style.display = 'none';
-            }, 3000);
-        });
-    </script>
-@endif
-
-<script>
-    
+<!-- En este caso se pone disabled el boton para evitar multiples envios -->
+<script> 
         var formularios = document.querySelectorAll('.miFormulario');
         formularios.forEach(function(formulario) {
             formulario.addEventListener('submit', function(event) {
@@ -406,5 +357,8 @@
             });
         });
     </script>
+
+
+
 @endcan
 @endsection

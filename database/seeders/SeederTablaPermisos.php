@@ -52,7 +52,6 @@ class SeederTablaPermisos extends Seeder
             
             //Grupos
             'ver-grupos',
-            'editar-grupo',
             'crear-grupo',
             'borrar-grupo',
 

@@ -42,44 +42,10 @@
     </div>
   </div>
 
-  @if(session('success'))
-  <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
-    {{ session('success') }}
-  </div>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    window.setTimeout(function () {
-      const successAlert = document.getElementById("success-alert");
-      if (successAlert) successAlert.style.display = 'none';
-    }, 3000);
-    });
-  </script>
-@endif
+@include('layouts.notificaciones') 
 
 
-  @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" id="success-alert" role="alert">
-                {{ session('error') }}
-                <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                window.setTimeout(function () {
-                    const successAlert = document.getElementById("success-alert");
-                    if (successAlert) successAlert.style.display = 'none';
-                }, 3000);
-                });
-            </script>
-            </div>
-    @endif
 
-
-  @if (session('errores_cantidad'))
-  @foreach (session('errores_cantidad') as $error)
-  <div class="alert alert-danger" id="danger-alert">
-    {{$error}}
-  </div>
-@endforeach
-
-@endif
 
 @can('crear-mantenimiento')
   <!-- Vertically centered Modal -->
@@ -111,7 +77,7 @@
             </div>
             
             <div class="col-md-12 mb-3">
-            <label for="insumos" class="form-label"><i class="bi bi-box-seam me-2"></i>Datos generales</label>
+            
                 <div id="datos-maquina">
 
 
@@ -120,7 +86,7 @@
             
 
             <div class="col-md-12 mb-3">
-              <label for="insumos" class="form-label"><i class="bi bi-box-seam me-2"></i>Insumos</label>
+
               <div id ="insumos-container">
 
 
@@ -318,6 +284,7 @@
 
                     // Crear HTML para los datos generales
                     let DatosHtml = ` 
+                    <label for="insumos" class="form-label"><i class="bi bi-box-seam me-2"></i>Datos generales</label>
                         <div class="row">
                             <div class="col-md-12 ">
                                 <p>ID:${datos.articulo_inventariados.id_inventario}-${datos.articulo_inventariados.catalogo_articulos.nombre}</p>
@@ -334,6 +301,7 @@
 
                     // Crear HTML para los insumos
                     DatosHtml += `
+                        <label for="insumos" class="form-label"><i class="bi bi-box-seam me-2"></i>Insumos</label>
                         <div class="row">
                             <div class="col-md-6">
                                 <p class="form-label">Detalles de los insumos</p>
@@ -397,7 +365,7 @@
 
 
 
-  
+  <!-- Validacion para que no se envien multiples registros al dar click -->
 
   <script>
     

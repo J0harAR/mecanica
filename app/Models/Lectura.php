@@ -27,4 +27,26 @@ class Lectura extends Model
 
     }
 
+    //Validaciones del modelo
+    public static $createRules = [
+        'maquina' => 'required',
+        'observaciones' => 'required',
+        'fecha' => 'required',
+        'insumos' => 'required',
+    ];
+
+
+
+     //Mensajes personalizados para las validaciones
+     public static function messages()
+     {
+         return [
+             'maquina.required' => 'Seleccione una maquinaria.',
+             'observaciones.required' => 'La observación es obligatoria',
+             'fecha.required' => 'La fecha es obligatoria.',
+             'insumos.required' => 'Insumos obligatorios',
+             
+         ];
+     }
+
 }

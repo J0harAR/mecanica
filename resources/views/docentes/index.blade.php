@@ -24,11 +24,14 @@
     </div>
     
     <div class="btn-group" role="group">
-      @can('crear-docente')              
-        <a href="{{ route('docentes.create') }}" class="btn btn-primary">
+    @can('crear-docente')
+     
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#crearDocenteModal">
             <i class="ri-add-line"></i> Añadir docente
-        </a>
-      @endcan
+        </button>
+
+        @include('docentes.modals.create')
+    @endcan
 
       @can('asignar-grupos-docente')     
       <a href="{{ route('docentes.asigna') }}" class="btn btn-outline-primary">
@@ -45,23 +48,14 @@
   </div>
 
 
-    @if (session('error'))
-        <div class="alert alert-danger" id="error-alert">
-            {{ session('error') }}
-        </div>
-    @endif
-
-    @if (session('success'))
-        <div class="alert alert-success" id="error-alert">
-            {{ session('success') }}
-        </div>
-    @endif
+@include('layouts.notificaciones') 
+  
 
     @can('ver-docentes')
   <div class="card shadow-lg rounded-3 border-0">
     <div class="card-body p-4">
       <div class="table-responsive">
-        <table class="table table-striped table-hover table-bordered shadow-sm rounded align-middle"
+        <table class="table table-striped table-hover table-bordered shadow-sm rounded align-middle datatable"
           style="border-collapse: separate; border-spacing: 0 10px;">
           <thead class="bg-primary text-white position-sticky top-0" style="z-index: 1;">
             <tr>
@@ -129,16 +123,9 @@
   </div>
   @endcan
 </div>
-<script>
-  // JavaScript para ocultar el mensaje de error después de 3 segundos
-  document.addEventListener('DOMContentLoaded', function () {
-        var errorAlert = document.getElementById('error-alert');
-        if (errorAlert) {
-            setTimeout(function () {
-                errorAlert.style.display = 'none';
-            }, 3000);
-        }
-    });
-</script>
+
+
+
 @endcan
+
 @endsection

@@ -28,14 +28,12 @@
             <div class="container mt-4">
 
                 @can('crear-practica')
-                              
+                @include('layouts.notificaciones')   
+
                 <form class="row g-3 needs-validation" action="{{ route('practicas.store') }}" method="POST" novalidate>
                     @csrf
-                    @if(session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                    @endif
+                   
+                    
                     <div class="col-md-12">
                         <label for="codigo_practica" class="form-label"><i class="fas fa-id-badge me-2"></i>No. Práctica</label>
                         <input type="text" class="form-control" name="codigo_practica" required>
@@ -146,7 +144,7 @@
 
 
 
-                <script>
+ <script>
                     $(document).ready(function () {
     $('#docente').on('change', function () {
         let docenteId = $(this).val();
@@ -171,7 +169,7 @@
                     // Crear las opciones para cada grupo
                     grupos.forEach(function(grupo) {
                         let grupoOption = `
-                            <option value="${grupo.clave_grupo}">${grupo.clave_grupo}</option>
+                            <option value="${grupo.id}">${grupo.clave_grupo}/${grupo.asignatura.nombre}</option>
                         `;
                         grupoSelect.append(grupoOption);
                     });
@@ -183,14 +181,9 @@
         }
     });
 });
-
+                  
                     
-                    
-                    </script>
-
-
-
-
+</script>
 
 @endcan
 @endsection

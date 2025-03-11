@@ -182,13 +182,6 @@ $total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
               </li>
               @endcan
               
-              @can('crear-docente')                           
-              <li>
-                <a href="{{route('docentes.create')}}">
-                  <span>Registrar docente</span>
-                </a>
-              </li>
-              @endcan
             </ul>
           </li>
           @can('ver-alumnos')            
@@ -221,14 +214,6 @@ $total_notificaciones = $cantidad_maquinas + $cantidad_prestamos;
               <li>
                 <a href="{{route('asignatura.index')}}">
                   <span>Ver asignaturas</span>
-                </a>
-              </li>
-              @endcan
-
-              @can('crear-asignatura')    
-              <li>
-                <a href="{{route('asignatura.create')}}">
-                  <span>Registrar asignatura</span>
                 </a>
               </li>
               @endcan

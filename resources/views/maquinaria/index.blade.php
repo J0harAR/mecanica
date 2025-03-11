@@ -221,49 +221,10 @@
         </div>
         @endcan
     </div>
-    @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
-                {{ session('success') }}
-            </div>
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                window.setTimeout(function () {
-                    const successAlert = document.getElementById("success-alert");
-                    if (successAlert) successAlert.style.display = 'none';
-                }, 3000);
-                });
-            </script>
-    @endif
 
-    @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" id="success-alert" role="alert">
-                {{ session('error') }}
-                <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                window.setTimeout(function () {
-                    const successAlert = document.getElementById("success-alert");
-                    if (successAlert) successAlert.style.display = 'none';
-                }, 3000);
-                });
-            </script>
-        </div>
-    @endif
+@include('layouts.notificaciones') 
 
 
-    @if(session('seccion_vacia'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="seccion_vacia-alert">
-            {{ session('seccion_vacia') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                window.setTimeout(function () {
-                    const successAlert = document.getElementById("seccion_vacia-alert");
-                    if (successAlert) successAlert.style.display = 'none';
-                }, 3000);
-            });
-        </script>
-    @endif
     @can('ver-maquinarias')
     <div class="card shadow-lg rounded-3 border-0">
         <div class="card-body p-4">
@@ -331,16 +292,17 @@
                 <form class="row g-3" action="{{ route('maquinaria.update', $maquina->id_maquinaria) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    <div class="col-md-6 mb-3">
-                        <label for="id_maquinaria" class="form-label"><i class="bi bi-gear me-2"></i>Código de maquinaria</label>
-                        <input type="text" class="form-control" id="id_maquinaria" name="id_maquinaria" value="{{ $maquina->id_maquinaria }}" disabled>
-                    </div>
+                    
                     <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="id_maquinaria" class="form-label"><i class="bi bi-gear me-2"></i>Código de maquinaria</label>
+                            <input type="text" class="form-control" id="id_maquinaria" name="id_maquinaria" value="{{ $maquina->id_maquinaria }}" disabled>
+                        </div>
                         <div class="col-md-6 mb-3">
                             <label for="seccion" class="form-label"><i class="bi bi-diagram-3 me-2"></i>Sección de la maquinaria</label>
                             <input type="text" class="form-control" id="seccion" name="seccion" value="{{ $maquina->Articulo_inventariados->Catalogo_articulos->seccion }}" disabled>
                         </div>
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <label for="nombre" class="form-label"><i class="bi bi-box-seam me-2"></i>Nombre de la maquinaria</label>
                             <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $maquina->Articulo_inventariados->Catalogo_articulos->nombre }}" disabled>
                         </div>
@@ -550,4 +512,7 @@ $(document).ready(function() {
     });
 });
 </script>
+
+
+
     @endsection

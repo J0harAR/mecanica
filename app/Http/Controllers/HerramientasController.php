@@ -10,14 +10,16 @@ use App\Models\Auditoria;
 use App\Models\Periodo;
 use App\Models\Insumos;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 class HerramientasController extends Controller
 {
-    function _construct()
+    function __construct()
     {
         $this->middleware('permission:ver-herramientas', ['only' => ['index']]);
         $this->middleware('permission:crear-herramienta', ['only' => ['store']]);
         $this->middleware('permission:editar-herramienta', ['only' => ['update']]);
         $this->middleware('permission:borrar-herramienta', ['only' => ['destroy']]);
+        $this->middleware('auth');//Aqui se valida que el usuario este autentica para todo el controlador
     }
 
 
@@ -34,7 +36,10 @@ class HerramientasController extends Controller
     }
 
     public function store(Request $request){   
-        
+          //Validacion desde el modelo
+        $validatedData = $request->validate(Herramientas::$createRules,Herramientas::messages());
+
+
         set_time_limit(180);//se especifica 180 segundos de tiempo de espera por si se agregan en masa
         //Guardamos las requests
         $estatus=$request->input('estatus');
@@ -117,13 +122,8 @@ class HerramientasController extends Controller
     public function update(Request $request,$id_herramientas)
     {
 
-        //Validamos que no se dejen campos en blanco
-        $this->validate($request, [
-            'condicion_herramienta' => 'required',
-            'estatus' => 'required',
-        ]);
-
-        
+          //Validacion desde el modelo
+        $validatedData = $request->validate(Herramientas::$updateRules,Herramientas::messages());
 
         //Se guaradan las requests de las unicas que se van a poder actualizar
         $condicion_herramienta=$request->input('condicion_herramienta');

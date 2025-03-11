@@ -10,16 +10,17 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Arr;
-
+use Illuminate\Support\Facades\Auth;
 
 class UsuarioController extends Controller
 {
-    function _construct()
+    function __construct()
     {
         $this->middleware('permission:ver-usuarios|crear-usuarios|editar-usuarios|borrar-usuarios', ['only' => ['index']]);
         $this->middleware('permission:crear-usuarios', ['only' => ['create', 'store']]);
         $this->middleware('permission:editar-usuarios', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:borrar-usuarios', ['only' => ['destroy']]);
+        $this->middleware('permission:borrar-usuarios', ['only' => ['destroy']]);  
+        $this->middleware('auth');//Aqui se valida que el usuario este autentica para todo el controlador
     }
 
     /**
@@ -48,14 +49,10 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        //Validamos que no se dejen datos en blanco y validamos el regex del correo al insitucional
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email', 'regex:/^[\w\.-]+@itoaxaca\.edu\.mx$/'],
-            'password' => 'required | same:confirm-password',
-            'roles' => 'required'
-
-        ]);
+        //Validacion desde el modelo
+        
+        $validatedData = $request->validate(User::$createRules);
+   
         $input = $request->all();
         //hasheamos la password
         $input['password'] = Hash::make($input['password']);
@@ -84,14 +81,10 @@ class UsuarioController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //Validamos el email para que sea institucional y ningun campo en blanco
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required | email |regex:/^[\w\.-]+@itoaxaca\.edu\.mx$/|unique:users,email,' . $id,
-            'password' => 'same:confirm-password',
-            'roles' => 'required'
-
-        ]);
+       //Validacion desde el modelo
+        
+        $validatedData = $request->validate(User::updateRules($id));
+        
         $input = $request->all();
 
         //hasheamos la password si no esta vacio

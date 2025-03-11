@@ -70,6 +70,7 @@
                 <th>Nombre de Docente</th>
                 <th>Nombre de la Práctica</th>
                 <th>Grupo</th>
+                <th>Asignatura</th>
                 <th>No. de Alumnos</th>
                 <th>Hora de Entrada</th>
                 <th>Hora de Salida</th>
@@ -82,6 +83,7 @@
                         $nombre_docente = $practica->docente->persona->nombre ?? 'N/A';
                         $nombre_practica = $practica->nombre;
                         $no_alumnos = count($practica->alumnos);
+                        $asignatura=$practica->grupo->asignatura->nombre;
                         $hora_entrada = $practica->alumnos->min('pivot.hora_entrada');
                         $hora_salida = $practica->alumnos->max('pivot.hora_salida');
                     @endphp
@@ -89,6 +91,7 @@
                         <td>{{ $nombre_docente }}</td>
                         <td>{{ $nombre_practica }}</td>
                         <td>{{ $grupo }}</td>
+                        <td>{{ $asignatura }}</td>
                         <td>{{ $no_alumnos }}</td>
                         <td>{{ $hora_entrada }}</td>
                         <td>{{ $hora_salida }}</td>

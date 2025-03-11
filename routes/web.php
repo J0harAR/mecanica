@@ -48,10 +48,6 @@ Route::group(['middleware' => ['auth']], function () {
     
     Route::resource('roles',RolController::class);
     Route::resource('usuarios',UsuarioController::class);
-    
-});
-
-
 
 //Rutas del modulo de inventario
     //Parte de catalogo de articulos
@@ -195,7 +191,7 @@ Route::delete('/periodos/{id}', [PeriodoController::class, 'destroy'])->name('pe
 
 //Parte de generar reportes
 
-Route::get('/reporte/prestamos', [ReportesController::class, 'generar_reporte_prestamo'])->name('reporte.prestamo');
+Route::post('/reporte/prestamos', [ReportesController::class, 'generar_reporte_prestamo'])->name('reporte.prestamo');
 Route::post('/reporte/inventario', [ReportesController::class, 'generar_reporte_inventario'])->name('reporte.inventario');
 
 Route::post('/reporte/practicas', [ReportesController::class, 'generar_reporte_practicas_completas'])->name('reporte.practicas');
@@ -210,3 +206,4 @@ Route::post('/reporte/inventario/insumos', [ReportesController::class, 'generar_
 Route::get('/lectura', [LectorController::class, 'index'])->name('lector.index');
 Route::post('/lectura', [LectorController::class, 'store'])->name('lector.store');
 Route::get('/lectura-comportamiento', [LectorController::class, 'obtenerComportamientoInsumos'])->name('comportamiento.insumos');
+});

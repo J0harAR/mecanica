@@ -23,7 +23,7 @@ use App\Models\Periodo;
 use App\Models\Catalogo_articulo;
 use App\Models\Articulo_inventariado;
 use App\Models\Herramientas;
-
+use Spatie\Permission\Models\Permission;
 class DocenteTest extends TestCase
 {
     /**
@@ -32,21 +32,27 @@ class DocenteTest extends TestCase
     public function test_view_docentes(): void
     {
         Artisan::call('migrate');
-
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'ver-docentes']),
+        ];
+
+        $user->syncPermissions($permissions);
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         
 
         $response= $this->get(route('docentes.index'))
@@ -59,27 +65,31 @@ class DocenteTest extends TestCase
         Artisan::call('migrate');
         Storage::fake('local');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
-
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
         
 
-        $response= $this->get(route('docentes.create'))
-        ->assertStatus(200)
-        ->assertViewIs('docentes.create');
+        $permissions = [
+            Permission::create(['name' => 'ver-docentes']),
+            Permission::create(['name' => 'crear-docente']),
+        ];
+
+        $user->syncPermissions($permissions);
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         
-        $file = UploadedFile::fake()->image('foto.jpg');
+        $file = UploadedFile::fake()->image('foto.jpg')->size(500); // size in KB
        
         //Registro correcto del docente
         $data=[
@@ -97,50 +107,59 @@ class DocenteTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect(route('docentes.index'));
 
-
-        //Caso en el que se cree un docente pero con curp de un alumno(inclusion)
+        //Registro con una curp duplicada
         Persona::create([
-            'curp'=>"AAA",
-            'nombre'=>"Johan",
-            'apellido_p'=>"Alfaro",
-            'apellido_m'=>"Ruiz",
-        ]);
-        Alumno::create([
-            'no_control'=>"19161229",
-            'curp'=>"AAA"
+            'curp' => "SECM620929HTSGPG06",
+            'nombre' => "Johan",
+            'apellido_p' => "Alfaro",
+            'apellido_m' => "Ruiz",
         ]);
 
-        $data=[
-            'curp'=>"AAA",
-            'nombre'=>"Johan",
-            'apellido_p'=>"Alfaro",
-            'apellido_m'=>"Ruiz",
-            'rfc'=>"RRR",
-            'area'=>"Sistemas",
-            'telefono'=>"1234",
-            'foto'=>  $file,
+        // Creamos los datos que intentarán registrar un docente con la misma CURP
+        $data = [
+            'curp' => "SECM620929HTSGPG06",
+            'nombre' => "Johan",
+            'apellido_p' => "Alfaro",
+            'apellido_m' => "Ruiz",
+            'rfc' => "SECM620929HTSG",
+            'area' => "Sistemas",
+            'telefono' => "1234",
+            'foto' => UploadedFile::fake()->image('foto.jpg'),
+        ];
+
+        
+        $response = $this->post(route('docentes.store'), $data);
+        $response->assertStatus(302); 
+        $response->assertSessionHasErrors([
+            'curp' => 'Curp duplicado.',
+        ]);
+
+        // Registro  de un docente con un RFC duplicado
+        Docente::create([
+            'rfc' => "SECM620929HTSG",
+            'curp' => "SECM620929HTSGPG06",
+            'area' => "Sistemas",
+            'telefono' => "1234",
+            'foto' => 'uploads/docentes/foto.jpg',
+        ]);
+
+        $data = [
+            'curp' => "SECM620929HTSGPG06",
+            'nombre' => "Johan",
+            'apellido_p' => "Alfaro",
+            'apellido_m' => "Ruiz",
+            'rfc' => "SECM620929HTSG", 
+            'area' => "Sistemas",
+            'telefono' => "1234",
+            'foto' => $file,
         ];
 
         $response = $this->post(route('docentes.store'), $data); 
         $response->assertStatus(302);
-        $response->assertRedirect(route('docentes.create'));
-        $response->assertSessionHas('error');
+        $response->assertSessionHasErrors([
+            'rfc' => 'Este rfc ya está registrado.',
+        ]);
         
-        
-        
-        //se crea un docente con un mismo rfc
-        $data=[
-            'curp'=>"CURP3",        
-            'rfc'=>"BBB",
-            'area'=>"Sistemas",
-            'telefono'=>"1234",
-            'foto'=>  $file,
-        ];
-
-        $response = $this->post(route('docentes.store'), $data); 
-        $response->assertStatus(302);
-        $response->assertRedirect(route('docentes.create'));
-        $response->assertSessionHas('error');
 
  
     }
@@ -152,20 +171,29 @@ class DocenteTest extends TestCase
         Artisan::call('migrate');
         Storage::fake('local');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'ver-docente']),
+            Permission::create(['name' => 'ver-docentes']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         
         Persona::create([
             'curp'=>"AAA",
@@ -194,20 +222,29 @@ class DocenteTest extends TestCase
         Artisan::call('migrate');
         Storage::fake('local');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'asignar-grupos-docente']),
+            Permission::create(['name' => 'ver-docentes']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         
 
         $response= $this->get(route('docentes.asigna'))
@@ -221,21 +258,31 @@ class DocenteTest extends TestCase
         Artisan::call('migrate');
         Storage::fake('local');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
-        $file = UploadedFile::fake()->image('foto.jpg');
+        $permissions = [
+            Permission::create(['name' => 'editar-docente']),
+            Permission::create(['name' => 'ver-docentes']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+
+        $file = UploadedFile::fake()->image('foto.jpg')->size(500); // size in KB
         Persona::create([
             'curp'=>"AAA",
             'nombre'=>"Johan",
@@ -310,8 +357,9 @@ class DocenteTest extends TestCase
 
         $response =$this->put(route('docentes.update',$docente->rfc),$data);
         $response->assertStatus(302);
-        $response->assertRedirect(route('docentes.index'));
-        $response->assertSessionHas('error');
+        $response->assertSessionHasErrors([
+            'curp' => 'Curp duplicado.',
+        ]);
 
         //Validacion de curp repetida
         Persona::create([
@@ -334,8 +382,10 @@ class DocenteTest extends TestCase
 
         $response =$this->put(route('docentes.update',$docente->rfc),$data);
         $response->assertStatus(302);
-        $response->assertRedirect(route('docentes.index'));
-        $response->assertSessionHas('error');
+        $response->assertSessionHasErrors([
+            'curp' => 'Curp duplicado.',
+        ]);
+
 
 
     }
@@ -344,20 +394,30 @@ class DocenteTest extends TestCase
         Artisan::call('migrate');
         Storage::fake('local');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'borrar-docente']),
+            Permission::create(['name' => 'ver-docentes']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+
         $file = UploadedFile::fake()->image('foto.jpg');
         Persona::create([
             'curp'=>"CURPPPPP",
@@ -414,7 +474,7 @@ class DocenteTest extends TestCase
             'periodo'=>'2024-3'
         ]);
 
-        $grupo=Grupo::find('IA1');
+        $grupo=Grupo::find(1);
 
         Catalogo_articulo::create([
             'id_articulo'=>"HM-T-0234",
@@ -475,20 +535,29 @@ class DocenteTest extends TestCase
         Artisan::call('migrate');
         Storage::fake('local');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'asignar-grupos-docente']),
+            Permission::create(['name' => 'eliminar-grupos-docente']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         
        
         Persona::create([
@@ -570,19 +639,28 @@ class DocenteTest extends TestCase
         Artisan::call('migrate');
         Storage::fake('local');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+
+        $permissions = [
+            Permission::create(['name' => 'asignar-grupos-docente']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
 
         Persona::create([
@@ -621,12 +699,12 @@ class DocenteTest extends TestCase
             'clave_asignatura'=>$asignatura->clave,
             'clave_periodo'=>$periodo->clave,
         ]);
-        $grupo=Grupo::find("A1");
+        $grupo=Grupo::find(1);
 
         $data=[
             "clave_periodo"=>"2024-3",
             "grupos" => [
-                $grupo->clave_grupo => [
+                $grupo->id => [
                 'asignatura' => $grupo->clave_asignatura
              ]
             ],
@@ -641,7 +719,7 @@ class DocenteTest extends TestCase
         $data=[
             "clave_periodo"=>"2024-3",
             "grupos" => [
-                $grupo->clave_grupo => [
+                $grupo->id => [
                 'asignatura' => $grupo->clave_asignatura
              ]
             ],
@@ -663,8 +741,9 @@ class DocenteTest extends TestCase
 
         $response = $this->post(route('docentes.asignar'), $data); 
         $response->assertStatus(302);
-        $response->assertRedirect(route('docentes.asigna'));
-        $response->assertSessionHas('error');
+        $response->assertSessionHasErrors([
+            'grupos' => 'No se selecciono ningun grupo.',
+        ]);
         
     }
 
@@ -673,20 +752,29 @@ class DocenteTest extends TestCase
     Artisan::call('migrate');
         Storage::fake('local');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'eliminar-grupos-docente']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+
 
         Persona::create([
             'curp'=>"AAA",
@@ -723,7 +811,7 @@ class DocenteTest extends TestCase
             'clave_asignatura'=>$asignatura->clave,
             'clave_periodo'=>$periodo->clave,
         ]);
-        $grupo=Grupo::find("A1");
+        $grupo=Grupo::find(1);
 
 
         $response= $this->get(route('docentes.eliminacion_asignacion'))
@@ -748,7 +836,7 @@ class DocenteTest extends TestCase
         $data=[
             "periodo"=>$periodo->clave,
             "grupos" => [
-                $grupo->clave_grupo => [
+                $grupo->id => [
                 'asignatura' => $grupo->clave_asignatura
              ]
             ],
@@ -766,7 +854,9 @@ class DocenteTest extends TestCase
         ];
         $response = $this->post(route('docentes.eliminar_asignacion'), $data); 
         $response->assertStatus(302);
-        $response->assertRedirect(route('docentes.eliminacion_asignacion'));
+        $response->assertSessionHasErrors([
+            'grupos' => 'No se selecciono ningun grupo.',
+        ]);
     }
 
 
@@ -774,18 +864,29 @@ class DocenteTest extends TestCase
 
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
+
+        $permissions = [
+            Permission::create(['name' => 'ver-docente']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+        
 
         Persona::create([
             'curp'=>"OOAZ900824MTSRLL08",

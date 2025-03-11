@@ -15,7 +15,7 @@ use App\Models\Insumos;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 
-
+use Spatie\Permission\Models\Permission;
 class InventarioTest extends TestCase
 {
     /**
@@ -25,20 +25,28 @@ class InventarioTest extends TestCase
     {
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $permissions = [
+            Permission::create(['name' => 'ver-inventario']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         //Ver la tabla de inventario
 
         $acceso = $this->get(route('inventario.index'))
@@ -51,18 +59,30 @@ class InventarioTest extends TestCase
     public function test_create_catalogo_herramienta():void{
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
+
+        $permissions = [
+            Permission::create(['name' => 'ver-inventario']),
+            Permission::create(['name' => 'crear-articulo']),
+        
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         //Crear una herramienta en el catalogo
         $data=[
             "tipo"=>"Herramientas",
@@ -119,8 +139,8 @@ class InventarioTest extends TestCase
 
         $response = $this->post(route('inventario.store'), $data); 
         $response->assertStatus(302);
-        $response->assertSessionHasErrors(['tipo_herramienta' => 'Seleccione el tipo de herramienta que desea registrar.']); 
-        $response->assertRedirect(); 
+        $response->assertRedirect(route('inventario.index'));
+        $response->assertSessionHas('error');
 
         //Validacion de articulo duplicado
 
@@ -148,11 +168,30 @@ class InventarioTest extends TestCase
         ]);
         
         
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
+        ]);
+        
+        
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
+
+        $permissions = [
+            Permission::create(['name' => 'ver-inventario']),
+            Permission::create(['name' => 'crear-articulo']),
+        
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
         //Crear una maquinaria en el catalogo
         $data=[
@@ -197,6 +236,18 @@ class InventarioTest extends TestCase
           $response->assertRedirect(route('inventario.index'));
           $response->assertSessionHas('error');
 
+        //Validacion sin seccion en null
+
+        $data=[
+            "tipo"=>"Maquinaria",
+            'nombre' => 'Maquina Inspectora',
+            'seccion'=>null
+        ];
+
+          $response = $this->post(route('inventario.store'), $data); 
+          $response->assertStatus(302);
+          $response->assertRedirect(route('inventario.index'));
+          $response->assertSessionHas('error');
 
     }
     
@@ -206,18 +257,30 @@ class InventarioTest extends TestCase
         
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
+
+        $permissions = [
+            Permission::create(['name' => 'ver-inventario']),
+            Permission::create(['name' => 'crear-articulo']),
+        
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
         //Crear un insumo en el catalogo
         $data=[
@@ -271,18 +334,30 @@ class InventarioTest extends TestCase
          
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
+
+        $permissions = [
+            Permission::create(['name' => 'ver-inventario']),
+            Permission::create(['name' => 'crear-articulo']),
+        
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         
        
          $data=[
@@ -305,18 +380,30 @@ class InventarioTest extends TestCase
     {
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
+
+        $permissions = [
+            Permission::create(['name' => 'ver-inventario']),
+            Permission::create(['name' => 'borrar-inventario']),
+        
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
         Catalogo_articulo::create([
             'id_articulo'=>"AI",

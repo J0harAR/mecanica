@@ -29,4 +29,30 @@ class Herramientas extends Model
     }
 
 
+    //Validaciones del modelo
+       //Create
+       public static $createRules = [
+            'id_articulo'=>'required',
+            'estatus' => 'required',
+            'cantidad' => 'required',
+            'condicion_herramienta' =>'required',
+        ];
+
+      //Update
+      public static $updateRules = [
+            'estatus' => 'required',
+            'condicion_herramienta' =>'required',
+      ];
+
+    //Mensajes personalizados para las validaciones
+    public static function messages()
+    {
+        return [
+            'id_articulo.required' => 'Articulo obligatorio',
+            'estatus.required' => 'Estatus de la herramienta obligatorio.',
+            'cantidad.required' => 'Cantidad obligatoria.',
+            'condicion_herramienta.required' => 'Condicion de la herramienta obligatoria.',
+        ];
+    }
+
 }

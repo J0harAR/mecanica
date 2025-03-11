@@ -12,7 +12,7 @@ use App\Models\Periodo;
 class InsumosController extends Controller
 {
 
-    function _construct()
+    function __construct()
     {
         $this->middleware('permission:ver-insumos', ['only' => ['index']]);
         $this->middleware('permission:crear-insumo', ['only' => ['store']]);
@@ -36,13 +36,16 @@ class InsumosController extends Controller
 
 
     public function store(Request $request){
+        //Validacion desde el modelo
+        $validatedData = $request->validate(Insumos::$createRules,Insumos::messages());
         set_time_limit(180);//Delimitamos a 180 la respueta por si se agregan en masa
         
+
         //guardamos los requests
         $estatus=$request->input('estatus');
         $cantidad_articulo=$request->input('cantidad');
         $capacidad_insumo=$request->input('capacidad_insumo');
-        $tipo="Insumos";//Especificamos que sera de tipo insumo
+        $tipo="Insumos";//Especifdicamos que sera de tipo insumo
 
         //Guardamos el codigo del articulo
         $codigo=$request->input('id_articulo');
@@ -113,6 +116,9 @@ class InsumosController extends Controller
 
     public function update(Request $request,$id_insumo)
     {
+        //Validacion desde el modelo
+        $validatedData = $request->validate(Insumos::$updateRules,Insumos::messages());
+
         //Guardamos los requests
         $estatus_insumo=$request->input('estatus');
         $capacidad=$request->input('capacidad');

@@ -8,7 +8,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h1 class="fw-bold mb-0 text-primary">
-      <i class="bi bi-file-earmark-bar-graph"></i> Lectura de insumos-máquina 
+      <i class="bi bi-file-earmark-bar-graph"></i> Lectura de insumos
       </h1>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-light shadow-sm p-3 mb-4 rounded">
@@ -42,37 +42,15 @@
         <i class="bi bi-gear"></i> Maquinaria
       </a>
       @endcan
+      
+      <button id="mostrarContenidoBtn" class="btn btn-outline-primary"><i class="fas fa-chart-bar"></i> Consumo</button>
     </div>
   </div>
 
-  @if(session('success'))
-  <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
-    {{ session('success') }}
-  </div>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    window.setTimeout(function () {
-      const successAlert = document.getElementById("success-alert");
-      if (successAlert) successAlert.style.display = 'none';
-    }, 3000);
-    });
-  </script>
-@endif
 
-@if(session('error'))
-  <div class="alert alert-danger alert-dismissible fade show" role="alert" id="danger-alert">
-    {{ session('error') }}
-  </div>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    window.setTimeout(function () {
-      const successAlert = document.getElementById("danger-alert");
-      if (successAlert) successAlert.style.display = 'none';
-    }, 3000);
-    });
-  </script>
-@endif
+@include('layouts.notificaciones') 
 
+<div id="contenido-cosumo" class="d-none">
 <h3 class="fw-bold text-secondary mb-4">Consulta de Consumo de Insumos</h3>
 
   <div class="row">
@@ -123,12 +101,9 @@
       <div id="columnChart"></div>
 
     </div>
-
-
-
   </div>
  
-
+</div>
 
   <h3 class="fw-bold text-secondary mb-4">Listado de lecturas</h3>
 
@@ -504,5 +479,15 @@ document.addEventListener('DOMContentLoaded', function () {
     fechaInput.setAttribute('max', formattedToday);
 });
 </script>
+
+<script>
+        document.getElementById('mostrarContenidoBtn').addEventListener('click', function() {
+            // Alternar la clase 'd-none' para mostrar u ocultar el contenido
+            document.getElementById('contenido-cosumo').classList.toggle('d-none');
+        });
+    </script>
+
+
+ 
 @endcan
 @endsection

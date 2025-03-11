@@ -7,49 +7,43 @@ use  App\Models\Grupo;
 use  App\Models\Asignatura;
 use  App\Models\Periodo;
 use Carbon\Carbon;  
+use Illuminate\Support\Facades\Auth;
 class GrupoController extends Controller
 {
 
-    function _construct()
+    function __construct()
     {
         $this->middleware('permission:ver-grupos', ['only' => ['index']]);
-        $this->middleware('permission:editar-grupo', ['only' => ['update']]);
-        $this->middleware('permission:crear-grupo', ['only' => ['create','store']]);
-        $this->middleware('permission:borrar-grupo', ['only' => ['destroy']]);
+        $this->middleware('permission:crear-grupo', ['only' => ['store']]);
+        $this->middleware('permission:borrar-grupo', ['only' => ['destroy']]);      
+        $this->middleware('auth');//Aqui se valida que el usuario este autentica para todo el controlador
+
     }
 
     public  function index(){
 
         //Retornamos todos los grupos y asignaturas para la tabla de la vista
         $grupos=Grupo::all();
-        $asignaturas=Asignatura::all();
-        return view('grupos.index',compact('grupos','asignaturas'));
-    }
-
-    public function create(){
-        
         $asignaturas=Asignatura::all();//Filtramos todas las asignaturas
         
-        //Obtenemos el año y mes  del usuario logueado
-        $currentYear = Carbon::now()->year;//año
-        $currentMonth = Carbon::now()->month;//mes
-            
-        //Filtramos los periodos que se encuentraan entre el año y el mes
-        $periodos = Periodo::whereYear('created_at',$currentYear)
-            ->whereMonth('fecha_inicio', '>=',  $currentMonth)
-            ->get();
-        
-        return view('grupos.create',compact('asignaturas','periodos'));
+     
+        // Obtengo la fecha actual con día, mes y año
+        $currentDate = Carbon::now();
+        $currentYear = Carbon::now()->year;
 
+        // Buscar el período que contenga completamente la fecha actual
+        $periodos= Periodo::whereDate('fecha_inicio', '<=', $currentDate)  // Empezó antes o justo el primer día del mes
+            ->whereDate('fecha_final', '>=', $currentDate)
+            ->whereYear('created_at', $currentYear)  // Termina después o justo el último día del mes
+            ->get();
+        return view('grupos.index',compact('grupos','asignaturas','periodos'));
     }
 
+
+
     public function store(Request $request){
-        //Validamos que los requests sean requeridos y no dejar en blanco
-        $validated = $request->validate([
-            'clave_grupo' => 'required',
-            'asignatura' => 'required',
-            'periodo' => 'required',
-        ]);
+         //Validacion desde el modelo
+        $validatedData = $request->validate(Grupo::$createRules,Grupo::messages());
     
         //Verificmaos que si existe un grupo con una clave y un asigatura con la misma clave es decir no deber haber un grupo con la misma asignatura
         $grupo = Grupo::where('clave_grupo', $request->input('clave_grupo'))

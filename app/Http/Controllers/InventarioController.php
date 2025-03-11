@@ -10,15 +10,16 @@ use App\Models\Maquinaria;
 use App\Models\Insumos;
 use App\Models\Periodo;
 use App\Models\Auditoria;
-
+use Illuminate\Support\Facades\Auth;
 class InventarioController extends Controller
 {
 
-    function _construct()
+    function __construct()
     {
         $this->middleware('permission:ver-inventario', ['only' => ['index']]);
         $this->middleware('permission:crear-articulo', ['only' => ['store']]);
         $this->middleware('permission:borrar-inventario', ['only' => ['destroy']]);
+        $this->middleware('auth');//Aqui se valida que el usuario este autentica para todo el controlador
     }
 
 
@@ -37,22 +38,9 @@ class InventarioController extends Controller
 
 
     public function store(Request $request){
+        //Validaciones desde el modelo
+        $validatedData = $request->validate(Catalogo_articulo::$createRules,Catalogo_articulo::messages());
 
-        //Aqui vamos a validar que no se dejen nada en blanco y se seleccione todo por cada tipo de articulo
-        $request->validate([
-            'tipo' => 'required',
-            'nombre' => 'required|string',
-            'tipo_herramienta' => 'required_if:tipo,Herramientas',
-            'dimension_herramienta' => 'required_if:tipo,Herramientas|nullable|numeric',
-            'seccion' => 'required_if:tipo,Maquinaria',
-        ], [
-            'tipo.required' => 'Seleccione el tipo de artículo que desea registrar.',
-            'nombre.required' => 'Ingrese el nombre del artículo.',
-            'tipo_herramienta.required_if' => 'Seleccione el tipo de herramienta que desea registrar.',
-            'dimension_herramienta.required_if' => 'Ingrese la dimensión de la herramienta.',
-            'seccion.required_if' => 'Seleccione la sección de la maquinaria que desea registrar.',
-        ]);
-    
         //Guardamos el tipo que no servira para cada tipo de articulo
         $tipo = $request->input('tipo');
         $nombre = strtolower($request->input('nombre'));//Guardamos el nombre general del articulo
@@ -196,7 +184,7 @@ class InventarioController extends Controller
                 break;
     
             default:
-                return redirect()->route('inventario.index')->withErrors(['tipo' => 'Seleccione el tipo de artículo que desea registrar.']);
+                return redirect()->route('inventario.index')->with('error','Seleccione el tipo de artículo que desea registrar.');
                 break;
         }
     

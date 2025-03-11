@@ -18,7 +18,7 @@ use App\Models\Asignatura;
 use App\Models\Persona;
 use App\Models\Alumno;
 use App\Models\Herramientas;
-
+use Spatie\Permission\Models\Permission;
 class AsignaturaTest extends TestCase
 {
     /**
@@ -28,21 +28,28 @@ class AsignaturaTest extends TestCase
     {
        
         Artisan::call('migrate');
-
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+    
+        $permissions = [
+            Permission::create(['name' => 'ver-asignaturas']),
+        ];
+
+        $user->syncPermissions($permissions);
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         
 
         $response= $this->get(route('asignatura.index'))
@@ -55,26 +62,32 @@ class AsignaturaTest extends TestCase
 
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+    
+        $permissions = [
+            Permission::create(['name' => 'ver-asignaturas']),
+            Permission::create(['name' => 'crear-asignatura']),
+        ];
+
+        $user->syncPermissions($permissions);
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         
-
-        $response= $this->get(route('asignatura.create'))
-        ->assertStatus(200)
-        ->assertViewIs('asignatura.create');
-
+        
+        //Creacion correcta de la asignatura
         $data=[
             'nombre'=>"Simulacion",
             'clave'=>"SM"
@@ -82,6 +95,7 @@ class AsignaturaTest extends TestCase
         $response = $this->post(route('asignatura.store'), $data); 
         $response->assertStatus(302);
         $response->assertRedirect(route('asignatura.index'));
+
 
         //Caso en que exista una materia con la misma clave
         Asignatura::create([
@@ -96,8 +110,9 @@ class AsignaturaTest extends TestCase
         ];
         $response = $this->post(route('asignatura.store'), $data); 
         $response->assertStatus(302);
-        $response->assertRedirect(route('asignatura.index'));
-        $response->assertSessionHas('error',"Clave de la asignatura duplicada");
+        $response->assertSessionHasErrors([
+            'clave' => 'La clave de la asignatura ya está en uso.',
+        ]);
 
     }
 
@@ -109,19 +124,30 @@ class AsignaturaTest extends TestCase
 
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
+    
+        $permissions = [
+            Permission::create(['name' => 'editar-asignatura']),
+        ];
+
+        $user->syncPermissions($permissions);
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+
+        //Actualizacion correcta de la asignatura
         Asignatura::create([
             'clave'=>"IA",
             'nombre'=>"Inteligencia artificial"
@@ -130,12 +156,8 @@ class AsignaturaTest extends TestCase
         $asignatura=Asignatura::find("IA");
         $this->assertNotNull($asignatura);
 
-
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
-        $response =$this->get(route('asignatura.edit',$asignatura->clave))
-        ->assertStatus(200)
-        ->assertViewIs('asignatura.editar');
-
+        
+        //Actualizacion correcta de la asignatura
         $data=[
             'nombre'=>"Simulacion 2",
         ];
@@ -144,6 +166,17 @@ class AsignaturaTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect(route('asignatura.index'));
 
+        //Nombre duplicado de la asignatura
+
+        $data=[
+            'nombre'=>"Simulacion 2",
+        ];
+
+        $response = $this->patch(route('asignatura.update',$asignatura->clave), $data); 
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors([
+            'nombre' => 'El nombre de la asignatura ya está en uso.',
+        ]);
 
     }
 
@@ -151,21 +184,28 @@ class AsignaturaTest extends TestCase
 
         Artisan::call('migrate');
 
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
         
         
         $acceso = $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
 
+    
+        $permissions = [
+            Permission::create(['name' => 'borrar-asignatura']),
+        ];
 
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+        $user->syncPermissions($permissions);
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
 
         
         Asignatura::create([

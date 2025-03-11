@@ -27,20 +27,8 @@
                 </ol>
             </nav>
             <div class="container mt-4"></div>
-            @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" id="success-alert" role="alert">
-                    {{ session('error') }}
-                    <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                    window.setTimeout(function () {
-                        const successAlert = document.getElementById("success-alert");
-                        if (successAlert) successAlert.style.display = 'none';
-                    }, 3000);
-                    });
-                </script>
-                </div>
-        @endif
-            
+            @include('layouts.notificaciones') 
+
             @can('crear-practica-alumno')          
             <form class="row g-3 needs-validation" action="{{ route('practicasAlumno.store') }}" method="post" novalidate>
                 @csrf
@@ -136,11 +124,16 @@
           
 @endcan
 
-            <script>
-                $(document).ready(function () {
-                    $('#alumnos').select2({
-                        placeholder: "Seleccionar"
-                    });
+    <script>
+        $(document).ready(function () {
+            $('#alumnos').select2({
+                    placeholder: "Seleccionar"
                 });
-            </script>
-            @endsection
+            });
+    </script>
+
+
+
+
+
+@endsection

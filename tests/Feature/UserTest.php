@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Artisan;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+
+use Spatie\Permission\Models\Permission;
 class UserTest extends TestCase
 {
 
@@ -130,18 +132,28 @@ class UserTest extends TestCase
 
         Artisan::call('migrate');
         
-        User::create([
-            "name" =>"Test",
-            "email" => 'test@itoaxaca.edu.mx',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
-
+        
+        
         $acceso = $this->post(route('login'), [
-            'email' => 'test@itoaxaca.edu.mx',
-            'password' => 'password22',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
         
         ]);
-        $acceso->assertStatus(302)->assertRedirect(route('home'));
+
+        $permissions = [
+            Permission::create(['name' => 'ver-usuarios']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
         //Ver la tabla de usuarios
         $acceso = $this->get(route('usuarios.index'))
         ->assertStatus(200)
@@ -151,20 +163,31 @@ class UserTest extends TestCase
         
         Artisan::call('migrate');
         
-        $user = User::factory()->create([
-            "name" => "Test",
-            "email" => 'test@itoaxaca.edu.mx',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
-        $roleAdministrador = Role::firstOrCreate(['name' => 'Administrador']);
-        $roleServicioSocial = Role::firstOrCreate(['name' => 'Servicio Social']);
-        $user->assignRole($roleAdministrador);
-       
+        
+        
+        $acceso = $this->post(route('login'), [
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
+        
+        ]);
 
-        $this->post(route('login'), [
-            'email' => 'test@itoaxaca.edu.mx',
-            'password' => 'password22',
-        ]);
+        $permissions = [
+            Permission::create(['name' => 'crear-usuarios']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+        $roleServicioSocial = Role::firstOrCreate(['name' => 'Servicio Social']);
+    
+
         //Ver formulario de crear usuario
         $this->get(route('usuarios.create'))
         ->assertStatus(200)
@@ -208,20 +231,32 @@ class UserTest extends TestCase
     public function test_edit_user(){
         Artisan::call('migrate');
         
-        $user = User::factory()->create([
-            "name" => "Test",
-            "email" => 'test@itoaxaca.edu.mx',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
-        $roleAdministrador = Role::firstOrCreate(['name' => 'Administrador']);
-        $roleServicioSocial = Role::firstOrCreate(['name' => 'Servicio Social']);
-        $user->assignRole($roleAdministrador);
-       
+        
+        
+        $acceso = $this->post(route('login'), [
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
+        
+        ]);
 
-        $this->post(route('login'), [
-            'email' => 'test@itoaxaca.edu.mx',
-            'password' => 'password22',
-        ]);
+        $permissions = [
+            Permission::create(['name' => 'editar-usuarios']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+
+        $roleServicioSocial = Role::firstOrCreate(['name' => 'Servicio Social']);
+     
+       
         //Ver formulario de editar usuario
         $this->get(route('usuarios.edit',$user->id))
         ->assertStatus(200)
@@ -229,10 +264,20 @@ class UserTest extends TestCase
 
         //Update de forma correcta de un usuario
         $updateCorrecto = $this->patch(route('usuarios.update',$user->id), [
-            'email' => '19161229@itoaxaca.edu.mx',
+            'email' => '19161230@itoaxaca.edu.mx',
+            'name' => 'Pedro',
+            'password' => 'JohanAr2-',
+            'confirm-password' => 'JohanAr2-',
+            'roles' => 'Servicio Social',
+        ])->assertRedirect(route('usuarios.index'));
+
+        //Update que caso de que no se cambie la contraseña
+
+        $updateCorrecto = $this->patch(route('usuarios.update',$user->id), [
+            'email' => '19161246@itoaxaca.edu.mx',
             'name' => 'Pedro',
             'password' => '',
-            'password_confirmation' => '',
+            'confirm-password' => '',
             'roles' => 'Servicio Social',
         ])->assertRedirect(route('usuarios.index'));
 
@@ -241,7 +286,7 @@ class UserTest extends TestCase
             'email' => 'prueba2@gmail.com',
             'name' => 'Pedro',
             'password' => 'asdasd',
-            'password_confirmation' => '', 
+            'confirm-password' => '', 
             'roles' => 'Servicio Social',
         ]);
 
@@ -254,17 +299,29 @@ class UserTest extends TestCase
     public function test_delete_user(){
         Artisan::call('migrate');
         
-        $user = User::factory()->create([
-            "name" => "Test",
-            "email" => 'test@gmail.com',
-            "password" => Hash::make('password22'),
+        $user = User::create([
+            'name' => 'Test',
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => Hash::make('Johanar2-'),
         ]);
-        $roleAdministrador = Role::firstOrCreate(['name' => 'Administrador']);
-        $user->assignRole($roleAdministrador);
-        $this->post(route('login'), [
-            'email' => 'test@gmail.com',
-            'password' => 'password22',
+        
+        
+        $acceso = $this->post(route('login'), [
+            'email' => '19161221@itoaxaca.edu.mx',
+            'password' => 'Johanar2-',
+        
         ]);
+
+        $permissions = [
+            Permission::create(['name' => 'borrar-usuarios']),
+        ];
+
+        $user->syncPermissions($permissions);
+
+        foreach ($permissions as $permission) {
+            $this->assertTrue($user->hasPermissionTo($permission->name));
+        }
+
         //Eliminar registro
         $userEliminar = User::factory()->create();
         $this->delete(route('usuarios.destroy', $userEliminar->id))
